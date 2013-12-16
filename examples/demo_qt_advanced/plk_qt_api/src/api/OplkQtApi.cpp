@@ -1,4 +1,4 @@
-#include <Epl.h>
+
 #include "api/OplkQtApi.h"
 
 #define NODEID		0xF0					// MN
@@ -113,4 +113,85 @@ tEplKernel OplkQtApi::StopStack()
 	// OplkEventHandler::GetInstance().terminate();
 	oplkRet = oplk_shutdown();
 	return oplkRet;
+}
+
+bool OplkQtApi::RegisterNodeFoundEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction)
+{
+	return QObject::connect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeFound),
+		&receiver,
+		receiverFunction,
+		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
+	);
+}
+
+bool OplkQtApi::UnregisterNodeFoundEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction)
+{
+	return QObject::connect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeFound),
+		&receiver,
+		receiverFunction
+	);
+}
+
+bool OplkQtApi::RegisterNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction)
+{
+	qRegisterMetaType<tNmtState>("tNmtState");
+	return QObject::connect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeStateChanged),
+		&receiver,
+		receiverFunction,
+		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
+	);
+}
+
+bool OplkQtApi::UnregisterNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction)
+{
+	qRegisterMetaType<tNmtState>("tNmtState");
+	return QObject::disconnect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeStateChanged),
+		&receiver,
+		receiverFunction
+	);
+}
+
+bool OplkQtApi::RegisterLocalNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction)
+{
+	qRegisterMetaType<tNmtState>("tNmtState");
+	return QObject::connect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalLocalNodeStateChanged),
+		&receiver,
+		receiverFunction,
+		(Qt::ConnectionType)(Qt::QueuedConnection | Qt::UniqueConnection)
+	);
+}
+
+bool OplkQtApi::UnregisterLocalNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction)
+{
+	qRegisterMetaType<tNmtState>("tNmtState");
+	return QObject::disconnect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalLocalNodeStateChanged),
+		&receiver,
+		receiverFunction
+	);
+}
+
+bool OplkQtApi::RegisterEventLogger(const QObject& receiver,
+		const QMetaMethod& receiverFunction)
+{
+	return QObject::connect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalPrintLog),
+		&receiver,
+		receiverFunction,
+		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
+	);
+}
+
+bool OplkQtApi::UnregisterEventLogger(const QObject& receiver, const QMetaMethod& receiverFunction)
+{
+	return QObject::disconnect(&OplkEventHandler::GetInstance(),
+		QMetaMethod::fromSignal(&OplkEventHandler::SignalPrintLog),
+		&receiver,
+		receiverFunction
+	);
 }
