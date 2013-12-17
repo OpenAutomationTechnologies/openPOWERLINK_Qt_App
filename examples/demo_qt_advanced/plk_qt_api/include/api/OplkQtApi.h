@@ -19,7 +19,7 @@
 #include "nmt.h"
 
 #include "api/OplkEventHandler.h"
-#include "common/global.h"
+#include "common/QtApiGlobal.h"
 
 /**
  * \brief API to the openPOWERLINK-Stack
@@ -53,7 +53,7 @@ public:
 
 	// TODO(RaM): Link to required signal in doxygen comments
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.
@@ -63,7 +63,7 @@ public:
 	static bool RegisterNodeFoundEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.
@@ -73,7 +73,7 @@ public:
 	static bool UnregisterNodeFoundEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.
@@ -83,7 +83,7 @@ public:
 	static bool RegisterNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.
@@ -93,17 +93,17 @@ public:
 	static bool UnregisterNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.
 	 * \retval true		Registration successful.
 	 *         false	Registration not successful.
-	 */	
+	 */
 	static bool RegisterLocalNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.
@@ -113,17 +113,17 @@ public:
 	static bool UnregisterLocalNodeStateChangedEventHandler(const QObject& receiver, const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.
 	 * \retval true		Registration successful.
 	 *         false	Registration not successful.
-	 */	
+	 */
 	static bool RegisterEventLogger(const QObject& receiver, const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   
+	 * \brief
 	 *
 	 * \param[in] receiver			Object to handle the event.
 	 * \param[in] receiverFunction	Object-Function to handle the event.

@@ -10,6 +10,7 @@
 
 #include <Epl.h>
 #include <nmt.h>
+#include <EplCfg.h>
 
 #include <QThread>
 #include <QMutex>
@@ -17,7 +18,7 @@
 #include <QString>
 #include <QDateTime>
 
-#include "common/global.h"
+#include "common/QtApiGlobal.h"
 
 /**
  * \brief Thread used to receive openPOWERLINK-Stack events.
