@@ -202,3 +202,84 @@ tEplKernel OplkQtApi::ExecuteNmtCommand(const UINT nodeId,
 	return oplk_execRemoteNmtCommand(nodeId, nmtCommand);
 
 }
+
+tEplKernel OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
+			const QObject& receiver,
+			const QMetaMethod& receiverFunction)
+{
+	tEplKernel oplkRet;
+	tSdoComConHdl *sdoComConHdl = new tSdoComConHdl;
+//	tSdoComConHdl sdoComConHdl;
+	UINT dataSize =  sdoTransferJob.GetDataSize();
+	bool conSuccess = false;
+	ReceiverContext *receiverContext = new ReceiverContext(&receiver, &receiverFunction);
+
+	qRegisterMetaType<SdoTransferResult>("SdoTransferResult");
+
+	if (((initParam.m_uiNodeId == sdoTransferJob.GetNodeId()) ||
+		 (0 == sdoTransferJob.GetNodeId())))
+	{
+		// do not connect
+		qDebug("Not Connected");
+	}
+	else
+	{
+		conSuccess = QObject::connect(&OplkEventHandler::GetInstance(),
+					QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
+					&receiver,
+					receiverFunction,
+					(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
+		);
+		qDebug("Read: %d", conSuccess);
+	}
+
+	switch(sdoTransferJob.GetSdoAccessType())
+	{
+		case kSdoAccessTypeRead:
+		{
+			oplkRet = oplk_readObject(sdoComConHdl,
+						sdoTransferJob.GetNodeId(),
+						sdoTransferJob.GetIndex(),
+						sdoTransferJob.GetSubIndex(),
+						sdoTransferJob.GetData(),
+						&dataSize,
+						sdoTransferJob.GetSdoType(),
+						(void*) receiverContext);
+			break;
+		}
+		case kSdoAccessTypeWrite:
+		{
+			qDebug("Write Val %x", (sdoTransferJob.GetData()));
+			oplkRet = oplk_writeObject(sdoComConHdl,
+						sdoTransferJob.GetNodeId(),
+						sdoTransferJob.GetIndex(),
+						sdoTransferJob.GetSubIndex(),
+						sdoTransferJob.GetData(),
+						dataSize,
+						sdoTransferJob.GetSdoType(),
+						(void*) receiverContext);
+			break;
+		}
+		default:
+			qDebug("Error Case: API: TransferObject ");
+			break;
+	}
+
+	if ((kEplApiTaskDeferred == oplkRet) ||
+		((initParam.m_uiNodeId == sdoTransferJob.GetNodeId()) ||
+		(0 == sdoTransferJob.GetNodeId())))
+	{
+		//Should not disconnect. Success Case
+		qDebug("Not Disconnected");
+	}
+	else
+	{
+		conSuccess = QObject::disconnect(&OplkEventHandler::GetInstance(),
+					QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
+					&receiver,
+					receiverFunction
+		);
+		qDebug("Read Err :Disconnected %d", conSuccess);
+	}
+	return oplkRet;
+}

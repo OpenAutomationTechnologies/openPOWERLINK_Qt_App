@@ -18,6 +18,8 @@
 #include <QString>
 #include <QDateTime>
 
+#include "api/ReceiverContext.h"
+#include "user/SdoTransferResult.h"
 #include "common/QtApiGlobal.h"
 
 /**
@@ -153,9 +155,16 @@ private:
 	void TriggerPrintLog(const QString logStr);
 
 	/**
+	 * \brief   Triggers a signal when SDO transfer finished
+	 *
+	 * \param logStr    Log messsage.
+	 */
+	void TriggerSdoTransferFinished(const tSdoComFinished& result, const ReceiverContext* receiverContext);
+
+	/**
 	 * \brief   Set Default node assignment when CFM manager is not available
 	 *
-	 * \param logStr    Log message.
+	 * \param logStr    Log messsage.
 	 */
 	tEplKernel SetDefaultNodeAssignment();
 
@@ -199,6 +208,13 @@ signals:
 	 * \param logStr
 	 */
 	void SignalPrintLog(const QString &logStr);
+
+	/**
+	 * \brief   Signals after the SDO transfer has happened/aborted.
+	 *
+	 * \param result	Result of the SDO transfer query.
+	 */
+	void SignalSdoTransferFinished(const SdoTransferResult result);
 
 };
 

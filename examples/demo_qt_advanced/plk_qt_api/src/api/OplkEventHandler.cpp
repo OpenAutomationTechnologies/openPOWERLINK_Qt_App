@@ -110,6 +110,38 @@ void OplkEventHandler::TriggerNodeStateChanged(const int nodeId,
 	emit SignalNodeStateChanged(nodeId, nmtState);
 }
 
+void OplkEventHandler::TriggerSdoTransferFinished(const tSdoComFinished& result,
+							const ReceiverContext* receiverContext)
+{
+	SdoTransferResult sdoTransferResult = SdoTransferResult(result.nodeId,
+											result.targetIndex,
+											result.targetSubIndex,
+											result.transferredBytes,
+											result.sdoAccessType,
+											result.sdoComConState,
+											result.abortCode);
+//    result.pUserArg
+	emit SignalSdoTransferFinished(sdoTransferResult);
+	qDebug("Signal emitted Abort code: %x", result.abortCode);
+
+	oplk_freeSdoChannel(result.sdoComConHdl);
+	qDebug("freed SdoChannel");
+
+	bool conSuccessful = false;
+
+	conSuccessful = QObject::disconnect(&OplkEventHandler::GetInstance(),
+						QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
+						receiverContext->GetReceiver(),
+						*(receiverContext->GetReceiverFunction()));
+	qDebug("disconnected %d", conSuccessful);
+
+	delete receiverContext;
+
+	/*
+	 * TODO(RaM): Delete the handle if success
+	 * */
+}
+
 void OplkEventHandler::TriggerPrintLog(QString logStr)
 {
 	QString str;
@@ -416,13 +448,26 @@ tEplKernel OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
 			//Segmented transfer - (eg. CFM and segmented transfer)
 			break;
 		case kEplSdoComTransferTxAborted:
+		{
+			TriggerSdoTransferFinished(*sdoEvent, (const ReceiverContext*)sdoEvent->pUserArg);
 			break;
+		}
 		case kEplSdoComTransferRxAborted:
+		{
+			TriggerSdoTransferFinished(*sdoEvent, (const ReceiverContext*)sdoEvent->pUserArg);
 			break;
+		}
 		case kEplSdoComTransferFinished:
+		{
+			//SDO Read/Write success
+			TriggerSdoTransferFinished(*sdoEvent, (const ReceiverContext*)sdoEvent->pUserArg);
 			break;
+		}
 		case kEplSdoComTransferLowerLayerAbort:
+		{
+			TriggerSdoTransferFinished(*sdoEvent, (const ReceiverContext*)sdoEvent->pUserArg);
 			break;
+		}
 		default:
 			break;
 	}

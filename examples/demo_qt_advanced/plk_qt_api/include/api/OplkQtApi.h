@@ -19,6 +19,9 @@
 #include "nmt.h"
 
 #include "api/OplkEventHandler.h"
+#include "user/SdoTransferResult.h"
+#include "user/SdoTransferJob.h"
+#include "api/ReceiverContext.h"
 #include "common/QtApiGlobal.h"
 
 /**
@@ -59,6 +62,20 @@ public:
 	 * \return tEplKernel
 	 */
 	static tEplKernel ExecuteNmtCommand(const UINT nodeId, tNmtCommand nmtCommand);
+
+	/**
+	 * \brief	Handles SDO transfer.
+	 *
+	 * \param[in] sdoTransferJob	SDO transfer input parameters.
+	 * \param[in] receiver			Receiver object.
+	 * \param[in] receiverFunction	Receiver function.
+	 * \return tEplKernel
+	 */
+	static tEplKernel TransferObject(
+		const SdoTransferJob& sdoTransferJob,
+		const QObject& receiver,
+		const QMetaMethod& receiverFunction);
+
 	// TODO(RaM): Link to required signal in doxygen comments
 	/**
 	 * \brief
