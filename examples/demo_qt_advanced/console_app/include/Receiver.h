@@ -10,6 +10,7 @@
 
 #include <QObject>
 #include <Epl.h>
+#include "user/SdoTransferResult.h"
 
 /**
  * \brief Class to receive the singals from the openPOWERLINK STACK
@@ -40,6 +41,13 @@ public:
 	 * \param[in] logStr	Detailed log message.
 	 */
 	Q_INVOKABLE void HandleLogEvent(const QString& logStr);
+
+	/**
+	 * \brief	Handles the SDO transfer events.
+	 *
+	 * \param[in] result	Result of the SDO transfer.
+	 */
+	Q_INVOKABLE void HandleSdoTransferFinished(const SdoTransferResult result);
 };
 
 #endif // _RECEIVER_H_

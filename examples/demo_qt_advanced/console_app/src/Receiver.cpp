@@ -21,3 +21,14 @@ void Receiver::HandleLogEvent(const QString& logStr)
 {
 	qDebug("Receiver %#x: %s", this, logStr.toStdString().c_str());
 }
+
+void Receiver::HandleSdoTransferFinished(const SdoTransferResult result)
+{
+	qDebug("Receiver %#x: SdoTransferFinished Abort: %x, NodeId: %x, Index: %x, SubIndex:%x state:%x",
+		   this, result.GetAbortCode(), result.GetNodeId(),
+		   result.GetIndex(), result.GetSubIndex(), result.GetSdoComConState());
+	if (0 != result.GetAbortCode())
+	{
+	
+	}
+}
