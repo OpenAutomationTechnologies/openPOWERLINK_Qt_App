@@ -13,6 +13,7 @@
 #include "api/OplkQtApi.h"
 
 #include "../include/Receiver.h"
+#include "../include/ConsoleReader.h"
 
 #ifdef CONFIG_USE_PCAP
 tEplKernel selectPcapDevice(char *pDevName_p);
@@ -64,7 +65,16 @@ int main(int argc, char *argv[])
 		qDebug("StartStack retCode %x", ret);
 	}
 
+	qDebug("------------------------------------------------------\n");
+	qDebug("-----------------Choose any options:------------------\n");
+	qDebug("\t r to execute SDO read\n");
+	qDebug("\t w to execute SDO Write\n");
+	qDebug("------------------------------------------------------\n");
+	ConsoleReader *consoleReaderObj = new ConsoleReader();
+	consoleReaderObj->start();
+
 	application.exec();
+	delete consoleReaderObj;
 	return 0;
 }
 
