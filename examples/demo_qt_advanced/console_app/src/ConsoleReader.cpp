@@ -43,6 +43,16 @@ void ConsoleReader::run()
 			cKey = (BYTE)console_getch();
 			switch (cKey)
 			{
+				case 'N': //NMT Command
+				case 'n':
+				{
+					oplkRet =  OplkQtApi::ExecuteNmtCommand(1, kNmtCmdResetNode); //tNmtCommand
+					if (oplkRet != kEplSuccessful)
+					{
+					//	fExit = TRUE;
+					}
+					break;
+				}
 				case 'R':
 				case 'r':
 				{

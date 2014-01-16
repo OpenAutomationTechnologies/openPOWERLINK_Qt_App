@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 
 	qDebug("------------------------------------------------------\n");
 	qDebug("-----------------Choose any options:------------------\n");
+	qDebug("\t n to execute NMT command\n");
 	qDebug("\t r to execute SDO read\n");
 	qDebug("\t w to execute SDO Write\n");
 	qDebug("------------------------------------------------------\n");
