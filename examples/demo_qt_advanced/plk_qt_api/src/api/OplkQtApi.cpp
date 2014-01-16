@@ -195,3 +195,10 @@ bool OplkQtApi::UnregisterEventLogger(const QObject& receiver, const QMetaMethod
 		receiverFunction
 	);
 }
+
+tEplKernel OplkQtApi::ExecuteNmtCommand(const UINT nodeId,
+			tNmtCommand nmtCommand)
+{
+	return oplk_execRemoteNmtCommand(nodeId, nmtCommand);
+
+}
