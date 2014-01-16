@@ -51,6 +51,14 @@ public:
 	 */
 	static tEplKernel StopStack();
 
+	/**
+	 * \brief	Sends the NMT command to the specified node.
+	 *
+	 * \param[in] nodeId		Node id to send the NMT command.
+	 * \param[in] nmtCommand	The command to be sent.
+	 * \return tEplKernel
+	 */
+	static tEplKernel ExecuteNmtCommand(const UINT nodeId, tNmtCommand nmtCommand);
 	// TODO(RaM): Link to required signal in doxygen comments
 	/**
 	 * \brief
