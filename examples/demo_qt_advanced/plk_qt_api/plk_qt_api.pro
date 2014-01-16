@@ -18,10 +18,16 @@ INCLUDEPATH += include \
 
 HEADERS += include/api/OplkEventHandler.h \
 			include/api/OplkQtApi.h \
-			include/common/QtApiGlobal.h
+			include/common/QtApiGlobal.h \
+			include/api/ReceiverContext.h \
+			include/user/SdoTransferJob.h \
+			include/user/SdoTransferResult.h
 
 SOURCES += src/api/OplkEventHandler.cpp \
-			src/api/OplkQtApi.cpp
+			src/api/OplkQtApi.cpp \
+			src/api/ReceiverContext.cpp \
+			src/user/SdoTransferJob.cpp \
+			src/user/SdoTransferResult.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../build/stack/make/lib/libpowerlink/Release/ -lpowerlink
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../build/stack/make/lib/libpowerlink/Debug/ -lpowerlink
