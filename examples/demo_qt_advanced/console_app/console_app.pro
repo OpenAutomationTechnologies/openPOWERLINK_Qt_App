@@ -8,6 +8,8 @@ CONFIG   += console
 CONFIG   -= app_bundle
 TEMPLATE = app
 
+DEFINES += CONFIG_USE_PCAP
+
 INCLUDEPATH +=  ../plk_qt_api/include \
 			$$PWD/../../../stack/make/lib/libpowerlink \
 			$$PWD/../../../include \
@@ -32,6 +34,7 @@ DEPENDPATH += $$PWD/../build-plk_qt_api-Qt520_vs2010-Debug/debug \
 
 HEADERS += \
 	include/Receiver.h
+
 SOURCES += \
 	src/main.cpp \
 	src/Receiver.cpp
