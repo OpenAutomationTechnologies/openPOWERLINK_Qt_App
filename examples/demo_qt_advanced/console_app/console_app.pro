@@ -33,8 +33,11 @@ DEPENDPATH += $$PWD/../build-plk_qt_api-Qt520_vs2010-Debug/debug \
 				$$PWD/../../../libs/pcap/windows/WpdPack/Lib
 
 HEADERS += \
-	include/Receiver.h
+	include/Receiver.h \
+	include/ConsoleReader.h
 
 SOURCES += \
 	src/main.cpp \
-	src/Receiver.cpp
+	src/Receiver.cpp \
+	src/ConsoleReader.cpp \
+	$$PWD/../../../libs/console/console-windows.c
