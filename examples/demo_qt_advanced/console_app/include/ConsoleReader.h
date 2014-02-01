@@ -35,6 +35,9 @@ private:
 	SdoTransferJob *sdoReadTransferJob;
 	SdoTransferJob *sdoWriteTransferJob;
 	Receiver receiver;
+
+	unsigned int nodeId;
+	std::string devName;
 };
 
 #endif // _CONSOLEREADER_H_

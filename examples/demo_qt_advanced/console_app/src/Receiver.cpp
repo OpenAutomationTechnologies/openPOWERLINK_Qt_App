@@ -27,7 +27,7 @@ void Receiver::HandleSdoTransferFinished(const SdoTransferResult result)
 	qDebug("Receiver %#x: SdoTransferFinished Abort: %x, NodeId: %x, Index: %x, SubIndex:%x state:%x",
 		   this, result.GetAbortCode(), result.GetNodeId(),
 		   result.GetIndex(), result.GetSubIndex(), result.GetSdoComConState());
-	if (0 != result.GetAbortCode())
+	if (result.GetAbortCode() != 0)
 	{
 	
 	}
