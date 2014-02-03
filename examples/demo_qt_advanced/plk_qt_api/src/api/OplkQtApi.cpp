@@ -117,13 +117,25 @@ Exit:
 tEplKernel OplkQtApi::StartStack()
 {
 	tEplKernel oplkRet = kEplSuccessful;
-	// start process thread
-	qDebug("Starting process thread");
+
+	oplkRet = oplk_setupProcessImage();
+	if (oplkRet != kEplSuccessful)
+	{
+		qDebug("SetupProcessImage retCode %x", oplkRet);
+		goto Exit;
+	}
+
+	// Starting process thread
 	OplkEventHandler::GetInstance().start();
 
-	// Start the OPLK stack by sending NMT reset
+	// Start the OPLK stack by sending NMT s/w reset
 	oplkRet = oplk_execNmtCommand(kNmtEventSwReset);
-	qDebug("kNmtEventSwReset Ret: %d", oplkRet);
+	if (oplkRet != kEplSuccessful)
+	{
+		qDebug("kNmtEventSwReset Ret: %d", oplkRet);
+	}
+
+Exit:
 	return oplkRet;
 }
 
@@ -132,9 +144,24 @@ tEplKernel OplkQtApi::StopStack()
 	tEplKernel oplkRet = kEplSuccessful;
 
 	oplkRet = oplk_execNmtCommand(kNmtEventSwitchOff);
+	if (oplkRet != kEplSuccessful)
+	{
+		qDebug("kNmtEventSwitchOff Ret: %d", oplkRet);
+	}
+
 	OplkEventHandler::GetInstance().AwaitNmtGsOff();
 	// OplkEventHandler::GetInstance().terminate();
+	oplkRet = oplk_freeProcessImage();
+	if (oplkRet != kEplSuccessful)
+	{
+		qDebug("freeProcessImage Ret: %d", oplkRet);
+	}
+
 	oplkRet = oplk_shutdown();
+	if (oplkRet != kEplSuccessful)
+	{
+		qDebug("shutdown Ret: %d", oplkRet);
+	}
 	return oplkRet;
 }
 
@@ -312,5 +339,22 @@ tEplKernel OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 		);
 		qDebug("Read Err :Disconnected %d", conSuccess);
 	}
+	return oplkRet;
+}
+
+tEplKernel OplkQtApi::SetupProcessImage(ProcessImageIn& in,
+						ProcessImageOut& out)
+{
+	tEplKernel oplkRet = kEplSuccessful;
+	oplkRet = oplk_allocProcessImage(in.GetSize(), out.GetSize());
+	if (oplkRet != kEplSuccessful)
+	{
+		qDebug("allocProcessImage retCode %x", oplkRet);
+		return oplkRet;
+	}
+
+	in.SetProcessImageDataPtr((unsigned char*)oplk_getProcessImageIn());
+	out.SetProcessImageDataPtr((unsigned char*)oplk_getProcessImageOut());
+
 	return oplkRet;
 }
