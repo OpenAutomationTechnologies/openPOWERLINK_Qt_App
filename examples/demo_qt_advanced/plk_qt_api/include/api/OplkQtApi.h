@@ -54,6 +54,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "api/ReceiverContext.h"
 #include "common/QtApiGlobal.h"
 
+#include "user/processimage/ProcessImageIn.h"
+#include "user/processimage/ProcessImageOut.h"
+
 /**
  * \brief API to the openPOWERLINK-Stack
  */
@@ -105,6 +108,14 @@ public:
 		const SdoTransferJob& sdoTransferJob,
 		const QObject& receiver,
 		const QMetaMethod& receiverFunction);
+	/**
+	 * \brief   Allocates the memory for the ProcessImage and sets the
+	 *          data pointer to the memory
+	 * \param[in,out] in   The instance of the ProcessImageIn
+	 * \param[in,out] out  The instance of the ProcessImageOut
+	 * \return tEplKernel
+	 */
+	static tEplKernel SetupProcessImage(ProcessImageIn& in, ProcessImageOut& out);
 
 	// TODO(RaM): Link to required signal in doxygen comments
 	/**
