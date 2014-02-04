@@ -14,12 +14,10 @@
 #include <QObject>
 #include <QMetaMethod>
 
-#include "common/QtApiGlobal.h"
-
 /**
  * \brief The context for the receiver implementation
  */
-class PLKQTAPI_EXPORT ReceiverContext
+class ReceiverContext
 {
 public:
 	/**

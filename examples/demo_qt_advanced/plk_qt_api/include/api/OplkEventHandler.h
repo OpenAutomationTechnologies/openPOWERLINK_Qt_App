@@ -20,14 +20,13 @@
 
 #include "api/ReceiverContext.h"
 #include "user/SdoTransferResult.h"
-#include "common/QtApiGlobal.h"
 
 /**
  * \brief Thread used to receive openPOWERLINK-Stack events.
  *
  *        This class is intended to _only_ be used by OplkQtApi, clients can use OplkQtApi::RegisterEventHandler().
  */
-class PLKQTAPI_EXPORT OplkEventHandler : public QThread
+class OplkEventHandler : public QThread
 {
 	Q_OBJECT
 
