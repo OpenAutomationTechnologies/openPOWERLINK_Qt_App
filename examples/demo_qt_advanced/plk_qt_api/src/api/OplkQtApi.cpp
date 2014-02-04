@@ -74,7 +74,7 @@ tEplKernel OplkQtApi::InitStack(const UINT nodeId, const std::string& networkInt
 
 	qDebug("init stack");
 	oplkRet = oplk_init(&initParam);
-	if(oplkRet != kEplSuccessful)
+	if (oplkRet != kEplSuccessful)
 	{
 		qDebug("Ret: %d",oplkRet);
 		goto Exit;
@@ -82,7 +82,7 @@ tEplKernel OplkQtApi::InitStack(const UINT nodeId, const std::string& networkInt
 	//TODO: Replace file pointer by CDC Buffer.
 	qDebug("set cdc buffer");
 	oplkRet = oplk_setCdcFilename(cdcFilename);
-	if(oplkRet != kEplSuccessful)
+	if (oplkRet != kEplSuccessful)
 	{
 		qDebug("Ret: %d",oplkRet);
 		goto Exit;
