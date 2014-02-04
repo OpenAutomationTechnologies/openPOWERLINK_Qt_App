@@ -18,6 +18,7 @@ INCLUDEPATH += include \
 
 HEADERS += include/api/OplkEventHandler.h \
 			include/api/OplkQtApi.h \
+			include/common/Utility.h \
 			include/common/QtApiGlobal.h \
 			include/api/ReceiverContext.h \
 			include/user/SdoTransferJob.h \
@@ -27,7 +28,10 @@ HEADERS += include/api/OplkEventHandler.h \
 			include/user/processimage/Channel.h \
 			include/user/processimage/ProcessImage.h \
 			include/user/processimage/ProcessImageIn.h \
-			include/user/processimage/ProcessImageOut.h
+			include/user/processimage/ProcessImageOut.h \
+			include/user/processimage/ProcessImageParser.h \
+			include/user/processimage/ProcessImageParserType.h \
+			include/user/processimage/QtProcessImageParser.h
 
 SOURCES += src/api/OplkEventHandler.cpp \
 			src/api/OplkQtApi.cpp \
@@ -37,7 +41,9 @@ SOURCES += src/api/OplkEventHandler.cpp \
 			src/user/processimage/Channel.cpp \
 			src/user/processimage/ProcessImage.cpp \
 			src/user/processimage/ProcessImageIn.cpp \
-			src/user/processimage/ProcessImageOut.cpp
+			src/user/processimage/ProcessImageOut.cpp \
+			src/user/processimage/ProcessImageParser.cpp \
+			src/user/processimage/QtProcessImageParser.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../build/stack/make/lib/libpowerlink/Release/ -lpowerlink
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../build/stack/make/lib/libpowerlink/Debug/ -lpowerlink
