@@ -108,6 +108,7 @@ public:
 		const SdoTransferJob& sdoTransferJob,
 		const QObject& receiver,
 		const QMetaMethod& receiverFunction);
+
 	/**
 	 * \brief   Allocates the memory for the ProcessImage and sets the
 	 *          data pointer to the memory
@@ -117,11 +118,11 @@ public:
 	 */
 	static tEplKernel SetupProcessImage(ProcessImageIn& in, ProcessImageOut& out);
 
-	// TODO(RaM): Link to required signal in doxygen comments
 	/**
 	 * \brief   Registers an event-handler for NodeEvents openPOWERLINK-Stack.
-	 *          Note: The user has to register with a handler with similar arguments to receive the signal.
-	 *                OplkEventHandler::SignalNodeFound(const int nodeId)
+	 *
+	 *          Note: The receiverFunction should have the same signature as
+	 *                OplkEventHandler::SignalNodeFound(const int)
 	 * \param[in] receiver          Object to handle the event.
 	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
@@ -131,19 +132,20 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief
-	 *
-	 * \param[in] receiver          Object to handle the event.
-	 * \param[in] receiverFunction  Object-Function to handle the event.
-	 * \retval true   De-registration successful.
-	 *         false  De-registration not successful.
+	 * \brief  Un registers an event-handler that is registered for NodeEvents of openPOWERLINK-Stack.
+	 * \param[in] receiver          Object that handles the event.
+	 * \param[in] receiverFunction  Object-Function that handles the event.
+	 * \retval true   Un-registration successful.
+	 *         false  Un-registration not successful.
 	 */
 	static bool UnregisterNodeFoundEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief
+	 * \brief   Registers an event-handler for state changes of the remote node.
 	 *
+	 *          Note: The receiverFunction should have the same signature as
+	 *                OplkEventHandler::SignalNodeStateChanged(const int, tNmtState)
 	 * \param[in] receiver          Object to handle the event.
 	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
@@ -153,21 +155,22 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief
-	 *
-	 * \param[in] receiver          Object to handle the event.
-	 * \param[in] receiverFunction  Object-Function to handle the event.
-	 * \retval true   De-registration successful.
-	 *         false  De-registration not successful.
+	 * \brief  Un registers an event-handler that is registered for state changes of the remote node.
+	 * \param[in] receiver          Object that handles the event.
+	 * \param[in] receiverFunction  Object-Function that handles the event.
+	 * \retval true   Un-registration successful.
+	 *         false  Un-registration not successful.
 	 */
 	static bool UnregisterNodeStateChangedEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief
+	 * \brief   Registers an event-handler for state changes of the local node.
 	 *
+	 *          Note: The receiverFunction should have the same signature as
+	 *                OplkEventHandler::SignalLocalNodeStateChanged(tNmtState)
 	 * \param[in] receiver          Object to handle the event.
-	 * \param[in] receiverFunction	Object-Function to handle the event.
+	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
 	 *         false  Registration not successful.
 	 */
@@ -176,20 +179,21 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief
-	 *
-	 * \param[in] receiver          Object to handle the event.
-	 * \param[in] receiverFunction  Object-Function to handle the event.
-	 * \retval true   De-registration successful.
-	 *         false  De-registration not successful.
+	 * \brief  Un registers an event-handler that is registered for state changes of the local node.
+	 * \param[in] receiver          Object that handles the event.
+	 * \param[in] receiverFunction  Object-Function that handles the event.
+	 * \retval true   Un-registration successful.
+	 *         false  Un-registration not successful.
 	 */
 	static bool UnregisterLocalNodeStateChangedEventHandler(
 					const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief
+	 * \brief   Registers an event-handler for EventLoggers.
 	 *
+	 *          Note: The receiverFunction should have the same signature as
+	 *                OplkEventHandler::SignalPrintLog(const QString&);
 	 * \param[in] receiver          Object to handle the event.
 	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
@@ -199,12 +203,11 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief
-	 *
-	 * \param[in] receiver          Object to handle the event.
-	 * \param[in] receiverFunction  Object-Function to handle the event.
-	 * \retval true   De-registration successful.
-	 *         false  De-registration not successful.
+	 * \brief  Un registers an event-handler that is registered for EventLoggers.
+	 * \param[in] receiver          Object that handles the event.
+	 * \param[in] receiverFunction  Object-Function that handles the event.
+	 * \retval true   Un-registration successful.
+	 *         false  Un-registration not successful.
 	 */
 	static bool UnregisterEventLogger(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
