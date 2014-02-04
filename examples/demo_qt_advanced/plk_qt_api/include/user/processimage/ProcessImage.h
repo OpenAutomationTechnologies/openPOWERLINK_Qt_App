@@ -123,6 +123,7 @@ public:
 	/**
 	 * \param name           The Channel name.
 	 * \return const Channel The Channel with the given name.
+	 * \throws std::out_of_range if name not found
 	 */
 	const Channel GetChannel(const std::string& name) const;
 
@@ -133,16 +134,6 @@ public:
 	 * \return const std::vector<Channel> The list of Channel.
 	 */
 	const std::vector<Channel> GetChannelsByOffset(const unsigned int byteOffset) const;
-
-	/**
-	 * \brief Returns the data size in bits for the given byte offset and bitoffset.
-	 *
-	 * \param byteOffset The byte offset value.
-	 * \param bitOffset  The bit offset value.
-	 * \return const unsigned int  Data size in bits.
-	 */
-	const unsigned int GetChannelsBitSize(const unsigned int byteOffset,
-							const unsigned int bitOffset) const;
 
 	/**
 	 * \brief Returns the list of Channel which belong to the given nodeId.

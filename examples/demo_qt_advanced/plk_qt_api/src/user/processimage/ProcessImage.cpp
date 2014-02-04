@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "user/processimage/ProcessImage.h"
 
-ProcessImage::ProcessImage():
+ProcessImage::ProcessImage() :
 				byteSize(0),
 				data(NULL)
 {
@@ -120,20 +120,6 @@ const std::vector<Channel> ProcessImage::GetChannelsByOffset(const unsigned int 
 	}
 
 	return channelCollection;
-}
-
-const unsigned int ProcessImage::GetChannelsBitSize(const unsigned int byteOffset, const unsigned int bitOffset) const
-{
-	for (std::map<std::string, Channel>::const_iterator cIt = channels.begin();
-		 cIt != channels.end(); ++cIt)
-	{
-		if ((byteOffset == cIt->second.GetByteOffset())
-			&& (bitOffset == cIt->second.GetBitOffset()))
-		{
-			return cIt->second.GetBitSize();
-		}
-	}
-	return 0;
 }
 
 const std::vector<Channel> ProcessImage::GetChannelsByNodeId(const unsigned int nodeId) const
