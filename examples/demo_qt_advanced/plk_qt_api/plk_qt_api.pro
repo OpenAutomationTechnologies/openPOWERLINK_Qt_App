@@ -21,13 +21,17 @@ HEADERS += include/api/OplkEventHandler.h \
 			include/common/QtApiGlobal.h \
 			include/api/ReceiverContext.h \
 			include/user/SdoTransferJob.h \
-			include/user/SdoTransferResult.h
+			include/user/SdoTransferResult.h \
+			include/user/processimage/Direction.h \
+			include/user/processimage/IECDataType.h \
+			include/user/processimage/Channel.h
 
 SOURCES += src/api/OplkEventHandler.cpp \
 			src/api/OplkQtApi.cpp \
 			src/api/ReceiverContext.cpp \
 			src/user/SdoTransferJob.cpp \
-			src/user/SdoTransferResult.cpp
+			src/user/SdoTransferResult.cpp \
+			src/user/processimage/Channel.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../build/stack/make/lib/libpowerlink/Release/ -lpowerlink
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../build/stack/make/lib/libpowerlink/Debug/ -lpowerlink
