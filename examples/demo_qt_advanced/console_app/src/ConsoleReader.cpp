@@ -21,6 +21,7 @@ ConsoleReader::ConsoleReader()
 {
 	nodeId = 240;
 	devName.reserve(128);
+	xapFileName = "xap.xml";
 	sdoReadData = new DWORD();
 	sdoWriteData = new DWORD();
 	*sdoWriteData = 50000;
@@ -30,6 +31,9 @@ ConsoleReader::ConsoleReader()
 
 	sdoWriteTransferJob = new SdoTransferJob(240, 0x1006, 0x00, (void*) sdoWriteData,
 		sizeof(UINT32), kSdoTypeAsnd, kSdoAccessTypeWrite);
+
+	inputChannelName = "CN1.M02.X20DO9322.DigitalOutput01";
+	outputChannelName = "CN1.M01.X20DI9371.DigitalInput02";
 }
 
 DWORD ConsoleReader::GetSdoReadData()
@@ -48,6 +52,18 @@ void ConsoleReader::run()
 	char	cKey = 0;
 	BOOL	fExit = FALSE;
 
+	ProcessImageParser *pi =  ProcessImageParser::NewInstance(QT_XML_PARSER);
+
+	std::ifstream ifsXap(xapFileName);
+	std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
+	pi->Parse(xapData.c_str());
+
+	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(pi->GetProcessImage(PI_IN));
+	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(pi->GetProcessImage(PI_OUT));
+
+	qDebug("Size-in: %d", piIn.GetSize());
+	qDebug("Size-out: %d", piOut.GetSize());
+
 
 #ifdef CONFIG_USE_PCAP
 	oplkRet = selectPcapDevice(&devName[0]);
@@ -65,6 +81,12 @@ void ConsoleReader::run()
 		qDebug("InitStack retCode %x", oplkRet);
 	}
 
+	oplkRet = OplkQtApi::SetupProcessImage(piIn, piOut);
+	if (oplkRet != kEplSuccessful)
+	{
+		qDebug("SetupProcessImage retCode %x", oplkRet);
+	}
+
 	oplkRet = OplkQtApi::StartStack();
 	if (oplkRet != kEplSuccessful)
 	{
@@ -73,6 +95,8 @@ void ConsoleReader::run()
 	}
 
 	bool stackStated = true;
+	unsigned char *piInDataPtr;
+	unsigned char *piOutDataPtr;
 	while (!fExit)
 	{
 		if (console_kbhit())
@@ -111,6 +135,116 @@ void ConsoleReader::run()
 					qDebug("Ret sdo %x", oplkRet);
 					break;
 				}
+				case 't':
+				case 'T':
+				{
+					oplkRet = oplk_exchangeProcessImageOut();
+					if (oplkRet != kEplSuccessful)
+					{
+						qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
+					}
+					std::cout<< "\n ProcessImageIn - PReq:  ";
+					piInDataPtr = (unsigned char*) oplk_getProcessImageIn();
+					for (unsigned int piloop = 0; piloop < piIn.GetSize(); piloop++)
+					{
+						if (piInDataPtr != NULL)
+						{
+							std::cout<< std::hex << (int)(*piInDataPtr);
+						}
+						piInDataPtr++;
+					}
+					std::cout<< "\n ProcessImageOut - PRes:  ";
+					piOutDataPtr = (unsigned char*) oplk_getProcessImageOut();
+					for (unsigned int piloop = 0; piloop < piOut.GetSize(); piloop++)
+					{
+						if (piOutDataPtr != NULL)
+						{
+							std::cout<< std::hex << (int)(*piOutDataPtr);
+						}
+						piOutDataPtr++;
+					}
+
+					oplkRet = oplk_exchangeProcessImageIn();
+					if (oplkRet != kEplSuccessful)
+					{
+						qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
+					}
+					break;
+				}
+				case 'i':
+				case 'I':
+				{
+					try
+					{
+						const unsigned char value = 0xFF;
+						oplkRet = oplk_exchangeProcessImageOut();
+						if (oplkRet != kEplSuccessful)
+						{
+							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
+						}
+						std::vector<unsigned char> val;
+						const Channel channelObj = piIn.GetChannel(inputChannelName);
+						val.reserve(channelObj.GetBitSize());
+						val.push_back(value);
+
+						//piIn.SetRawValue(inputChannelName, val);
+						piIn.SetRawData(val,0,0);
+
+						std::cout<< "\n ProcessImageIn - PReq:  ";
+						piInDataPtr = (unsigned char*) oplk_getProcessImageIn();
+						for (unsigned int i = 0; i < piIn.GetSize(); i++)
+						{
+							if (piInDataPtr != NULL)
+							{
+								std::cout<< std::hex << (int)(*piInDataPtr);
+							}
+							piInDataPtr++;
+						}
+						oplkRet = oplk_exchangeProcessImageIn();
+						if (oplkRet != kEplSuccessful)
+						{
+							qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
+						}
+					}
+					catch(std::out_of_range& ex)
+					{
+						std::cout << "An Exception has occured: " << ex.what();
+					}
+
+					break;
+				}
+				case 'o':
+				case 'O':
+				{
+					try
+					{
+						oplkRet = oplk_exchangeProcessImageOut();
+						if (oplkRet != kEplSuccessful)
+						{
+							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
+						}
+						//std::vector<unsigned char> outVal = piOut.GetRawValue(outputChannelName);
+						std::vector<unsigned char> outVal = piOut.GetRawData(16,2,0);
+						std::cout<< "\nPI-Out Val: ";
+						for (std::vector<unsigned char>::const_iterator it = outVal.begin();
+								it != outVal.end(); it++)
+						{
+							//unsigned char ch = *it;
+							std::cout << std::hex << (int)(*it);
+						}
+						std::cout << std::endl;
+						oplkRet = oplk_exchangeProcessImageIn();
+						if (oplkRet != kEplSuccessful)
+						{
+							qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
+						}
+					}
+					catch(std::out_of_range& ex)
+					{
+						std::cout << "An Exception has occured: " << ex.what();
+					}
+					break;
+				}
 				case 's':
 				case 'S':
 				{
@@ -129,6 +263,11 @@ void ConsoleReader::run()
 						if (oplkRet != kEplSuccessful)
 						{
 							qDebug("InitStack retCode %x", oplkRet);
+						}
+						oplkRet = OplkQtApi::SetupProcessImage(piIn, piOut);
+						if (oplkRet != kEplSuccessful)
+						{
+							qDebug("SetupProcessImage retCode %x", oplkRet);
 						}
 						oplkRet = OplkQtApi::StartStack();
 						if (oplkRet != kEplSuccessful)

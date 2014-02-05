@@ -43,6 +43,9 @@ int main(int argc, char *argv[])
 	qDebug("\t N to execute NMT command\n");
 	qDebug("\t R to execute SDO read\n");
 	qDebug("\t W to execute SDO Write\n");
+	qDebug("\t T to Display PDO data for all nodes\n");
+	qDebug("\t I to Exchange Input ProcessImage\n");
+	qDebug("\t O to Exchange Output ProcessImage\n");
 	qDebug("------------------------------------------------------\n");
 	ConsoleReader *consoleReaderObj = new ConsoleReader();
 	consoleReaderObj->start();
