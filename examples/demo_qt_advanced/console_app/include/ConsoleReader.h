@@ -15,6 +15,7 @@
 
 #include "console/console.h"
 #include "api/OplkQtApi.h"
+#include "user/processimage/ProcessImageParser.h"
 
 #include "../include/Receiver.h"
 
@@ -36,8 +37,12 @@ private:
 	SdoTransferJob *sdoWriteTransferJob;
 	Receiver receiver;
 
+	std::string inputChannelName;
+	std::string outputChannelName;
 	unsigned int nodeId;
 	std::string devName;
+
+	std::string xapFileName;
 };
 
 #endif // _CONSOLEREADER_H_
