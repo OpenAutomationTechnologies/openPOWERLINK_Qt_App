@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = Examples
+PROJECT_NAME           = openPOWERLINK ADVANCED QT DEMO
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -749,7 +749,7 @@ WARN_LOGFILE           = log.txt
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../../../examples/demo_qt_advanced \
+INPUT                  = ../../../apps/demo_qt_advanced \
                          doc.txt
 
 # This tag can be used to specify the character encoding of the source files
