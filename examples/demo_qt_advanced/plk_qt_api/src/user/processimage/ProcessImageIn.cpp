@@ -64,14 +64,42 @@ void ProcessImageIn::SetRawValue(const std::string& channelName,
 						std::vector<unsigned char>& value)
 {
 	Channel channelObj = this->GetChannel(channelName);
-	if (channelObj.GetBitSize() == value.size())
+	unsigned char* piDataPtr = this->GetProcessImageDataPtr();
+	if (piDataPtr)
 	{
-		this->SetRawData(value, channelObj.GetByteOffset(),
-				channelObj.GetBitOffset());
+		const unsigned int bitSize = channelObj.GetBitSize();
+		piDataPtr += channelObj.GetByteOffset();
+		if ((bitSize % 8) == 0)
+		{
+			for (unsigned int i = 0; i < (bitSize/8); i++)
+			{
+				piDataPtr += i;
+				*piDataPtr = value[i];
+			}
+		}
+		else
+		{
+			if (bitSize < 8)
+			{
+				std::bitset<8> piData = *piDataPtr;
+				std::bitset<8> bitValue = value[0];
+				for (unsigned int i = 0; i < bitSize; i++)
+				{
+					piData.set((channelObj.GetBitOffset() + i), bitValue[i]);
+				}
+				unsigned long longVal = piData.to_ulong();
+				unsigned char piDataNew = static_cast<unsigned char>(longVal);
+				*piDataPtr = piDataNew;
+			}
+			else
+			{
+				//unhandled datatype
+			}
+		}
 	}
 	else
 	{
-		qDebug("vector size and channel size did'nt match");
+		//piDataPtr not set.
 	}
 }
 
@@ -80,47 +108,48 @@ void ProcessImageIn::SetRawData(const std::vector<unsigned char>& value,
 						const unsigned int bitOffset)
 {
 	unsigned char* piDataPtr = this->GetProcessImageDataPtr();
+
+	if((byteOffset + value.size()) > this->GetSize())
+	{
+		std::ostringstream msg;
+		msg << "The size of the value+offset:" << (value.size()+ byteOffset);
+		msg << " exceeds the size of the ProcessImage:" << this->GetSize();
+		throw std::out_of_range(msg.str());
+	}
+
 	if (piDataPtr)
 	{
-		const unsigned int bitSize = this->GetChannelsBitSize(byteOffset, bitOffset);
 		piDataPtr += byteOffset;
-		if ((bitSize % 8) == 0)
+		if ((bitOffset != 0) && (bitOffset < 8))
 		{
-			// Bitsize will be multiples of 8 except for BITSTRING.
-			for (unsigned int i = 0; i < (bitSize/8); i++)
+			std::bitset<8> piData = *piDataPtr;
+			std::bitset<8> bitValue = value[0];
+			for (unsigned int i = bitOffset; i < (8 - bitOffset); i++)
 			{
-				qDebug(" Start ::%d  ::%d", *piDataPtr, value[i]);
+				piData.set(i, bitValue[i]);
+			}
+			unsigned long longVal = piData.to_ulong();
+			unsigned char piDataNew = static_cast<unsigned char>(longVal);
+			*piDataPtr = piDataNew;
+
+			for (unsigned int i = 1; i < value.size(); i++)
+			{
+				piDataPtr += i;
+				*piDataPtr = value[i];
+			}
+		//	std::cout << std::hex << (int)piDataNew;
+		}
+		else if (bitOffset == 0)
+		{
+			for (unsigned int i = 0; i < value.size(); i++)
+			{
 				piDataPtr += i;
 				*piDataPtr = value[i];
 			}
 		}
 		else
 		{
-//			if (bitSize == 1)
-//			{
-//				std::bitset<8> piData = *piDataPtr;
-//				std::bitset<8> bitValue = value[0];
-//				piData.set(bitOffset, bitValue[0]);
-//				*piDataPtr = piData;
-//			}
-//			else
-			if (bitSize < 8)
-			{
-				std::bitset<8> piData = *piDataPtr;
-				std::bitset<8> bitValue = value[0];
-				for (unsigned int i = 0; i < bitSize; i++)
-				{
-					piData.set((bitOffset + i), bitValue[i]);
-				}
-				unsigned long longVal = piData.to_ulong();
-				unsigned char piDataNew = static_cast<unsigned char>(longVal);
-				*piDataPtr = piDataNew;
-				std::cout << std::hex << (int)piDataNew;
-			}
-			else
-			{
-				//unhandled datatype
-			}
+			// BitOffset is > 8
 		}
 	}
 	else
