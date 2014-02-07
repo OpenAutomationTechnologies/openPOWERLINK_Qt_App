@@ -35,9 +35,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _OPLK_EVENTHANDLER_H_
 #define _OPLK_EVENTHANDLER_H_
 
-#include <Epl.h>
-#include <nmt.h>
-#include <EplCfg.h>
+#include <oplk/oplk.h>
+#include <oplk/nmt.h>
+#include <oplkcfg.h>
 
 #include <QThread>
 #include <QMutex>
@@ -84,72 +84,72 @@ private:
 	 * \param[in] eventType  Type of event
 	 * \param[in] eventArg   Pointer to union which describes the event in detail
 	 * \param[in] userArg    User specific argument
-	 * \return tEplKernel    Returns a tEplKernel error code.
+	 * \return tOplkError    Returns a tOplkError error code.
 	 */
-	static tEplKernel AppCbEvent(tEplApiEventType eventType, tEplApiEventArg* eventArg, void GENERIC* userArg);
+	static tOplkError AppCbEvent(tEplApiEventType eventType, tEplApiEventArg* eventArg, void GENERIC* userArg);
 
 	/**
 	 * \brief   Process the openPOWERLINK Stack NMT state change events
 	 *
 	 * \param[in] nmtStateChange  Details of the NMT state changes
 	 * \param[in] userArg         User specific argument
-	 * \return tEplKernel         Returns a tEplKernel error code.
+	 * \return tOplkError         Returns a tOplkError error code.
 	 */
-	tEplKernel ProcessNmtStateChangeEvent(tEventNmtStateChange* nmtStateChange, void GENERIC* userArg);
+	tOplkError ProcessNmtStateChangeEvent(tEventNmtStateChange* nmtStateChange, void GENERIC* userArg);
 
 	/**
 	 * \brief   Process error and warning events
 	 *
 	 * \param[in] internalError  Details of the error and warning events.
 	 * \param[in] userArg        User specific argument.
-	 * \return tEplKernel        Returns a tEplKernel error code.
+	 * \return tOplkError        Returns a tOplkError error code.
 	 */
-	tEplKernel ProcessErrorWarningEvent(tEplEventError* internalError, void GENERIC* userArg);
+	tOplkError ProcessErrorWarningEvent(tEplEventError* internalError, void GENERIC* userArg);
 
 	/**
 	 * \brief   Process history events
 	 *
 	 * \param[in] historyEntry  Details of the history events
 	 * \param[in] userArg       User specific argument
-	 * \return tEplKernel       Returns a tEplKernel error code.
+	 * \return tOplkError       Returns a tOplkError error code.
 	 */
-	tEplKernel ProcessHistoryEvent(tEplErrHistoryEntry* historyEntry, void GENERIC* userArg);
+	tOplkError ProcessHistoryEvent(tErrHistoryEntry* historyEntry, void GENERIC* userArg);
 
 	/**
 	 * \brief   Process node events
 	 *
 	 * \param[in] nodeEvent  Details of the node events.
 	 * \param[in] userArg    User specific argument.
-	 * \return tEplKernel    Returns a tEplKernel error code.
+	 * \return tOplkError    Returns a tOplkError error code.
 	 */
-	tEplKernel ProcessNodeEvent(tEplApiEventNode* nodeEvent, void GENERIC* userArg);
+	tOplkError ProcessNodeEvent(tEplApiEventNode* nodeEvent, void GENERIC* userArg);
 
 	/**
 	 * \brief   Process SDO events
 	 *
 	 * \param[in] sdoEvent  Details of the SDO events.
 	 * \param[in] userArg   User specific argument
-	 * \return tEplKernel   Returns a tEplKernel error code.
+	 * \return tOplkError   Returns a tOplkError error code.
 	 */
-	tEplKernel ProcessSdoEvent(tSdoComFinished* sdoEvent, void GENERIC* userArg);
+	tOplkError ProcessSdoEvent(tSdoComFinished* sdoEvent, void GENERIC* userArg);
 
 	/**
 	 * \brief   Process CFM progress events
 	 *
 	 * \param[in] cfmProgress  Details of the CFM progress events.
 	 * \param[in] userArg      User specific argument.
-	 * \return tEplKernel      Returns a tEplKernel error code.
+	 * \return tOplkError      Returns a tOplkError error code.
 	 */
-	tEplKernel ProcessCfmProgressEvent(tCfmEventCnProgress* cfmProgress, void GENERIC* userArg);
+	tOplkError ProcessCfmProgressEvent(tCfmEventCnProgress* cfmProgress, void GENERIC* userArg);
 
 	/**
 	 * \brief   Process CFM result events
 	 *
 	 * \param[in] cfmResult  Result of the CFM event occurred.
 	 * \param[in] userArg    User specific argument.
-	 * \return tEplKernel    Returns a tEplKernel error code.
+	 * \return tOplkError    Returns a tOplkError error code.
 	 */
-	tEplKernel ProcessCfmResultEvent(tEplApiEventCfmResult* cfmResult, void GENERIC* userArg);
+	tOplkError ProcessCfmResultEvent(tEplApiEventCfmResult* cfmResult, void GENERIC* userArg);
 
 	/**
 	 * \brief   Triggers a signal `SignalNodeFound` when an ident response is received from a node.
@@ -191,7 +191,7 @@ private:
 	/**
 	 * \brief   Set Default node assignment when CFM manager is not available.
 	 */
-	tEplKernel SetDefaultNodeAssignment();
+	tOplkError SetDefaultNodeAssignment();
 
 	/**
 	 * \brief   Returns the instance of the class

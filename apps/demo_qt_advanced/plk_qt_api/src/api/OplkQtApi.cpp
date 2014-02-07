@@ -83,10 +83,10 @@ void OplkQtApi::SetInitParam()
 	}
 }
 
-tEplKernel OplkQtApi::InitStack(const UINT nodeId,
+tOplkError OplkQtApi::InitStack(const UINT nodeId,
 						const std::string& networkInterface)
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 
 	OplkQtApi::SetInitParam();
 
@@ -96,7 +96,7 @@ tEplKernel OplkQtApi::InitStack(const UINT nodeId,
 	initParam.m_HwParam.m_pszDevName = networkInterface.c_str();
 
 	oplkRet = oplk_init(&initParam);
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("Ret: %d",oplkRet);
 		goto Exit;
@@ -106,15 +106,15 @@ Exit:
 	 return oplkRet;
 }
 
-tEplKernel OplkQtApi::StartStack()
+tOplkError OplkQtApi::StartStack()
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 
 	if (cdcSet == false)
 	{
 		qDebug("Set default cdc file name");
 		oplkRet = oplk_setCdcFilename(defaultCDCFilename);
-		if (oplkRet != kEplSuccessful)
+		if (oplkRet != kErrorOk)
 		{
 			qDebug("setDefault Cdc File Ret: %d",oplkRet);
 			goto Exit;
@@ -122,7 +122,7 @@ tEplKernel OplkQtApi::StartStack()
 	}
 
 	oplkRet = oplk_setupProcessImage();
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("SetupProcessImage retCode %x", oplkRet);
 		goto Exit;
@@ -133,7 +133,7 @@ tEplKernel OplkQtApi::StartStack()
 
 	// Start the OPLK stack by sending NMT s/w reset
 	oplkRet = oplk_execNmtCommand(kNmtEventSwReset);
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("kNmtEventSwReset Ret: %d", oplkRet);
 	}
@@ -142,12 +142,12 @@ Exit:
 	return oplkRet;
 }
 
-tEplKernel OplkQtApi::StopStack()
+tOplkError OplkQtApi::StopStack()
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 
 	oplkRet = oplk_execNmtCommand(kNmtEventSwitchOff);
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("kNmtEventSwitchOff Ret: %d", oplkRet);
 	}
@@ -155,13 +155,13 @@ tEplKernel OplkQtApi::StopStack()
 	OplkEventHandler::GetInstance().AwaitNmtGsOff();
 	// OplkEventHandler::GetInstance().terminate();
 	oplkRet = oplk_freeProcessImage();
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("freeProcessImage Ret: %d", oplkRet);
 	}
 
 	oplkRet = oplk_shutdown();
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("shutdown Ret: %d", oplkRet);
 	}
@@ -258,14 +258,14 @@ bool OplkQtApi::UnregisterEventLogger(const QObject& receiver,
 	);
 }
 
-tEplKernel OplkQtApi::ExecuteNmtCommand(const UINT nodeId,
+tOplkError OplkQtApi::ExecuteNmtCommand(const UINT nodeId,
 						tNmtCommand nmtCommand)
 {
 	return oplk_execRemoteNmtCommand(nodeId, nmtCommand);
 
 }
 
-tEplKernel OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
+tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 						const QObject& receiver,
 						const QMetaMethod& receiverFunction)
 {
@@ -293,7 +293,7 @@ tEplKernel OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 		qDebug("Read: %d", conSuccess);
 	}
 
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 	switch (sdoTransferJob.GetSdoAccessType())
 	{
 		case kSdoAccessTypeRead:
@@ -326,7 +326,7 @@ tEplKernel OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 			break;
 	}
 
-	if ( (oplkRet == kEplApiTaskDeferred)
+	if ( (oplkRet == kErrorApiTaskDeferred)
 		|| ((sdoTransferJob.GetNodeId() == initParam.m_uiNodeId)
 		|| (sdoTransferJob.GetNodeId() == 0)) )
 	{
@@ -345,12 +345,12 @@ tEplKernel OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 	return oplkRet;
 }
 
-tEplKernel OplkQtApi::SetupProcessImage(ProcessImageIn& in,
+tOplkError OplkQtApi::SetupProcessImage(ProcessImageIn& in,
 						ProcessImageOut& out)
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 	oplkRet = oplk_allocProcessImage(in.GetSize(), out.GetSize());
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("allocProcessImage retCode %x", oplkRet);
 		return oplkRet;
@@ -364,21 +364,21 @@ tEplKernel OplkQtApi::SetupProcessImage(ProcessImageIn& in,
 
 void OplkQtApi::SetCdc(const BYTE* cdcBuffer, const UINT size)
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 	oplkRet = oplk_setCdcBuffer((BYTE*) cdcBuffer, size);
 	cdcSet = true;
 }
 
 void OplkQtApi::SetCdc(const char* cdcFileName)
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 	oplkRet = oplk_setCdcFilename((char*) cdcFileName);
 	cdcSet = true;
 }
 
 void OplkQtApi::SetCycleTime(const long cycleTime)
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 
 	oplkRet = oplk_writeLocalObject(0x1006, 0x00, (void*)&cycleTime, 4);
 
