@@ -45,8 +45,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QObject>
 #include <QMetaType>
 
-#include "Epl.h"
-#include "nmt.h"
+#include <oplk/oplk.h>
+#include <oplk/nmt.h>
 
 #include "api/OplkEventHandler.h"
 #include "user/SdoTransferResult.h"
@@ -71,30 +71,30 @@ public:
 	 *
 	 * \param[in] nodeId            nodeId to assign to the local stack-instance.
 	 * \param[in] networkInterface  network interface to run the openPOWERLINK-Stack on.
-	 * \return tEplKernel
+	 * \return tOplkError
 	 */
-	static tEplKernel InitStack(const UINT nodeId, const std::string& networkInterface);
+	static tOplkError InitStack(const UINT nodeId, const std::string& networkInterface);
 
 	/**
 	 * \brief   Start openPOWERLINK-Stack.
-	 * \return tEplKernel
+	 * \return tOplkError
 	 */
-	static tEplKernel StartStack();
+	static tOplkError StartStack();
 
 	/**
 	 * \brief   Stop openPOWERLINK-Stack.
-	 * \return tEplKernel
+	 * \return tOplkError
 	 */
-	static tEplKernel StopStack();
+	static tOplkError StopStack();
 
 	/**
 	 * \brief   Sends the NMT command to the specified node.
 	 *
 	 * \param[in] nodeId      Node id to send the NMT command.
 	 * \param[in] nmtCommand  The command to be sent.
-	 * \return tEplKernel
+	 * \return tOplkError
 	 */
-	static tEplKernel ExecuteNmtCommand(const UINT nodeId, tNmtCommand nmtCommand);
+	static tOplkError ExecuteNmtCommand(const UINT nodeId, tNmtCommand nmtCommand);
 
 	/**
 	 * \brief   Handles SDO transfer.
@@ -102,9 +102,9 @@ public:
 	 * \param[in] sdoTransferJob    SDO transfer input parameters.
 	 * \param[in] receiver          Receiver object.
 	 * \param[in] receiverFunction  Receiver function.
-	 * \return tEplKernel
+	 * \return tOplkError
 	 */
-	static tEplKernel TransferObject(
+	static tOplkError TransferObject(
 		const SdoTransferJob& sdoTransferJob,
 		const QObject& receiver,
 		const QMetaMethod& receiverFunction);
@@ -114,9 +114,9 @@ public:
 	 *          data pointer to the memory
 	 * \param[in,out] in   The instance of the ProcessImageIn
 	 * \param[in,out] out  The instance of the ProcessImageOut
-	 * \return tEplKernel
+	 * \return tOplkError
 	 */
-	static tEplKernel SetupProcessImage(ProcessImageIn& in, ProcessImageOut& out);
+	static tOplkError SetupProcessImage(ProcessImageIn& in, ProcessImageOut& out);
 
 	/**
 	 * \brief   Sets the pointer to the CDC buffer.

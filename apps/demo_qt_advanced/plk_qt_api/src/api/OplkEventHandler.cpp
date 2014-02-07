@@ -33,6 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ------------------------------------------------------------------------------*/
 
 #include "api/OplkEventHandler.h"
+#include <oplk/debugstr.h>
 
 //------------------------------------------------------------------------------
 // global variables
@@ -45,11 +46,11 @@ static DWORD        cycleLen_g;
 
 OplkEventHandler::OplkEventHandler(){}
 
-tEplKernel OplkEventHandler::AppCbEvent(tEplApiEventType eventType,
+tOplkError OplkEventHandler::AppCbEvent(tEplApiEventType eventType,
 								tEplApiEventArg* eventArg,
 								void GENERIC* userArg)
 {
-	tEplKernel  oplkRet = kEplSuccessful;
+	tOplkError  oplkRet = kErrorOk;
 
 	switch (eventType)
 	{
@@ -198,22 +199,22 @@ tEplApiCbEvent OplkEventHandler::GetEventCbFunc(void)
 	return AppCbEvent;
 }
 
-tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
+tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 								tEventNmtStateChange* nmtStateChange,
 								void GENERIC* userArg)
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 
 #if !defined(CONFIG_INCLUDE_CFM)
 	UINT varLen;
 #endif
-	const char *string;
+	//const char *string;
 	QString str;
 
 	UNUSED_PARAMETER(userArg);
 
 	TriggerLocalNodeStateChanged(nmtStateChange->newNmtState);
-	string = EplGetNmtEventStr(nmtStateChange->nmtEvent);
+	//string = debugstr_getNmtEventStr(nmtStateChange->nmtEvent);
 
 	switch (nmtStateChange->newNmtState)
 	{
@@ -222,14 +223,14 @@ tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
 			// NMT state machine was shut down,
 			// because of user signal (CTRL-C) or critical EPL stack error
 			// also shut down EplApiProcess()
-			oplkRet = kEplShutdown;
+			oplkRet = kErrorShutdown;
 			// and unblock OplkEventHandler thread
 			oplk_freeProcessImage(); //jba do we need it here?
 
 			TriggerPrintLog(QString("NMTStateChangeEvent(0x%1) originating event = 0x%2 (%3)")
 				 .arg(nmtStateChange->newNmtState, 0, 16, QLatin1Char('0'))
 				 .arg(nmtStateChange->nmtEvent, 0, 16, QLatin1Char('0'))
-				 .arg(EplGetNmtEventStr(nmtStateChange->nmtEvent)));
+				 .arg(debugstr_getNmtEventStr(nmtStateChange->nmtEvent)));
 			mutex.lock();
 			nmtGsOffCondition.wakeAll();
 			mutex.unlock();
@@ -242,7 +243,7 @@ tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
 			TriggerPrintLog(QString("StateChangeEvent(0x%1) originating event = 0x%2 (%3)")
 				 .arg(nmtStateChange->newNmtState, 4, 16, QLatin1Char('0'))
 				 .arg(nmtStateChange->nmtEvent, 4, 16, QLatin1Char('0'))
-				 .arg(EplGetNmtEventStr(nmtStateChange->nmtEvent)));
+				 .arg(debugstr_getNmtEventStr(nmtStateChange->nmtEvent)));
 			break;
 
 		case kNmtGsResetConfiguration:
@@ -254,7 +255,7 @@ tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
 			varLen = sizeof(UINT32);
 			oplkRet = oplk_readObject(NULL, 0, 0x1006, 0x00, &cycleLen_g,
 							&varLen, kSdoTypeAsnd, NULL);
-			if (oplkRet != kEplSuccessful)
+			if (oplkRet != kErrorOk)
 			{   // local OD access failed
 				break;
 			}
@@ -262,7 +263,7 @@ tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
 			TriggerPrintLog(QString("StateChangeEvent(0x%1) originating event = 0x%2 (%3)")
 				 .arg(nmtStateChange->newNmtState, 4, 16, QLatin1Char('0'))
 				 .arg(nmtStateChange->nmtEvent, 4, 16, QLatin1Char('0'))
-				 .arg(EplGetNmtEventStr(nmtStateChange->nmtEvent)));
+				 .arg(debugstr_getNmtEventStr(nmtStateChange->nmtEvent)));
 			break;
 
 		case kNmtGsInitialising:
@@ -280,7 +281,7 @@ tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
 			TriggerPrintLog(QString("StateChangeEvent(0x%1) originating event = 0x%2 (%3)")
 				 .arg(nmtStateChange->newNmtState, 4, 16, QLatin1Char('0'))
 				 .arg(nmtStateChange->nmtEvent, 4, 16, QLatin1Char('0'))
-				 .arg(EplGetNmtEventStr(nmtStateChange->nmtEvent)));
+				 .arg(debugstr_getNmtEventStr(nmtStateChange->nmtEvent)));
 			break;
 
 		case kNmtCsOperational:
@@ -288,7 +289,7 @@ tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
 			TriggerPrintLog(QString("StateChangeEvent(0x%1) originating event = 0x%2 (%3)")
 				 .arg(nmtStateChange->newNmtState, 4, 16, QLatin1Char('0'))
 				 .arg(nmtStateChange->nmtEvent, 4, 16, QLatin1Char('0'))
-				 .arg(EplGetNmtEventStr(nmtStateChange->nmtEvent)));
+				 .arg(debugstr_getNmtEventStr(nmtStateChange->nmtEvent)));
 			break;
 
 		case kNmtCsStopped:
@@ -302,7 +303,7 @@ tEplKernel OplkEventHandler::ProcessNmtStateChangeEvent(
 	return oplkRet;
 }
 
-tEplKernel OplkEventHandler::ProcessErrorWarningEvent(
+tOplkError OplkEventHandler::ProcessErrorWarningEvent(
 								tEplEventError* internalError,
 								void GENERIC* userArg)
 {
@@ -310,9 +311,9 @@ tEplKernel OplkEventHandler::ProcessErrorWarningEvent(
 	UNUSED_PARAMETER(userArg);
 
 	TriggerPrintLog(QString("Err/Warn: Source = %1 (0x%2) EplError = %3 (0x%4)")
-		.arg(EplGetEventSourceStr(internalError->m_EventSource))
+		.arg(debugstr_getEventSourceStr(internalError->m_EventSource))
 		.arg(internalError->m_EventSource, 2, 16, QLatin1Char('0'))
-		.arg(EplGetEplKernelStr(internalError->m_EplError))
+		.arg(debugstr_getRetValStr(internalError->m_EplError))
 		.arg(internalError->m_EplError, 3, 16, QLatin1Char('0')));
 
 	switch (internalError->m_EventSource)
@@ -322,7 +323,7 @@ tEplKernel OplkEventHandler::ProcessErrorWarningEvent(
 			// error occurred within event processing
 			// either in kernel or in user part
 			TriggerPrintLog(QString(" OrgSource = %1 %2")
-				 .arg(EplGetEventSourceStr(internalError->m_Arg.m_EventSource))
+				 .arg(debugstr_getEventSourceStr(internalError->m_Arg.m_EventSource))
 				 .arg(internalError->m_Arg.m_EventSource, 2, 16, QLatin1Char('0')));
 			break;
 
@@ -335,11 +336,11 @@ tEplKernel OplkEventHandler::ProcessErrorWarningEvent(
 		default:
 			break;
 	}
-	return kEplSuccessful;
+	return kErrorOk;
 }
 
-tEplKernel OplkEventHandler::ProcessHistoryEvent(
-								tEplErrHistoryEntry* historyEntry,
+tOplkError OplkEventHandler::ProcessHistoryEvent(
+								tErrHistoryEntry* historyEntry,
 								void GENERIC* userArg)
 {
 
@@ -357,13 +358,13 @@ tEplKernel OplkEventHandler::ProcessHistoryEvent(
 		.arg((WORD)historyEntry->m_abAddInfo[6], 2, 16, QLatin1Char('0'))
 		.arg((WORD)historyEntry->m_abAddInfo[7], 2, 16, QLatin1Char('0')));
 
-	return kEplSuccessful;
+	return kErrorOk;
 }
 
-tEplKernel OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
+tOplkError OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
 								void GENERIC* userArg)
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 
 	UNUSED_PARAMETER(userArg);
 
@@ -384,7 +385,7 @@ tEplKernel OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
 			{   // SDO transfer started
 				oplkRet = kEplReject;
 			}
-			else if (oplkRet == kEplSuccessful)
+			else if (oplkRet == kErrorOk)
 			{   // local OD access (should not occur)
 				printf("AppCbEvent(Node) write to local OD\n");
 			}
@@ -459,18 +460,18 @@ tEplKernel OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
 		//??nodeEvent->m_NmtState?      TriggerNodeStateChanged(nodeEvent->m_uiNodeId, -1);
 			TriggerPrintLog(QString("AppCbEvent (Node=%1): Error = %2 (0x%3)")
 				.arg(nodeEvent->m_uiNodeId, 0, 10)
-				.arg(EplGetEmergErrCodeStr(nodeEvent->m_wErrorCode))
+				.arg(debugstr_getEmergErrCodeStr(nodeEvent->m_wErrorCode))
 				.arg(nodeEvent->m_wErrorCode, 4, 16, QLatin1Char('0')));
 			break;
 		}
 		default:
 			break;
 	}
-	oplkRet = kEplSuccessful;
+	oplkRet = kErrorOk;
 	return oplkRet;
 }
 
-tEplKernel OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
+tOplkError OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
 								void GENERIC* userArg)
 {
 	UNUSED_PARAMETER(userArg);
@@ -494,10 +495,10 @@ tEplKernel OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
 		default:
 			break;
 	}
-	return kEplSuccessful;
+	return kErrorOk;
 }
 
-tEplKernel OplkEventHandler::ProcessCfmProgressEvent(
+tOplkError OplkEventHandler::ProcessCfmProgressEvent(
 								tCfmEventCnProgress* cfmProgress,
 								void GENERIC* userArg)
 {
@@ -511,16 +512,16 @@ tEplKernel OplkEventHandler::ProcessCfmProgressEvent(
 			 .arg((ULONG)cfmProgress->totalNumberOfBytes, 0, 10));
 
 	if ((cfmProgress->sdoAbortCode != 0)
-		|| (cfmProgress->error != kEplSuccessful))
+		|| (cfmProgress->error != kErrorOk))
 	{
 		 TriggerPrintLog(QString("	-> SDO Abort=0x%1, Error=0x%2)")
 				 .arg((ULONG) cfmProgress->sdoAbortCode, 0, 16 , QLatin1Char('0'))
 				 .arg(cfmProgress->error, 0, 16, QLatin1Char('0')));
 	}
-	return kEplSuccessful;
+	return kErrorOk;
 }
 
-tEplKernel OplkEventHandler::ProcessCfmResultEvent(
+tOplkError OplkEventHandler::ProcessCfmResultEvent(
 								tEplApiEventCfmResult* cfmResult,
 								void GENERIC* userArg)
 {
@@ -558,12 +559,12 @@ tEplKernel OplkEventHandler::ProcessCfmResultEvent(
 					.arg(cfmResult->m_NodeCommand, 4, 16, QLatin1Char('0')));
 			break;
 	}
-	return kEplSuccessful;
+	return kErrorOk;
 }
 
-tEplKernel OplkEventHandler::SetDefaultNodeAssignment(void)
+tOplkError OplkEventHandler::SetDefaultNodeAssignment(void)
 {
-	tEplKernel ret = kEplSuccessful;
+	tOplkError ret = kErrorOk;
 	DWORD nodeAssignment;
 
 	nodeAssignment = (EPL_NODEASSIGN_NODE_IS_CN | EPL_NODEASSIGN_NODE_EXISTS);    // 0x00000003L
