@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 // includes
 //------------------------------------------------------------------------------
-#include <Epl.h>
+#include <oplk/oplk.h>
 
 #include "api/OplkQtApi.h"
 
@@ -17,7 +17,7 @@
 int main(int argc, char *argv[])
 {
 	QCoreApplication application(argc, argv);
-	tEplKernel ret;
+	tOplkError ret;
 
 	qDebug("------------------------------------------------------\n");
 	qDebug("  WELCOME TO OPEN POWERLINK VERSION 2.0 console demo  \n");

@@ -14,7 +14,7 @@
 #include <iostream>
 
 #ifdef CONFIG_USE_PCAP
-extern "C" tEplKernel selectPcapDevice(char *pDevName_p);
+extern "C" tOplkError selectPcapDevice(char *pDevName_p);
 #endif // CONFIG_USE_PCAP
 
 ConsoleReader::ConsoleReader()
@@ -48,7 +48,7 @@ DWORD ConsoleReader::GetSdoWriteData()
 
 void ConsoleReader::run()
 {
-	tEplKernel oplkRet = kEplSuccessful;
+	tOplkError oplkRet = kErrorOk;
 	char	cKey = 0;
 	BOOL	fExit = FALSE;
 
@@ -67,7 +67,7 @@ void ConsoleReader::run()
 
 #ifdef CONFIG_USE_PCAP
 	oplkRet = selectPcapDevice(&devName[0]);
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("selectPcapDevice retCode %x", oplkRet);
 	}
@@ -76,19 +76,19 @@ void ConsoleReader::run()
 #endif
 
 	oplkRet = OplkQtApi::InitStack(this->nodeId, devName);
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("InitStack retCode %x", oplkRet);
 	}
 
 	oplkRet = OplkQtApi::SetupProcessImage(piIn, piOut);
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("SetupProcessImage retCode %x", oplkRet);
 	}
 
 	oplkRet = OplkQtApi::StartStack();
-	if (oplkRet != kEplSuccessful)
+	if (oplkRet != kErrorOk)
 	{
 		qDebug("StartStack retCode %x", oplkRet);
 		fExit = TRUE;
@@ -108,7 +108,7 @@ void ConsoleReader::run()
 				case 'n':
 				{
 					oplkRet =  OplkQtApi::ExecuteNmtCommand(1, kNmtCmdResetNode); //tNmtCommand
-					if (oplkRet != kEplSuccessful)
+					if (oplkRet != kErrorOk)
 					{
 					//	fExit = TRUE;
 					}
@@ -139,7 +139,7 @@ void ConsoleReader::run()
 				case 'T':
 				{
 					oplkRet = oplk_exchangeProcessImageOut();
-					if (oplkRet != kEplSuccessful)
+					if (oplkRet != kErrorOk)
 					{
 						qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 					}
@@ -165,7 +165,7 @@ void ConsoleReader::run()
 					}
 
 					oplkRet = oplk_exchangeProcessImageIn();
-					if (oplkRet != kEplSuccessful)
+					if (oplkRet != kErrorOk)
 					{
 						qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
 					}
@@ -178,7 +178,7 @@ void ConsoleReader::run()
 					{
 						const unsigned char value = 0xFF;
 						oplkRet = oplk_exchangeProcessImageOut();
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 						}
@@ -201,7 +201,7 @@ void ConsoleReader::run()
 							piInDataPtr++;
 						}
 						oplkRet = oplk_exchangeProcessImageIn();
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
 						}
@@ -219,7 +219,7 @@ void ConsoleReader::run()
 					try
 					{
 						oplkRet = oplk_exchangeProcessImageOut();
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 						}
@@ -234,7 +234,7 @@ void ConsoleReader::run()
 						}
 						std::cout << std::endl;
 						oplkRet = oplk_exchangeProcessImageIn();
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
 						}
@@ -251,7 +251,7 @@ void ConsoleReader::run()
 					if(stackStated)
 					{
 						oplkRet = OplkQtApi::StopStack();
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("StartStack retCode %x", oplkRet);
 						}
@@ -260,17 +260,17 @@ void ConsoleReader::run()
 					else
 					{
 						oplkRet = OplkQtApi::InitStack(this->nodeId, devName);
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("InitStack retCode %x", oplkRet);
 						}
 						oplkRet = OplkQtApi::SetupProcessImage(piIn, piOut);
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("SetupProcessImage retCode %x", oplkRet);
 						}
 						oplkRet = OplkQtApi::StartStack();
-						if (oplkRet != kEplSuccessful)
+						if (oplkRet != kErrorOk)
 						{
 							qDebug("StartStack retCode %x", oplkRet);
 						}
