@@ -81,20 +81,11 @@ std::vector<unsigned char> ProcessImageOut::GetRawData(const unsigned int bitSiz
 			for (unsigned int i = 0; i < (bitSize/8); i++)
 			{
 				 piDataPtr += i;
-				 std::cout << *piDataPtr;
 				 rawData.push_back(*piDataPtr);
 			}
 		}
 		else
 		{
-//			if (bitSize == 1)
-//			{
-//				rawData.reserve(1);
-//				std::bitset<8> piData = *piDataPtr;
-//				unsigned char data = 0x00000000 | piData[bitOffset];
-//				rawData.push_back(data);
-//			}
-//			else
 			if (bitSize < 8)
 			{
 				rawData.reserve(1);

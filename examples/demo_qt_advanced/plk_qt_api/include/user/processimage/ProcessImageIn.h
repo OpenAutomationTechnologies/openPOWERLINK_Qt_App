@@ -72,6 +72,7 @@ public:
 	 *
 	 * \param channelName  The name of the Channel.
 	 * \param value        The value to be assigned for the Channel.
+	 * \throws std::out_of_range if name not found
 	 */
 	void SetRawValue(const std::string& channelName,
 			std::vector<unsigned char>& value);
@@ -82,6 +83,7 @@ public:
 	 * \param value       The value to be assinged at the given offset.
 	 * \param byteOffset  Offset in bytes.
 	 * \param bitOffset   Offset in bits.
+	 * \throws std::out_of_range if tried to set value exceeding PI memory range.
 	 */
 	void SetRawData(const std::vector<unsigned char>& value,
 			const unsigned int byteOffset,

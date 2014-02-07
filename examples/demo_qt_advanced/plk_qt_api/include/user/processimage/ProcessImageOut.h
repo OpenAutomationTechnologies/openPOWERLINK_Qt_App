@@ -72,6 +72,7 @@ public:
 	 *
 	 * \param channelName  The Channel name.
 	 * \return std::vector<unsigned char>  The requested value
+	 * \throws std::out_of_range if name not found
 	 */
 	std::vector<unsigned char> GetRawValue(const std::string& channelName) const;
 
