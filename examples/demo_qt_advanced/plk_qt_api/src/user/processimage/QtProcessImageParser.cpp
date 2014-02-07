@@ -98,6 +98,12 @@ void QtProcessImageParser::ParseProcessImage()
 				byteSize = size_str.toUInt();
 			}
 
+			//optional Fix for openCONFIGURATOR - ProcessImage total size.
+			if ((byteSize%4) != 0 )
+			{
+				byteSize = ((byteSize/4)+1)*4;
+			}
+
 			if (direction == PI_OUT)
 			{
 				this->out.SetSize(byteSize);
