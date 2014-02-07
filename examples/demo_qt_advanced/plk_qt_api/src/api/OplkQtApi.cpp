@@ -34,7 +34,8 @@ const std::string kIfEth = EPL_VETH_NAME;
 const unsigned int kCycleLen = 5000;  /**< Cycle Length (0x1006: NMT_CycleLen_U32) in [us] */
 const unsigned char abMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  /**< Default MAC Address */
 
-static char* cdcFilename = (char *)"mnobd.cdc";  /**< CDC file name */
+static char* defaultCDCFilename = (char *)"mnobd.cdc";  /**< CDC file name */
+static bool cdcSet = false;
 
 tEplApiInitParam OplkQtApi::initParam; /**< initparam */
 
@@ -94,16 +95,7 @@ tEplKernel OplkQtApi::InitStack(const UINT nodeId,
 
 	initParam.m_HwParam.m_pszDevName = networkInterface.c_str();
 
-	qDebug("init stack");
 	oplkRet = oplk_init(&initParam);
-	if (oplkRet != kEplSuccessful)
-	{
-		qDebug("Ret: %d",oplkRet);
-		goto Exit;
-	}
-	//TODO: Replace file pointer by CDC Buffer.
-	qDebug("set cdc buffer");
-	oplkRet = oplk_setCdcFilename(cdcFilename);
 	if (oplkRet != kEplSuccessful)
 	{
 		qDebug("Ret: %d",oplkRet);
@@ -117,6 +109,17 @@ Exit:
 tEplKernel OplkQtApi::StartStack()
 {
 	tEplKernel oplkRet = kEplSuccessful;
+
+	if (cdcSet == false)
+	{
+		qDebug("Set default cdc file name");
+		oplkRet = oplk_setCdcFilename(defaultCDCFilename);
+		if (oplkRet != kEplSuccessful)
+		{
+			qDebug("setDefault Cdc File Ret: %d",oplkRet);
+			goto Exit;
+		}
+	}
 
 	oplkRet = oplk_setupProcessImage();
 	if (oplkRet != kEplSuccessful)
@@ -357,4 +360,27 @@ tEplKernel OplkQtApi::SetupProcessImage(ProcessImageIn& in,
 	out.SetProcessImageDataPtr((unsigned char*)oplk_getProcessImageOut());
 
 	return oplkRet;
+}
+
+void OplkQtApi::SetCdc(const BYTE* cdcBuffer, const UINT size)
+{
+	tEplKernel oplkRet = kEplSuccessful;
+	oplkRet = oplk_setCdcBuffer((BYTE*) cdcBuffer, size);
+	cdcSet = true;
+}
+
+void OplkQtApi::SetCdc(const char* cdcFileName)
+{
+	tEplKernel oplkRet = kEplSuccessful;
+	oplkRet = oplk_setCdcFilename((char*) cdcFileName);
+	cdcSet = true;
+}
+
+void OplkQtApi::SetCycleTime(const long cycleTime)
+{
+	tEplKernel oplkRet = kEplSuccessful;
+
+	oplkRet = oplk_writeLocalObject(0x1006, 0x00, (void*)&cycleTime, 4);
+
+	// If this is a CN. It has to do remote SDO write?.
 }

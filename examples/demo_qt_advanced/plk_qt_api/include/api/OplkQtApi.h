@@ -119,6 +119,31 @@ public:
 	static tEplKernel SetupProcessImage(ProcessImageIn& in, ProcessImageOut& out);
 
 	/**
+	 * \brief   Sets the pointer to the CDC buffer.
+	 *
+	 *    Note: This function always has precedence over the
+	 *          OplkQtApi::SetCdc(const char* cdcFileName), if none of these
+	 *          2 functions are called, the API will look for "mnobd.cdc"
+	 *          in the working directory.
+	 * \param[in] cdcBuffer  Buffer to the CDC contents.
+	 * \param[in] size       Size of the buffer.
+	 */
+	static void SetCdc(const BYTE* cdcBuffer, const UINT size);
+
+	/**
+	 * \brief    Sets the CDC file name to the openPOWERLINK stack.
+	 * \param cdcFileName  File name of the CDC
+	 */
+	static void SetCdc(const char* cdcFileName);
+
+	/**
+	 * \brief   Sets the Cycle time.
+	 *          Note: The user has to do a kNmtCmdSwReset to activate the new cycle time.
+	 * \param cycleTime  The requested cycle time.
+	 */
+	static void SetCycleTime(const long cycleTime);
+
+	/**
 	 * \brief   Registers an event-handler for NodeEvents openPOWERLINK-Stack.
 	 *
 	 *          Note: The receiverFunction should have the same signature as
