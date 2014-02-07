@@ -11,34 +11,37 @@ TEMPLATE = app
 DEFINES += CONFIG_USE_PCAP _CONSOLE
 
 INCLUDEPATH +=  ../plk_qt_api/include \
-			$$PWD/../../../stack/make/lib/libpowerlink \
-			$$PWD/../../../include \
-			$$PWD/../../../libs \
-			$$PWD/../../../libs/ami \
-			$$PWD/../../../libs/pcap/windows/WpdPack/Include \
-			$$PWD/../../../examples/common \
-			$$PWD/../../../examples/common/system
+                $$PWD/../../../contrib \
+                $$PWD/../../../stack/include \
+                $$PWD/../../../apps/common/src \
+                $$PWD/../../../stack/proj/windows/liboplkmn \
+                $$PWD/../../../contrib/pcap/windows/WpdPack/Include 
 
-win32: LIBS += -L$$PWD/../build-plk_qt_api-Qt520_vs2010-Debug/debug -lPlkQtApi \
-				-L$$PWD/../../../build/stack/make/lib/libpowerlink/Debug -lpowerlink \
-				-L$$PWD/../../../libs/pcap/windows/WpdPack/Lib/ -lwpcap \
-				-L$$PWD/../../../libs/pcap/windows/WpdPack/Lib/ -lPacket
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-plk_qt_api-Qt520_vs2010-Debug/debug -lPlkQtApi \
+                                              -L$$PWD/../../../stack/lib/windows/x86 -loplkmn \
+                                              -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lwpcap \
+                                              -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lPacket
+
+win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-plk_qt_api-Qt520_vs2010-Debug/debug -lPlkQtApi \
+                                            -L$$PWD/../../../stack/lib/windows/x86 -loplkmn_d \
+                                            -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lwpcap \
+                                            -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lPacket
 
 INCLUDEPATH += $$PWD/../build-plk_qt_api-Qt520_vs2010-Debug/debug \
-				$$PWD/../../../build/stack/make/lib/libpowerlink/Debug \
-				$$PWD/../../../libs/pcap/windows/WpdPack/Include
+               $$PWD/../../../build/stack/make/lib/libpowerlink/Debug \
+               $$PWD/../../../contrib/pcap/windows/WpdPack/Include
 
 DEPENDPATH += $$PWD/../build-plk_qt_api-Qt520_vs2010-Debug/debug \
-				$$PWD/../../../build/stack/make/lib/libpowerlink/Debug \
-				$$PWD/../../../libs/pcap/windows/WpdPack/Lib
+              $$PWD/../../../stack/lib/windows/x86 \
+              $$PWD/../../../contrib/pcap/windows/WpdPack/Lib
 
 HEADERS += \
-	include/Receiver.h \
-	include/ConsoleReader.h
+        include/Receiver.h \
+        include/ConsoleReader.h
 
 SOURCES += \
-	src/main.cpp \
-	src/Receiver.cpp \
-	src/ConsoleReader.cpp \
-	$$PWD/../../../libs/console/console-windows.c \
-	$$PWD/../../../examples/common/pcap-console.c
+           src/main.cpp \
+           src/Receiver.cpp \
+           src/ConsoleReader.cpp \
+           $$PWD/../../../contrib/console/console-windows.c \
+           $$PWD/../../../apps/common/src/pcap-console.c
