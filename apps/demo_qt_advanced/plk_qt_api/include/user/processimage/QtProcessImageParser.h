@@ -2,8 +2,8 @@
 ********************************************************************************
 \file   QtProcessImageParser.h
 
-\brief
-*******************************************************************************/
+\brief Definitions of a process image parser using the Qt 5.2
+		QXmlStreamReader to parse the process image description
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -43,7 +43,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/IECDataType.h"
 
 /**
- * \brief  Design of ProcessImage parser using QT(QXmlStreamReader)
+ * \brief  Inherits ProcessImageParser and implemets using Qt 5.2
+ * QXmlStreamReader to incremental parse the ProcessImage xml description.
+ *
+ * \note Uses XmlParserException to handle the errors.
  *
  */
 class QtProcessImageParser : public ProcessImageParser
@@ -51,23 +54,28 @@ class QtProcessImageParser : public ProcessImageParser
 
 public:
 	/**
-	 * \brief   Overridden function that implements the ProcessImage parse.
-	 * \param description  Char pointer to the xml contents.
+	 * \brief   Implements the ProcessImage parse.
+	 * \param[in] xmlDescription  Char pointer to the xml contents.
+	 * \throws std::invalid_argument if xml file buffer is NULL.
+	 * \throws XmlParserException If any error occurred.
 	 */
 	void virtual ParseInternal(const char* description);
 
 private:
 	/**
 	 * \brief   Parses all the ProcessImage tags
+	 * \throws XmlParserException If any error occurred.
 	 */
 	void ParseProcessImage();
 
 	/**
 	 * \brief   Parses all the channels and generates the list of Channels.
-	 * \param direction  The direction of the ProcessImage channels.
+	 * \param[in] direction  The direction of the ProcessImage channels.
+	 * \throws XmlParserException If any error occurred.
 	 */
 	void ParseChannels(Direction direction);
-	QXmlStreamReader xml;
+
+	QXmlStreamReader xml;  ///< Xml reader instance
 };
 
 #endif // _QTPROCESSIMAGEPARSER_H_

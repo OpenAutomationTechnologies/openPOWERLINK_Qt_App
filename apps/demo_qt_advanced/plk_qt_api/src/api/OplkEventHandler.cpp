@@ -2,8 +2,11 @@
 ********************************************************************************
 \file   OplkEventHandler.cpp
 
-\brief  Implementation of OplkEventHandler class
-*******************************************************************************/
+\brief  Implementation of a event handler class that uses QThread to
+		communicate openPOWERLINK stack events via QT signals
+
+Handles the events from the eventcallback function from the stack and
+triggers the signals to the receiver who has requested for it.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

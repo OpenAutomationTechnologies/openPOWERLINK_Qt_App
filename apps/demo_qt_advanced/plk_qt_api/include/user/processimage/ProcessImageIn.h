@@ -3,7 +3,6 @@
 \file   ProcessImageIn.h
 
 \brief  Descriptions specific to Input ProcessImage
-*******************************************************************************/
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -45,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common/QtApiGlobal.h"
 
 /**
- * \brief Descriptions specific to Input ProcessImage
+ * \brief Inherits ProcessImage and provides the methods specific to Input ProcessImage
  *
  */
 class PLKQTAPI_EXPORT ProcessImageIn : public ProcessImage
@@ -61,18 +60,20 @@ public:
 	/**
 	 * \brief   Overridden function of Add Channel of the ProcessImage Class.
 	 *
-	 * \param channel  The Channel object
+	 * \param[in] channel  The Channel object
 	 * \retval true   If it is added successfully.
-	 *         false  If it fails to add.
+	 * \retval false  If it fails to add.
 	 */
 	bool virtual AddChannelInternal(const Channel& channel);
 
 	/**
 	 * \brief   Sets the value for a channel in the ProcessImage.
 	 *
-	 * \param channelName  The name of the Channel.
-	 * \param value        The value to be assigned for the Channel.
-	 * \throws std::out_of_range if name not found
+	 * \param[in] channelName  The name of the Channel.
+	 * \param[in] value        The value to be assigned for the Channel.
+	 * \throws std::out_of_range  If the requested channel name is not found
+	 * \throws std::invalid_argument  If bitoffset exceeds the range.
+	 * \throws std::bad_alloc  If the ProcessImage::data pointer is not updated.
 	 */
 	void SetRawValue(const std::string& channelName,
 			std::vector<unsigned char>& value);
@@ -80,10 +81,13 @@ public:
 	/**
 	 * \brief   Sets the value for the given byte and bit offsets.
 	 *
-	 * \param value       The value to be assinged at the given offset.
-	 * \param byteOffset  Offset in bytes.
-	 * \param bitOffset   Offset in bits.
-	 * \throws std::out_of_range if tried to set value exceeding PI memory range.
+	 * \param[in] value       The value to be assigned at the given offset.
+	 * \param[in] byteOffset  Offset in bytes.
+	 * \param[in] bitOffset   Offset in bits with in a single byte
+	 *						  (i.e. in the range of 0 to 7).
+	 * \throws std::out_of_range  If tried to set value exceeding PI memory range.
+	 * \throws std::invalid_argument  If bitoffset exceeds the range.
+	 * \throws std::bad_alloc  If the ProcessImage::data pointer is not updated.
 	 */
 	void SetRawData(const std::vector<unsigned char>& value,
 			const unsigned int byteOffset,

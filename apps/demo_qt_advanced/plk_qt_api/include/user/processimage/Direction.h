@@ -3,7 +3,6 @@
 \file   Direction.h
 
 \brief  Describes the ProcessImage direction
-*******************************************************************************/
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -36,13 +35,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _DIRECTION_H_
 
 /**
- * \brief Describes the ProcessImage direction
- *
+ * List of directions available for a ProcessImage.
  */
 enum Direction
 {
 	PI_IN,
 	PI_OUT
-};
+}; // Direction
 
 #endif // _DIRECTION_H_

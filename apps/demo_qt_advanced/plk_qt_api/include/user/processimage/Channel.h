@@ -2,8 +2,8 @@
 ********************************************************************************
 \file   Channel.h
 
-\brief  Describes the Channel and its attributes
-*******************************************************************************/
+\brief Refer to Channel
+
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
 All rights reserved.
@@ -46,8 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common/QtApiGlobal.h"
 
 /**
- * \brief Describes the Channel and its attributes
- *
+ * \brief This class provides an instance of an individual channel in the ProcessImage.
  */
 class PLKQTAPI_EXPORT Channel
 {
@@ -55,12 +54,12 @@ public:
 	/**
 	 * \brief   Constructs a Channel which inputs the properties of a Channel.
 	 *
-	 * \param name        Name of the Channel
-	 * \param dataType    Datatype of the Channel
-	 * \param byteOffset  Byte offset of the Channel
-	 * \param bitOffset   Bit offset of the Channel
-	 * \param bitSize     Size of the Channel value in bits
-	 * \param direction   Direction of the Channel
+	 * \param[in] name        Name of the Channel.
+	 * \param[in] dataType    Datatype of the Channel.
+	 * \param[in] byteOffset  Byte offset of the Channel.
+	 * \param[in] bitOffset   Bit offset of the Channel.
+	 * \param[in] bitSize     Size of the Channel value in bits.
+	 * \param[in] direction   Direction of the Channel.
 	 */
 	Channel(const std::string& name,
 		IECDataType dataType,
@@ -70,42 +69,42 @@ public:
 		Direction direction);
 
 	/**
-	 * \return const std::string  The Channel name.
+	 * \return The name of the Channel.
 	 */
 	const std::string& GetName() const;
 
 	/**
-	 * \return IECDataType  The Datatype of of the Channel
+	 * \return Datatype of the Channel.
 	 */
 	IECDataType GetDataType() const;
 
 	/**
-	 * \return unsigned int  The offset of the Channel within the process image in bytes.
+	 * \return The offset of the Channel within the processimage in bytes.
 	 */
 	unsigned int GetByteOffset() const;
 
 	/**
-	 * \return unsigned int  The bit offset of the Channel within the process image.
+	 * \return The bit offset of the Channel within the processimage.
 	 */
 	unsigned int GetBitOffset() const;
 
 	/**
-	 * \return unsigned int  The Size of the Channel in bits.
+	 * \return The Size of the Channel in bits.
 	 */
 	unsigned int GetBitSize() const;
 
 	/**
-	 * \return Direction  The Direction of the Channel variable.
+	 * \return The Direction of the Channel within the processimage.
 	 */
 	Direction GetDirection() const;
 
 private:
-	std::string name; /**< Name */
-	IECDataType dataType; /**< dataType */
-	unsigned int byteOffset; /**< PIOffset */
-	unsigned int bitOffset; /**< BitOffset */
-	unsigned int bitSize; /**< dataSize */
-	Direction direction; /**< ProcessImage type */
+	std::string name;         ///< Name
+	IECDataType dataType;     ///< dataType
+	unsigned int byteOffset;  ///< PIOffset
+	unsigned int bitOffset;   ///< BitOffset
+	unsigned int bitSize;     ///< dataSize
+	Direction direction;      ///< ProcessImage->type
 };
 
-#endif _CHANNEL_H_
+#endif // _CHANNEL_H_

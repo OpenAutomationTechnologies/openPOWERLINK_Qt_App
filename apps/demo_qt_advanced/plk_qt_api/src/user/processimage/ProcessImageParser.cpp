@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   ProcessImageParser.cpp
 
-\brief  Implementation of ProcessImageParser class
-*******************************************************************************/
+\brief  Implements the process image parser abstract class.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

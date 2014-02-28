@@ -1,3 +1,9 @@
+/**
+********************************************************************************
+\file   OplkQtApi.cpp
+
+\brief  Contains the implementions to wrap the openPOWERLINK APIs.
+
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
 All rights reserved.
@@ -46,25 +52,25 @@ void OplkQtApi::SetInitParam()
 
 	initParam.m_fAsyncOnly = FALSE;
 
-	initParam.m_dwFeatureFlags = UINT_MAX;		// 0x1F82: NMT_FeatureFlags_U32
-	initParam.m_dwCycleLen = kCycleLen;			// required for error detection
-	initParam.m_uiIsochrTxMaxPayload = 256;		// const
-	initParam.m_uiIsochrRxMaxPayload = 256;		// const
-	initParam.m_dwPresMaxLatency = 50000;		// const; only required for IdentRes
-	initParam.m_uiPreqActPayloadLimit = 36;		// required for initialisation (+28 bytes)
-	initParam.m_uiPresActPayloadLimit = 36;		// required for initialisation of Pres frame (+28 bytes)
-	initParam.m_dwAsndMaxLatency = 150000;		// const; only required for IdentRes
-	initParam.m_uiMultiplCycleCnt = 0;			// required for error detection
-	initParam.m_uiAsyncMtu = 1500;				// required to set up max frame size
-	initParam.m_uiPrescaler = 2;				// required for sync
+	initParam.m_dwFeatureFlags = UINT_MAX;      // 0x1F82: NMT_FeatureFlags_U32
+	initParam.m_dwCycleLen = kCycleLen;         // required for error detection
+	initParam.m_uiIsochrTxMaxPayload = 256;     // const
+	initParam.m_uiIsochrRxMaxPayload = 256;     // const
+	initParam.m_dwPresMaxLatency = 50000;       // const; only required for IdentRes
+	initParam.m_uiPreqActPayloadLimit = 36;     // required for initialisation (+28 bytes)
+	initParam.m_uiPresActPayloadLimit = 36;     // required for initialisation of Pres frame (+28 bytes)
+	initParam.m_dwAsndMaxLatency = 150000;      // const; only required for IdentRes
+	initParam.m_uiMultiplCycleCnt = 0;          // required for error detection
+	initParam.m_uiAsyncMtu = 1500;              // required to set up max frame size
+	initParam.m_uiPrescaler = 2;                // required for sync
 	initParam.m_dwLossOfFrameTolerance = 500000;
 	initParam.m_dwAsyncSlotTimeout = 3000000;
 	initParam.m_dwWaitSocPreq = 150000;
-	initParam.m_dwDeviceType = UINT_MAX;		// NMT_DeviceType_U32
-	initParam.m_dwVendorId = UINT_MAX;			// NMT_IdentityObject_REC.VendorId_U32
-	initParam.m_dwProductCode = UINT_MAX;		// NMT_IdentityObject_REC.ProductCode_U32
-	initParam.m_dwRevisionNumber = UINT_MAX;	// NMT_IdentityObject_REC.RevisionNo_U32
-	initParam.m_dwSerialNumber = UINT_MAX;		// NMT_IdentityObject_REC.SerialNo_U32
+	initParam.m_dwDeviceType = UINT_MAX;        // NMT_DeviceType_U32
+	initParam.m_dwVendorId = UINT_MAX;          // NMT_IdentityObject_REC.VendorId_U32
+	initParam.m_dwProductCode = UINT_MAX;       // NMT_IdentityObject_REC.ProductCode_U32
+	initParam.m_dwRevisionNumber = UINT_MAX;    // NMT_IdentityObject_REC.RevisionNo_U32
+	initParam.m_dwSerialNumber = UINT_MAX;      // NMT_IdentityObject_REC.SerialNo_U32
 
 	initParam.m_dwSubnetMask = kSubnetMask;
 	initParam.m_dwDefaultGateway = 0;

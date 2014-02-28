@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   Utility.h
 
-\brief  Contains the utility functions required for this library
-*******************************************************************************/
+\brief  Describes the utility functions required for this library
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -43,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \param str1  Input string to compare with.
  * \param str2  Input string to compare to.
  * \retval true  If both are equal
- *         false If both are not equal
+ * \retval false If both are not equal
  */
 static bool CompareCaseInsensitive(const std::string& str1,
 								const std::string& str2)

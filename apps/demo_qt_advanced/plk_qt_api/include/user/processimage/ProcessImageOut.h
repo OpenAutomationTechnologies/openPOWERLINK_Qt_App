@@ -3,7 +3,6 @@
 \file   ProcessImageOut.h
 
 \brief  Descriptions specific to Output ProcessImage
-*******************************************************************************/
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -45,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common/QtApiGlobal.h"
 
 /**
- * \brief  Descriptions specific to Output ProcessImage
+ * \brief  Inherits ProcessImage and provides the methods specific to Output ProcessImage
  *
  */
 class PLKQTAPI_EXPORT ProcessImageOut : public ProcessImage
@@ -59,30 +58,31 @@ public:
 		const std::map<std::string, Channel>& channels);
 
 	/**
-	 * \brief   Overridden function of Add Channel of the ProcessImage Class.
+	 * \brief   Add Channel of the ProcessImage Class.
 	 *
-	 * \param channel  The Channel object
+	 * \param[in] channel  The Channel object
 	 * \retval true   If it is added successfully.
-	 *         false  If it fails to add.
+	 * \retval false  If it fails to add.
 	 */
 	bool virtual AddChannelInternal(const Channel& channel);
 
 	/**
 	 * \brief   Returns the value that the Channel holds.
 	 *
-	 * \param channelName  The Channel name.
-	 * \return std::vector<unsigned char>  The requested value
-	 * \throws std::out_of_range if name not found
+	 * \param[in] channelName  The Channel name.
+	 * \return Returns the requested value
+	 * \throws std::out_of_range If name not found
 	 */
 	std::vector<unsigned char> GetRawValue(const std::string& channelName) const;
 
 	/**
-	 * \brief   Returns the value for the given byte and bit offsets.
+	 * \brief   Returns the value at the given byte and bit offsets.
 	 *
-	 * \param bitSize     Size of the data in bits.
-	 * \param byteOffset  Offset in bytes.
-	 * \param bitOffset   Offset in bits.
-	 * \return std::vector<unsigned char>  The requested value.
+	 * \param[in] bitSize     Size of the data in bits.
+	 * \param[in] byteOffset  Offset in bytes.
+	 * \param[in] bitOffset   Offset in bits with in a single byte
+	 *						  (i.e. in the range of 0 to 7).
+	 * \return Returns the requested value.
 	 */
 	std::vector<unsigned char> GetRawData(const unsigned int bitSize,
 									const unsigned int byteOffset,

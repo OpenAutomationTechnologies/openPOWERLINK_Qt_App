@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   ProcessImageParser.h
 
-\brief  Abstract design of the ProcessImage xml(xap.xml) parser
-*******************************************************************************/
+\brief Refer to ProcessImageParser
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -46,30 +45,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common/QtApiGlobal.h"
 
 /**
- * \brief
+ * \brief Pure abstract base class provides the definitions used to parse the
+ * xml(xap.xml) contents.
  *
+ * The user can request the any type of parser available in
+ * ProcessImageParserType::eProcessImageParserType to parse the xml.
  */
 class PLKQTAPI_EXPORT ProcessImageParser
 {
 
 public:
 	/**
-	 * \brief   Create an return an instance of a ProcessImageParser according to the given type.
-	 * \param type  Type of ProcessImageParser.
-	 * \return ProcessImageParser  The requested ProcessImageParser.
+	 * \brief   Create and return an instance of a ProcessImageParser according to the given type.
+	 *
+	 * \param[in] type  Type of ProcessImageParser.
+	 * \return Returns the requested ProcessImageParser.
+	 * \retval NULL if the requested ProcessImage parser is not available.
 	 */
 	static ProcessImageParser* NewInstance(const ProcessImageParserType type);
 
 	/**
-	 * \brief   Parse an input filestream containing a ProcessImage description.
+	 * \brief   Parses the buffer containing the ProcessImage xml description.
 	 *
-	 * \param description  Input filestream of a file which contains the description of a ProcessImage.
+	 * \param[in] xmlDescription  Pointer to the buffer containing the xml description.
+	 * \throws std::invalid_argument if xml file buffer is NULL.
+	 * \throws XmlParserException If any error occurred.
 	 */
 	void Parse(const char* description);
 
 	/**
-	 * \param direction  The ProcessImage direction
-	 * \return ProcessImage& The reference to the requested ProcessImage instance.
+	 * \param[in] direction  The ProcessImage direction
+	 * \return Returns the reference to the requested ProcessImage instance.
 	 */
 	ProcessImage& GetProcessImage(const Direction direction);
 

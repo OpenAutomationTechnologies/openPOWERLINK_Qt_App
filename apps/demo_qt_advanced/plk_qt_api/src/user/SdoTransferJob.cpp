@@ -2,8 +2,8 @@
 ********************************************************************************
 \file   SdoTransferJob.cpp
 
-\brief  Implementation of SdoTransferJob class
-*******************************************************************************/
+\brief  Implementation of the SdoTransferJob class which provides
+		methods to access the different attributes of a SdoTransferJob.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

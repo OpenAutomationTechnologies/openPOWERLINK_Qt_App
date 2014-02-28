@@ -2,8 +2,8 @@
 ********************************************************************************
 \file   ProcessImage.cpp
 
-\brief  Implementation of ProcessImage class
-*******************************************************************************/
+\brief  Implementation of the ProcessImage class which provides sophisticated
+		methods to access the different attributes of a ProcessImage in the xap.xml.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   OplkQtApi.h
 
-\brief  API to the openPOWERLINK-Stack
-*******************************************************************************/
+\brief  Wraps the openPOWERLINK APIs and present it to the user.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -58,51 +57,63 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * \brief API to the openPOWERLINK-Stack
+ * \brief Class provides the interface to the user to use the API's of the openPOWERLINK stack.
+ *
+ * OplkQtApi class provides the easy to use inteface to use the API's of the
+ * openPOWERLINK stack v2. It also provides the posibility to register and
+ * unregister for various events triggered by the stack.
  */
 class PLKQTAPI_EXPORT OplkQtApi : QObject
 {
 	Q_OBJECT
 
 public:
+
 	/**
 	 * \brief   Initialize openPOWERLINK-Stack with default init-parameters.
-	 *          Starts the stack with the given nodeId on the given networkInterface.
 	 *
-	 * \param[in] nodeId            nodeId to assign to the local stack-instance.
-	 * \param[in] networkInterface  network interface to run the openPOWERLINK-Stack on.
-	 * \return tOplkError
+	 * Sets the default configuration parameters to stack.
+	 *
+	 * \param[in] nodeId            nodeId to be assigned to the local stack-instance. (Reffered as Local NodeId)
+	 * \param[in] networkInterface  network interface .
+	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError InitStack(const UINT nodeId, const std::string& networkInterface);
 
 	/**
 	 * \brief   Start openPOWERLINK-Stack.
-	 * \return tOplkError
+	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError StartStack();
 
 	/**
 	 * \brief   Stop openPOWERLINK-Stack.
-	 * \return tOplkError
+	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError StopStack();
 
 	/**
-	 * \brief   Sends the NMT command to the specified node.
+	 * \brief   Send a NMT command to the specified node.
 	 *
 	 * \param[in] nodeId      Node id to send the NMT command.
 	 * \param[in] nmtCommand  The command to be sent.
-	 * \return tOplkError
+	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError ExecuteNmtCommand(const UINT nodeId, tNmtCommand nmtCommand);
 
 	/**
-	 * \brief   Handles SDO transfer.
+	 * \brief   Allows the user to perform an SDO transfer via the oplk network
+	 *
+	 * Performs SDO read and write on both local and remote nodes.
+	 * - For remote nodes the user will receive the result of the transfer in
+	 * the receiverFunction after the transfer has been completed.
+	 * - The receiver function should have the same signature as
+	 * OplkEventHandler::SignalSdoTransferFinished(const SdoTransferResult);
 	 *
 	 * \param[in] sdoTransferJob    SDO transfer input parameters.
 	 * \param[in] receiver          Receiver object.
 	 * \param[in] receiverFunction  Receiver function.
-	 * \return tOplkError
+	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError TransferObject(
 		const SdoTransferJob& sdoTransferJob,
@@ -110,129 +121,147 @@ public:
 		const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   Allocates the memory for the ProcessImage and sets the
-	 *          data pointer to the memory
+	 * \brief   Allocate the memory for the ProcessImage and updates the
+	 *          data pointer
 	 * \param[in,out] in   The instance of the ProcessImageIn
 	 * \param[in,out] out  The instance of the ProcessImageOut
-	 * \return tOplkError
+	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError SetupProcessImage(ProcessImageIn& in, ProcessImageOut& out);
 
 	/**
 	 * \brief   Sets the pointer to the CDC buffer.
 	 *
-	 *    Note: This function always has precedence over the
-	 *          OplkQtApi::SetCdc(const char* cdcFileName), if none of these
-	 *          2 functions are called, the API will look for "mnobd.cdc"
-	 *          in the working directory.
+	 * \note This function always has precedence over the
+	 *       OplkQtApi::SetCdc(const char* cdcFileName), if none of these two
+	 *       functions are called, the API will look for "mnobd.cdc" in the
+	 *       working directory.
 	 * \param[in] cdcBuffer  Buffer to the CDC contents.
-	 * \param[in] size       Size of the buffer.
+	 * \param[in] size       Size of the buffer in bytes.
 	 */
 	static void SetCdc(const BYTE* cdcBuffer, const UINT size);
 
 	/**
-	 * \brief    Sets the CDC file name to the openPOWERLINK stack.
+	 * \brief    Set path to CDC file.
+	 *
+	 * \note The function OplkQtApi::SetCdc(const BYTE*, const UINT) always has
+	 *       precedence over this function. If none of these two functions are
+	 *       called, the API will look for "mnobd.cdc" in the working directory.
+	 *
 	 * \param cdcFileName  File name of the CDC
 	 */
 	static void SetCdc(const char* cdcFileName);
 
 	/**
-	 * \brief   Sets the Cycle time.
-	 *          Note: The user has to do a kNmtCmdSwReset to activate the new cycle time.
+	 * \brief   Sets the Cycle time in micro seconds.
+	 * \note The user has execute an NMT command 'kNmtCmdSwReset' to activate the new cycle time.
 	 * \param cycleTime  The requested cycle time.
 	 */
 	static void SetCycleTime(const long cycleTime);
 
 	/**
-	 * \brief   Registers an event-handler for NodeEvents openPOWERLINK-Stack.
+	 * \brief    Subscribes for the NodeFound signal.
 	 *
-	 *          Note: The receiverFunction should have the same signature as
-	 *                OplkEventHandler::SignalNodeFound(const int)
+	 * The receiverFuncion will be registered for the NodeFound signal.
+	 *
+	 * \note The receiverFunction should have the same signature as
+	 *        OplkEventHandler::SignalNodeFound(const int)
 	 * \param[in] receiver          Object to handle the event.
 	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
-	 *         false  Registration not successful.
+	 * \retval false  Registration not successful.
 	 */
 	static bool RegisterNodeFoundEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief  Un registers an event-handler that is registered for NodeEvents of openPOWERLINK-Stack.
+	 * \brief  Un subscribers the receiver from recieving the NodeFound signal.
+	 *
+	 * \note The receiverFunction should have the same signature as
+	 *        OplkEventHandler::SignalNodeFound(const int)
 	 * \param[in] receiver          Object that handles the event.
 	 * \param[in] receiverFunction  Object-Function that handles the event.
 	 * \retval true   Un-registration successful.
-	 *         false  Un-registration not successful.
+	 * \retval false  Un-registration not successful.
 	 */
 	static bool UnregisterNodeFoundEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   Registers an event-handler for state changes of the remote node.
+	 * \brief   Subscribes for the NodeStateChanged signal.
 	 *
-	 *          Note: The receiverFunction should have the same signature as
-	 *                OplkEventHandler::SignalNodeStateChanged(const int, tNmtState)
+	 * \note NodeStateChanged signals indicate the NMT state changes of the remote nodes.
+	 * \note The receiverFunction should have the same signature as
+	 *       OplkEventHandler::SignalNodeStateChanged(const int, tNmtState)
 	 * \param[in] receiver          Object to handle the event.
 	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
-	 *         false  Registration not successful.
+	 * \retval false  Registration not successful.
 	 */
 	static bool RegisterNodeStateChangedEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief  Un registers an event-handler that is registered for state changes of the remote node.
+	 * \brief  Un subscribers the receiver from recieving the NodeStateChanged signals.
+	 * \note The receiverFunction should have the same signature as
+	 *       OplkEventHandler::SignalNodeStateChanged(const int, tNmtState)
 	 * \param[in] receiver          Object that handles the event.
 	 * \param[in] receiverFunction  Object-Function that handles the event.
 	 * \retval true   Un-registration successful.
-	 *         false  Un-registration not successful.
+	 * \retval false  Un-registration not successful.
 	 */
 	static bool UnregisterNodeStateChangedEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   Registers an event-handler for state changes of the local node.
+	 * \brief   Subscribes for the LocalNodeStateChanged signal.
 	 *
-	 *          Note: The receiverFunction should have the same signature as
-	 *                OplkEventHandler::SignalLocalNodeStateChanged(tNmtState)
+	 * \note LocalNodeStateChanged signals indicate the NMT state changes of the local node.
+	 * \note The receiverFunction should have the same signature as
+	 *       OplkEventHandler::SignalLocalNodeStateChanged(tNmtState)
 	 * \param[in] receiver          Object to handle the event.
 	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
-	 *         false  Registration not successful.
+	 * \retval false  Registration not successful.
 	 */
 	static bool RegisterLocalNodeStateChangedEventHandler(
 					const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief  Un registers an event-handler that is registered for state changes of the local node.
+	 * \brief  Un subscribers the receiver from recieving the LocalNodeStateChanged signals.
+	 * \note The receiverFunction should have the same signature as
+	 *       OplkEventHandler::SignalLocalNodeStateChanged(tNmtState)
 	 * \param[in] receiver          Object that handles the event.
 	 * \param[in] receiverFunction  Object-Function that handles the event.
 	 * \retval true   Un-registration successful.
-	 *         false  Un-registration not successful.
+	 * \retval false  Un-registration not successful.
 	 */
 	static bool UnregisterLocalNodeStateChangedEventHandler(
 					const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief   Registers an event-handler for EventLoggers.
+	 * \brief   Subscribes for the PrintLog signals.
 	 *
-	 *          Note: The receiverFunction should have the same signature as
-	 *                OplkEventHandler::SignalPrintLog(const QString&);
+	 * \note The receiverFunction should have the same signature as
+	 *       OplkEventHandler::SignalPrintLog(const QString&);
 	 * \param[in] receiver          Object to handle the event.
 	 * \param[in] receiverFunction  Object-Function to handle the event.
 	 * \retval true   Registration successful.
-	 *         false  Registration not successful.
+	 * \retval false  Registration not successful.
 	 */
 	static bool RegisterEventLogger(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief  Un registers an event-handler that is registered for EventLoggers.
+	 * \brief   Un subscribes the receiver from receiving the Printlog signals.
+	 * \note The receiverFunction should have the same signature as
+	 *       OplkEventHandler::SignalPrintLog(const QString&);
 	 * \param[in] receiver          Object that handles the event.
 	 * \param[in] receiverFunction  Object-Function that handles the event.
 	 * \retval true   Un-registration successful.
-	 *         false  Un-registration not successful.
+	 * \retval false  Un-registration not successful.
 	 */
 	static bool UnregisterEventLogger(const QObject& receiver,
 					const QMetaMethod& receiverFunction);

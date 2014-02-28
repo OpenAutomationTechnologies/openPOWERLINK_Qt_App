@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   ProcessImageOut.cpp
 
-\brief  Implementation of ProcessImageOut class
-*******************************************************************************/
+\brief  Defines the methods that are specific to the output process image.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
