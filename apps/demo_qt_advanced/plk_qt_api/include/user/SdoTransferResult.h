@@ -3,7 +3,6 @@
 \file   SdoTransferResult.h
 
 \brief  The result of the SDO Transfer
-*******************************************************************************/
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -43,15 +42,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common/QtApiGlobal.h"
 
 /**
- * \brief The result of the SDO Transfer
+ * \brief This class contains the result of the Remote node SDO Transfer.
+ * \note The data will be available in the SdoTransferJob instance used for this particular SdoTransfer.
  */
 class PLKQTAPI_EXPORT SdoTransferResult
 {
 public:
 	SdoTransferResult();
 	/**
-	 * \brief   Parameterized constructor with SDO transfer inputs.
-	 *
 	 * \param[in] nodeId            Node id in which SDO transferred has happened.
 	 * \param[in] index             The index id in which SDO transferred has happened.
 	 * \param[in] subIndex          The subindex id in which SDO transferred has happened.
@@ -69,37 +67,37 @@ public:
 		const UINT32 abortCode);
 
 	/**
-	 * \return UINT  Node id of the node.
+	 * \return Node id of the node.
 	 */
 	UINT GetNodeId() const;
 
 	/**
-	 * \return tSdoComConState  SDO command layer connection state.
+	 * \return The state of the SDO command layer connection.
 	 */
 	tSdoComConState GetSdoComConState() const;
 
 	/**
-	 * \return UINT32  Abort code if SDO abort has happened.
+	 * \return Abort code if SDO abort has happened.
 	 */
 	UINT32 GetAbortCode() const;
 
 	/**
-	 * \return tSdoAccessType  AccessType of the SDO transfer.
+	 * \return AccessType of the SDO transfer.
 	 */
 	tSdoAccessType GetSdoAccessType() const;
 
 	/**
-	 * \return UINT  Index id of the node.
+	 * \return Index id of the node.
 	 */
 	UINT GetIndex() const;
 
 	/**
-	 * \return UINT  Sub-Index id of the node.
+	 * \return Sub-Index id of the node.
 	 */
 	UINT GetSubIndex() const;
 
 	/**
-	 * \return UINT  The total size of the transferred data in bytes.
+	 * \return The total size of the transferred data in bytes.
 	 */
 	UINT GetTransferredBytes() const;
 

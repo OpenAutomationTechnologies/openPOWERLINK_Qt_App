@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   SdoTransferJob.h
 
-\brief  The inputs parameters for the SDO Transfer
-*******************************************************************************/
+\brief  Container for holding input parameters used for SDO transfers
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -43,14 +42,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "common/QtApiGlobal.h"
 
 /**
- * \brief The inputs parameters for the SDO Transfer
+ * \brief This class is used to pass the inputs parameters for the SDO Transfer.
+ * \note Refer OplkQtApi::TransferObject
  */
 class PLKQTAPI_EXPORT SdoTransferJob
 {
 public:
 	/**
-	 * \brief   Parameterized constructor with SDO transfer inputs.
-	 *
 	 * \param[in]      nodeId         Node id to which SDO is to be transferred.
 	 * \param[in]      index          The index id to which SDO to be read/write.
 	 * \param[in]      subIndex       The subindex id to which SDO to be read/write.
@@ -68,37 +66,37 @@ public:
 		tSdoAccessType sdoAccessType);
 
 	/**
-	 * \return UINT  Node id of the node.
+	 * \return Node id of the node.
 	 */
 	UINT GetNodeId() const;
 
 	/**
-	 * \return UINT  Index id of the node.
+	 * \return Index id of the node.
 	 */
 	UINT GetIndex() const;
 
 	/**
-	 * \return UINT  SubIndex id of the node.
+	 * \return SubIndex id of the node.
 	 */
 	UINT GetSubIndex() const;
 
 	/**
-	 * \return void*  Pointer to the data.
+	 * \return Pointer to the data.
 	 */
 	void* GetData() const;
 
 	/**
-	 * \return UINT  Size of the data.
+	 * \return Size of the data.
 	 */
 	UINT GetDataSize() const;
 
 	/**
-	 * \return tSdoType  Type of the SDO transfer.
+	 * \return Type of the SDO transfer.
 	 */
 	tSdoType GetSdoType() const;
 
 	/**
-	 * \return tSdoAccessType  AccessType of the SDO transfer.
+	 * \return AccessType of the SDO transfer.
 	 */
 	tSdoAccessType GetSdoAccessType() const;
 

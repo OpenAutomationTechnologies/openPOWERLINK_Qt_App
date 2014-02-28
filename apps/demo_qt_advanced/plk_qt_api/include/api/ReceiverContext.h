@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   ReceiverContext.h
 
-\brief  The context for the receiver implementation
-*******************************************************************************/
+\brief  Refer brief of ReceiverContext.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -42,13 +41,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QMetaMethod>
 
 /**
- * \brief The context for the receiver implementation
+ * \brief A container class to pack the receiver and receiver function for
+ * handling Async call back events
  */
 class ReceiverContext
 {
 public:
 	/**
-	 * \brief   Parameterized constructor with receiver and receiver function.
+	 * \brief   Intializer constructor
+	 *
+	 * Intializes the reciever context object with receiver and receiver function.
 	 *
 	 * \param[in] receiver          Receiver class object.
 	 * \param[in] receiverFunction  Receiver function pointer.
@@ -57,12 +59,12 @@ public:
 		const QMetaMethod* receiverFunction);
 
 	/**
-	 * \return const QObject*  Pointer to the receiver object.
+	 * \return Pointer to the receiver object.
 	 */
 	const QObject* GetReceiver() const;
 
 	/**
-	 * \return const QMetaMethod*  Pointer to the receiver function.
+	 * \return Pointer to the receiver function.
 	 */
 	const QMetaMethod* GetReceiverFunction() const;
 

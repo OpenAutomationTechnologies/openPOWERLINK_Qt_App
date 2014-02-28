@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   ProcessImageParserType.h
 
-\brief
-*******************************************************************************/
+\brief Lists the available ProcessImage parsers.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
@@ -36,7 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _PROCESSIMAGEPARSERTYPE_H_
 
 /**
- * \brief  The type of the parser used for reading the ProcessImage
+ * The type of the parser used for reading the ProcessImage
  *
  */
 enum ProcessImageParserType

@@ -2,8 +2,8 @@
 ********************************************************************************
 \file   SdoTransferResult.cpp
 
-\brief  Implementation of SdoTransferResult class
-*******************************************************************************/
+\brief  Implementation of the SdoTransferResult class which provides
+		methods to access the different attributes of a SdoTransferResult.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

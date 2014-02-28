@@ -2,8 +2,8 @@
 ********************************************************************************
 \file   Channel.cpp
 
-\brief  Implementation of Channel class
-*******************************************************************************/
+\brief  Implementation of the channel class which provides methods
+		to access the different attributes of a channel in a ProcessImage
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

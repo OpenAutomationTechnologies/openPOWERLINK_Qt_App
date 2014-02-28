@@ -3,7 +3,8 @@
 \file   ReceiverContext.cpp
 
 \brief  Implementation of ReceiverContext class
-*******************************************************************************/
+
+A container class to pack the receiver and receiver function for handling Async call back events
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

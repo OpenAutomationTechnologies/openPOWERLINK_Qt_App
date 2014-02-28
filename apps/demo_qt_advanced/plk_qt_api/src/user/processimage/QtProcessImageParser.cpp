@@ -2,8 +2,8 @@
 ********************************************************************************
 \file   QtProcessImageParser.cpp
 
-\brief  Implementation of QtProcessImageParser class
-*******************************************************************************/
+\brief  Implementation of a process image parser that utilizes a Qt 5.2
+		QXmlStreamReader to parse the process image description
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited

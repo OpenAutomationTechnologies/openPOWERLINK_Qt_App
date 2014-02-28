@@ -2,8 +2,7 @@
 ********************************************************************************
 \file   ProcessImageIn.cpp
 
-\brief  Implementation of ProcessImageIn class
-*******************************************************************************/
+\brief  Defines the methods that are specific to the input process image.
 
 /*------------------------------------------------------------------------------
 Copyright (c) 2014, Kalycito Infotech Private Limited
