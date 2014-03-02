@@ -25,8 +25,8 @@ ConsoleReader::ConsoleReader()
 	nodeId = 240;
 	devName.reserve(128);
 	xapFileName = "xap.xml";
-	sdoReadData = new DWORD();
-	sdoWriteData = new DWORD();
+	sdoReadData = new ULONG();
+	sdoWriteData = new ULONG();
 	*sdoWriteData = 50000;
 
 	sdoReadTransferJob = new SdoTransferJob(1, 0x1006, 0x00, (void*) sdoReadData,
@@ -39,12 +39,12 @@ ConsoleReader::ConsoleReader()
 	outputChannelName = "CN1.M01.X20DI9371.DigitalInput02";
 }
 
-DWORD ConsoleReader::GetSdoReadData()
+ULONG ConsoleReader::GetSdoReadData()
 {
 	return *sdoReadData;
 }
 
-DWORD ConsoleReader::GetSdoWriteData()
+ULONG ConsoleReader::GetSdoWriteData()
 {
 	return *sdoWriteData;
 }
@@ -111,8 +111,8 @@ void ConsoleReader::run()
 	}
 
 	bool stackStated = true;
-	unsigned char *piInDataPtr;
-	unsigned char *piOutDataPtr;
+	BYTE *piInDataPtr;
+	BYTE *piOutDataPtr;
 	while (!fExit)
 	{
 		if (console_kbhit())
@@ -160,8 +160,8 @@ void ConsoleReader::run()
 						qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 					}
 					std::cout<< "\n ProcessImageIn - PReq:  ";
-					piInDataPtr = (unsigned char*) oplk_getProcessImageIn();
-					for (unsigned int piloop = 0; piloop < piIn.GetSize(); piloop++)
+					piInDataPtr = (BYTE*) oplk_getProcessImageIn();
+					for (UINT piloop = 0; piloop < piIn.GetSize(); piloop++)
 					{
 						if (piInDataPtr != NULL)
 						{
@@ -170,8 +170,8 @@ void ConsoleReader::run()
 						piInDataPtr++;
 					}
 					std::cout<< "\n ProcessImageOut - PRes:  ";
-					piOutDataPtr = (unsigned char*) oplk_getProcessImageOut();
-					for (unsigned int piloop = 0; piloop < piOut.GetSize(); piloop++)
+					piOutDataPtr = (BYTE*) oplk_getProcessImageOut();
+					for (UINT piloop = 0; piloop < piOut.GetSize(); piloop++)
 					{
 						if (piOutDataPtr != NULL)
 						{
@@ -192,13 +192,13 @@ void ConsoleReader::run()
 				{
 					try
 					{
-						const unsigned char value = 0xFF;
+						const BYTE value = 0xFF;
 						oplkRet = oplk_exchangeProcessImageOut();
 						if (oplkRet != kErrorOk)
 						{
 							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 						}
-						std::vector<unsigned char> val;
+						std::vector<BYTE> val;
 						const Channel channelObj = piIn.GetChannel(inputChannelName);
 						val.reserve(channelObj.GetBitSize());
 						val.push_back(value);
@@ -207,8 +207,8 @@ void ConsoleReader::run()
 						piIn.SetRawData(val,0,0);
 
 						std::cout<< "\n ProcessImageIn - PReq:  ";
-						piInDataPtr = (unsigned char*) oplk_getProcessImageIn();
-						for (unsigned int i = 0; i < piIn.GetSize(); i++)
+						piInDataPtr = (BYTE*) oplk_getProcessImageIn();
+						for (UINT i = 0; i < piIn.GetSize(); i++)
 						{
 							if (piInDataPtr != NULL)
 							{
@@ -239,13 +239,13 @@ void ConsoleReader::run()
 						{
 							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 						}
-						//std::vector<unsigned char> outVal = piOut.GetRawValue(outputChannelName);
-						std::vector<unsigned char> outVal = piOut.GetRawData(16,2,0);
+						//std::vector<BYTE> outVal = piOut.GetRawValue(outputChannelName);
+						std::vector<BYTE> outVal = piOut.GetRawData(16,2,0);
 						std::cout<< "\nPI-Out Val: ";
-						for (std::vector<unsigned char>::const_iterator it = outVal.begin();
+						for (std::vector<BYTE>::const_iterator it = outVal.begin();
 								it != outVal.end(); it++)
 						{
-							//unsigned char ch = *it;
+							//BYTE ch = *it;
 							std::cout << std::hex << (int)(*it);
 						}
 						std::cout << std::endl;

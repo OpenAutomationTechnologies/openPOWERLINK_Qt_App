@@ -38,7 +38,7 @@ ProcessImageOut::ProcessImageOut()
 {
 }
 
-ProcessImageOut::ProcessImageOut(const unsigned int byteSize,
+ProcessImageOut::ProcessImageOut(const UINT byteSize,
 					const std::map<std::string, Channel>& channels)
 					: ProcessImage(byteSize, channels)
 {
@@ -57,7 +57,7 @@ bool ProcessImageOut::AddChannelInternal(const Channel& channel)
 	return retVal;
 }
 
-std::vector<unsigned char> ProcessImageOut::GetRawValue(const std::string& channelName) const
+std::vector<BYTE> ProcessImageOut::GetRawValue(const std::string& channelName) const
 {
 	Channel channelObj = this->GetChannel(channelName);
 	return this->GetRawData(channelObj.GetBitSize(),
@@ -65,19 +65,19 @@ std::vector<unsigned char> ProcessImageOut::GetRawValue(const std::string& chann
 					channelObj.GetBitOffset());
 }
 
-std::vector<unsigned char> ProcessImageOut::GetRawData(const unsigned int bitSize,
-											const unsigned int byteOffset,
-											const unsigned int bitOffset) const
+std::vector<BYTE> ProcessImageOut::GetRawData(const UINT bitSize,
+											const UINT byteOffset,
+											const UINT bitOffset) const
 {
-	std::vector<unsigned char> rawData;
-	unsigned char* piDataPtr = this->GetProcessImageDataPtr();
+	std::vector<BYTE> rawData;
+	BYTE* piDataPtr = this->GetProcessImageDataPtr();
 	if (piDataPtr)
 	{
 		piDataPtr += byteOffset;
 		if ((bitSize % 8) == 0)
 		{
 			rawData.reserve(bitSize/8);
-			for (unsigned int i = 0; i < (bitSize/8); i++)
+			for (UINT i = 0; i < (bitSize/8); i++)
 			{
 				 piDataPtr += i;
 				 rawData.push_back(*piDataPtr);
@@ -90,12 +90,12 @@ std::vector<unsigned char> ProcessImageOut::GetRawData(const unsigned int bitSiz
 				rawData.reserve(1);
 				std::bitset<8> piData = *piDataPtr;
 				std::bitset<8> bitValue;
-				for (unsigned int cntr = 0; cntr < bitSize; cntr++)
+				for (UINT cntr = 0; cntr < bitSize; cntr++)
 				{
 					bitValue.set(cntr, piData[bitOffset + cntr]);
 				}
-				unsigned long longVal = bitValue.to_ulong();
-				unsigned char data = static_cast<unsigned char>(longVal);
+				ULONG longVal = bitValue.to_ulong();
+				BYTE data = static_cast<BYTE>(longVal);
 				rawData.push_back(data);
 			}
 			else

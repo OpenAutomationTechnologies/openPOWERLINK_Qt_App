@@ -54,7 +54,7 @@ public:
 
 	ProcessImageOut();
 
-	ProcessImageOut(const unsigned int byteSize,
+	ProcessImageOut(const UINT byteSize,
 		const std::map<std::string, Channel>& channels);
 
 	/**
@@ -73,20 +73,20 @@ public:
 	 * \return Returns the requested value
 	 * \throws std::out_of_range If name not found
 	 */
-	std::vector<unsigned char> GetRawValue(const std::string& channelName) const;
+	std::vector<BYTE> GetRawValue(const std::string& channelName) const;
 
 	/**
-	 * \brief   Returns the value at the given byte and bit offsets.
+	 * \brief   Returns the value at the given BYTE and bit offsets.
 	 *
 	 * \param[in] bitSize     Size of the data in bits.
 	 * \param[in] byteOffset  Offset in bytes.
-	 * \param[in] bitOffset   Offset in bits with in a single byte
+	 * \param[in] bitOffset   Offset in bits with in a single BYTE
 	 *						  (i.e. in the range of 0 to 7).
 	 * \return Returns the requested value.
 	 */
-	std::vector<unsigned char> GetRawData(const unsigned int bitSize,
-									const unsigned int byteOffset,
-									const unsigned int bitOffset = 0) const;
+	std::vector<BYTE> GetRawData(const UINT bitSize,
+									const UINT byteOffset,
+									const UINT bitOffset = 0) const;
 };
 
 #endif // _PROCESSIMAGEOUT_H_

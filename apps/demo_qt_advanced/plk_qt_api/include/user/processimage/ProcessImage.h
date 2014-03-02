@@ -60,7 +60,7 @@ public:
 	 * \param[in] byteSize  Total size of the ProcessImage in bytes.
 	 * \param[in] channels  The list of channels.
 	 */
-	ProcessImage(const unsigned int byteSize,
+	ProcessImage(const UINT byteSize,
 			const std::map<std::string, Channel>& channels);
 
 	virtual ~ProcessImage();
@@ -72,14 +72,14 @@ public:
 	 *           cumulated size of all Channels.
 	 * \param[in] byteSize  Size in bytes.
 	 */
-	void SetSize(unsigned int byteSize);
+	void SetSize(UINT byteSize);
 
 	/**
 	 * \brief   Returns the total size of the ProcessImage in bytes
 	 *
-	 * \return unsigned int  ProcessImage size in bytes.
+	 * \return UINT  ProcessImage size in bytes.
 	 */
-	unsigned int GetSize() const;
+	UINT GetSize() const;
 
 	/**
 	 * \brief   Sets the ProcessImage data pointer from the stack after memory
@@ -87,12 +87,12 @@ public:
 	 *
 	 * \param[in] data  Data pointer from the stack
 	 */
-	void SetProcessImageDataPtr(unsigned char* data);
+	void SetProcessImageDataPtr(BYTE* data);
 
 	/**
 	 * \return The ProcessImage pointer to the data allocated in the stack.
 	 */
-	unsigned char* GetProcessImageDataPtr() const;
+	BYTE* GetProcessImageDataPtr() const;
 
 	/**
 	 * \return Returns the const Iterator to the first element of the map.
@@ -121,12 +121,12 @@ public:
 	const Channel GetChannel(const std::string& name) const;
 
 	/**
-	 * \brief Returns the list of Channel which has the same byte offset.
+	 * \brief Returns the list of Channel which has the same BYTE offset.
 	 *
-	 * \param[in] byteOffset  The byte offset value.
+	 * \param[in] byteOffset  The BYTE offset value.
 	 * \return The list of Channel.
 	 */
-	const std::vector<Channel> GetChannelsByOffset(const unsigned int byteOffset) const;
+	const std::vector<Channel> GetChannelsByOffset(const UINT byteOffset) const;
 
 	/**
 	 * \brief Returns the list of Channel which belong to the given nodeId.
@@ -134,11 +134,11 @@ public:
 	 * \param[in] nodeId  Node id of the node.
 	 * \return The requested list of Channel.
 	 */
-	const std::vector<Channel> GetChannelsByNodeId(const unsigned int nodeId) const;
+	const std::vector<Channel> GetChannelsByNodeId(const UINT nodeId) const;
 
 	/**
 	 * \brief Resets all the members of this class.
-	 * 
+	 *
 	 * Clears the Channels, sets bytesize to zero and reset datapointer to NULL;
 	 */
 	void ResetProcessImage();
@@ -154,9 +154,9 @@ public:
 	T GetValue(const std::string& channelName) const;
 
 protected:
-	unsigned int byteSize;
+	UINT byteSize;
 	std::map<std::string, Channel> channels;
-	unsigned char* data;  ///< Pointer to access the ProcessImage data allocated in the Stack.
+	BYTE* data;  ///< Pointer to access the ProcessImage data allocated in the Stack.
 
 private:
 	bool virtual AddChannelInternal(const Channel& channel) = 0;

@@ -33,12 +33,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "api/OplkQtApi.h"
 
-const unsigned long kIpAddress = 0xc0a86401;   /**< 192.168.100.1 */
-const unsigned long kSubnetMask = 0xFFFFFF00;  /**< 255.255.255.0 */
+const ULONG kIpAddress = 0xc0a86401;   /**< 192.168.100.1 */
+const ULONG kSubnetMask = 0xFFFFFF00;  /**< 255.255.255.0 */
 const std::string kHostName = "openPOWERLINK Stack";
 const std::string kIfEth = EPL_VETH_NAME;
-const unsigned int kCycleLen = 5000;  /**< Cycle Length (0x1006: NMT_CycleLen_U32) in [us] */
-const unsigned char abMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  /**< Default MAC Address */
+const UINT kCycleLen = 5000;  /**< Cycle Length (0x1006: NMT_CycleLen_U32) in [us] */
+const BYTE abMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  /**< Default MAC Address */
 
 static char* defaultCDCFilename = (char *)"mnobd.cdc";  /**< CDC file name */
 static bool cdcSet = false;
@@ -362,8 +362,8 @@ tOplkError OplkQtApi::SetupProcessImage(ProcessImageIn& in,
 		return oplkRet;
 	}
 
-	in.SetProcessImageDataPtr((unsigned char*)oplk_getProcessImageIn());
-	out.SetProcessImageDataPtr((unsigned char*)oplk_getProcessImageOut());
+	in.SetProcessImageDataPtr((BYTE*)oplk_getProcessImageIn());
+	out.SetProcessImageDataPtr((BYTE*)oplk_getProcessImageOut());
 
 	return oplkRet;
 }
@@ -382,7 +382,7 @@ void OplkQtApi::SetCdc(const char* cdcFileName)
 	cdcSet = true;
 }
 
-void OplkQtApi::SetCycleTime(const long cycleTime)
+void OplkQtApi::SetCycleTime(const ULONG cycleTime)
 {
 	tOplkError oplkRet = kErrorOk;
 

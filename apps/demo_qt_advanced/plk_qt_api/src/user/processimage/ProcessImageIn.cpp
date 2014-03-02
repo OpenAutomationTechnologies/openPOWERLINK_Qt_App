@@ -39,7 +39,7 @@ ProcessImageIn::ProcessImageIn()
 
 }
 
-ProcessImageIn::ProcessImageIn(const unsigned int byteSize,
+ProcessImageIn::ProcessImageIn(const UINT byteSize,
 		const std::map<std::string, Channel>& channels)
 		: ProcessImage(byteSize, channels)
 {
@@ -60,17 +60,17 @@ bool ProcessImageIn::AddChannelInternal(const Channel& channel)
 }
 
 void ProcessImageIn::SetRawValue(const std::string& channelName,
-						std::vector<unsigned char>& value)
+						std::vector<BYTE>& value)
 {
 	Channel channelObj = this->GetChannel(channelName);
-	unsigned char* piDataPtr = this->GetProcessImageDataPtr();
+	BYTE* piDataPtr = this->GetProcessImageDataPtr();
 	if (piDataPtr)
 	{
-		const unsigned int bitSize = channelObj.GetBitSize();
+		const UINT bitSize = channelObj.GetBitSize();
 		piDataPtr += channelObj.GetByteOffset();
 		if ((bitSize % 8) == 0)
 		{
-			for (unsigned int i = 0; i < (bitSize/8); i++)
+			for (UINT i = 0; i < (bitSize/8); i++)
 			{
 				piDataPtr += i;
 				*piDataPtr = value[i];
@@ -82,12 +82,12 @@ void ProcessImageIn::SetRawValue(const std::string& channelName,
 			{
 				std::bitset<8> piData = *piDataPtr;
 				std::bitset<8> bitValue = value[0];
-				for (unsigned int i = 0; i < bitSize; i++)
+				for (UINT i = 0; i < bitSize; i++)
 				{
 					piData.set((channelObj.GetBitOffset() + i), bitValue[i]);
 				}
-				unsigned long longVal = piData.to_ulong();
-				unsigned char piDataNew = static_cast<unsigned char>(longVal);
+				ULONG longVal = piData.to_ulong();
+				BYTE piDataNew = static_cast<BYTE>(longVal);
 				*piDataPtr = piDataNew;
 			}
 			else
@@ -102,11 +102,11 @@ void ProcessImageIn::SetRawValue(const std::string& channelName,
 	}
 }
 
-void ProcessImageIn::SetRawData(const std::vector<unsigned char>& value,
-						const unsigned int byteOffset,
-						const unsigned int bitOffset)
+void ProcessImageIn::SetRawData(const std::vector<BYTE>& value,
+						const UINT byteOffset,
+						const UINT bitOffset)
 {
-	unsigned char* piDataPtr = this->GetProcessImageDataPtr();
+	BYTE* piDataPtr = this->GetProcessImageDataPtr();
 
 	if((byteOffset + value.size()) > this->GetSize())
 	{
@@ -123,15 +123,15 @@ void ProcessImageIn::SetRawData(const std::vector<unsigned char>& value,
 		{
 			std::bitset<8> piData = *piDataPtr;
 			std::bitset<8> bitValue = value[0];
-			for (unsigned int i = bitOffset; i < (8 - bitOffset); i++)
+			for (UINT i = bitOffset; i < (8 - bitOffset); i++)
 			{
 				piData.set(i, bitValue[i]);
 			}
-			unsigned long longVal = piData.to_ulong();
-			unsigned char piDataNew = static_cast<unsigned char>(longVal);
+			ULONG longVal = piData.to_ulong();
+			BYTE piDataNew = static_cast<BYTE>(longVal);
 			*piDataPtr = piDataNew;
 
-			for (unsigned int i = 1; i < value.size(); i++)
+			for (UINT i = 1; i < value.size(); i++)
 			{
 				piDataPtr += i;
 				*piDataPtr = value[i];
@@ -140,7 +140,7 @@ void ProcessImageIn::SetRawData(const std::vector<unsigned char>& value,
 		}
 		else if (bitOffset == 0)
 		{
-			for (unsigned int i = 0; i < value.size(); i++)
+			for (UINT i = 0; i < value.size(); i++)
 			{
 				piDataPtr += i;
 				*piDataPtr = value[i];

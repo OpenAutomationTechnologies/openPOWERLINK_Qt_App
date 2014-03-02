@@ -157,7 +157,7 @@ public:
 	 * \note The user has execute an NMT command 'kNmtCmdSwReset' to activate the new cycle time.
 	 * \param cycleTime  The requested cycle time.
 	 */
-	static void SetCycleTime(const long cycleTime);
+	static void SetCycleTime(const ULONG cycleTime);
 
 	/**
 	 * \brief    Subscribes for the NodeFound signal.

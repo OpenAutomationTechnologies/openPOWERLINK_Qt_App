@@ -27,19 +27,19 @@ class ConsoleReader : public QThread
 public:
 	ConsoleReader();
 	void run();
-	DWORD GetSdoReadData();
-	DWORD GetSdoWriteData();
+	ULONG GetSdoReadData();
+	ULONG GetSdoWriteData();
 
 private:
-	DWORD *sdoReadData;
-	DWORD *sdoWriteData;
+	ULONG *sdoReadData;
+	ULONG *sdoWriteData;
 	SdoTransferJob *sdoReadTransferJob;
 	SdoTransferJob *sdoWriteTransferJob;
 	Receiver receiver;
 
 	std::string inputChannelName;
 	std::string outputChannelName;
-	unsigned int nodeId;
+	UINT nodeId;
 	std::string devName;
 
 	std::string xapFileName;
