@@ -34,7 +34,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _PROCESSIMAGEPARSER_H_
 #define _PROCESSIMAGEPARSER_H_
 
-#include <fstream>
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
+#include <string>
 
 #include "user/processimage/Direction.h"
 #include "user/processimage/ProcessImage.h"
@@ -72,7 +75,7 @@ public:
 	 * \throws std::invalid_argument if xml file buffer is NULL.
 	 * \throws XmlParserException If any error occurred.
 	 */
-	void Parse(const char* description);
+	void Parse(const char* xmlDescription);
 
 	/**
 	 * \param[in] direction  The ProcessImage direction
@@ -87,25 +90,27 @@ protected:
 	ProcessImageIn in;
 	ProcessImageOut out;
 
-	static const std::string piType;
-	static const std::string byteSize;
+	static const std::string processImage_attribute_Type;
+	static const std::string processImage_attribute_byteSize;
 
-	static const std::string name;
-	static const std::string dataType;
-	static const std::string bitSize;
-	static const std::string byteOffset;
-	static const std::string bitOffset;
+	static const std::string processImage_Type_input;
+	static const std::string processImage_Type_output;
 
-	static const std::string tagApplicationProcess;
-	static const std::string tagProcessImage;
-	static const std::string tagChannel;
+	static const std::string channel_attribute_name;
+	static const std::string channel_attribute_dataType;
+	static const std::string channel_attribute_bitSize;
+	static const std::string channel_attribute_byteOffset;
+	static const std::string channel_attribute_bitOffset;
+	static const std::string applicationProcess_element_name;
+	static const std::string processImage_element_name;
+	static const std::string channel_element_name;
 
 private:
 	ProcessImageParser(const ProcessImageParser& rhs);
 
 	ProcessImageParser& operator=(const ProcessImageParser& rhs);
 
-	void virtual ParseInternal(const char* description) = 0;
+	void virtual ParseInternal(const char* xmlDescription) = 0;
 
 };
 
