@@ -35,23 +35,47 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ------------------------------------------------------------------------------*/
 
-#include "api/OplkEventHandler.h"
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
+#include <QDateTime>
+#include <QString>
+#include <QMetaMethod>
 #include <oplk/debugstr.h>
 
-//------------------------------------------------------------------------------
-// global variables
-//------------------------------------------------------------------------------
-#if !defined(CONFIG_INCLUDE_CFM)
-// Configuration Manager is not available,
-// so store local CycleLen for configuration of remote CNs
-static DWORD        cycleLen_g;
-#endif
+#include "api/OplkEventHandler.h"
+
+/*******************************************************************************
+* PUBLIC Functions
+*******************************************************************************/
+void OplkEventHandler::AwaitNmtGsOff()
+{
+	mutex.lock();
+	nmtGsOffCondition.wait(&mutex);
+	mutex.unlock();
+}
+
+tEplApiCbEvent OplkEventHandler::GetEventCbFunc(void)
+{
+	return AppCbEvent;
+}
+
+/*******************************************************************************
+* PRIVATE Functions
+*******************************************************************************/
 
 OplkEventHandler::OplkEventHandler(){}
 
+OplkEventHandler& OplkEventHandler::GetInstance()
+{
+	// Local static object - Not thread safe
+	static OplkEventHandler instance;
+	return instance;
+}
+
 tOplkError OplkEventHandler::AppCbEvent(tEplApiEventType eventType,
 								tEplApiEventArg* eventArg,
-								void GENERIC* userArg)
+								void* userArg)
 {
 	tOplkError  oplkRet = kErrorOk;
 
@@ -124,12 +148,7 @@ tOplkError OplkEventHandler::AppCbEvent(tEplApiEventType eventType,
 	return oplkRet;
 }
 
-OplkEventHandler& OplkEventHandler::GetInstance()
-{
-	static OplkEventHandler instance;
-	return instance;
-}
-
+//TODO: C4711: Think of inlining.
 void OplkEventHandler::TriggerLocalNodeStateChanged(tNmtState nmtState)
 {
 	emit SignalLocalNodeStateChanged(nmtState);
@@ -189,22 +208,9 @@ void OplkEventHandler::TriggerPrintLog(QString logStr)
 	emit SignalPrintLog(str);
 }
 
-void OplkEventHandler::AwaitNmtGsOff()
-{
-	mutex.lock();
-	nmtGsOffCondition.wait(&mutex);
-	mutex.unlock();
-}
-
-tEplApiCbEvent OplkEventHandler::GetEventCbFunc(void)
-{
-	qDebug("Appcbevent get call");
-	return AppCbEvent;
-}
-
 tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 								tEventNmtStateChange* nmtStateChange,
-								void GENERIC* userArg)
+								void* userArg)
 {
 	tOplkError oplkRet = kErrorOk;
 
@@ -308,7 +314,7 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 
 tOplkError OplkEventHandler::ProcessErrorWarningEvent(
 								tEplEventError* internalError,
-								void GENERIC* userArg)
+								void* userArg)
 {
 
 	UNUSED_PARAMETER(userArg);
@@ -344,7 +350,7 @@ tOplkError OplkEventHandler::ProcessErrorWarningEvent(
 
 tOplkError OplkEventHandler::ProcessHistoryEvent(
 								tErrHistoryEntry* historyEntry,
-								void GENERIC* userArg)
+								void* userArg)
 {
 
 	UNUSED_PARAMETER(userArg);
@@ -365,7 +371,7 @@ tOplkError OplkEventHandler::ProcessHistoryEvent(
 }
 
 tOplkError OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
-								void GENERIC* userArg)
+								void* userArg)
 {
 	tOplkError oplkRet = kErrorOk;
 
@@ -475,7 +481,7 @@ tOplkError OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
 }
 
 tOplkError OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
-								void GENERIC* userArg)
+								void* userArg)
 {
 	UNUSED_PARAMETER(userArg);
 	qDebug("ProcessSDO: %d", sdoEvent->sdoComConState);
@@ -503,7 +509,7 @@ tOplkError OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
 
 tOplkError OplkEventHandler::ProcessCfmProgressEvent(
 								tCfmEventCnProgress* cfmProgress,
-								void GENERIC* userArg)
+								void* userArg)
 {
 	UNUSED_PARAMETER(userArg);
 
@@ -526,7 +532,7 @@ tOplkError OplkEventHandler::ProcessCfmProgressEvent(
 
 tOplkError OplkEventHandler::ProcessCfmResultEvent(
 								tEplApiEventCfmResult* cfmResult,
-								void GENERIC* userArg)
+								void* userArg)
 {
 	UNUSED_PARAMETER(userArg);
 
