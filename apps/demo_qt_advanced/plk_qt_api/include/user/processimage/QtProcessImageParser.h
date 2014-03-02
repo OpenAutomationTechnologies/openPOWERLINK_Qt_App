@@ -73,7 +73,7 @@ private:
 	 * \param[in] direction  The direction of the ProcessImage channels.
 	 * \throws XmlParserException If any error occurred.
 	 */
-	void ParseChannels(Direction direction);
+	void ParseChannels(Direction::eDirection direction);
 
 	QXmlStreamReader xml;  ///< Xml reader instance
 };

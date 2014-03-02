@@ -62,11 +62,11 @@ public:
 	 * \param[in] direction   Direction of the Channel.
 	 */
 	Channel(const std::string& name,
-		IECDataType dataType,
+		IECDataType::eIECDataType dataType,
 		const unsigned int byteOffset,
 		const unsigned int bitOffset,
 		const unsigned int bitSize,
-		Direction direction);
+		Direction::eDirection direction);
 
 	/**
 	 * \return The name of the Channel.
@@ -76,7 +76,7 @@ public:
 	/**
 	 * \return Datatype of the Channel.
 	 */
-	IECDataType GetDataType() const;
+	IECDataType::eIECDataType GetDataType() const;
 
 	/**
 	 * \return The offset of the Channel within the processimage in bytes.
@@ -96,15 +96,15 @@ public:
 	/**
 	 * \return The Direction of the Channel within the processimage.
 	 */
-	Direction GetDirection() const;
+	Direction::eDirection GetDirection() const;
 
 private:
-	std::string name;         ///< Name
-	IECDataType dataType;     ///< dataType
+	std::string name;                       ///< Name
+	IECDataType::eIECDataType dataType;     ///< dataType
 	unsigned int byteOffset;  ///< PIOffset
 	unsigned int bitOffset;   ///< BitOffset
 	unsigned int bitSize;     ///< dataSize
-	Direction direction;      ///< ProcessImage->type
+	Direction::eDirection direction;        ///< ProcessImage->type
 };
 
 #endif // _CHANNEL_H_

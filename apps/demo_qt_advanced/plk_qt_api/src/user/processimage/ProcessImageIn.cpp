@@ -49,7 +49,7 @@ ProcessImageIn::ProcessImageIn(const unsigned int byteSize,
 bool ProcessImageIn::AddChannelInternal(const Channel& channel)
 {
 	bool retVal = false;
-	if (channel.GetDirection() == PI_IN)
+	if (channel.GetDirection() == Direction::PI_IN)
 	{
 		this->channels.insert(std::pair<std::string, Channel>(channel.GetName(),
 															  channel));

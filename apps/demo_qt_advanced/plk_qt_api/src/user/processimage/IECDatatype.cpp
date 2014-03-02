@@ -39,94 +39,97 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-IECDataType GetIECDatatype(const std::string& iecDataTypeStr)
+namespace IECDataType
 {
-	IECDataType iecDataType = UNDEFINED;
+
+IECDataType::eIECDataType GetIECDatatype(const std::string& iecDataTypeStr)
+{
+	IECDataType::eIECDataType iecDataType = IECDataType::UNDEFINED;
 
 	if (CompareCaseInsensitive("BOOL", iecDataTypeStr)
 		|| CompareCaseInsensitive("Boolean", iecDataTypeStr)
 		|| CompareCaseInsensitive("BITSTRING", iecDataTypeStr))
 	{
-		iecDataType = IEC_BOOL;
+		iecDataType = IECDataType::IEC_BOOL;
 	}
 	else if (CompareCaseInsensitive("BYTE", iecDataTypeStr))
 	{
-		iecDataType = IEC_BYTE;
+		iecDataType = IECDataType::IEC_BYTE;
 	}
 	else if (CompareCaseInsensitive("CHAR", iecDataTypeStr))
 	{
-		iecDataType = IEC_CHAR;
+		iecDataType = IECDataType::IEC_CHAR;
 	}
 	else if (CompareCaseInsensitive("WORD", iecDataTypeStr))
 	{
-		iecDataType = IEC_WORD;
+		iecDataType = IECDataType::IEC_WORD;
 	}
 	else if (CompareCaseInsensitive("DWORD", iecDataTypeStr))
 	{
-		iecDataType = IEC_DWORD;
+		iecDataType = IECDataType::IEC_DWORD;
 	}
 	else if (CompareCaseInsensitive("LWORD", iecDataTypeStr))
 	{
-		iecDataType = IEC_LWORD;
+		iecDataType = IECDataType::IEC_LWORD;
 	}
 	else if (CompareCaseInsensitive("SINT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Integer8", iecDataTypeStr))
 	{
-		iecDataType = IEC_SINT;
+		iecDataType = IECDataType::IEC_SINT;
 	}
 	else if (CompareCaseInsensitive("INT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Integer16", iecDataTypeStr))
 	{
-		iecDataType = IEC_INT;
+		iecDataType = IECDataType::IEC_INT;
 	}
 	else if (CompareCaseInsensitive("DINT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Integer32", iecDataTypeStr))
 	{
-		iecDataType = IEC_DINT;
+		iecDataType = IECDataType::IEC_DINT;
 	}
 	else if (CompareCaseInsensitive("LINT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Integer64", iecDataTypeStr))
 	{
-		iecDataType = IEC_LINT;
+		iecDataType = IECDataType::IEC_LINT;
 	}
 	else if (CompareCaseInsensitive("USINT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Unsigned8", iecDataTypeStr))
 	{
-		iecDataType = IEC_USINT;
+		iecDataType = IECDataType::IEC_USINT;
 	}
 	else if (CompareCaseInsensitive("UINT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Unsigned16", iecDataTypeStr))
 	{
-		iecDataType = IEC_UINT;
+		iecDataType = IECDataType::IEC_UINT;
 	}
 	else if (CompareCaseInsensitive("UDINT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Unsigned32", iecDataTypeStr))
 	{
-		iecDataType = IEC_UDINT;
+		iecDataType = IECDataType::IEC_UDINT;
 	}
 	else if (CompareCaseInsensitive("ULINT", iecDataTypeStr)
 			|| CompareCaseInsensitive("Unsigned64", iecDataTypeStr))
 	{
-		iecDataType = IEC_ULINT;
+		iecDataType = IECDataType::IEC_ULINT;
 	}
 	else if (CompareCaseInsensitive("REAL", iecDataTypeStr)
 			|| CompareCaseInsensitive("REAL32", iecDataTypeStr))
 	{
-		iecDataType = IEC_REAL;
+		iecDataType = IECDataType::IEC_REAL;
 	}
 	else if (CompareCaseInsensitive("LREAL", iecDataTypeStr)
 			|| CompareCaseInsensitive("REAL64", iecDataTypeStr))
 	{
-		iecDataType = IEC_LREAL;
+		iecDataType = IECDataType::IEC_LREAL;
 	}
 	else if (CompareCaseInsensitive("STRING", iecDataTypeStr)
 			|| CompareCaseInsensitive("VISIBLE_STRING", iecDataTypeStr))
 	{
-		iecDataType = IEC_STRING;
+		iecDataType = IECDataType::IEC_STRING;
 	}
 	else if (CompareCaseInsensitive("WSTRING", iecDataTypeStr))
 	{
-		iecDataType = IEC_WSTRING;
+		iecDataType = IECDataType::IEC_WSTRING;
 	}
 	else
 	{
@@ -136,3 +139,5 @@ IECDataType GetIECDatatype(const std::string& iecDataTypeStr)
 	return iecDataType;
 
 } // GetIecDataType
+
+} // namespace IECDatatype

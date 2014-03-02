@@ -82,14 +82,14 @@ void QtProcessImageParser::ParseProcessImage()
 		{
 			/* Get the attributes for ProcessImage */
 			QXmlStreamAttributes attrib = xml.attributes();
-			Direction direction = static_cast<Direction>(-1);
+			Direction::eDirection direction = Direction::UNDEFINED;
 			unsigned int byteSize = 0;
 			if (attrib.hasAttribute(QString::fromStdString(this->piType)))
 			{
 				QString piType;
 				piType =  attrib.value(QString::fromStdString(this->piType)).toString();
-				direction = (piType == "output") ? PI_OUT :
-							(piType == "input") ? PI_IN : static_cast<Direction>(-1);
+				direction = (piType == "output") ? Direction::PI_OUT :
+							(piType == "input") ? Direction::PI_IN : direction;
 			}
 
 			if (attrib.hasAttribute(QString::fromStdString(this->byteSize)))
@@ -104,11 +104,11 @@ void QtProcessImageParser::ParseProcessImage()
 				byteSize = ((byteSize/4)+1)*4;
 			}
 
-			if (direction == PI_OUT)
+			if (direction == Direction::PI_OUT)
 			{
 				this->out.SetSize(byteSize);
 			}
-			else if (direction == PI_IN)
+			else if (direction == Direction::PI_IN)
 			{
 				this->in.SetSize(byteSize);
 			}
@@ -125,14 +125,14 @@ void QtProcessImageParser::ParseProcessImage()
 	}
 }
 
-void QtProcessImageParser::ParseChannels(Direction direction)
+void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 {
 	/*
 	 * Loop over the things because the order might change.
 	 * Continue the loop until we hit an EndElement named ProcessImage.
 	 */
 	std::string name = "";
-	IECDataType dataType = UNDEFINED;
+	IECDataType::eIECDataType dataType = IECDataType::UNDEFINED;
 	unsigned int byteOffset = 0;
 	unsigned int bitOffset = 0;
 	unsigned int bitSize = 0;
@@ -161,7 +161,7 @@ void QtProcessImageParser::ParseChannels(Direction direction)
 				{
 					std::string iecDataTypeStr;
 					iecDataTypeStr = attributes.value(QString::fromStdString(this->dataType)).toString().toStdString();
-					dataType = GetIECDatatype(iecDataTypeStr);
+					dataType = IECDataType::GetIECDatatype(iecDataTypeStr);
 				}
 
 				if (attributes.hasAttribute(QString::fromStdString(this->bitSize)))
@@ -181,11 +181,11 @@ void QtProcessImageParser::ParseChannels(Direction direction)
 
 				Channel chObj(name, dataType, byteOffset, bitOffset, bitSize, direction);
 				//std::cout << "Channel" << name << " : " << dataType <<" : " << byteOffset <<" : " << bitOffset <<" : " << bitSize <<" : " << direction << std::endl;
-				if (direction == PI_IN)
+				if (direction == Direction::PI_IN)
 				{
 					this->in.AddChannel(chObj);
 				}
-				else if (direction == PI_OUT)
+				else if (direction == Direction::PI_OUT)
 				{
 					this->out.AddChannel(chObj);
 				}
