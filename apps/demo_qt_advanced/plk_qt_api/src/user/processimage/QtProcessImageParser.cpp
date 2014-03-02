@@ -37,11 +37,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 void QtProcessImageParser::ParseInternal(const char* description)
 {
 
-	xml.addData(description);
+	this->xml.addData(description);
 
-	while(!xml.atEnd() && !xml.hasError())
+	while(!this->xml.atEnd() && !this->xml.hasError())
 	{
-		QXmlStreamReader::TokenType token = xml.readNext();
+		QXmlStreamReader::TokenType token = this->xml.readNext();
 		/* If token is StartDocument, Go to next.*/
 		if (token == QXmlStreamReader::StartDocument)
 		{
@@ -51,15 +51,15 @@ void QtProcessImageParser::ParseInternal(const char* description)
 		if (token == QXmlStreamReader::StartElement)
 		{
 			/* If it's named ApplicationProcess, Go to the next.*/
-			if (xml.name() == "ApplicationProcess")
+			if (this->xml.name() == QString::fromStdString(ProcessImageParser::applicationProcess_element_name).right(-1))
 			{
 				continue;
 			}
-			if (xml.name() == "ProcessImage")
+			if (this->xml.name() == QString::fromStdString(ProcessImageParser::processImage_element_name).right(-1))
 			{
 				/* Let's check that we're really getting a ProcessImage. */
-				if (xml.tokenType() != QXmlStreamReader::StartElement &&
-						xml.name() == "ProcessImage")
+				if (this->xml.tokenType() != QXmlStreamReader::StartElement &&
+						this->xml.name() == QString::fromStdString(ProcessImageParser::processImage_element_name).right(-1))
 				{
 					continue;
 				}
@@ -67,34 +67,34 @@ void QtProcessImageParser::ParseInternal(const char* description)
 			}
 		}
 	}
-	if (xml.hasError()) {
+	if (this->xml.hasError()) {
 		//Throw err?
 	}
-	xml.clear();
+	this->xml.clear();
 }
 
 void QtProcessImageParser::ParseProcessImage()
 {
-	while (!(xml.tokenType() == QXmlStreamReader::EndElement
-			 && xml.name() == "ApplicationProcess"))
+	while (!(this->xml.tokenType() == QXmlStreamReader::EndElement
+			 && this->xml.name() == QString::fromStdString(ProcessImageParser::applicationProcess_element_name).right(-1)))
 	{
-		if (xml.tokenType() == QXmlStreamReader::StartElement)
+		if (this->xml.tokenType() == QXmlStreamReader::StartElement)
 		{
 			/* Get the attributes for ProcessImage */
-			QXmlStreamAttributes attrib = xml.attributes();
+			QXmlStreamAttributes attrib = this->xml.attributes();
 			Direction::eDirection direction = Direction::UNDEFINED;
 			unsigned int byteSize = 0;
-			if (attrib.hasAttribute(QString::fromStdString(this->piType)))
+			if (attrib.hasAttribute(QString::fromStdString(ProcessImageParser::processImage_attribute_Type)))
 			{
 				QString piType;
-				piType =  attrib.value(QString::fromStdString(this->piType)).toString();
-				direction = (piType == "output") ? Direction::PI_OUT :
-							(piType == "input") ? Direction::PI_IN : direction;
+				piType =  attrib.value(QString::fromStdString(ProcessImageParser::processImage_attribute_Type)).toString();
+				direction = (piType == QString::fromStdString(ProcessImageParser::processImage_Type_output)) ? Direction::PI_OUT :
+							(piType == QString::fromStdString(ProcessImageParser::processImage_Type_input)) ? Direction::PI_IN : direction;
 			}
 
-			if (attrib.hasAttribute(QString::fromStdString(this->byteSize)))
+			if (attrib.hasAttribute(QString::fromStdString(ProcessImageParser::processImage_attribute_byteSize)))
 			{
-				QString size_str = attrib.value(QString::fromStdString(this->byteSize)).toString();
+				QString size_str = attrib.value(QString::fromStdString(ProcessImageParser::processImage_attribute_byteSize)).toString();
 				byteSize = size_str.toUInt();
 			}
 
@@ -117,11 +117,11 @@ void QtProcessImageParser::ParseProcessImage()
 				//Throw error?
 			}
 			/* Next element... */
-			xml.readNext();
+			this->xml.readNext();
 
 			this->ParseChannels(direction);
 		}
-		xml.readNext();
+		this->xml.readNext();
 	}
 }
 
@@ -137,46 +137,46 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 	unsigned int bitOffset = 0;
 	unsigned int bitSize = 0;
 
-	while (!(xml.tokenType() == QXmlStreamReader::EndElement
-			 && xml.name() == "ProcessImage"))
+	while (!(this->xml.tokenType() == QXmlStreamReader::EndElement
+			 && this->xml.name() == QString::fromStdString(ProcessImageParser::processImage_element_name).right(-1)))
 	{
-		if (xml.tokenType() == QXmlStreamReader::StartElement)
+		if (this->xml.tokenType() == QXmlStreamReader::StartElement)
 		{
-			if (xml.name() == "Channel")
+			if (this->xml.name() == QString::fromStdString(ProcessImageParser::channel_element_name).right(-1))
 			{
-				if ((xml.tokenType() != QXmlStreamReader::StartElement)
-						&& (xml.name() == "Channel"))
+				if ((this->xml.tokenType() != QXmlStreamReader::StartElement)
+						&& (this->xml.name() == QString::fromStdString(ProcessImageParser::channel_element_name).right(-1)))
 				{
 					return;
 				}
 
 				/* Get the attributes for Channel */
-				QXmlStreamAttributes attributes = xml.attributes();
+				QXmlStreamAttributes attributes = this->xml.attributes();
 
-				if (attributes.hasAttribute(QString::fromStdString(this->name)))
+				if (attributes.hasAttribute(QString::fromStdString(ProcessImageParser::channel_attribute_name)))
 				{
-					name = attributes.value(QString::fromStdString(this->name)).toString().toStdString();
+					name = attributes.value(QString::fromStdString(ProcessImageParser::channel_attribute_name)).toString().toStdString();
 				}
-				if (attributes.hasAttribute(QString::fromStdString(this->dataType)))
+				if (attributes.hasAttribute(QString::fromStdString(ProcessImageParser::channel_attribute_dataType)))
 				{
 					std::string iecDataTypeStr;
-					iecDataTypeStr = attributes.value(QString::fromStdString(this->dataType)).toString().toStdString();
+					iecDataTypeStr = attributes.value(QString::fromStdString(ProcessImageParser::channel_attribute_dataType)).toString().toStdString();
 					dataType = IECDataType::GetIECDatatype(iecDataTypeStr);
 				}
 
-				if (attributes.hasAttribute(QString::fromStdString(this->bitSize)))
+				if (attributes.hasAttribute(QString::fromStdString(ProcessImageParser::channel_attribute_bitSize)))
 				{
-					bitSize = attributes.value(QString::fromStdString(this->bitSize)).toString().toUInt();
+					bitSize = attributes.value(QString::fromStdString(ProcessImageParser::channel_attribute_bitSize)).toString().toUInt();
 				}
 
-				if (attributes.hasAttribute(QString::fromStdString(this->byteOffset)))
+				if (attributes.hasAttribute(QString::fromStdString(ProcessImageParser::channel_attribute_byteOffset)))
 				{
-					byteOffset = attributes.value(QString::fromStdString(this->byteOffset)).toString().toUInt(0, 16);
+					byteOffset = attributes.value(QString::fromStdString(ProcessImageParser::channel_attribute_byteOffset)).toString().toUInt(0, 16);
 				}
 
-				if (attributes.hasAttribute(QString::fromStdString(this->bitOffset)))
+				if (attributes.hasAttribute(QString::fromStdString(ProcessImageParser::channel_attribute_bitOffset)))
 				{
-					bitOffset = attributes.value(QString::fromStdString(this->bitOffset)).toString().toUInt(0, 16);
+					bitOffset = attributes.value(QString::fromStdString(ProcessImageParser::channel_attribute_bitOffset)).toString().toUInt(0, 16);
 				}
 
 				Channel chObj(name, dataType, byteOffset, bitOffset, bitSize, direction);
@@ -197,7 +197,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 			}
 		}
 		/* ...and next... */
-		xml.readNext();
+		this->xml.readNext();
 	}
 }
 

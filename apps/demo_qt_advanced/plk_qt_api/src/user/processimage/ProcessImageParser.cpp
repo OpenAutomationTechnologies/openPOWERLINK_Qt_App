@@ -31,21 +31,29 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ------------------------------------------------------------------------------*/
 
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
 #include "user/processimage/ProcessImageParser.h"
 #include "user/processimage/QtProcessImageParser.h"
 
-const std::string ProcessImageParser::piType = "type";
-const std::string ProcessImageParser::byteSize = "size";
+/*******************************************************************************
+* Static member variables
+*******************************************************************************/
+const std::string ProcessImageParser::processImage_attribute_Type = "type";
+const std::string ProcessImageParser::processImage_attribute_byteSize = "size";
 
-const std::string ProcessImageParser::name = "Name";
-const std::string ProcessImageParser::dataType = "dataType";
-const std::string ProcessImageParser::bitSize = "dataSize";
-const std::string ProcessImageParser::byteOffset = "PIOffset";
-const std::string ProcessImageParser::bitOffset = "BitOffset";
+const std::string ProcessImageParser::processImage_Type_input = "input";
+const std::string ProcessImageParser::processImage_Type_output = "output";
 
-const std::string ProcessImageParser::tagApplicationProcess = "ApplicationProcess";
-const std::string ProcessImageParser::tagProcessImage = "ProcessImage";
-const std::string ProcessImageParser::tagChannel = "Channel";
+const std::string ProcessImageParser::channel_attribute_name = "Name";
+const std::string ProcessImageParser::channel_attribute_dataType = "dataType";
+const std::string ProcessImageParser::channel_attribute_bitSize = "dataSize";
+const std::string ProcessImageParser::channel_attribute_byteOffset = "PIOffset";
+const std::string ProcessImageParser::channel_attribute_bitOffset = "BitOffset";
+const std::string ProcessImageParser::applicationProcess_element_name = "ApplicationProcess";
+const std::string ProcessImageParser::processImage_element_name = "ProcessImage";
+const std::string ProcessImageParser::channel_element_name = "Channel";
 
 ProcessImageParser::ProcessImageParser()
 {
@@ -83,7 +91,7 @@ ProcessImage& ProcessImageParser::GetProcessImage(const Direction::eDirection di
 	}
 }
 
-void ProcessImageParser::Parse(const char* description)
+void ProcessImageParser::Parse(const char* xmlDescription)
 {
-	this->ParseInternal(description);
+	this->ParseInternal(xmlDescription);
 }
