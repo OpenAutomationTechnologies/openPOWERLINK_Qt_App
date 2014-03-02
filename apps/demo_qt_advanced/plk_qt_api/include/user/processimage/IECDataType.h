@@ -40,9 +40,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 
 /**
+ * \brief IECDataType of the Channels.
+ * refer Enum - IECDataType
+ */
+namespace IECDataType
+{
+/**
  * List of datatypes derived from the IEC standards.
  */
-enum IECDataType
+enum eIECDataType
 {
 	UNDEFINED = 0,  ///< Undefined (Used in error handling)
 	IEC_BOOL,       ///< Bool,BitString (1 bit)
@@ -70,6 +76,8 @@ enum IECDataType
  * \param[in]  iecDataTypeStr  The string with IEC datatype.
  * \return The matching IECDataType.
  */
-IECDataType GetIECDatatype(const std::string& iecDataTypeStr);
+IECDataType::eIECDataType GetIECDatatype(const std::string& iecDataTypeStr);
+
+} // namespace IECDataType
 
 #endif // _IECDATATYPE_H_

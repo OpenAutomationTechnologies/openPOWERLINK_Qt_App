@@ -56,10 +56,11 @@ ProcessImageParser::~ProcessImageParser()
 
 }
 
-ProcessImageParser* ProcessImageParser::NewInstance(const ProcessImageParserType type)
+ProcessImageParser* ProcessImageParser::NewInstance(
+		const ProcessImageParserType::eProcessImageParserType type)
 {
 	// Create and return an instance of a ProcessImageParser according to the given type.
-	if (type == QT_XML_PARSER)
+	if (type == ProcessImageParserType::QT_XML_PARSER)
 	{
 		static QtProcessImageParser qtPiParser;
 		return &qtPiParser;
@@ -70,9 +71,9 @@ ProcessImageParser* ProcessImageParser::NewInstance(const ProcessImageParserType
 	}
 }
 
-ProcessImage& ProcessImageParser::GetProcessImage(const Direction direction)
+ProcessImage& ProcessImageParser::GetProcessImage(const Direction::eDirection direction)
 {
-	if (direction == PI_IN)
+	if (direction == Direction::PI_IN)
 	{
 		return in;
 	}

@@ -52,14 +52,14 @@ void ConsoleReader::run()
 	char	cKey = 0;
 	BOOL	fExit = FALSE;
 
-	ProcessImageParser *pi =  ProcessImageParser::NewInstance(QT_XML_PARSER);
+	ProcessImageParser *pi =  ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
 
 	std::ifstream ifsXap(xapFileName);
 	std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
 	pi->Parse(xapData.c_str());
 
-	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(pi->GetProcessImage(PI_IN));
-	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(pi->GetProcessImage(PI_OUT));
+	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(pi->GetProcessImage(Direction::PI_IN));
+	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(pi->GetProcessImage(Direction::PI_OUT));
 
 	qDebug("Size-in: %d", piIn.GetSize());
 	qDebug("Size-out: %d", piOut.GetSize());

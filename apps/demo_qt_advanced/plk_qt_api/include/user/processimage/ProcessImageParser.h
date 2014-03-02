@@ -62,7 +62,8 @@ public:
 	 * \return Returns the requested ProcessImageParser.
 	 * \retval NULL if the requested ProcessImage parser is not available.
 	 */
-	static ProcessImageParser* NewInstance(const ProcessImageParserType type);
+	static ProcessImageParser* NewInstance(
+			const ProcessImageParserType::eProcessImageParserType type);
 
 	/**
 	 * \brief   Parses the buffer containing the ProcessImage xml description.
@@ -77,7 +78,7 @@ public:
 	 * \param[in] direction  The ProcessImage direction
 	 * \return Returns the reference to the requested ProcessImage instance.
 	 */
-	ProcessImage& GetProcessImage(const Direction direction);
+	ProcessImage& GetProcessImage(const Direction::eDirection direction);
 
 	virtual ~ProcessImageParser();
 

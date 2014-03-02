@@ -48,7 +48,7 @@ ProcessImageOut::ProcessImageOut(const unsigned int byteSize,
 bool ProcessImageOut::AddChannelInternal(const Channel& channel)
 {
 	bool retVal = false;
-	if (channel.GetDirection() == PI_OUT)
+	if (channel.GetDirection() == Direction::PI_OUT)
 	{
 		this->channels.insert(std::pair<std::string, Channel>(channel.GetName(),
 															 channel));

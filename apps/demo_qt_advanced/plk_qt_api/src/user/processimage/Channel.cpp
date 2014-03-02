@@ -35,11 +35,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/Channel.h"
 
 Channel::Channel(const std::string& name,
-		IECDataType dataType,
+		IECDataType::eIECDataType dataType,
 		const unsigned int byteOffset,
 		const unsigned int bitOffset,
 		const unsigned int bitSize,
-		Direction direction) :
+		Direction::eDirection direction) :
 		name(name),
 		dataType(dataType),
 		byteOffset(byteOffset),
@@ -55,7 +55,7 @@ const std::string& Channel::GetName() const
 	return this->name;
 }
 
-IECDataType Channel::GetDataType() const
+IECDataType::eIECDataType Channel::GetDataType() const
 {
 	return this->dataType;
 }
@@ -75,7 +75,8 @@ unsigned int Channel::GetBitSize() const
 	return this->bitSize;
 }
 
-Direction Channel::GetDirection() const
+Direction::eDirection Channel::GetDirection() const
 {
 	return this->direction;
 }
+

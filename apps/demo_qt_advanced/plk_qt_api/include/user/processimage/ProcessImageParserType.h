@@ -34,13 +34,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _PROCESSIMAGEPARSERTYPE_H_
 #define _PROCESSIMAGEPARSERTYPE_H_
 
+namespace ProcessImageParserType
+{
+
 /**
  * The type of the parser used for reading the ProcessImage
  *
  */
-enum ProcessImageParserType
+enum eProcessImageParserType
 {
+	UNDEFINED = 0,
 	QT_XML_PARSER
 };
+
+} // namespace ProcessImageParserType
 
 #endif // _PROCESSIMAGEPARSERTYPE_H_
