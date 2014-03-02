@@ -41,7 +41,9 @@ SOURCES += src/api/OplkEventHandler.cpp \
            src/user/processimage/ProcessImageIn.cpp \
            src/user/processimage/ProcessImageOut.cpp \
            src/user/processimage/ProcessImageParser.cpp \
-           src/user/processimage/QtProcessImageParser.cpp
+           src/user/processimage/QtProcessImageParser.cpp \
+           src/common/Utility.cpp \
+           src/user/processimage/IECDataType.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../stack/lib/windows/x86 -loplkmn
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../stack/lib/windows/x86 -loplkmn_d
