@@ -137,6 +137,13 @@ public:
 	const std::vector<Channel> GetChannelsByNodeId(const unsigned int nodeId) const;
 
 	/**
+	 * \brief Resets all the members of this class.
+	 * 
+	 * Clears the Channels, sets bytesize to zero and reset datapointer to NULL;
+	 */
+	void ResetProcessImage();
+
+	/**
 	 * \brief Returns the raw value of the ProcessImage variable.
 	 *        The returned datatype depends on the datatype of the channel
 	 *

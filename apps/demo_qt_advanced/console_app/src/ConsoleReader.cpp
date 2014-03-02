@@ -12,6 +12,9 @@
 
 #include "../include/ConsoleReader.h"
 #include <iostream>
+#include <fstream>
+#include "user/processimage/ProcessImageParser.h"
+#include "common/XmlParserException.h"
 
 #ifdef CONFIG_USE_PCAP
 extern "C" tOplkError selectPcapDevice(char *pDevName_p);
@@ -54,9 +57,22 @@ void ConsoleReader::run()
 
 	ProcessImageParser *pi =  ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
 
-	std::ifstream ifsXap(xapFileName);
+	std::ifstream ifsXap(xapFileName.c_str());
 	std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
-	pi->Parse(xapData.c_str());
+	try
+	{
+		pi->Parse(xapData.c_str());
+		// char* a = NULL;
+		// pi->Parse(a);
+	}
+	catch(const XmlParserException& ex)
+	{
+		qDebug("An Exception has occured: %s", ex.whatException());
+	}
+	catch(const std::exception& ex)
+	{
+		qDebug("An Exception has occured: %s", ex.what());
+	}
 
 	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(pi->GetProcessImage(Direction::PI_IN));
 	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(pi->GetProcessImage(Direction::PI_OUT));
