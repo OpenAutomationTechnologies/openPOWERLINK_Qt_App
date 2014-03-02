@@ -35,7 +35,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _UTILITY_H_
 
 #include <string>
-#include <cctype>
 
 /**
  * \brief   Compares two strings case insensitively.
@@ -44,21 +43,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \retval true  If both are equal
  * \retval false If both are not equal
  */
-static bool CompareCaseInsensitive(const std::string& str1,
-								const std::string& str2)
-{
-	if (str1.length() != str2.length())
-	{
-		return false;
-	}
-	for (unsigned int i = 0; i < str1.length(); ++i)
-	{
-		if (std::toupper(str1[i]) != std::toupper(str2[i]))
-		{
-			return false;
-		}
-	}
-	return true;
-}
+bool CompareCaseInsensitive(const std::string& str1, const std::string& str2);
 
 #endif // _UTILITY_H_

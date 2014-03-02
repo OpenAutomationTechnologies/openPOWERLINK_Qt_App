@@ -1,12 +1,11 @@
 /**
 ********************************************************************************
-\file   IECDataType.h
+\file   Utility.cpp
 
-\brief  The Datatypes derived from the IEC standards.
+\brief  Defines the utility functions required for this library
 
-/*------------------------------------------------------------------------------
-Copyright (c) 2014, Kalycito Infotech Private Limited
-All rights reserved.
+\copyright (c) 2014, Kalycito Infotech Private Limited
+					 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -29,47 +28,30 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-------------------------------------------------------------------------------*/
-
-#ifndef _IECDATATYPE_H_
-#define _IECDATATYPE_H_
+*******************************************************************************/
 
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <string>
+#include <cctype>
+#include "common/Utility.h"
+#include "oplk/basictypes.h"
 
-/**
- * List of datatypes derived from the IEC standards.
- */
-enum IECDataType
+/*******************************************************************************
+* PUBLIC Functions
+*******************************************************************************/
+bool CompareCaseInsensitive(const std::string& str1, const std::string& str2)
 {
-	UNDEFINED = 0,  ///< Undefined (Used in error handling)
-	IEC_BOOL,       ///< Bool,BitString (1 bit)
-	IEC_BYTE,       ///< Byte (8 bit)
-	IEC_CHAR,       ///< Char (8 bit)
-	IEC_WORD,       ///< Word (16 bit)
-	IEC_DWORD,      ///< Dword (32 bit)
-	IEC_LWORD,      ///< Lword (64 bit)
-	IEC_SINT,       ///< Signed short integer (1 byte)
-	IEC_INT,        ///< Signed integer (2 byte)
-	IEC_DINT,       ///< Double integer (4 byte)
-	IEC_LINT,       ///< Long integer (8 byte)
-	IEC_USINT,      ///< Unsigned short integer (1 byte)
-	IEC_UINT,       ///< Unsigned integer (2 byte)
-	IEC_UDINT,      ///< Unsigned double integer (4 byte)
-	IEC_ULINT,      ///< Unsigned long integer (8 byte)
-	IEC_REAL,       ///< REAL (4 byte)
-	IEC_LREAL,      ///< LREAL (8 byte)
-	IEC_STRING,     ///< Variable length single byte character string
-	IEC_WSTRING     ///< Variable length double byte character string
-};
-
-/**
- * \brief   Convert string value to the equivalent IECDataType.
- * \param[in]  iecDataTypeStr  The string with IEC datatype.
- * \return The matching IECDataType.
- */
-IECDataType GetIECDatatype(const std::string& iecDataTypeStr);
-
-#endif // _IECDATATYPE_H_
+	if (str1.length() != str2.length())
+	{
+		return false;
+	}
+	for (UINT i = 0; i < str1.length(); ++i)
+	{
+		if (std::toupper(str1[i]) != std::toupper(str2[i]))
+		{
+			return false;
+		}
+	}
+	return true;
+}

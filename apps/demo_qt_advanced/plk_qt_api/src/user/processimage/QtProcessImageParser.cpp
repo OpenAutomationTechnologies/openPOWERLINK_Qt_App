@@ -131,11 +131,11 @@ void QtProcessImageParser::ParseChannels(Direction direction)
 	 * Loop over the things because the order might change.
 	 * Continue the loop until we hit an EndElement named ProcessImage.
 	 */
-	std::string name = "";									//Name="CN1.X20DO9322.DigitalOutput01"
-	IECDataType dataType = static_cast<IECDataType>(-1);	//dataType="BITSTRING" from IECDatatype
-	unsigned int byteOffset = 0;							//PIOffset="0x0000"
-	unsigned int bitOffset = 0;								//BitOffset="0x00"
-	unsigned int bitSize = 0;								//dataSize="1"
+	std::string name = "";
+	IECDataType dataType = UNDEFINED;
+	unsigned int byteOffset = 0;
+	unsigned int bitOffset = 0;
+	unsigned int bitSize = 0;
 
 	while (!(xml.tokenType() == QXmlStreamReader::EndElement
 			 && xml.name() == "ProcessImage"))
@@ -161,11 +161,7 @@ void QtProcessImageParser::ParseChannels(Direction direction)
 				{
 					std::string iecDataTypeStr;
 					iecDataTypeStr = attributes.value(QString::fromStdString(this->dataType)).toString().toStdString();
-					if (!GetIECDatatype(iecDataTypeStr, dataType))
-					{
-						//std::cout << iecDataTypeStr;
-						dataType = static_cast<IECDataType>(-1);
-					}
+					dataType = GetIECDatatype(iecDataTypeStr);
 				}
 
 				if (attributes.hasAttribute(QString::fromStdString(this->bitSize)))
