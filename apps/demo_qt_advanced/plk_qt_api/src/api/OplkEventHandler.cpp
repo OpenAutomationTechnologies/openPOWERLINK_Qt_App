@@ -259,7 +259,7 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 #if !defined(CONFIG_INCLUDE_CFM)
 		// Configuration Manager is not available,
 		// so fetch object 0x1006 NMT_CycleLen_U32 from local OD
-		// (in little endian byte order)
+		// (in little endian BYTE order)
 		// for configuration of remote CN
 			varLen = sizeof(UINT32);
 			oplkRet = oplk_readObject(NULL, 0, 0x1006, 0x00, &cycleLen_g,
@@ -338,7 +338,7 @@ tOplkError OplkEventHandler::ProcessErrorWarningEvent(
 
 		case kEplEventSourceDllk:
 			// error occurred within the data link layer (e.g. interrupt processing)
-			// the DWORD argument contains the DLL state and the NMT event
+			// the ULONG argument contains the DLL state and the NMT event
 			TriggerPrintLog(QString(" val = %1").arg(internalError->m_Arg.m_dwArg, 0, 16));
 			break;
 
@@ -574,7 +574,7 @@ tOplkError OplkEventHandler::ProcessCfmResultEvent(
 tOplkError OplkEventHandler::SetDefaultNodeAssignment(void)
 {
 	tOplkError ret = kErrorOk;
-	DWORD nodeAssignment;
+	ULONG nodeAssignment;
 
 	nodeAssignment = (EPL_NODEASSIGN_NODE_IS_CN | EPL_NODEASSIGN_NODE_EXISTS);    // 0x00000003L
 	ret = oplk_writeLocalObject(0x1F81, 0x01, &nodeAssignment, sizeof (nodeAssignment));

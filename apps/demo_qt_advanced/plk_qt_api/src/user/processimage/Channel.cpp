@@ -36,9 +36,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Channel::Channel(const std::string& name,
 		IECDataType::eIECDataType dataType,
-		const unsigned int byteOffset,
-		const unsigned int bitOffset,
-		const unsigned int bitSize,
+		const UINT byteOffset,
+		const UINT bitOffset,
+		const UINT bitSize,
 		Direction::eDirection direction) :
 		name(name),
 		dataType(dataType),
@@ -60,17 +60,17 @@ IECDataType::eIECDataType Channel::GetDataType() const
 	return this->dataType;
 }
 
-unsigned int Channel::GetByteOffset() const
+UINT Channel::GetByteOffset() const
 {
 	return this->byteOffset;
 }
 
-unsigned int Channel::GetBitOffset() const
+UINT Channel::GetBitOffset() const
 {
 	return this->bitOffset;
 }
 
-unsigned int Channel::GetBitSize() const
+UINT Channel::GetBitSize() const
 {
 	return this->bitSize;
 }

@@ -235,7 +235,7 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 {
 	QXmlStreamAttributes attrib = this->xml.attributes();
 	Direction::eDirection direction = Direction::UNDEFINED;
-	unsigned int byteSize = 0;
+	UINT byteSize = 0;
 
 	if (attrib.hasAttribute(QString::fromStdString(
 			ProcessImageParser::processImage_attribute_Type)))
@@ -296,9 +296,9 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 {
 	std::string name;                       //Name="CN1.X20DO9322.DigitalOutput01"
 	IECDataType::eIECDataType dataType = IECDataType::UNDEFINED;   //dataType="BITSTRING" from IECDatatype
-	unsigned int byteOffset = 0;                    //PIOffset="0x0000"
-	unsigned int bitOffset = 0;                     //BitOffset="0x00"
-	unsigned int bitSize = 0;                       //dataSize="1"
+	UINT byteOffset = 0;                    //PIOffset="0x0000"
+	UINT bitOffset = 0;                     //BitOffset="0x00"
+	UINT bitSize = 0;                       //dataSize="1"
 	/* Get the attributes for Channel */
 	QXmlStreamAttributes attributes = this->xml.attributes();
 

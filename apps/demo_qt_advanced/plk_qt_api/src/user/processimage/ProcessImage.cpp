@@ -41,7 +41,7 @@ ProcessImage::ProcessImage() :
 
 }
 
-ProcessImage::ProcessImage(const unsigned int byteSize,
+ProcessImage::ProcessImage(const UINT byteSize,
 		const std::map<std::string, Channel>& channels) :
 		byteSize(byteSize),
 		data(NULL)
@@ -57,22 +57,22 @@ ProcessImage::~ProcessImage()
 {
 }
 
-void ProcessImage::SetSize(unsigned int byteSize)
+void ProcessImage::SetSize(UINT byteSize)
 {
 	this->byteSize = byteSize;
 }
 
-unsigned int ProcessImage::GetSize() const
+UINT ProcessImage::GetSize() const
 {
 	return this->byteSize;
 }
 
-void ProcessImage::SetProcessImageDataPtr(unsigned char* data)
+void ProcessImage::SetProcessImageDataPtr(BYTE* data)
 {
-	this->data = (unsigned char*) data;
+	this->data = (BYTE*) data;
 }
 
-unsigned char* ProcessImage::GetProcessImageDataPtr() const
+BYTE* ProcessImage::GetProcessImageDataPtr() const
 {
 	return this->data;
 }
@@ -105,7 +105,7 @@ const Channel ProcessImage::GetChannel(const std::string& name) const
 	}
 }
 
-const std::vector<Channel> ProcessImage::GetChannelsByOffset(const unsigned int byteOffset) const
+const std::vector<Channel> ProcessImage::GetChannelsByOffset(const UINT byteOffset) const
 {
 	std::vector<Channel> channelCollection;
 
@@ -122,7 +122,7 @@ const std::vector<Channel> ProcessImage::GetChannelsByOffset(const unsigned int 
 	return channelCollection;
 }
 
-const std::vector<Channel> ProcessImage::GetChannelsByNodeId(const unsigned int nodeId) const
+const std::vector<Channel> ProcessImage::GetChannelsByNodeId(const UINT nodeId) const
 {
 	std::vector<Channel> channelCollection;
 
@@ -136,7 +136,7 @@ const std::vector<Channel> ProcessImage::GetChannelsByNodeId(const unsigned int 
 		 cIt != channels.end(); ++cIt)
 	{
 		std::string fullName = cIt->first;
-		unsigned int pos = fullName.find(".");
+		UINT pos = fullName.find(".");
 		std::string rName = fullName.substr(0, pos);
 
 		//CN1 == CN1

@@ -54,7 +54,7 @@ public:
 
 	ProcessImageIn();
 
-	ProcessImageIn(const unsigned int byteSize,
+	ProcessImageIn(const UINT byteSize,
 		const std::map<std::string, Channel>& channels);
 
 	/**
@@ -76,7 +76,7 @@ public:
 	 * \throws std::bad_alloc  If the ProcessImage::data pointer is not updated.
 	 */
 	void SetRawValue(const std::string& channelName,
-			std::vector<unsigned char>& value);
+			std::vector<BYTE>& value);
 
 	/**
 	 * \brief   Sets the value for the given byte and bit offsets.
@@ -89,9 +89,9 @@ public:
 	 * \throws std::invalid_argument  If bitoffset exceeds the range.
 	 * \throws std::bad_alloc  If the ProcessImage::data pointer is not updated.
 	 */
-	void SetRawData(const std::vector<unsigned char>& value,
-			const unsigned int byteOffset,
-			const unsigned int bitOffset = 0);
+	void SetRawData(const std::vector<BYTE>& value,
+			const UINT byteOffset,
+			const UINT bitOffset = 0);
 };
 
 #endif // _PROCESSIMAGEIN_H_

@@ -44,8 +44,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 XmlParserException::XmlParserException(const std::string& message,
 			XmlParserErrors errCode,
-			unsigned int lineNumber,
-			unsigned int colNumber)
+			UINT lineNumber,
+			UINT colNumber)
 			:	message(message),
 				errCode(errCode),
 				lineNumber(lineNumber),

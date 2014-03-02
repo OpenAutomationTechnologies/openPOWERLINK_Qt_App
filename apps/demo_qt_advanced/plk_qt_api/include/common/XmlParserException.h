@@ -39,6 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdexcept>
 #include <string>
 
+#include <oplk/basictypes.h>
+
 #include <common/QtApiGlobal.h>
 
 /**
@@ -65,8 +67,8 @@ public:
 
 	XmlParserException(const std::string& message = std::string(),
 					   XmlParserErrors errCode = UNDEFINED,
-					   unsigned int lineNumber = 0,
-					   unsigned int colNumber = 0);
+					   UINT lineNumber = 0,
+					   UINT colNumber = 0);
 
 	// XmlParserException(const XmlParserException & other);
 
@@ -84,8 +86,8 @@ public:
 private:
 	const std::string message;
 	XmlParserErrors errCode;
-	unsigned int lineNumber;
-	unsigned int colNumber;
+	UINT lineNumber;
+	UINT colNumber;
 };
 
 #endif // _XML_PARSER_EXCEPTION_H_

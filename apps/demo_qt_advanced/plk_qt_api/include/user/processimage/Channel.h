@@ -38,15 +38,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // includes
 //------------------------------------------------------------------------------
 #include <string>
-#include <iostream>
 
+#include <oplk/basictypes.h>
+
+#include "common/QtApiGlobal.h"
 #include "user/processimage/Direction.h"
 #include "user/processimage/IECDataType.h"
 
-#include "common/QtApiGlobal.h"
-
 /**
  * \brief This class provides an instance of an individual channel in the ProcessImage.
+ *
  */
 class PLKQTAPI_EXPORT Channel
 {
@@ -63,9 +64,9 @@ public:
 	 */
 	Channel(const std::string& name,
 		IECDataType::eIECDataType dataType,
-		const unsigned int byteOffset,
-		const unsigned int bitOffset,
-		const unsigned int bitSize,
+		const UINT byteOffset,
+		const UINT bitOffset,
+		const UINT bitSize,
 		Direction::eDirection direction);
 
 	/**
@@ -81,17 +82,17 @@ public:
 	/**
 	 * \return The offset of the Channel within the processimage in bytes.
 	 */
-	unsigned int GetByteOffset() const;
+	UINT GetByteOffset() const;
 
 	/**
 	 * \return The bit offset of the Channel within the processimage.
 	 */
-	unsigned int GetBitOffset() const;
+	UINT GetBitOffset() const;
 
 	/**
 	 * \return The Size of the Channel in bits.
 	 */
-	unsigned int GetBitSize() const;
+	UINT GetBitSize() const;
 
 	/**
 	 * \return The Direction of the Channel within the processimage.
@@ -101,9 +102,9 @@ public:
 private:
 	std::string name;                       ///< Name
 	IECDataType::eIECDataType dataType;     ///< dataType
-	unsigned int byteOffset;  ///< PIOffset
-	unsigned int bitOffset;   ///< BitOffset
-	unsigned int bitSize;     ///< dataSize
+	UINT byteOffset;                        ///< PIOffset
+	UINT bitOffset;                         ///< BitOffset
+	UINT bitSize;                           ///< dataSize
 	Direction::eDirection direction;        ///< ProcessImage->type
 };
 
