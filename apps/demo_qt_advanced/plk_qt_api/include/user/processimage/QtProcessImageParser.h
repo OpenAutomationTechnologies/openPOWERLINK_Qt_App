@@ -35,12 +35,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _QTPROCESSIMAGEPARSER_H_
 #define _QTPROCESSIMAGEPARSER_H_
 
-#include <fstream>
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
 #include <QXmlStreamReader>
 
 #include "user/processimage/ProcessImageParser.h"
 #include "user/processimage/Direction.h"
-#include "user/processimage/IECDataType.h"
+#include "common/XmlParserException.h"
 
 /**
  * \brief  Inherits ProcessImageParser and implemets using Qt 5.2
@@ -52,16 +54,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class QtProcessImageParser : public ProcessImageParser
 {
 
-public:
+private:
+
+	QXmlStreamReader xml; ///< Xml reader instance
+
 	/**
-	 * \brief   Implements the ProcessImage parse.
+	 * \brief   Implements the ProcessImage parser.
 	 * \param[in] xmlDescription  Char pointer to the xml contents.
 	 * \throws std::invalid_argument if xml file buffer is NULL.
 	 * \throws XmlParserException If any error occurred.
 	 */
-	void virtual ParseInternal(const char* description);
+	void virtual ParseInternal(const char* xmlDescription);
 
-private:
 	/**
 	 * \brief   Parses all the ProcessImage tags
 	 * \throws XmlParserException If any error occurred.
@@ -75,7 +79,26 @@ private:
 	 */
 	void ParseChannels(Direction::eDirection direction);
 
-	QXmlStreamReader xml;  ///< Xml reader instance
+	/**
+	 * \brief Parses the attributes present in the ProcessImage tag.
+	 * \throws XmlParserException If any error occurred.
+	 */
+	void ParseProcessImageAttributes();
+
+	/**
+	 * \brief Parses the attributes present in the Channel tag.
+	 * \param[in] direction  The direction of the ProcessImage channels.
+	 * \throws XmlParserException If any error occurred.
+	 */
+	void ParseChannelAttributes(Direction::eDirection direction);
+
+	/**
+	 * \brief Constructs the exception instance and raises exception.
+	 * \param[in] message Error message
+	 * \param[in] errCode Error code
+	 */
+	void QtProcessImageParser::RaiseException(const std::string& message,
+									XmlParserException::XmlParserErrors errCode);
 };
 
 #endif // _QTPROCESSIMAGEPARSER_H_

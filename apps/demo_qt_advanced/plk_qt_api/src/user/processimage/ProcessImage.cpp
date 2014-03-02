@@ -154,6 +154,13 @@ bool ProcessImage::AddChannel(const Channel& channel)
 	return this->AddChannelInternal(channel);
 }
 
+void ProcessImage::ResetProcessImage()
+{
+	this->channels.clear();
+	this->byteSize = 0;
+	this->data = NULL;
+}
+
 template <class T>
 T ProcessImage::GetValue(const std::string& channelName) const
 {
