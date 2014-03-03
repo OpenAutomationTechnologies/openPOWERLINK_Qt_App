@@ -87,7 +87,7 @@ public:
 	 *
 	 * \param[in] data  Data pointer from the stack
 	 */
-	void SetProcessImageDataPtr(BYTE* data);
+	void SetProcessImageDataPtr(const BYTE* data);
 
 	/**
 	 * \return The ProcessImage pointer to the data allocated in the stack.
