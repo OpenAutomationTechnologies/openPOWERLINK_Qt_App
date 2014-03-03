@@ -212,12 +212,7 @@ private:
 	 */
 	void TriggerSdoTransferFinished(const tSdoComFinished& result,
 									const ReceiverContext* receiverContext);
-	
-	/**
-	 * \brief   Set Default node assignment when CFM manager is not available.
-	 */
-	tOplkError SetDefaultNodeAssignment();
-	
+
 signals:
 	/**
 	 * \brief   This signal is emitted when the NMT state of the local node changes.

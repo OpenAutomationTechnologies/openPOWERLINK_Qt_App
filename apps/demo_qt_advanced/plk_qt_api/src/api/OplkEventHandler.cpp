@@ -214,16 +214,9 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 {
 	tOplkError oplkRet = kErrorOk;
 
-#if !defined(CONFIG_INCLUDE_CFM)
-	UINT varLen;
-#endif
-	//const char *string;
-	QString str;
-
 	UNUSED_PARAMETER(userArg);
 
 	TriggerLocalNodeStateChanged(nmtStateChange->newNmtState);
-	//string = debugstr_getNmtEventStr(nmtStateChange->nmtEvent);
 
 	switch (nmtStateChange->newNmtState)
 	{
@@ -246,9 +239,6 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 			break;
 
 		case kNmtGsResetCommunication:
-	#if !defined(CONFIG_INCLUDE_CFM)
-			oplkRet = SetDefaultNodeAssignment();
-	#endif
 			TriggerPrintLog(QString("StateChangeEvent(0x%1) originating event = 0x%2 (%3)")
 				 .arg(nmtStateChange->newNmtState, 4, 16, QLatin1Char('0'))
 				 .arg(nmtStateChange->nmtEvent, 4, 16, QLatin1Char('0'))
@@ -256,19 +246,6 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 			break;
 
 		case kNmtGsResetConfiguration:
-#if !defined(CONFIG_INCLUDE_CFM)
-		// Configuration Manager is not available,
-		// so fetch object 0x1006 NMT_CycleLen_U32 from local OD
-		// (in little endian BYTE order)
-		// for configuration of remote CN
-			varLen = sizeof(UINT32);
-			oplkRet = oplk_readObject(NULL, 0, 0x1006, 0x00, &cycleLen_g,
-							&varLen, kSdoTypeAsnd, NULL);
-			if (oplkRet != kErrorOk)
-			{   // local OD access failed
-				break;
-			}
-#endif
 			TriggerPrintLog(QString("StateChangeEvent(0x%1) originating event = 0x%2 (%3)")
 				 .arg(nmtStateChange->newNmtState, 4, 16, QLatin1Char('0'))
 				 .arg(nmtStateChange->nmtEvent, 4, 16, QLatin1Char('0'))
@@ -380,46 +357,8 @@ tOplkError OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
 	switch (nodeEvent->m_NodeEvent)
 	{
 		case kNmtNodeEventCheckConf:
-		{
-#if !defined(CONFIG_INCLUDE_CFM)
-			// Configuration Manager is not available,
-			// so configure CycleLen (object 0x1006) on CN
-			tSdoComConHdl SdoComConHdl;
-
-			// update object 0x1006 on CN
-			oplkRet = oplk_writeObject(&SdoComConHdl, nodeEvent->m_uiNodeId,
-									   0x1006, 0x00, &cycleLen_g, 4,
-									   kSdoTypeAsnd, NULL);
-			if (oplkRet == kEplApiTaskDeferred)
-			{   // SDO transfer started
-				oplkRet = kEplReject;
-			}
-			else if (oplkRet == kErrorOk)
-			{   // local OD access (should not occur)
-				printf("AppCbEvent(Node) write to local OD\n");
-			}
-			else
-			{   // error occured
-				oplkRet = oplk_freeSdoChannel(SdoComConHdl);
-				SdoComConHdl = 0;
-
-				oplkRet = oplk_writeObject(&SdoComConHdl, nodeEvent->m_uiNodeId,
-										   0x1006, 0x00, &cycleLen_g, 4,
-										   kSdoTypeAsnd, NULL);
-				if (oplkRet == kEplApiTaskDeferred)
-				{   // SDO transfer started
-					oplkRet = kEplReject;
-				}
-				else
-				{
-					printf("AppCbEvent(Node): EplApiWriteObject() returned 0x%03X", oplkRet);
-				}
-			}
-#endif
-
 			TriggerPrintLog(QString("Node Event: (Node=%2, CheckConf)") .arg(nodeEvent->m_uiNodeId, 0, 10));
 			break;
-		}
 
 		case kNmtNodeEventUpdateConf:
 			TriggerPrintLog(QString("Node Event: (Node=%1, UpdateConf)") .arg(nodeEvent->m_uiNodeId, 0, 10));
@@ -571,25 +510,3 @@ tOplkError OplkEventHandler::ProcessCfmResultEvent(
 	return kErrorOk;
 }
 
-tOplkError OplkEventHandler::SetDefaultNodeAssignment(void)
-{
-	tOplkError ret = kErrorOk;
-	ULONG nodeAssignment;
-
-	nodeAssignment = (EPL_NODEASSIGN_NODE_IS_CN | EPL_NODEASSIGN_NODE_EXISTS);    // 0x00000003L
-	ret = oplk_writeLocalObject(0x1F81, 0x01, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x02, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x03, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x04, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x05, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x06, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x07, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x08, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x20, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0xFE, &nodeAssignment, sizeof (nodeAssignment));
-	ret = oplk_writeLocalObject(0x1F81, 0x6E, &nodeAssignment, sizeof (nodeAssignment));
-
-	nodeAssignment = (EPL_NODEASSIGN_MN_PRES | EPL_NODEASSIGN_NODE_EXISTS);    // 0x00010001L
-	ret = oplk_writeLocalObject(0x1F81, 0xF0, &nodeAssignment, sizeof (nodeAssignment));
-	return ret;
-}
