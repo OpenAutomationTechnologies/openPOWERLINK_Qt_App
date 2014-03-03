@@ -32,11 +32,23 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ------------------------------------------------------------------------------*/
 
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
+#include <sstream>
+#include <stdexcept>
+
 #include "user/processimage/ProcessImage.h"
+
+/*******************************************************************************
+* Public functions
+*******************************************************************************/
 
 ProcessImage::ProcessImage() :
 				byteSize(0),
+				channels(),
 				data(NULL)
+
 {
 
 }
@@ -50,9 +62,11 @@ ProcessImage::ProcessImage(const UINT byteSize,
 		 cIt != channels.end(); ++cIt)
 	{
 		bool res = this->AddChannel(cIt->second);
+		// TODO: return result of add channel.
 	}
 }
 
+//TODO: C4711 Selected for automatic inline expression.
 ProcessImage::~ProcessImage()
 {
 }
@@ -80,12 +94,14 @@ BYTE* ProcessImage::GetProcessImageDataPtr() const
 std::map<std::string, Channel>::const_iterator ProcessImage::cbegin() const
 {
 	// C++11
+	//TODO Fails in Linux
 	return this->channels.cbegin();
 }
 
 std::map<std::string, Channel>::const_iterator ProcessImage::cend() const
 {
 	// C++11
+	//TODO Fails in Linux
 	return this->channels.cend();
 }
 
@@ -98,10 +114,9 @@ const Channel ProcessImage::GetChannel(const std::string& name) const
 	}
 	else
 	{
-		std::string message = "Requested Channel name(";
-					message += name;
-					message += ") is not found";
-		throw std::out_of_range(message);
+		std::ostringstream message;
+		message << "Requested channel '" << name << "' not found in process image.";
+		throw std::out_of_range(message.str());
 	}
 }
 
@@ -118,7 +133,6 @@ const std::vector<Channel> ProcessImage::GetChannelsByOffset(const UINT byteOffs
 		}
 //		std::cout << cIt->first << " => " << cIt->second.GetByteOffset() << '\n';
 	}
-
 	return channelCollection;
 }
 
@@ -126,26 +140,21 @@ const std::vector<Channel> ProcessImage::GetChannelsByNodeId(const UINT nodeId) 
 {
 	std::vector<Channel> channelCollection;
 
-	//CN + nodeId = CN1
-	std::string lName = "CN";
-	std::ostringstream oss;
-	oss << nodeId;
-	lName += oss.str();
+	std::ostringstream nodeName("CN");
+	nodeName << nodeId;
 
 	for (std::map<std::string, Channel>::const_iterator cIt = channels.begin();
 		 cIt != channels.end(); ++cIt)
 	{
-		std::string fullName = cIt->first;
-		UINT pos = fullName.find(".");
-		std::string rName = fullName.substr(0, pos);
+		std::string channelName = cIt->first;
+		UINT pos = channelName.find(".");
+		std::string extractedNodeName = channelName.substr(0, pos);
 
-		//CN1 == CN1
-		if (lName == rName)
+		if (extractedNodeName == nodeName.str())
 		{
 			channelCollection.push_back(cIt->second);
 		}
 	}
-
 	return channelCollection;
 }
 

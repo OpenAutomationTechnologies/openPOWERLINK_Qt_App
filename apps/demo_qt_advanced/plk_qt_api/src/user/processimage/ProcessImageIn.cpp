@@ -31,10 +31,19 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ------------------------------------------------------------------------------*/
 
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
 #include "user/processimage/ProcessImageIn.h"
 #include <bitset>
+#include <sstream>
+#include <stdexcept>
 
-ProcessImageIn::ProcessImageIn()
+/*******************************************************************************
+* Public functions
+*******************************************************************************/
+
+ProcessImageIn::ProcessImageIn() : ProcessImage()
 {
 
 }
@@ -48,56 +57,52 @@ ProcessImageIn::ProcessImageIn(const UINT byteSize,
 
 bool ProcessImageIn::AddChannelInternal(const Channel& channel)
 {
-	bool retVal = false;
 	if (channel.GetDirection() == Direction::PI_IN)
 	{
-		this->channels.insert(std::pair<std::string, Channel>(channel.GetName(),
-															  channel));
-		retVal = true;
+		this->channels.insert(
+				std::pair<std::string, Channel>(channel.GetName(), channel));
+		return true;
 	}
-
-	return retVal;
+	return false;
 }
 
 void ProcessImageIn::SetRawValue(const std::string& channelName,
 						std::vector<BYTE>& value)
 {
-	Channel channelObj = this->GetChannel(channelName);
+	Channel channel = this->GetChannel(channelName);
 	BYTE* piDataPtr = this->GetProcessImageDataPtr();
 	if (piDataPtr)
 	{
-		const UINT bitSize = channelObj.GetBitSize();
-		piDataPtr += channelObj.GetByteOffset();
+		// Move the PI data pointer to the given channels byte offset.
+		piDataPtr += channel.GetByteOffset();
+
+		const UINT bitSize = channel.GetBitSize();
 		if ((bitSize % 8) == 0)
 		{
-			for (UINT i = 0; i < (bitSize/8); i++)
+			for (UINT i = 0; i < (bitSize / 8); ++i)
 			{
 				piDataPtr += i;
 				*piDataPtr = value[i];
 			}
 		}
+		else if (bitSize < 8)
+		{
+			std::bitset<8> piFirstByte = *piDataPtr;
+			std::bitset<8> extractedFirstByte = value[0];
+			for (UINT pos = 0; pos < bitSize; ++pos)
+			{
+				piFirstByte.set((channel.GetBitOffset() + pos), extractedFirstByte[pos]);
+			}
+			ULONG longVal = piFirstByte.to_ulong();
+			*piDataPtr =  static_cast<BYTE>(longVal);
+		}
 		else
 		{
-			if (bitSize < 8)
-			{
-				std::bitset<8> piData = *piDataPtr;
-				std::bitset<8> bitValue = value[0];
-				for (UINT i = 0; i < bitSize; i++)
-				{
-					piData.set((channelObj.GetBitOffset() + i), bitValue[i]);
-				}
-				ULONG longVal = piData.to_ulong();
-				BYTE piDataNew = static_cast<BYTE>(longVal);
-				*piDataPtr = piDataNew;
-			}
-			else
-			{
-				// TODO Discuss. Bitsize is multiples of 8. or ranges from 0-7.
-				std::ostringstream msg;
-				msg << "Invalid bitSize for the channel:" << channelName;
-				msg << ". bitSize: " << bitSize ;
-				throw std::invalid_argument(msg.str());
-			}
+			// TODO Discuss. Bitsize is multiples of 8. or ranges from 0-7.
+			std::ostringstream msg;
+			msg << "Invalid bitSize for the channel:" << channelName;
+			msg << ". bitSize: " << bitSize ;
+			throw std::invalid_argument(msg.str());
 		}
 	}
 	else
@@ -114,41 +119,45 @@ void ProcessImageIn::SetRawData(const std::vector<BYTE>& value,
 						const UINT byteOffset,
 						const UINT bitOffset)
 {
-	BYTE* piDataPtr = this->GetProcessImageDataPtr();
-
-	if((byteOffset + value.size()) > this->GetSize())
+// TODO: Check for Powerlink possible maximum for input args.
+	if ((byteOffset + value.size()) > this->GetSize())
 	{
 		std::ostringstream msg;
-		msg << "The size of the value+offset:" << (value.size()+ byteOffset);
-		msg << " exceeds the size of the ProcessImage:" << this->GetSize();
+		msg << "The size of the value+byteOffset:" << (value.size() + byteOffset);
+		msg << " exceeds the size of the ProcessImage:" << this->GetSize() << " bytes";
 		throw std::out_of_range(msg.str());
 	}
 
+	BYTE* piDataPtr = this->GetProcessImageDataPtr();
 	if (piDataPtr)
 	{
+		/* Move the data pointer to the byteOffsets position */
 		piDataPtr += byteOffset;
-		if ((bitOffset != 0) && (bitOffset < 8))
+		if (bitOffset == 0)
 		{
-			std::bitset<8> piData = *piDataPtr;
-			std::bitset<8> bitValue = value[0];
-			for (UINT i = bitOffset; i < (8 - bitOffset); i++)
-			{
-				piData.set(i, bitValue[i]);
-			}
-			ULONG longVal = piData.to_ulong();
-			BYTE piDataNew = static_cast<BYTE>(longVal);
-			*piDataPtr = piDataNew;
-
-			for (UINT i = 1; i < value.size(); i++)
+			for (UINT i = 0; i < value.size(); ++i)
 			{
 				piDataPtr += i;
 				*piDataPtr = value[i];
 			}
-		//	std::cout << std::hex << (int)piDataNew;
 		}
-		else if (bitOffset == 0)
+		else if ((bitOffset < 8))
 		{
-			for (UINT i = 0; i < value.size(); i++)
+			/* Update 1st byte based on the biOffset */
+			std::bitset<8> piFirstByte = *piDataPtr;
+			std::bitset<8> extractedFirstByte = value[0];
+
+			for (UINT pos = bitOffset; pos < 8; ++pos)
+			{
+				piFirstByte.set(pos, extractedFirstByte[pos]);
+			}
+			ULONG longVal = piFirstByte.to_ulong();
+
+			/* set the updated value to the piData pointer. */
+			*piDataPtr = static_cast<BYTE>(longVal);
+
+			/* Update the data, start from the 2nd byte if available */
+			for (UINT i = 1; i < value.size(); ++i)
 			{
 				piDataPtr += i;
 				*piDataPtr = value[i];
