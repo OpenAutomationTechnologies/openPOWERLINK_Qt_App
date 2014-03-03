@@ -4,6 +4,8 @@
 
 \brief  Provides the methods to access the Datatypes derived from the IEC standards.
 
+\author Ramakrishnan Periyakaruppan
+
 \copyright (c) 2014, Kalycito Infotech Private Limited
 					 All rights reserved.
 

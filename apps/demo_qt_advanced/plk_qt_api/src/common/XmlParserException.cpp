@@ -5,7 +5,9 @@
 \brief  Definitions of a Xml parser exception uses the std exception
 		to provide the availability to throw exceptions.
 
-copyright (c) 2014, Kalycito Infotech Private Limited
+\author Ramakrishnan Periyakaruppan
+
+\copyright (c) 2014, Kalycito Infotech Private Limited
 					 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
