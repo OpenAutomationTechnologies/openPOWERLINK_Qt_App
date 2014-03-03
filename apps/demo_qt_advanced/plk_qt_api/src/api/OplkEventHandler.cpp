@@ -154,6 +154,11 @@ void OplkEventHandler::TriggerNodeStateChanged(const int nodeId,
 void OplkEventHandler::TriggerSdoTransferFinished(const tSdoComFinished& result,
 							const ReceiverContext* receiverContext)
 {
+	if(receiverContext)
+	{
+		qDebug("NULL Receiver Context");
+	}
+
 	SdoTransferResult sdoTransferResult = SdoTransferResult(result.nodeId,
 											result.targetIndex,
 											result.targetSubIndex,
@@ -161,20 +166,29 @@ void OplkEventHandler::TriggerSdoTransferFinished(const tSdoComFinished& result,
 											result.sdoAccessType,
 											result.sdoComConState,
 											result.abortCode);
-//    result.pUserArg
+
 	emit SignalSdoTransferFinished(sdoTransferResult);
-	qDebug("Signal emitted Abort code: %x", result.abortCode);
 
 	oplk_freeSdoChannel(result.sdoComConHdl);
 	qDebug("freed SdoChannel");
 
-	bool conSuccessful = false;
-
-	conSuccessful = QObject::disconnect(&OplkEventHandler::GetInstance(),
+	bool disconnect = false;
+	disconnect = QObject::disconnect(&OplkEventHandler::GetInstance(),
 						QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
 						receiverContext->GetReceiver(),
 						*(receiverContext->GetReceiverFunction()));
-	qDebug("disconnected %d", conSuccessful);
+	if (!disconnect)
+	{
+		qDebug("Disconnect failed ! RetVal %d", disconnect);
+		/* This should not happen concerning the implementation of
+		 * OplkQtApi::TransferObject implementation
+		 * TODO report error.
+		 */
+	}
+	else
+	{
+		qDebug("Disconnected Success");
+	}
 
 	delete receiverContext;
 

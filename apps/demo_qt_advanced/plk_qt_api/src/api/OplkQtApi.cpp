@@ -279,30 +279,40 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 						const QMetaMethod& receiverFunction)
 {
 	tSdoComConHdl *sdoComConHdl = new tSdoComConHdl;
-	UINT dataSize =  sdoTransferJob.GetDataSize();
-	bool conSuccess = false;
-	ReceiverContext *receiverContext = new ReceiverContext(&receiver, &receiverFunction);
+	ReceiverContext *receiverContext = NULL;
 
+	/* qRegisterMetaType<T>() is only required for sending the object
+	 * through queued signal/slot connections.
+	 */
 	qRegisterMetaType<SdoTransferResult>("SdoTransferResult");
 
-	if ( ((initParam.m_uiNodeId == sdoTransferJob.GetNodeId())
-		 || (0 == sdoTransferJob.GetNodeId())) )
+	if ( ((sdoTransferJob.GetNodeId() != initParam.m_uiNodeId)
+		 && (sdoTransferJob.GetNodeId() != 0)) )
 	{
-		// do not connect
-		qDebug("Not Connected");
-	}
-	else
-	{
+		receiverContext = new ReceiverContext(&receiver, &receiverFunction);
+		bool conSuccess = false;
+		// Non-Local OD access
+		qDebug("Remote OD access, connecting signal.");
 		conSuccess = QObject::connect(&OplkEventHandler::GetInstance(),
 					QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
 					&receiver,
 					receiverFunction,
-					(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
-		);
-		qDebug("Read: %d", conSuccess);
+					(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
+		if (!conSuccess)
+		{
+			qDebug("Connection failed !");
+			return kErrorApiInvalidParam;
+		}
+		qDebug("Connection success");
+	}
+	else
+	{
+		//Local OD access
+		qDebug("Local OD access, not connecting signal.");
 	}
 
-	tOplkError oplkRet = kErrorOk;
+	tOplkError oplkRet = kErrorGeneralError;
+	UINT dataSize =  sdoTransferJob.GetDataSize();
 	switch (sdoTransferJob.GetSdoAccessType())
 	{
 		case kSdoAccessTypeRead:
@@ -319,7 +329,7 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 		}
 		case kSdoAccessTypeWrite:
 		{
-			qDebug("Write Val %x", (sdoTransferJob.GetData()));
+			qDebug("Write Val %lu", ((ULONG)sdoTransferJob.GetData()));
 			oplkRet = oplk_writeObject(sdoComConHdl,
 						sdoTransferJob.GetNodeId(),
 						sdoTransferJob.GetIndex(),
@@ -335,22 +345,33 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 			break;
 	}
 
-	if ( (oplkRet == kErrorApiTaskDeferred)
-		|| ((sdoTransferJob.GetNodeId() == initParam.m_uiNodeId)
-		|| (sdoTransferJob.GetNodeId() == 0)) )
+	if ((oplkRet != kErrorApiTaskDeferred)
+		&& ((sdoTransferJob.GetNodeId() != initParam.m_uiNodeId)
+		&& (sdoTransferJob.GetNodeId() != 0)))
 	{
-		//Should not disconnect. Success Case
-		qDebug("Not Disconnected");
-	}
-	else
-	{
-		conSuccess = QObject::disconnect(&OplkEventHandler::GetInstance(),
+		// Non-Local OD access: error case
+
+		// Delete the receiver context.
+		if (!receiverContext)
+			delete[] receiverContext;
+
+		bool disconnected = false;
+		qDebug("Remote OD access, disconnecting signal.");
+		disconnected = QObject::disconnect(&OplkEventHandler::GetInstance(),
 					QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
 					&receiver,
 					receiverFunction
 		);
-		qDebug("Read Err :Disconnected %d", conSuccess);
+
+		if (!disconnected)
+		{
+			// This is not supposed to happen.
+			qDebug("Disconnect failed !");
+			return kErrorApiInvalidParam;
+		}
+		qDebug("Disconnected success");
 	}
+
 	return oplkRet;
 }
 
