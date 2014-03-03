@@ -21,7 +21,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <QDebug>
-#include <iostream>
+
 #include "../include/ConsoleReader.h"
 #include "console/console.h"
 #include "user/processimage/ProcessImageParser.h"
@@ -188,25 +188,27 @@ void ConsoleReader::run()
 					{
 						qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 					}
-					std::cout<< "\n ProcessImageIn - PReq:  ";
+					QDebug print = qDebug();
+					print << "\n ProcessImageIn - PReq:  ";
 					piInDataPtr = (BYTE*) oplk_getProcessImageIn();
-					for (UINT piloop = 0; piloop < piIn.GetSize(); piloop++)
+					for (UINT piloop = 0; piloop < piIn.GetSize(); ++piloop)
 					{
 						if (piInDataPtr != NULL)
 						{
-							std::cout<< std::hex << (int)(*piInDataPtr);
+							print << (QString("%1").arg(*piInDataPtr, 0, 16)).rightJustified(2, '0');
 						}
-						piInDataPtr++;
+						++piInDataPtr;
 					}
-					std::cout<< "\n ProcessImageOut - PRes:  ";
+					QDebug print2 = qDebug();
+					print2 << "ProcessImageOut - PRes:  ";
 					piOutDataPtr = (BYTE*) oplk_getProcessImageOut();
-					for (UINT piloop = 0; piloop < piOut.GetSize(); piloop++)
+					for (UINT piloop = 0; piloop < piOut.GetSize(); ++piloop)
 					{
 						if (piOutDataPtr != NULL)
 						{
-							std::cout<< std::hex << (int)(*piOutDataPtr);
+							print2 << (QString("%1").arg(*piOutDataPtr, 0, 16)).rightJustified(2, '0');
 						}
-						piOutDataPtr++;
+						++piOutDataPtr;
 					}
 
 					oplkRet = oplk_exchangeProcessImageIn();
@@ -235,15 +237,16 @@ void ConsoleReader::run()
 						//piIn.SetRawValue(this->inputChannelName, val);
 						piIn.SetRawData(val,0,0);
 
-						std::cout<< "\n ProcessImageIn - PReq:  ";
+						QDebug print = qDebug();
+						print << "\n ProcessImageIn - PReq:  ";
 						piInDataPtr = (BYTE*) oplk_getProcessImageIn();
-						for (UINT i = 0; i < piIn.GetSize(); i++)
+						for (UINT i = 0; i < piIn.GetSize(); ++i)
 						{
 							if (piInDataPtr != NULL)
 							{
-								std::cout<< std::hex << (int)(*piInDataPtr);
+								print << (QString("%1").arg(*piInDataPtr, 0, 16)).rightJustified(2, '0');
 							}
-							piInDataPtr++;
+							++piInDataPtr;
 						}
 						oplkRet = oplk_exchangeProcessImageIn();
 						if (oplkRet != kErrorOk)
@@ -268,16 +271,16 @@ void ConsoleReader::run()
 						{
 							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 						}
-						//std::vector<BYTE> outVal = piOut.GetRawValue(this->outputChannelName);
-						std::vector<BYTE> outVal = piOut.GetRawData(16,2,0);
-						std::cout<< "\nPI-Out Val: ";
+						std::vector<BYTE> outVal = piOut.GetRawValue(this->outputChannelName);
+						//std::vector<BYTE> outVal = piOut.GetRawData(16,2,0);
+						QDebug print = qDebug();
+						print << "\n PI-Out Val: ";
 						for (std::vector<BYTE>::const_iterator it = outVal.begin();
-								it != outVal.end(); it++)
+								it != outVal.end(); ++it)
 						{
-							//BYTE ch = *it;
-							std::cout << std::hex << (int)(*it);
+							print << (QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
 						}
-						std::cout << std::endl;
+
 						oplkRet = oplk_exchangeProcessImageIn();
 						if (oplkRet != kErrorOk)
 						{
