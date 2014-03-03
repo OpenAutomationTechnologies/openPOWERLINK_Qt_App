@@ -133,8 +133,9 @@ public:
 	 *       working directory.
 	 * \param[in] cdcBuffer  Buffer to the CDC contents.
 	 * \param[in] size       Size of the buffer in bytes.
+	 * \return Returns a tOplkError error code.
 	 */
-	static void SetCdc(const BYTE* cdcBuffer, const UINT size);
+	static tOplkError SetCdc(const BYTE* cdcBuffer, const UINT size);
 
 	/**
 	 * \brief    Set path to CDC file.
@@ -144,15 +145,17 @@ public:
 	 *       called, the API will look for "mnobd.cdc" in the working directory.
 	 *
 	 * \param cdcFileName  File name of the CDC
+	 * \return Returns a tOplkError error code.
 	 */
-	static void SetCdc(const char* cdcFileName);
+	static tOplkError SetCdc(const char* cdcFileName);
 
 	/**
 	 * \brief   Sets the Cycle time in micro seconds.
 	 * \note The user has execute an NMT command 'kNmtCmdSwReset' to activate the new cycle time.
 	 * \param cycleTime  The requested cycle time.
+	 * \return Returns a tOplkError error code.
 	 */
-	static void SetCycleTime(const ULONG cycleTime);
+	static tOplkError SetCycleTime(const ULONG cycleTime);
 
 	/**
 	 * \brief    Subscribes for the NodeFound signal.
