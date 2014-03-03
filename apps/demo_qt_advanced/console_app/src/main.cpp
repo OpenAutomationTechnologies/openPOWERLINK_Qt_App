@@ -1,12 +1,10 @@
-#include <QCoreApplication>
-#if (TARGET_SYSTEM == _WIN32_)
-#define _WINSOCKAPI_
-#endif  // (TARGET_SYSTEM == _WIN32_)
 
-#include <pcap.h>
-//------------------------------------------------------------------------------
-// includes
-//------------------------------------------------------------------------------
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
+
+#include <QCoreApplication>
+
 #include <oplk/oplk.h>
 
 #include "api/OplkQtApi.h"
@@ -17,26 +15,27 @@
 int main(int argc, char *argv[])
 {
 	QCoreApplication application(argc, argv);
-	tOplkError ret;
 
 	qDebug("------------------------------------------------------\n");
 	qDebug("  WELCOME TO OPEN POWERLINK VERSION 2.0 console demo  \n");
 	qDebug("------------------------------------------------------\n");
-	//To find the GUID of the network interface: from cmd prompt type: netsh diag gui [Enter]
-	//std::string devName = "\\Device\\NPF_{E9C6B2B9-4ACE-46D4-AA39-63E11E37D017}";
 
 	Receiver receiver1;
-	int methodIndex1 = receiver1.metaObject()->indexOfMethod(QMetaObject::normalizedSignature("HandleNodeStateChanged(const int, tNmtState)").constData());
-	int methodIndex2 = receiver1.metaObject()->indexOfMethod(QMetaObject::normalizedSignature("HandleLocalNodeStateChanged(tNmtState)").constData());
-	OplkQtApi::RegisterNodeStateChangedEventHandler(receiver1, receiver1.metaObject()->method(methodIndex1));
-	OplkQtApi::RegisterLocalNodeStateChangedEventHandler(receiver1, receiver1.metaObject()->method(methodIndex2));
+	int methodIndex1 = receiver1.metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+							"HandleNodeStateChanged(const int, tNmtState)").constData());
+	int methodIndex2 = receiver1.metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+							"HandleLocalNodeStateChanged(tNmtState)").constData());
+	OplkQtApi::RegisterNodeStateChangedEventHandler(
+				receiver1, receiver1.metaObject()->method(methodIndex1));
+	OplkQtApi::RegisterLocalNodeStateChangedEventHandler(
+				receiver1, receiver1.metaObject()->method(methodIndex2));
 
 	/* RegisterEventLogger */
 	OplkQtApi::RegisterEventLogger(receiver1, receiver1.metaObject()->method(
-		receiver1.metaObject()->indexOfMethod(
-					QMetaObject::normalizedSignature(
-							"HandleLogEvent(const QString&)").constData())));
-
+		receiver1.metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
+			"HandleLogEvent(const QString&)").constData())));
 
 	qDebug("-----------------Choose any options:------------------\n");
 	qDebug("\t S to Start/Stop POWERLINK STACK\n");
