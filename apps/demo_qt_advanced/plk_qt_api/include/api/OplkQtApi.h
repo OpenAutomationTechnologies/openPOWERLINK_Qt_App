@@ -268,10 +268,13 @@ public:
 
 private:
 	static tEplApiInitParam initParam;
-	static void SetInitParam();
-	OplkQtApi& operator=(const OplkQtApi& api);
-	OplkQtApi(const OplkQtApi& api);
+	static bool cdcSet;
+
 	OplkQtApi();
+	OplkQtApi(const OplkQtApi& api);
+	OplkQtApi& operator=(const OplkQtApi& api);
+
+	static void SetInitParam();
 };
 
 #endif //  _OPLK_QT_API_H_

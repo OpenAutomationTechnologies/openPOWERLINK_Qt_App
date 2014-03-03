@@ -40,7 +40,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <map>
 #include <vector>
 #include <string>
-#include <sstream>
 
 #include "user/processimage/Channel.h"
 #include "user/processimage/Direction.h"
@@ -50,6 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
  * \brief ProcessImage is a pure abstract base class which provides the
  * methods common to all the ProcessImage channels.
+ *
  */
 class PLKQTAPI_EXPORT ProcessImage
 {
@@ -77,7 +77,7 @@ public:
 	/**
 	 * \brief   Returns the total size of the ProcessImage in bytes
 	 *
-	 * \return UINT  ProcessImage size in bytes.
+	 * \return ProcessImage size in bytes.
 	 */
 	UINT GetSize() const;
 
@@ -121,9 +121,9 @@ public:
 	const Channel GetChannel(const std::string& name) const;
 
 	/**
-	 * \brief Returns the list of Channel which has the same BYTE offset.
+	 * \brief Returns the list of Channel which has the same byte offset.
 	 *
-	 * \param[in] byteOffset  The BYTE offset value.
+	 * \param[in] byteOffset  The byte offset value.
 	 * \return The list of Channel.
 	 */
 	const std::vector<Channel> GetChannelsByOffset(const UINT byteOffset) const;

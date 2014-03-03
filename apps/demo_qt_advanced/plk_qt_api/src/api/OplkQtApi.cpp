@@ -39,11 +39,18 @@ const std::string kHostName = "openPOWERLINK Stack";
 const std::string kIfEth = EPL_VETH_NAME;
 const UINT kCycleLen = 5000;  /**< Cycle Length (0x1006: NMT_CycleLen_U32) in [us] */
 const BYTE abMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  /**< Default MAC Address */
+static const std::string defaultCDCFilename = CONFIG_OBD_DEF_CONCISEDCF_FILENAME;  ///< Default CDC file name
 
-static char* defaultCDCFilename = (char *)"mnobd.cdc";  /**< CDC file name */
-static bool cdcSet = false;
 
-tEplApiInitParam OplkQtApi::initParam; /**< initparam */
+/*******************************************************************************
+* Static member variables
+*******************************************************************************/
+tEplApiInitParam OplkQtApi::initParam; ///< initparam.
+bool OplkQtApi::cdcSet = false;  ///< Flag to detect CDC has been set or not.
+
+/*******************************************************************************
+* Private functions
+*******************************************************************************/
 
 void OplkQtApi::SetInitParam()
 {
@@ -92,8 +99,6 @@ void OplkQtApi::SetInitParam()
 tOplkError OplkQtApi::InitStack(const UINT nodeId,
 						const std::string& networkInterface)
 {
-	tOplkError oplkRet = kErrorOk;
-
 	OplkQtApi::SetInitParam();
 
 	initParam.m_uiNodeId = nodeId;
@@ -101,37 +106,31 @@ tOplkError OplkQtApi::InitStack(const UINT nodeId,
 
 	initParam.m_HwParam.m_pszDevName = networkInterface.c_str();
 
-	oplkRet = oplk_init(&initParam);
-	if (oplkRet != kErrorOk)
-	{
-		qDebug("Ret: %d",oplkRet);
-		goto Exit;
-	}
-
-Exit:
-	 return oplkRet;
+	return (oplk_init(&initParam));
 }
 
 tOplkError OplkQtApi::StartStack()
 {
-	tOplkError oplkRet = kErrorOk;
+	tOplkError oplkRet = kErrorGeneralError;
 
-	if (cdcSet == false)
+	if (!OplkQtApi::cdcSet)
 	{
-		qDebug("Set default cdc file name");
-		oplkRet = oplk_setCdcFilename(defaultCDCFilename);
+		qDebug("No custom CDC set, setting default CDC path");
+		oplkRet = oplk_setCdcFilename((char*) defaultCDCFilename.c_str());
 		if (oplkRet != kErrorOk)
 		{
-			qDebug("setDefault Cdc File Ret: %d",oplkRet);
-			goto Exit;
+			qDebug("Set default CDC File. Ret: %d",oplkRet);
+			return oplkRet;
 		}
 	}
 
+	// Setup processImage according to CiA302_4 profile.
+	// TODO: If this is a CN setupPI is not needed.
 	oplkRet = oplk_setupProcessImage();
 	if (oplkRet != kErrorOk)
 	{
 		qDebug("SetupProcessImage retCode %x", oplkRet);
-		goto Exit;
+		return oplkRet;
 	}
 
 	// Starting process thread
@@ -140,30 +139,33 @@ tOplkError OplkQtApi::StartStack()
 	// Start the OPLK stack by sending NMT s/w reset
 	oplkRet = oplk_execNmtCommand(kNmtEventSwReset);
 	if (oplkRet != kErrorOk)
-	{
 		qDebug("kNmtEventSwReset Ret: %d", oplkRet);
-	}
 
-Exit:
 	return oplkRet;
 }
 
 tOplkError OplkQtApi::StopStack()
 {
-	tOplkError oplkRet = kErrorOk;
+	tOplkError oplkRet = kErrorGeneralError;
+
+	// cdcSet should be set to false.
+	OplkQtApi::cdcSet = false;
 
 	oplkRet = oplk_execNmtCommand(kNmtEventSwitchOff);
 	if (oplkRet != kErrorOk)
 	{
 		qDebug("kNmtEventSwitchOff Ret: %d", oplkRet);
+		return oplkRet;
 	}
 
 	OplkEventHandler::GetInstance().AwaitNmtGsOff();
-	// OplkEventHandler::GetInstance().terminate();
+
+	// TODO Set ProcessImage::data to NULL;
 	oplkRet = oplk_freeProcessImage();
 	if (oplkRet != kErrorOk)
 	{
 		qDebug("freeProcessImage Ret: %d", oplkRet);
+		return oplkRet;
 	}
 
 	oplkRet = oplk_shutdown();
@@ -171,6 +173,7 @@ tOplkError OplkQtApi::StopStack()
 	{
 		qDebug("shutdown Ret: %d", oplkRet);
 	}
+
 	return oplkRet;
 }
 
@@ -354,7 +357,9 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 						ProcessImageOut& out)
 {
-	tOplkError oplkRet = kErrorOk;
+	tOplkError oplkRet = kErrorGeneralError;
+
+	/* Allocates the memory for the ProcessImage inside the stack */
 	oplkRet = oplk_allocProcessImage(in.GetSize(), out.GetSize());
 	if (oplkRet != kErrorOk)
 	{
@@ -370,23 +375,18 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 
 void OplkQtApi::SetCdc(const BYTE* cdcBuffer, const UINT size)
 {
-	tOplkError oplkRet = kErrorOk;
-	oplkRet = oplk_setCdcBuffer((BYTE*) cdcBuffer, size);
-	cdcSet = true;
+	tOplkError oplkRet = oplk_setCdcBuffer((BYTE*) cdcBuffer, size);
+	OplkQtApi::cdcSet = (oplkRet == kErrorOk);
 }
 
 void OplkQtApi::SetCdc(const char* cdcFileName)
 {
-	tOplkError oplkRet = kErrorOk;
-	oplkRet = oplk_setCdcFilename((char*) cdcFileName);
-	cdcSet = true;
+	tOplkError oplkRet = oplk_setCdcFilename((char*) cdcFileName);
+	OplkQtApi::cdcSet = (oplkRet == kErrorOk);
 }
 
 void OplkQtApi::SetCycleTime(const ULONG cycleTime)
 {
-	tOplkError oplkRet = kErrorOk;
-
-	oplkRet = oplk_writeLocalObject(0x1006, 0x00, (void*)&cycleTime, 4);
-
+	oplk_writeLocalObject(0x1006, 0x00, (void*)&cycleTime, 4);
 	// If this is a CN. It has to do remote SDO write?.
 }
