@@ -63,7 +63,7 @@ public:
 	 *
 	 * \param[in] type  Type of ProcessImageParser.
 	 * \return Returns the requested ProcessImageParser.
-	 * \retval NULL if the requested ProcessImage parser is not available.
+	 * \throws std::invalid_argument if the requested ProcessImage parser is not available.
 	 */
 	static ProcessImageParser* NewInstance(
 			const ProcessImageParserType::eProcessImageParserType type);

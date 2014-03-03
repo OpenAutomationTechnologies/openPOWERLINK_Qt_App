@@ -54,8 +54,16 @@ void ConsoleReader::run()
 	tOplkError oplkRet = kErrorOk;
 	char	cKey = 0;
 	BOOL	fExit = FALSE;
+	ProcessImageParser *pi = NULL;
 
-	ProcessImageParser *pi =  ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
+	try
+	{
+		pi = ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
+	}
+	catch(const std::exception& ex)
+	{
+		qDebug("An Exception has occured: %s", ex.what());
+	}
 
 	std::ifstream ifsXap(xapFileName.c_str());
 	std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
