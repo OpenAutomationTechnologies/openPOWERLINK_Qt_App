@@ -4,7 +4,9 @@
 
 \brief  XML parser exception structure.
 
-copyright (c) 2014, Kalycito Infotech Private Limited
+\author Ramakrishnan Periyakaruppan
+
+\copyright (c) 2014, Kalycito Infotech Private Limited
 					 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

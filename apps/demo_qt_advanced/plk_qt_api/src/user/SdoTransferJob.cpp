@@ -5,9 +5,10 @@
 \brief  Implementation of the SdoTransferJob class which provides
 		methods to access the different attributes of a SdoTransferJob.
 
-/*------------------------------------------------------------------------------
-Copyright (c) 2014, Kalycito Infotech Private Limited
-All rights reserved.
+\author Ramakrishnan Periyakaruppan
+
+\copyright (c) 2014, Kalycito Infotech Private Limited
+					 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -30,8 +31,11 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-------------------------------------------------------------------------------*/
+*******************************************************************************/
 
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
 #include "user/SdoTransferJob.h"
 
 SdoTransferJob::SdoTransferJob(const UINT nodeId,

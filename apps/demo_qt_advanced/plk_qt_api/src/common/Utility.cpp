@@ -4,6 +4,8 @@
 
 \brief  Defines the utility functions required for this library
 
+\author Ramakrishnan Periyakaruppan
+
 \copyright (c) 2014, Kalycito Infotech Private Limited
 					 All rights reserved.
 
