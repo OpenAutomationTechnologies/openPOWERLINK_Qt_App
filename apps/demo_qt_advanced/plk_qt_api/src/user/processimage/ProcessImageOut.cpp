@@ -69,6 +69,17 @@ std::vector<BYTE> ProcessImageOut::GetRawData(const UINT bitSize,
 											const UINT byteOffset,
 											const UINT bitOffset) const
 {
+	// TODO: Check for Powerlink possible maximum for input args.
+
+	if (((byteOffset * 8) + bitOffset + bitSize) > (this->GetSize() * 8))
+	{
+		std::ostringstream msg;
+		msg << "The total size of input args:" << ((byteOffset * 8) + bitOffset + bitSize);
+		msg << " exceeds the size of the ProcessImage:" << (this->GetSize() * 8);
+		msg << " Note: Sizes are in bits";
+		throw std::out_of_range(msg.str());
+	}
+
 	std::vector<BYTE> rawData;
 	BYTE* piDataPtr = this->GetProcessImageDataPtr();
 	if (piDataPtr)
@@ -100,15 +111,20 @@ std::vector<BYTE> ProcessImageOut::GetRawData(const UINT bitSize,
 			}
 			else
 			{
-				//unhandled datatype
-				rawData.reserve(0);
+				// TODO: Discuss. Bitsize is multiples of 8. or ranges from 0-7.
+				std::ostringstream msg;
+				msg << "Invalid bitSize. " << bitSize ;
+				throw std::invalid_argument(msg.str());
 			}
 		}
 	}
 	else
 	{
-		// piDataPtr not set.
-		rawData.reserve(0);
+		//TODO Discuss Fails in Linux
+//		std::ostringstream msg;
+//		msg << " ProcessImage data pointer is NULL.";
+//		msg << "Check the allocation of memory for the output ProcessImage";
+//		throw std::bad_alloc(msg.str().c_str());
 	}
 	return rawData;
 }

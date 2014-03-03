@@ -92,13 +92,21 @@ void ProcessImageIn::SetRawValue(const std::string& channelName,
 			}
 			else
 			{
-				//unhandled datatype
+				// TODO Discuss. Bitsize is multiples of 8. or ranges from 0-7.
+				std::ostringstream msg;
+				msg << "Invalid bitSize for the channel:" << channelName;
+				msg << ". bitSize: " << bitSize ;
+				throw std::invalid_argument(msg.str());
 			}
 		}
 	}
 	else
 	{
-		//piDataPtr not set.
+		//TODO Discuss. Fails in Linux
+//		std::ostringstream msg;
+//		msg << " ProcessImage data pointer is NULL.";
+//		msg << "Check the allocation of memory for the input ProcessImage";
+//		throw std::bad_alloc(msg.str().c_str());
 	}
 }
 
@@ -148,11 +156,18 @@ void ProcessImageIn::SetRawData(const std::vector<BYTE>& value,
 		}
 		else
 		{
-			// BitOffset is > 8
+			std::ostringstream msg;
+			msg << "Invalid BitOffset. Exceeds its range(0x00 to 0x07). ";
+			msg << "bitOffset : " << bitOffset ;
+			throw std::invalid_argument(msg.str());
 		}
 	}
 	else
 	{
-		//piDataPtr not set.
+		//TODO Discuss Fails in Linux
+//		std::ostringstream msg;
+//		msg << " ProcessImage data pointer is NULL.";
+//		msg << "Check the allocation of memory for the input ProcessImage";
+//		throw std::bad_alloc(msg.str().c_str());
 	}
 }
