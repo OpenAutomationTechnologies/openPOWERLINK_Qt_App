@@ -102,13 +102,13 @@ public:
 	UINT GetTransferredBytes() const;
 
 private:
-	tSdoComConState sdoComConState;
-	UINT32 abortCode;
-	tSdoAccessType sdoAccessType;
 	UINT nodeId;
 	UINT index;
 	UINT subIndex;
 	UINT transferredBytes;
+	tSdoAccessType sdoAccessType;
+	tSdoComConState sdoComConState;
+	UINT32 abortCode;
 };
 
 #endif // _SDOTRANSFERRESULT_H_
