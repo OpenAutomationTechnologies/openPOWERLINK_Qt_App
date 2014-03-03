@@ -351,7 +351,7 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 	return oplkRet;
 }
 
-tOplkError OplkQtApi::SetupProcessImage(ProcessImageIn& in,
+tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 						ProcessImageOut& out)
 {
 	tOplkError oplkRet = kErrorOk;
