@@ -13,9 +13,8 @@
 //------------------------------------------------------------------------------
 #include <QThread>
 
-#include "console/console.h"
 #include "api/OplkQtApi.h"
-#include "user/processimage/ProcessImageParser.h"
+#include "user/SdoTransferJob.h"
 
 #include "../include/Receiver.h"
 
@@ -27,22 +26,27 @@ class ConsoleReader : public QThread
 public:
 	ConsoleReader();
 	void run();
-	ULONG GetSdoReadData();
-	ULONG GetSdoWriteData();
+	const ULONG GetSdoReadData() const;
+	const ULONG GetSdoWriteData() const;
 
 private:
-	ULONG *sdoReadData;
-	ULONG *sdoWriteData;
+	ULONG sdoReadData;
+	ULONG sdoWriteData;
 	SdoTransferJob *sdoReadTransferJob;
 	SdoTransferJob *sdoWriteTransferJob;
 	Receiver receiver;
 
-	std::string inputChannelName;
-	std::string outputChannelName;
-	UINT nodeId;
+	const UINT nodeId;
+	std::string xapFileName;
+
+	const std::string inputChannelName;
+	const std::string outputChannelName;
+
+	const std::string sdoReceiverFunction;
+
 	std::string devName;
 
-	std::string xapFileName;
+
 };
 
 #endif // _CONSOLEREADER_H_

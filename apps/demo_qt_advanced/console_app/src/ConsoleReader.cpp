@@ -4,49 +4,60 @@
 
 \brief  Implementation of the console input reader thread.
 *******************************************************************************/
-#if (TARGET_SYSTEM == _WIN32_)
-#define _WINSOCKAPI_
-#endif  // (TARGET_SYSTEM == _WIN32_)
 
-#include <pcap.h>
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
 
-#include "../include/ConsoleReader.h"
-#include <iostream>
+#ifdef CONFIG_USE_PCAP
+	#if (TARGET_SYSTEM == _WIN32_)
+		#define _WINSOCKAPI_
+	#endif  // (TARGET_SYSTEM == _WIN32_)
+	#include <pcap.h>
+#else // CONFIG_USE_PCAP
+	#include <oplk/oplkdefs.h>
+#endif // CONFIG_USE_PCAP
+
 #include <fstream>
+#include <stdexcept>
+#include <QDebug>
+#include <iostream>
+#include "../include/ConsoleReader.h"
+#include "console/console.h"
 #include "user/processimage/ProcessImageParser.h"
 #include "common/XmlParserException.h"
 
 #ifdef CONFIG_USE_PCAP
 extern "C" tOplkError selectPcapDevice(char *pDevName_p);
-#endif // CONFIG_USE_PCAP
+#endif  // CONFIG_USE_PCAP
 
 ConsoleReader::ConsoleReader()
+	: nodeId(240),
+	  xapFileName("xap.xml"),
+	  inputChannelName("CN1.M02.X20DO9322.DigitalOutput01"),
+	  outputChannelName("CN1.M02.X20DO9322.NetworkStatus"),
+	  sdoWriteData(50000),
+	  sdoReceiverFunction("HandleSdoTransferFinished(const SdoTransferResult)")
 {
-	nodeId = 240;
-	devName.reserve(128);
-	xapFileName = "xap.xml";
-	sdoReadData = new ULONG();
-	sdoWriteData = new ULONG();
-	*sdoWriteData = 50000;
+	devName.resize(128);
 
-	sdoReadTransferJob = new SdoTransferJob(1, 0x1006, 0x00, (void*) sdoReadData,
+	sdoReadTransferJob = new SdoTransferJob(0, 0x1006, 0x00, (void*) sdoReadData,
 		sizeof(UINT32), kSdoTypeAsnd, kSdoAccessTypeRead);
 
 	sdoWriteTransferJob = new SdoTransferJob(240, 0x1006, 0x00, (void*) sdoWriteData,
 		sizeof(UINT32), kSdoTypeAsnd, kSdoAccessTypeWrite);
-
-	inputChannelName = "CN1.M02.X20DO9322.DigitalOutput01";
-	outputChannelName = "CN1.M01.X20DI9371.DigitalInput02";
 }
 
-ULONG ConsoleReader::GetSdoReadData()
+// TODO: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+// Remove const for std:datatypes
+const ULONG ConsoleReader::GetSdoReadData() const
 {
-	return *sdoReadData;
+	return (this->sdoReadData);
 }
 
-ULONG ConsoleReader::GetSdoWriteData()
+const ULONG ConsoleReader::GetSdoWriteData() const
 {
-	return *sdoWriteData;
+	return (this->sdoWriteData);
 }
 
 void ConsoleReader::run()
@@ -62,11 +73,12 @@ void ConsoleReader::run()
 	}
 	catch(const std::exception& ex)
 	{
-		qDebug("An Exception has occured: %s", ex.what());
+		qDebug("An Exception has occurred: %s", ex.what());
 	}
 
-	std::ifstream ifsXap(xapFileName.c_str());
+	std::ifstream ifsXap(this->xapFileName.c_str());
 	std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
+
 	try
 	{
 		pi->Parse(xapData.c_str());
@@ -79,7 +91,7 @@ void ConsoleReader::run()
 	}
 	catch(const std::exception& ex)
 	{
-		qDebug("An Exception has occured: %s", ex.what());
+		qDebug("An Exception has occurred: %s", ex.what());
 	}
 
 	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(pi->GetProcessImage(Direction::PI_IN));
@@ -88,18 +100,17 @@ void ConsoleReader::run()
 	qDebug("Size-in: %d", piIn.GetSize());
 	qDebug("Size-out: %d", piOut.GetSize());
 
-
 #ifdef CONFIG_USE_PCAP
-	oplkRet = selectPcapDevice(&devName[0]);
+	oplkRet = selectPcapDevice(&(this->devName[0]));
 	if (oplkRet != kErrorOk)
 	{
 		qDebug("selectPcapDevice retCode %x", oplkRet);
 	}
 #else
-	devName = "epl";
+	devName = EPL_VETH_NAME;
 #endif
 
-	oplkRet = OplkQtApi::InitStack(this->nodeId, devName);
+	oplkRet = OplkQtApi::InitStack(this->nodeId, this->devName);
 	if (oplkRet != kErrorOk)
 	{
 		qDebug("InitStack retCode %x", oplkRet);
@@ -115,12 +126,12 @@ void ConsoleReader::run()
 	if (oplkRet != kErrorOk)
 	{
 		qDebug("StartStack retCode %x", oplkRet);
-		fExit = TRUE;
+		fExit = !fExit;
 	}
 
-	bool stackStated = true;
-	BYTE *piInDataPtr;
-	BYTE *piOutDataPtr;
+	bool stackStarted = true;
+	BYTE *piInDataPtr = NULL;
+	BYTE *piOutDataPtr = NULL;
 	while (!fExit)
 	{
 		if (console_kbhit())
@@ -141,10 +152,16 @@ void ConsoleReader::run()
 				case 'R':
 				case 'r':
 				{
-					int methodIndex1 = receiver.metaObject()->indexOfMethod(QMetaObject::normalizedSignature("HandleSdoTransferFinished(const SdoTransferResult)").constData());
-					qDebug("Loop Method index1: %d", methodIndex1);
-					oplkRet =  OplkQtApi::TransferObject(*sdoReadTransferJob,
-							   receiver, receiver.metaObject()->method(methodIndex1));
+					int methodIndex = this->receiver.metaObject()->indexOfMethod(
+										QMetaObject::normalizedSignature(sdoReceiverFunction.c_str()).constData());
+					if (methodIndex == -1)
+					{
+						qDebug("SDO Read: SDO Receiver function:%s not found", sdoReceiverFunction.c_str());
+					}
+
+					oplkRet =  OplkQtApi::TransferObject(*(this->sdoReadTransferJob),
+							   this->receiver, this->receiver.metaObject()->method(methodIndex));
+
 					qDebug("Ret sdo %x",oplkRet);
 
 					break;
@@ -152,10 +169,14 @@ void ConsoleReader::run()
 				case 'W':
 				case 'w':
 				{
-					int methodIndex1 = receiver.metaObject()->indexOfMethod(QMetaObject::normalizedSignature("HandleSdoTransferFinished(const SdoTransferResult)").constData());
-					qDebug("Loop Method index1: %d", methodIndex1);
-					oplkRet =  OplkQtApi::TransferObject(*sdoWriteTransferJob,
-							   receiver, receiver.metaObject()->method(methodIndex1));
+					int methodIndex = this->receiver.metaObject()->indexOfMethod(
+										QMetaObject::normalizedSignature(sdoReceiverFunction.c_str()).constData());
+					if (methodIndex == -1)
+					{
+						qDebug("SDO Write: SDO Receiver function:%s not found", sdoReceiverFunction.c_str());
+					}
+					oplkRet =  OplkQtApi::TransferObject(*(this->sdoWriteTransferJob),
+							   this->receiver, this->receiver.metaObject()->method(methodIndex));
 					qDebug("Ret sdo %x", oplkRet);
 					break;
 				}
@@ -200,18 +221,18 @@ void ConsoleReader::run()
 				{
 					try
 					{
-						const BYTE value = 0xFF;
 						oplkRet = oplk_exchangeProcessImageOut();
 						if (oplkRet != kErrorOk)
 						{
 							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 						}
+						const BYTE value = 0xFF;
 						std::vector<BYTE> val;
-						const Channel channelObj = piIn.GetChannel(inputChannelName);
-						val.reserve(channelObj.GetBitSize());
+						//const Channel channelObj = piIn.GetChannel(inputChannelName);
+						//val.reserve(channelObj.GetBitSize());
 						val.push_back(value);
 
-						//piIn.SetRawValue(inputChannelName, val);
+						//piIn.SetRawValue(this->inputChannelName, val);
 						piIn.SetRawData(val,0,0);
 
 						std::cout<< "\n ProcessImageIn - PReq:  ";
@@ -232,7 +253,7 @@ void ConsoleReader::run()
 					}
 					catch(const std::exception& ex)
 					{
-						qDebug("An Exception has occured: %s", ex.what());
+						qDebug("An Exception has occurred: %s", ex.what());
 					}
 
 					break;
@@ -247,7 +268,7 @@ void ConsoleReader::run()
 						{
 							qDebug("ExchangeProcessImageOut retCode %x", oplkRet);
 						}
-						//std::vector<BYTE> outVal = piOut.GetRawValue(outputChannelName);
+						//std::vector<BYTE> outVal = piOut.GetRawValue(this->outputChannelName);
 						std::vector<BYTE> outVal = piOut.GetRawData(16,2,0);
 						std::cout<< "\nPI-Out Val: ";
 						for (std::vector<BYTE>::const_iterator it = outVal.begin();
@@ -265,25 +286,25 @@ void ConsoleReader::run()
 					}
 					catch(const std::exception& ex)
 					{
-						qDebug("An Exception has occured: %s", ex.what());
+						qDebug("An Exception has occurred: %s", ex.what());
 					}
 					break;
 				}
 				case 's':
 				case 'S':
 				{
-					if(stackStated)
+					if (stackStarted)
 					{
 						oplkRet = OplkQtApi::StopStack();
 						if (oplkRet != kErrorOk)
 						{
 							qDebug("StartStack retCode %x", oplkRet);
 						}
-						stackStated = false;
+						stackStarted = false;
 					}
 					else
 					{
-						oplkRet = OplkQtApi::InitStack(this->nodeId, devName);
+						oplkRet = OplkQtApi::InitStack(this->nodeId, this->devName);
 						if (oplkRet != kErrorOk)
 						{
 							qDebug("InitStack retCode %x", oplkRet);
@@ -298,13 +319,23 @@ void ConsoleReader::run()
 						{
 							qDebug("StartStack retCode %x", oplkRet);
 						}
-						stackStated = true;
+						stackStarted = true;
 					}
 					break;
 				}
 				case 0x1B:
-					fExit = TRUE;
+				{
+					fExit = !fExit;
+
+					oplkRet = OplkQtApi::StopStack();
+					if (oplkRet != kErrorOk)
+					{
+						qDebug("StartStack retCode %x", oplkRet);
+					}
+					stackStarted = false;
+
 					break;
+				}
 
 				default:
 					break;
@@ -314,7 +345,7 @@ void ConsoleReader::run()
 
 		if (oplk_checkKernelStack() == FALSE)
 		{
-			fExit = TRUE;
+			fExit = !fExit;
 			qDebug("Kernel stack has gone! Exiting...\n");
 		}
 	}

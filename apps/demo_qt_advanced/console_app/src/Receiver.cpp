@@ -5,30 +5,34 @@
 \brief  Signal receiver implementation
 *******************************************************************************/
 
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
+#include <oplk/debugstr.h>
 #include "../include/Receiver.h"
 
 void Receiver::HandleNodeStateChanged(const int nodeId, tNmtState nmtState)
 {
-	qDebug("Receiver %#x: Node %d changed state to %d.", this, nodeId, nmtState);
+	qDebug("Node %d changed state to %s.", nodeId, debugstr_getNmtStateStr(nmtState));
 }
 
 void Receiver::HandleLocalNodeStateChanged(tNmtState nmtState)
 {
-	qDebug("Receiver %#x: Local Node changed state to %x.", this, nmtState);
+	qDebug("Local Node changed state to %s.", debugstr_getNmtStateStr(nmtState));
 }
 
 void Receiver::HandleLogEvent(const QString& logStr)
 {
-	qDebug("Receiver %#x: %s", this, logStr.toStdString().c_str());
+	qDebug("%s", logStr.toStdString().c_str());
 }
 
 void Receiver::HandleSdoTransferFinished(const SdoTransferResult result)
 {
-	qDebug("Receiver %#x: SdoTransferFinished Abort: %x, NodeId: %x, Index: %x, SubIndex:%x state:%x",
-		   this, result.GetAbortCode(), result.GetNodeId(),
+	qDebug("SdoTransferFinished Abort: %x, NodeId: %x, Index: %x, SubIndex:%x state:%x",
+		   result.GetAbortCode(), result.GetNodeId(),
 		   result.GetIndex(), result.GetSubIndex(), result.GetSdoComConState());
 	if (result.GetAbortCode() != 0)
 	{
-	
+
 	}
 }
