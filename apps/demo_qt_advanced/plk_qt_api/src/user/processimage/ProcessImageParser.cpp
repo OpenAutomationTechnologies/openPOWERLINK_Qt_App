@@ -34,6 +34,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
+#include <sstream>
+
 #include "user/processimage/ProcessImageParser.h"
 #include "user/processimage/QtProcessImageParser.h"
 
@@ -67,15 +69,15 @@ ProcessImageParser::~ProcessImageParser()
 ProcessImageParser* ProcessImageParser::NewInstance(
 		const ProcessImageParserType::eProcessImageParserType type)
 {
-	// Create and return an instance of a ProcessImageParser according to the given type.
 	if (type == ProcessImageParserType::QT_XML_PARSER)
 	{
-		static QtProcessImageParser qtPiParser;
-		return &qtPiParser;
+		return (new QtProcessImageParser());
 	}
 	else
 	{
-		return NULL;
+		std::ostringstream message;
+		message << "The requested ProcessImageParser is not available";
+		throw std::invalid_argument(message.str());
 	}
 }
 
