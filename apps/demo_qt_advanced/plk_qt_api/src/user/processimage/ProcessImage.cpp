@@ -81,7 +81,7 @@ UINT ProcessImage::GetSize() const
 	return this->byteSize;
 }
 
-void ProcessImage::SetProcessImageDataPtr(BYTE* data)
+void ProcessImage::SetProcessImageDataPtr(const BYTE* data)
 {
 	this->data = (BYTE*) data;
 }

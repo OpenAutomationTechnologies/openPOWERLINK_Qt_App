@@ -393,8 +393,9 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 		return oplkRet;
 	}
 
-	in.SetProcessImageDataPtr((BYTE*)oplk_getProcessImageIn());
-	out.SetProcessImageDataPtr((BYTE*)oplk_getProcessImageOut());
+	/* sets the ProcessImage pointer from the allocated memory to the ProcessImage::data */
+	in.SetProcessImageDataPtr((const BYTE*)oplk_getProcessImageIn());
+	out.SetProcessImageDataPtr((const BYTE*)oplk_getProcessImageOut());
 
 	return oplkRet;
 }
