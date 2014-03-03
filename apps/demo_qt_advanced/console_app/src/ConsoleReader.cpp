@@ -222,9 +222,9 @@ void ConsoleReader::run()
 							qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
 						}
 					}
-					catch(std::out_of_range& ex)
+					catch(const std::exception& ex)
 					{
-						std::cout << "An Exception has occured: " << ex.what();
+						qDebug("An Exception has occured: %s", ex.what());
 					}
 
 					break;
@@ -255,9 +255,9 @@ void ConsoleReader::run()
 							qDebug("ExchangeProcessImageIn retCode %x", oplkRet);
 						}
 					}
-					catch(std::out_of_range& ex)
+					catch(const std::exception& ex)
 					{
-						std::cout << "An Exception has occured: " << ex.what();
+						qDebug("An Exception has occured: %s", ex.what());
 					}
 					break;
 				}
