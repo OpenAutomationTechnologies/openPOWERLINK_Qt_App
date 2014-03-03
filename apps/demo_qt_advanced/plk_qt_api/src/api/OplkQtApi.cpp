@@ -399,20 +399,22 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 	return oplkRet;
 }
 
-void OplkQtApi::SetCdc(const BYTE* cdcBuffer, const UINT size)
+tOplkError OplkQtApi::SetCdc(const BYTE* cdcBuffer, const UINT size)
 {
 	tOplkError oplkRet = oplk_setCdcBuffer((BYTE*) cdcBuffer, size);
 	OplkQtApi::cdcSet = (oplkRet == kErrorOk);
+	return oplkRet;
 }
 
-void OplkQtApi::SetCdc(const char* cdcFileName)
+tOplkError OplkQtApi::SetCdc(const char* cdcFileName)
 {
 	tOplkError oplkRet = oplk_setCdcFilename((char*) cdcFileName);
 	OplkQtApi::cdcSet = (oplkRet == kErrorOk);
+	return oplkRet;
 }
 
-void OplkQtApi::SetCycleTime(const ULONG cycleTime)
+tOplkError OplkQtApi::SetCycleTime(const ULONG cycleTime)
 {
-	oplk_writeLocalObject(0x1006, 0x00, (void*)&cycleTime, 4);
-	// If this is a CN. It has to do remote SDO write?.
+	return (oplk_writeLocalObject(0x1006, 0x00, (void*)&cycleTime, 4));
+	// If this is a demo CN. It has to do remote SDO write?.
 }
