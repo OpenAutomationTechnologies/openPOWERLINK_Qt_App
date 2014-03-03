@@ -34,12 +34,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _RECEIVERCONTEXT_H_
 #define _RECEIVERCONTEXT_H_
 
-//------------------------------------------------------------------------------
-// includes
-//------------------------------------------------------------------------------
-#include <QObject>
-#include <QMetaMethod>
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
 
+class QObject;
+class QMetaMethod;
 /**
  * \brief A container class to pack the receiver and receiver function for
  * handling Async call back events
