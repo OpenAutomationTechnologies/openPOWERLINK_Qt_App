@@ -127,7 +127,7 @@ public:
 	 * \param[in,out] out  The instance of the ProcessImageOut
 	 * \return Returns a tOplkError error code.
 	 */
-	static tOplkError SetupProcessImage(ProcessImageIn& in, ProcessImageOut& out);
+	static tOplkError AllocateProcessImage(ProcessImageIn& in, ProcessImageOut& out);
 
 	/**
 	 * \brief   Sets the pointer to the CDC buffer.

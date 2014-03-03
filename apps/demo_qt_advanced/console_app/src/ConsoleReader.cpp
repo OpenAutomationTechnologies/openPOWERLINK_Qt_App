@@ -97,10 +97,10 @@ void ConsoleReader::run()
 		qDebug("InitStack retCode %x", oplkRet);
 	}
 
-	oplkRet = OplkQtApi::SetupProcessImage(piIn, piOut);
+	oplkRet = OplkQtApi::AllocateProcessImage(piIn, piOut);
 	if (oplkRet != kErrorOk)
 	{
-		qDebug("SetupProcessImage retCode %x", oplkRet);
+		qDebug("AllocateProcessImage retCode %x", oplkRet);
 	}
 
 	oplkRet = OplkQtApi::StartStack();
@@ -280,10 +280,10 @@ void ConsoleReader::run()
 						{
 							qDebug("InitStack retCode %x", oplkRet);
 						}
-						oplkRet = OplkQtApi::SetupProcessImage(piIn, piOut);
+						oplkRet = OplkQtApi::AllocateProcessImage(piIn, piOut);
 						if (oplkRet != kErrorOk)
 						{
-							qDebug("SetupProcessImage retCode %x", oplkRet);
+							qDebug("AllocateProcessImage retCode %x", oplkRet);
 						}
 						oplkRet = OplkQtApi::StartStack();
 						if (oplkRet != kErrorOk)
