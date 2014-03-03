@@ -31,14 +31,22 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ------------------------------------------------------------------------------*/
 
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
+#include <QMetaType>
+#include <QtDebug>
 #include "api/OplkQtApi.h"
+#include "api/OplkEventHandler.h"
 
-const ULONG kIpAddress = 0xc0a86401;   /**< 192.168.100.1 */
-const ULONG kSubnetMask = 0xFFFFFF00;  /**< 255.255.255.0 */
-const std::string kHostName = "openPOWERLINK Stack";
-const std::string kIfEth = EPL_VETH_NAME;
-const UINT kCycleLen = 5000;  /**< Cycle Length (0x1006: NMT_CycleLen_U32) in [us] */
-const BYTE abMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  /**< Default MAC Address */
+/*******************************************************************************
+* Module global variables
+*******************************************************************************/
+static const ULONG kIpAddress = 0xc0a864F0;   ///< MN by default (192.168.100.240)
+static const ULONG kSubnetMask = 0xFFFFFF00;  ///< 255.255.255.0
+static const std::string kHostName = "openPOWERLINK Stack"; ///< max 32 chars
+static const ULONG kCycleLen = 5000;  ///< Cycle Length (0x1006: NMT_CycleLen_U32) in [us]
+static const BYTE abMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  ///<Default MAC Address
 static const std::string defaultCDCFilename = CONFIG_OBD_DEF_CONCISEDCF_FILENAME;  ///< Default CDC file name
 
 
@@ -93,9 +101,14 @@ void OplkQtApi::SetInitParam()
 	if (initParam.m_pfnCbEvent == NULL)
 	{
 		qDebug("Null Call back");
+		// Never expecting to happen
+		// If needed Throw std err or return kErrorInvalidInstanceParam
 	}
 }
 
+/*******************************************************************************
+* Public functions
+*******************************************************************************/
 tOplkError OplkQtApi::InitStack(const UINT nodeId,
 						const std::string& networkInterface)
 {
@@ -184,41 +197,39 @@ bool OplkQtApi::RegisterNodeFoundEventHandler(const QObject& receiver,
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeFound),
 		&receiver,
 		receiverFunction,
-		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
-	);
+		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
 }
 
 bool OplkQtApi::UnregisterNodeFoundEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction)
 {
-	return QObject::connect(&OplkEventHandler::GetInstance(),
+	return QObject::disconnect(&OplkEventHandler::GetInstance(),
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeFound),
 		&receiver,
-		receiverFunction
-	);
+		receiverFunction);
 }
 
 bool OplkQtApi::RegisterNodeStateChangedEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction)
 {
+	/* qRegisterMetaType<T>() is only required for sending the object
+	 * through queued signal/slot connections.
+	 */
 	qRegisterMetaType<tNmtState>("tNmtState");
 	return QObject::connect(&OplkEventHandler::GetInstance(),
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeStateChanged),
 		&receiver,
 		receiverFunction,
-		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
-	);
+		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
 }
 
 bool OplkQtApi::UnregisterNodeStateChangedEventHandler(const QObject& receiver,
 					const QMetaMethod& receiverFunction)
 {
-	qRegisterMetaType<tNmtState>("tNmtState");
 	return QObject::disconnect(&OplkEventHandler::GetInstance(),
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalNodeStateChanged),
 		&receiver,
-		receiverFunction
-	);
+		receiverFunction);
 }
 
 bool OplkQtApi::RegisterLocalNodeStateChangedEventHandler(
@@ -230,20 +241,17 @@ bool OplkQtApi::RegisterLocalNodeStateChangedEventHandler(
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalLocalNodeStateChanged),
 		&receiver,
 		receiverFunction,
-		(Qt::ConnectionType)(Qt::QueuedConnection | Qt::UniqueConnection)
-	);
+		(Qt::ConnectionType)(Qt::QueuedConnection | Qt::UniqueConnection));
 }
 
 bool OplkQtApi::UnregisterLocalNodeStateChangedEventHandler(
 					const QObject& receiver,
 					const QMetaMethod& receiverFunction)
 {
-	qRegisterMetaType<tNmtState>("tNmtState");
 	return QObject::disconnect(&OplkEventHandler::GetInstance(),
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalLocalNodeStateChanged),
 		&receiver,
-		receiverFunction
-	);
+		receiverFunction);
 }
 
 bool OplkQtApi::RegisterEventLogger(const QObject& receiver,
@@ -253,8 +261,7 @@ bool OplkQtApi::RegisterEventLogger(const QObject& receiver,
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalPrintLog),
 		&receiver,
 		receiverFunction,
-		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection)
-	);
+		(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
 }
 
 bool OplkQtApi::UnregisterEventLogger(const QObject& receiver,
@@ -263,15 +270,13 @@ bool OplkQtApi::UnregisterEventLogger(const QObject& receiver,
 	return QObject::disconnect(&OplkEventHandler::GetInstance(),
 		QMetaMethod::fromSignal(&OplkEventHandler::SignalPrintLog),
 		&receiver,
-		receiverFunction
-	);
+		receiverFunction);
 }
 
 tOplkError OplkQtApi::ExecuteNmtCommand(const UINT nodeId,
 						tNmtCommand nmtCommand)
 {
 	return oplk_execRemoteNmtCommand(nodeId, nmtCommand);
-
 }
 
 tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,

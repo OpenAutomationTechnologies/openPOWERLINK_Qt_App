@@ -34,25 +34,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _OPLK_QT_API_H_
 #define _OPLK_QT_API_H_
 
-//------------------------------------------------------------------------------
-// includes
-//------------------------------------------------------------------------------
-#include <QtCore>
-#include <string>
-#include <QtDebug>
+/*******************************************************************************
+* INCLUDES
+*******************************************************************************/
+//#include <QObject>
 #include <QMetaMethod>
-#include <QObject>
-#include <QMetaType>
+
+#include <string>
 
 #include <oplk/oplk.h>
 #include <oplk/nmt.h>
 
-#include "api/OplkEventHandler.h"
 #include "user/SdoTransferResult.h"
 #include "user/SdoTransferJob.h"
 #include "api/ReceiverContext.h"
 #include "common/QtApiGlobal.h"
-
 #include "user/processimage/ProcessImageIn.h"
 #include "user/processimage/ProcessImageOut.h"
 
@@ -63,12 +59,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * openPOWERLINK stack v2. It also provides the posibility to register and
  * unregister for various events triggered by the stack.
  */
-class PLKQTAPI_EXPORT OplkQtApi : QObject
+class PLKQTAPI_EXPORT OplkQtApi// : QObject // TODO: check if we need
 {
-	Q_OBJECT
+//	Q_OBJECT
 
 public:
-
 	/**
 	 * \brief   Initialize openPOWERLINK-Stack with default init-parameters.
 	 *
