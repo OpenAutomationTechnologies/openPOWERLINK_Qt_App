@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProcessImageMemory</class>
+ <widget class="QFrame" name="ProcessImageMemory">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>639</width>
+    <height>388</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="frameShape">
+   <enum>QFrame::StyledPanel</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Raised</enum>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QFrame" name="inputFrame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="inputHeading">
+         <property name="text">
+          <string>Input ProcessImage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="inputTable">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>00</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>01</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>02</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>03</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>04</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>05</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>06</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>07</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>08</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>09</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0A</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0B</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0C</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0D</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0E</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0F</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QFrame" name="outFrame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="outHeading">
+         <property name="text">
+          <string>Output ProcessImage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="outTable">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>00</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>01</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>02</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>03</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>04</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>05</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>06</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>07</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>08</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>09</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0A</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0B</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0C</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0D</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0E</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>0F</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
