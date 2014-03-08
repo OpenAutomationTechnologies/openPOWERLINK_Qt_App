@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Ramakrishnan Periyakaruppan</author>
+ <class>LogerWindow</class>
+ <widget class="QDockWidget" name="LogerWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>641</width>
+    <height>175</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>80</width>
+    <height>175</height>
+   </size>
+  </property>
+  <property name="toolTip">
+   <string>ccc</string>
+  </property>
+  <property name="windowTitle">
+   <string>LogWindow</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <property name="toolTip">
+    <string>bb</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPlainTextEdit" name="txtBxConsoleLog">
+      <property name="toolTip">
+       <string>aa</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
