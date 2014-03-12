@@ -1,9 +1,9 @@
-#include "Node.h"
+#include "NodeUi.h"
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
 
-Node::Node(const QString& nodeName, QWidget *parent) :
+NodeUi::NodeUi(const QString& nodeName, QWidget *parent) :
 	QFrame(parent),
 	name(new QLabel(nodeName)),
 	statusImage(new QLabel()),
@@ -11,8 +11,8 @@ Node::Node(const QString& nodeName, QWidget *parent) :
 {
 	this->setObjectName(QStringLiteral("Node"));
 
-	this->setFrameShape(QFrame::StyledPanel);
-	this->setFrameShadow(QFrame::Raised);
+//	this->setFrameShape(QFrame::StyledPanel);
+//	this->setFrameShadow(QFrame::Raised);
 	this->nodeLayout = new QHBoxLayout(this);
 	this->nodeLayout->setObjectName(QStringLiteral("verticalLayout"));
 
@@ -32,8 +32,8 @@ Node::Node(const QString& nodeName, QWidget *parent) :
 
 	QPainter p(&(this->statusPixmap));
 	p.setRenderHint(QPainter::Antialiasing, true);
-	QBrush brush(Qt::red);
-	p.setBrush(brush);
+	p.setPen(QPen(Qt::transparent));
+	p.setBrush(QBrush(Qt::red));
 	p.drawEllipse(0, 0, 25, 25);
 	this->statusImage->setPixmap(this->statusPixmap);
 	this->nodeLayout->addWidget(this->statusImage);
@@ -41,10 +41,11 @@ Node::Node(const QString& nodeName, QWidget *parent) :
 	this->nodeLayout->update();
 }
 
-void Node::SetNodeStatus(int state) // param tNMTState
+void NodeUi::SetNodeStatus(int state) // param tNMTState
 {
 	QPainter p(&(this->statusPixmap));
 	p.setRenderHint(QPainter::Antialiasing, true);
+	p.setPen(QPen(Qt::transparent));
 
 	// can also use QBrush(const QGradient & gradient)
 //	switch (state)

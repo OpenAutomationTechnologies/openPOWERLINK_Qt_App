@@ -1,5 +1,5 @@
-#ifndef _DIALOGOPENCDC_H_
-#define _DIALOGOPENCDC_H_
+#ifndef _UI_DIALOGOPENCDC_H_
+#define _UI_DIALOGOPENCDC_H_
 
 #include "ui_DialogOpenCdc.h"
 
@@ -22,6 +22,7 @@ private slots:
 private:
 	Ui::DialogOpenCdc ui;
 	QString cdcPath;
+	// Q_DISABLE_COPY(DialogOpenCdc)
 };
 
-#endif // _DIALOGOPENCDC_H_
+#endif // _UI_DIALOGOPENCDC_H_

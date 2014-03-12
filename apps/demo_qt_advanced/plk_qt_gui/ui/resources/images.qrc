@@ -1,9 +1,13 @@
 <RCC>
     <qresource prefix="/new">
         <file>images/network_interface.gif</file>
-        <file>images/icon.png</file>
+        <file>images/EpsgIcon.png</file>
         <file>images/cdc.gif</file>
         <file>images/stop.gif</file>
         <file>images/start.gif</file>
+        <file>images/powerlink_open_source.png</file>
+        <file>images/exitblue.gif</file>
+        <file>images/KalycitoLogo.png</file>
+        <file>images/KalycitoIcon.png</file>
     </qresource>
 </RCC>

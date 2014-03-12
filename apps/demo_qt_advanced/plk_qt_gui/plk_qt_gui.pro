@@ -35,7 +35,6 @@ win32: DEPENDPATH +=  $$PWD/../../../contrib/pcap/windows/WpdPack/Lib
 
 SOURCES += src/main.cpp \
 		   src/MainWindow.cpp \
-	src/LogerWindow.cpp \
 	src/SdoTransfer.cpp \
 	src/ProcessImageVariables.cpp \
 	src/ProcessImageMemory.cpp \
@@ -43,11 +42,12 @@ SOURCES += src/main.cpp \
 	src/SelectNwInterfaceDialog.cpp \
 	src/NmtCommandsDock.cpp \
 	src/NodeStatusDock.cpp \
-	src/Node.cpp \
-	src/Channel.cpp
+	src/LoggerWindow.cpp \
+	src/ChannelUi.cpp \
+	src/NodeUi.cpp \
+	src/AboutDialog.cpp
 
 HEADERS  += include/MainWindow.h \
-	include/LogerWindow.h \
 	include/SdoTransfer.h \
 	include/ProcessImageVariables.h \
 	include/ProcessImageMemory.h \
@@ -55,12 +55,13 @@ HEADERS  += include/MainWindow.h \
 	include/SelectNwInterfaceDialog.h \
 	include/NmtCommandsDock.h \
 	include/NodeStatusDock.h \
-	include/Node.h \
-	include/Channel.h
+	include/LoggerWindow.h \
+	include/ChannelUi.h \
+	include/NodeUi.h \
+	include/AboutDialog.h
 
 FORMS    += ui/MainWindow.ui \
 	ui/MainWindow.ui \
-	ui/LogerWindow.ui \
 	ui/SdoTransfer.ui \
 	ui/ProcessImageVariables.ui \
 	ui/ProcessImageMemory.ui \
@@ -68,7 +69,9 @@ FORMS    += ui/MainWindow.ui \
 	ui/SelectNwInterfaceDialog.ui \
 	ui/NmtCommandsDock.ui \
 	ui/NodeStatusDock.ui \
-	ui/Channel.ui
+	ui/LoggerWindow.ui \
+	ui/ChannelUi.ui \
+	ui/AboutDialog.ui
 
 RESOURCES += \
 	ui/resources/images.qrc

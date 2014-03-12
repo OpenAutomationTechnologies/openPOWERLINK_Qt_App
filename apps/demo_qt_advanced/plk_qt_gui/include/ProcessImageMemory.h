@@ -12,6 +12,9 @@ public:
 
 private:
 	Ui::ProcessImageMemory ui;
+	void CreateVerticalHeaders();
+	void ResizeColumnsToContents();
+	// Q_DISABLE_COPY(ProcessImageMemory)
 };
 
 #endif // _PROCESSIMAGEMEMORY_H_

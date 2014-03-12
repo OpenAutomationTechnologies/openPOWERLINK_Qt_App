@@ -1,16 +1,16 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef _NODE_UI_H_
+#define _NODE_UI_H_
 
 #include <QHBoxLayout>
 #include <QFrame>
 #include <QLabel>
 
-class Node : public QFrame
+class NodeUi : public QFrame
 {
 	Q_OBJECT
 
 public:
-	explicit Node(const QString& nodeName, QWidget *parent = 0);
+	explicit NodeUi(const QString& nodeName, QWidget *parent = 0);
 	void SetNodeStatus(int state);
 
 private:
@@ -19,6 +19,7 @@ private:
 	QLabel *statusImage;
 	QPixmap statusPixmap;
 	QString statusStr;
+	// Q_DISABLE_COPY(Node)
 };
 
-#endif // NODE_H
+#endif // _NODE_UI_H_

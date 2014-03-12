@@ -1,5 +1,5 @@
-#ifndef NMTCOMMANDSDOCK_H
-#define NMTCOMMANDSDOCK_H
+#ifndef _NMT_COMMANDS_DOCK_H_
+#define _NMT_COMMANDS_DOCK_H_
 
 #include "ui_NmtCommandsDock.h"
 
@@ -18,6 +18,7 @@ private slots:
 private:
 	Ui::NmtCommandsDock ui;
 	// enum nmtCommand;
+	// Q_DISABLE_COPY(NmtCommandsDock)
 };
 
-#endif // NMTCOMMANDSDOCK_H
+#endif // _NMT_COMMANDS_DOCK_H_

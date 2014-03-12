@@ -1,16 +1,16 @@
 #include "NodeStatusDock.h"
 
-const unsigned int kMaxCnNodes = 239;
+const uint kMaxCnNodes = 239;
 
 NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	QDockWidget(parent)
 {
 	this->ui.setupUi(this);
 
-	this->nodelist = new Node*[kMaxCnNodes + 1];
-	for (unsigned int i = 1; i <= 10; ++i)
+	this->nodelist = new NodeUi*[kMaxCnNodes + 1];
+	for (uint i = 1; i <= 10; ++i)
 	{
-		this->nodelist[i] = new Node(QString("CN %1") .arg(i));
+		this->nodelist[i] = new NodeUi(QString("CN %1") .arg(i));
 		this->ui.verticalLayout->addWidget(this->nodelist[i]);
 		this->nodelist[i]->setToolTip(QString("CN %1") .arg(i));
 		// this->nodelist[i]->hide();
@@ -19,7 +19,7 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 
 void NodeStatusDock::HandleNodeStateChanged(const int nodeId/*, tNmtState nmtState*/)
 {
-	if (!(this->nodelist[nodeId]))
+	if (this->nodelist[nodeId])
 	{
 		this->nodelist[nodeId]->setToolTip(QString("CN %1") .arg(nodeId));
 		this->nodelist[nodeId]->SetNodeStatus(0/*nmtState*/);
@@ -33,7 +33,7 @@ void NodeStatusDock::HandleNodeFound(const int nodeId)
 	{
 		if (!(this->nodelist[nodeId]))
 		{
-			this->nodelist[nodeId] = new Node(QString("CN %1") .arg(nodeId));
+			this->nodelist[nodeId] = new NodeUi(QString("CN %1") .arg(nodeId));
 			this->ui.verticalLayout->addWidget(this->nodelist[nodeId]);
 			this->nodelist[nodeId]->setToolTip(QString("CN %1") .arg(nodeId));
 		}

@@ -1,5 +1,5 @@
-#ifndef SELECTNWINTERFACEDIALOG_H
-#define SELECTNWINTERFACEDIALOG_H
+#ifndef _SELECTNWINTERFACEDIALOG_H_
+#define _SELECTNWINTERFACEDIALOG_H_
 
 #include "ui_SelectNwInterfaceDialog.h"
 
@@ -9,17 +9,21 @@ class SelectNwInterfaceDialog : public QDialog
 
 public:
 	explicit SelectNwInterfaceDialog(QWidget *parent = 0);
-	QString getDevName(void);
-	int fillList(void);
+	QString GetDevName(void) const;
+	QString GetDevDescription(void) const;
+	int FillList(void);
 
 private slots:
-	void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-
 	void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
+
+	void on_buttonBox_accepted();
+
+	void on_buttonBox_rejected();
 
 private:
 	Ui::SelectNwInterfaceDialog ui;
 	QString m_devName;
+	QString devDescription;
 };
 
-#endif // SELECTNWINTERFACEDIALOG_H
+#endif // _SELECTNWINTERFACEDIALOG_H_

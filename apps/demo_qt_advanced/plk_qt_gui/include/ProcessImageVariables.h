@@ -2,7 +2,8 @@
 #define _PROCESSIMAGEVARIABLES_H_
 
 #include "ui_ProcessImageVariables.h"
-#include "Channel.h"
+#include "ChannelUi.h"
+#include <QList>
 
 class ProcessImageVariables : public QFrame
 {
@@ -11,10 +12,21 @@ class ProcessImageVariables : public QFrame
 public:
 	explicit ProcessImageVariables(QWidget *parent = 0);
 
+	Qt::CheckState GetInputSelectAllCheckBoxState() const;
+
+	Qt::CheckState GetOutputSelectAllCheckBoxState() const;
+
+	void UpdateInputs();
+
+	void UpdateOutputs();
+
+	~ProcessImageVariables();
+
+
 private slots:
 	void on_inputCheckAll_stateChanged(int arg1);
 
-	void on_outputCheck_stateChanged(int arg1);
+	void on_outputCheckAll_stateChanged(int arg1);
 
 	void on_inputForceAll_stateChanged(int arg1);
 
@@ -28,8 +40,11 @@ private slots:
 
 private:
 	Ui::ProcessImageVariables ui;
-	Channel **inputVarList;
-	Channel **outputVarList;
+	QList<ChannelUi*> inputChannels;
+	QList<ChannelUi*> outputChannels;
+
+	void PrepareInputRows();
+	void PrepareOutputRows();
 };
 
 #endif // _PROCESSIMAGEVARIABLES_H_

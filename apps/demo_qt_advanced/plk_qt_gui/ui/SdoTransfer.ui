@@ -48,7 +48,7 @@
        <number>15</number>
       </property>
       <property name="verticalSpacing">
-       <number>15</number>
+       <number>12</number>
       </property>
       <item row="0" column="0">
        <widget class="QLabel" name="labelNodeId">
@@ -192,17 +192,32 @@
         <property name="text">
          <string>SdoType</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+        </property>
        </widget>
       </item>
       <item row="5" column="1">
        <widget class="QGroupBox" name="groupBoxSdoType">
-        <property name="title">
-         <string/>
-        </property>
         <property name="checkable">
          <bool>false</bool>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
          <item>
           <widget class="QRadioButton" name="read">
            <property name="text">

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>807</width>
+    <width>858</width>
     <height>206</height>
    </rect>
   </property>
@@ -46,7 +46,7 @@
         <widget class="QPushButton" name="inputHideCheckedBtn">
          <property name="maximumSize">
           <size>
-           <width>75</width>
+           <width>100</width>
            <height>16777215</height>
           </size>
          </property>
@@ -59,7 +59,7 @@
         <widget class="QPushButton" name="inputShowAllBtn">
          <property name="maximumSize">
           <size>
-           <width>50</width>
+           <width>70</width>
            <height>16777215</height>
           </size>
          </property>
@@ -78,9 +78,12 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>468</width>
-            <height>104</height>
+            <width>482</width>
+            <height>99</height>
            </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
@@ -92,11 +95,14 @@
        </item>
        <item row="2" column="0" colspan="3">
         <layout class="QHBoxLayout" name="hbox_layout_in_1">
+         <property name="spacing">
+          <number>5</number>
+         </property>
          <item>
           <widget class="QCheckBox" name="inputCheckAll">
            <property name="maximumSize">
             <size>
-             <width>48</width>
+             <width>57</width>
              <height>16777215</height>
             </size>
            </property>
@@ -165,7 +171,7 @@
           <widget class="QCheckBox" name="inputForceAll">
            <property name="maximumSize">
             <size>
-             <width>45</width>
+             <width>53</width>
              <height>16777215</height>
             </size>
            </property>
@@ -244,7 +250,7 @@
         <widget class="QPushButton" name="outHideCheckedBtn">
          <property name="maximumSize">
           <size>
-           <width>75</width>
+           <width>100</width>
            <height>16777215</height>
           </size>
          </property>
@@ -263,9 +269,12 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>296</width>
-            <height>104</height>
+            <width>333</width>
+            <height>99</height>
            </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
@@ -299,11 +308,14 @@
        </item>
        <item row="2" column="0" colspan="3">
         <layout class="QHBoxLayout" name="hbox_layout_piOut">
+         <property name="spacing">
+          <number>5</number>
+         </property>
          <item>
-          <widget class="QCheckBox" name="outputCheck">
+          <widget class="QCheckBox" name="outputCheckAll">
            <property name="maximumSize">
             <size>
-             <width>48</width>
+             <width>57</width>
              <height>16777215</height>
             </size>
            </property>
@@ -367,7 +379,7 @@
         <widget class="QPushButton" name="outShowAllBtn">
          <property name="maximumSize">
           <size>
-           <width>50</width>
+           <width>70</width>
            <height>16777215</height>
           </size>
          </property>
