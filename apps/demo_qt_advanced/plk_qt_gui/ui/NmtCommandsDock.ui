@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>313</width>
-    <height>150</height>
+    <width>292</width>
+    <height>139</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>150</width>
+    <height>100</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
@@ -20,107 +26,104 @@
    <string>Send NMT Command</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Command</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="nmtCommand">
+      <item>
+       <property name="text">
+        <string>InvalidService(0xFF)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>StartNode(0x21)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>StopNode(0x22)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>EnterPreOperational2(0x23)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>EnableReadyToOperate(0x24)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ResetNode(0x28)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ResetCommunication(0x29)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ResetConfiguration(0x2A)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SwReset(0x2B)</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>NodeId</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QSpinBox" name="nodeId">
+      <property name="prefix">
+       <string>0x</string>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="value">
+       <number>1</number>
+      </property>
+      <property name="displayIntegerBase">
+       <number>16</number>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="sendNmtBtn">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>23</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Send</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="2">
+     <widget class="QLabel" name="nmtResult">
+      <property name="text">
        <string/>
       </property>
-      <layout class="QFormLayout" name="formLayout">
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>NodeId</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QSpinBox" name="nodeId">
-         <property name="prefix">
-          <string>0x</string>
-         </property>
-         <property name="maximum">
-          <number>255</number>
-         </property>
-         <property name="value">
-          <number>1</number>
-         </property>
-         <property name="displayIntegerBase">
-          <number>16</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QPushButton" name="sendNmtBtn">
-         <property name="text">
-          <string>Send</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLabel" name="nmtResult">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="nmtCommand">
-         <item>
-          <property name="text">
-           <string>InvalidService(0xFF)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>StartNode(0x21)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>StopNode(0x22)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>EnterPreOperational2(0x23)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>EnableReadyToOperate(0x24)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ResetNode(0x28)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ResetCommunication(0x29)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ResetConfiguration(0x2A)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>SwReset(0x2B)</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>NMT Commands</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </item>
    </layout>

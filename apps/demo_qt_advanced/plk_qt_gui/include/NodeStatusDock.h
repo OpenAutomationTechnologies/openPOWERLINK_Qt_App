@@ -1,8 +1,8 @@
-#ifndef NODESTATUSDOCK_H
-#define NODESTATUSDOCK_H
+#ifndef _NODESTATUSDOCK_H_
+#define _NODESTATUSDOCK_H_
 
 #include "ui_NodeStatusDock.h"
-#include "Node.h"
+#include "NodeUi.h"
 
 class NodeStatusDock : public QDockWidget
 {
@@ -11,7 +11,7 @@ class NodeStatusDock : public QDockWidget
 public:
 	explicit NodeStatusDock(QWidget *parent = 0);
 	// NodeStatusDock& GetInstance();
-	QStringList NodeStatusDock::GetAvailableCnList();
+	QStringList GetAvailableCnList();
 	/**
 	 * \brief   Handles the Node State changed singals
 	 *
@@ -23,8 +23,9 @@ public:
 
 private:
 	Ui::NodeStatusDock ui;
-	Node **nodelist;
-	Q_DISABLE_COPY(NodeStatusDock)
+	// TODO replace with QList
+	NodeUi **nodelist;
+	// Q_DISABLE_COPY(NodeStatusDock)
 };
 
-#endif // NODESTATUSDOCK_H
+#endif // _NODESTATUSDOCK_H_

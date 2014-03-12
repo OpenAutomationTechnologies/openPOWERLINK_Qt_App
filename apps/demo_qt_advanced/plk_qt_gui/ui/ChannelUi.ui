@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Channel</class>
- <widget class="QWidget" name="Channel">
+ <class>ChannelFrame</class>
+ <widget class="QWidget" name="ChannelFrame">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
-    <number>5</number>
+    <number>10</number>
    </property>
    <property name="leftMargin">
     <number>3</number>
@@ -23,11 +23,20 @@
    <property name="topMargin">
     <number>3</number>
    </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
    <property name="bottomMargin">
     <number>3</number>
    </property>
    <item>
     <widget class="QCheckBox" name="check">
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>43</width>
@@ -48,6 +57,12 @@
    </item>
    <item>
     <widget class="QLineEdit" name="currentValue">
+     <property name="minimumSize">
+      <size>
+       <width>95</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>95</width>
@@ -64,11 +79,20 @@
    </item>
    <item>
     <widget class="QCheckBox" name="force">
-     <property name="maximumSize">
+     <property name="minimumSize">
       <size>
        <width>40</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>45</width>
        <height>16777215</height>
       </size>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
      </property>
      <property name="text">
       <string/>
@@ -77,6 +101,12 @@
    </item>
    <item>
     <widget class="QLineEdit" name="forceValue">
+     <property name="minimumSize">
+      <size>
+       <width>95</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>95</width>

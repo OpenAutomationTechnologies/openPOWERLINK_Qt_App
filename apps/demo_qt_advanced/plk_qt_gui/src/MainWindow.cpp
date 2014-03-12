@@ -1,11 +1,21 @@
 #include "MainWindow.h"
 #include <QMessageBox>
-
+#include "AboutDialog.h"
+#include "QDesktopServices"
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent)
+	QMainWindow(parent),
+	sdoTab(new SdoTransfer()),
+	log(new LoggerWindow()),
+	cdcDialog(new DialogOpenCdc()),
+	nwInterfaceDialog(new SelectNwInterfaceDialog()),
+	nmtCmdWindow(new NmtCommandsDock()),
+	cnStatus(new NodeStatusDock()),
+	mnNode(new NodeUi("MN - 240")),
+	piVar(NULL),
+	piMemory(NULL)
 {
 	this->ui.setupUi(this);
-	this->nwInterfaceDialog = NULL;
+
 	this->ui.actionStop->setDisabled(true);
 	this->ui.actionRestart->setEnabled(false);
 
@@ -15,46 +25,26 @@ MainWindow::MainWindow(QWidget *parent) :
 							  border-radius: 5px; \
 							  spacing: 3px; } ");
 
-	this->sdoTab = new SdoTransfer();
-	this->ui.tabWidget->addTab(this->sdoTab, "SDO Transfer");
-
-	this->piVar = new ProcessImageVariables();
-	this->ui.tabWidget->addTab(this->piVar, "ProcessImage Variables view");
-
-	this->piMemory = new ProcessImageMemory();
-	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
-	//this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), sdoTab);
-
-	this->nmtCmdWindow = new NmtCommandsDock();
-	this->addDockWidget(Qt::RightDockWidgetArea, this->nmtCmdWindow);
-	this->setCorner( Qt::TopLeftCorner, Qt::LeftDockWidgetArea );
-	this->setCorner( Qt::TopRightCorner, Qt::RightDockWidgetArea );
-	this->setCorner( Qt::BottomLeftCorner, Qt::LeftDockWidgetArea );
-	this->setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea );
-
-	this->cnStatus = new NodeStatusDock();
-	this->addDockWidget(Qt::RightDockWidgetArea, this->cnStatus);
-
-	this->log = new LogerWindow();
-	this->addDockWidget(Qt::BottomDockWidgetArea, this->log);
-
-	this->mnNode = new Node("MN - 240");
-	this->ui.statusbar->addPermanentWidget(this->mnNode);
 }
 
 MainWindow::~MainWindow()
 {
 	delete this->sdoTab;
 	delete this->log;
-	delete this->piVar;
-	delete this->piMemory;
-	if (!this->nwInterfaceDialog)
-		delete this->nwInterfaceDialog;
-	if (!this->cdcDialog)
-		delete this->cdcDialog;
+	delete this->nwInterfaceDialog;
+	delete this->cdcDialog;
 	delete this->nmtCmdWindow;
 	delete this->cnStatus;
 	delete this->mnNode;
+	if (!this->piVar)
+	{
+		delete this->piVar;
+	}
+
+	if (!this->piMemory)
+	{
+		delete this->piMemory;
+	}
 }
 
 void MainWindow::on_actionToggle_Full_Screen_triggered()
@@ -67,48 +57,78 @@ void MainWindow::on_actionToggle_Full_Screen_triggered()
 
 void MainWindow::on_actionOpen_CDC_triggered()
 {
-	this->cdcDialog = new DialogOpenCdc(this);
 	this->cdcDialog->exec();
 }
 
 void MainWindow::on_actionQuit_triggered()
 {
-	this->on_actionStop_triggered();
 	this->close();
 }
 
-void MainWindow::on_actionSelect_Interface_triggered()
+bool MainWindow::on_actionSelect_Interface_triggered()
 {
-	this->nwInterfaceDialog = new SelectNwInterfaceDialog();
-	if (this->nwInterfaceDialog->fillList() < 0)
+	if (this->nwInterfaceDialog->FillList() < 0)
 	{
 		QMessageBox::warning(this, "PCAP not working!",
 							 "No PCAP interfaces found!\n"
 							 "Make sure LibPcap is installed and you have root permissions!",
 							 QMessageBox::Close);
-		return;
+		return false;
 	}
 
 	if (this->nwInterfaceDialog->exec() == QDialog::Rejected)
 	{
-		return;
+		return false;
 	}
-	qDebug("Nw Name = %s ", qPrintable(this->nwInterfaceDialog->getDevName()));
+	// qDebug("Nw Name = %s ", qPrintable(this->nwInterfaceDialog->getDevName()));
+	return true;
 }
 
 void MainWindow::on_actionStart_triggered()
 {
+	// No need to save the return value of the addTab
+
+	this->ui.statusbar->addPermanentWidget(this->mnNode);
+	this->mnNode->show();
+
 	//TODO Start powerlink and only if success enable the stop button.
-	if ((this->nwInterfaceDialog == NULL)
-		|| (this->nwInterfaceDialog->getDevName() == ""))
+	if (this->nwInterfaceDialog->GetDevName() == "")
 	{
-		this->on_actionSelect_Interface_triggered();
+		if (!this->on_actionSelect_Interface_triggered())
+		{
+			return;
+		}
 	}
+
+	this->ui.statusbar->showMessage(this->nwInterfaceDialog->GetDevDescription());
+
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionRestart->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
-	this->ui.statusbar->showMessage("asdfaskdasfsdfksdf");
-	//this->mnNode->SetNodeStatus(0);
+// 	this->ui.statusbar->showMessage("asdfaskdasfsdfksdf");
+
+	this->addDockWidget(Qt::RightDockWidgetArea, this->nmtCmdWindow);
+	this->setCorner( Qt::TopLeftCorner, Qt::LeftDockWidgetArea );
+	this->setCorner( Qt::TopRightCorner, Qt::RightDockWidgetArea );
+	this->setCorner( Qt::BottomLeftCorner, Qt::LeftDockWidgetArea );
+	this->setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea );
+	this->nmtCmdWindow->show();
+	this->addDockWidget(Qt::RightDockWidgetArea, this->cnStatus);
+	this->cnStatus->show();
+
+	this->addDockWidget(Qt::BottomDockWidgetArea, this->log);
+	this->log->show();
+
+	this->mnNode->SetNodeStatus(0);
+
+	this->ui.tabWidget->addTab(this->sdoTab, "SDO Transfer");
+
+	/* Moved to DataInOutThread and create ui there.*/
+	this->piVar = new ProcessImageVariables();
+	this->ui.tabWidget->addTab(this->piVar, "ProcessImage Variables view");
+
+	this->piMemory = new ProcessImageMemory();
+	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
 }
 
 void MainWindow::on_actionStop_triggered()
@@ -116,14 +136,39 @@ void MainWindow::on_actionStop_triggered()
 	this->ui.actionStart->setEnabled(true);
 	this->ui.actionRestart->setEnabled(false);
 	this->ui.actionStop->setEnabled(false);
+
+	// this->sdoTab->hide();
+	this->removeDockWidget(this->cnStatus);
+	this->removeDockWidget(this->log);
+	this->removeDockWidget(this->nmtCmdWindow);
+	// MN Status is not hidden.
+
+	this->ui.tabWidget->removeTab(1);
+	this->ui.tabWidget->removeTab(2);
+	this->ui.tabWidget->removeTab(3);
+
+	delete this->piVar;
+	delete this->piMemory;
 }
 
 void MainWindow::on_actionRestart_triggered()
 {
-
+// NMT restart
 }
 
 void MainWindow::on_actionAbout_triggered()
 {
+	// No need to handle return
+	AboutDialog(this).exec();
+}
 
+void MainWindow::on_actionHelp_triggered()
+{
+	QString helpUrl = "http://openpowerlink.sourceforge.net";
+	if (!QDesktopServices::openUrl(QUrl(helpUrl, QUrl::TolerantMode)))
+	{
+		QMessageBox::warning(this, "Web Browser not found",
+						QString("Make sure you have any default web browser.\n If not manually go to the link %1").arg(helpUrl),
+							 QMessageBox::Close);
+	}
 }

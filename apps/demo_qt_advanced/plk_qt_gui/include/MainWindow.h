@@ -3,13 +3,14 @@
 
 #include "ui_MainWindow.h"
 #include "SdoTransfer.h"
-#include "LogerWindow.h"
+#include "LoggerWindow.h"
 #include "ProcessImageVariables.h"
 #include "ProcessImageMemory.h"
 #include "DialogOpenCdc.h"
 #include "SelectNwInterfaceDialog.h"
 #include "NmtCommandsDock.h"
 #include "NodeStatusDock.h"
+#include "NodeUi.h"
 
 class MainWindow : public QMainWindow
 {
@@ -25,7 +26,7 @@ private slots:
 
 	void on_actionQuit_triggered();
 
-	void on_actionSelect_Interface_triggered();
+	bool on_actionSelect_Interface_triggered();
 
 	void on_actionStart_triggered();
 
@@ -35,17 +36,20 @@ private slots:
 
 	void on_actionAbout_triggered();
 
+	void on_actionHelp_triggered();
+
 private:
 	Ui::MainWindow ui;
 	SdoTransfer *sdoTab; /// SDO ui
-	LogerWindow *log; /// Logging window
+	LoggerWindow *log; /// Logging window
 	ProcessImageVariables *piVar; /// Pi variable view
 	ProcessImageMemory *piMemory; /// Pi memory view
 	DialogOpenCdc *cdcDialog;  /// CDC dialog window
 	SelectNwInterfaceDialog *nwInterfaceDialog; /// Network select interface dialog
 	NmtCommandsDock *nmtCmdWindow; /// NMT command
 	NodeStatusDock *cnStatus; /// CN status list
-	Node *mnNode; /// MN status frame
+	NodeUi *mnNode; /// MN status frame
+	// Q_DISABLE_COPY(MainWindow)
 };
 
 #endif // _MAINWINDOW_H_

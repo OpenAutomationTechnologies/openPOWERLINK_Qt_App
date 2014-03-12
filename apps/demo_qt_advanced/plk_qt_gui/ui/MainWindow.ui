@@ -18,19 +18,36 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>openPOWERLINK MN Demo</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources/images.qrc">
-    <normaloff>:/new/images/icon.png</normaloff>:/new/images/icon.png</iconset>
+    <normaloff>:/new/images/EpsgIcon.png</normaloff>:/new/images/EpsgIcon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>-1</number>
+       <number>0</number>
       </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Welcome to openPOWERLINK</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="styleSheet">
+           <string notr="true">image: url(:/new/images/powerlink_open_source.png);</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -66,6 +83,8 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionHelp"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
@@ -116,6 +135,10 @@
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="resources/images.qrc">
+     <normaloff>:/new/images/exitblue.gif</normaloff>:/new/images/exitblue.gif</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -136,11 +159,19 @@
    </property>
   </action>
   <action name="actionStart">
+   <property name="icon">
+    <iconset resource="resources/images.qrc">
+     <normaloff>:/new/images/start.gif</normaloff>:/new/images/start.gif</iconset>
+   </property>
    <property name="text">
     <string>Start</string>
    </property>
   </action>
   <action name="actionStop">
+   <property name="icon">
+    <iconset resource="resources/images.qrc">
+     <normaloff>:/new/images/stop.gif</normaloff>:/new/images/stop.gif</iconset>
+   </property>
    <property name="text">
     <string>Stop</string>
    </property>
@@ -151,6 +182,10 @@
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="resources/images.qrc">
+     <normaloff>:/new/images/KalycitoIcon.png</normaloff>:/new/images/KalycitoIcon.png</iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
@@ -161,6 +196,17 @@
    </property>
    <property name="shortcut">
     <string>F11</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+   <property name="iconText">
+    <string>Help</string>
+   </property>
+   <property name="toolTip">
+    <string>Documentation</string>
    </property>
   </action>
  </widget>
