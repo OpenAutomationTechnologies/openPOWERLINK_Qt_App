@@ -9,6 +9,7 @@ class LoggerWindow : public QDockWidget
 
 public:
 	explicit LoggerWindow(QWidget *parent = 0);
+	Q_INVOKABLE void HandlePrintLog(const QString& str);
 
 private:
 	Ui::LoggerWindow ui;
