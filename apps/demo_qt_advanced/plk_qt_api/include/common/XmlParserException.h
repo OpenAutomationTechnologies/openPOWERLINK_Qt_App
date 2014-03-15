@@ -67,7 +67,7 @@ public:
 		INVALIDATTRIBUTEVALUE
 	};
 
-	XmlParserException(const std::string& message = std::string(),
+	XmlParserException(std::string& message = std::string(),
 					   XmlParserErrors errCode = UNDEFINED,
 					   UINT lineNumber = 0,
 					   UINT colNumber = 0);
@@ -78,7 +78,7 @@ public:
 	 * \return The formatted string containing the exception message
 	 * and the line and column number where error occurred.
 	 */
-	const std::string whatException() const;
+	virtual const char* what() const;
 
 	/**
 	 * \return The error code.
@@ -86,7 +86,7 @@ public:
 	XmlParserErrors GetErrorCode() const;
 
 private:
-	const std::string message;
+	std::string message;
 	XmlParserErrors errCode;
 	UINT lineNumber;
 	UINT colNumber;

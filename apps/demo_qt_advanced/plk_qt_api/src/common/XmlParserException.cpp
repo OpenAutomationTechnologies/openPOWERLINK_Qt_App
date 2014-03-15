@@ -36,15 +36,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-
-#include "common/XmlParserException.h"
 #include <sstream>
+#include "common/XmlParserException.h"
 
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
 
-XmlParserException::XmlParserException(const std::string& message,
+XmlParserException::XmlParserException(std::string& message,
 			XmlParserErrors errCode,
 			UINT lineNumber,
 			UINT colNumber)
@@ -53,16 +52,15 @@ XmlParserException::XmlParserException(const std::string& message,
 				lineNumber(lineNumber),
 				colNumber(colNumber)
 {
-
+	std::ostringstream stream;
+	stream << " line:" << this->lineNumber;
+	stream << " column: " << this->colNumber;
+	this->message += stream.str();
 }
 
-const std::string XmlParserException::whatException() const
+const char* XmlParserException::what() const
 {
-	std::ostringstream msg;
-	msg << "Error message:" << this->message ;
-	msg << " line:" << this->lineNumber;
-	msg << " column: " << this->colNumber;
-	return msg.str();
+	return this->message.c_str();
 }
 
 XmlParserException::XmlParserErrors XmlParserException::GetErrorCode() const
