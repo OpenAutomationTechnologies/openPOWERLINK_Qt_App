@@ -2,6 +2,15 @@
 #include <QMessageBox>
 #include "AboutDialog.h"
 #include "QDesktopServices"
+
+#include "api/OplkQtApi.h"
+#include "user/processimage/ProcessImageParser.h"
+#include "common/XmlParserException.h"
+
+#include <oplk/debugstr.h>
+
+#include <fstream>
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	sdoTab(new SdoTransfer()),
@@ -91,6 +100,27 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.statusbar->addPermanentWidget(this->mnNode);
 	this->mnNode->show();
 
+	ProcessImageParser *pi = NULL;
+
+	try
+	{
+		pi = ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
+		std::ifstream ifsXap("xap.xml");
+		std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
+		pi->Parse(xapData.c_str());
+	}
+	catch(const std::exception& ex)
+	{
+		QMessageBox::critical(this, "Xml Parsing failed!",
+							 QString("xap.xml has found errors with your xap.xml.\n Error: %1 ")
+							  .arg(ex.what()),
+							 QMessageBox::Close);
+		qDebug("An Exception has occured: %s", ex.what());
+	}
+
+	ProcessImageIn *piIn = &(static_cast<ProcessImageIn&>(pi->GetProcessImage(Direction::PI_IN)));
+	ProcessImageOut *piOut = &(static_cast<ProcessImageOut&>(pi->GetProcessImage(Direction::PI_OUT)));
+
 	//TODO Start powerlink and only if success enable the stop button.
 	if (this->nwInterfaceDialog->GetDevName() == "")
 	{
@@ -98,6 +128,40 @@ void MainWindow::on_actionStart_triggered()
 		{
 			return;
 		}
+	}
+
+	tOplkError oplkRet = kErrorGeneralError;
+	oplkRet = OplkQtApi::InitStack(240, this->nwInterfaceDialog->GetDevName().toStdString());
+	if (oplkRet != kErrorOk)
+	{
+		QMessageBox::critical(this, "Init Powerlink failed",
+							 QString("Init Powerlink with error: %1 ")
+							  .arg(debugstr_getRetValStr(oplkRet)),
+							 QMessageBox::Close);
+		qDebug("InitStack retCode %x", oplkRet);
+		return;
+	}
+
+	oplkRet = OplkQtApi::AllocateProcessImage(*piIn, *piOut);
+	if (oplkRet != kErrorOk)
+	{
+		QMessageBox::critical(this, "ProcessImage allocation failed",
+							 QString("ProcessImage allocation with error: %1 ")
+							  .arg(debugstr_getRetValStr(oplkRet)),
+							 QMessageBox::Close);
+		qDebug("AllocateProcessImage retCode %x", oplkRet);
+		return;
+	}
+
+	oplkRet = OplkQtApi::StartStack();
+	if (oplkRet != kErrorOk)
+	{
+		QMessageBox::critical(this, "Start Powerlink failed",
+							 QString("Start Powerlink failed with error: %1 ")
+							  .arg(debugstr_getRetValStr(oplkRet)),
+							 QMessageBox::Close);
+		qDebug("StartStack retCode %x", oplkRet);
+		return;
 	}
 
 	this->ui.statusbar->showMessage(this->nwInterfaceDialog->GetDevDescription());
@@ -133,6 +197,17 @@ void MainWindow::on_actionStart_triggered()
 
 void MainWindow::on_actionStop_triggered()
 {
+	tOplkError oplkRet = OplkQtApi::StopStack();
+	if (oplkRet != kErrorOk)
+	{
+		QMessageBox::critical(this, "Stop Powerlink failed",
+							 QString("Stop Powerlink failed with error: %1 ")
+							  .arg(debugstr_getRetValStr(oplkRet)),
+							 QMessageBox::Close);
+		qDebug("StopStack retCode %x", oplkRet);
+		return;
+	}
+
 	this->ui.actionStart->setEnabled(true);
 	this->ui.actionRestart->setEnabled(false);
 	this->ui.actionStop->setEnabled(false);
@@ -154,6 +229,15 @@ void MainWindow::on_actionStop_triggered()
 void MainWindow::on_actionRestart_triggered()
 {
 // NMT restart
+	 tOplkError oplkRet = oplk_execNmtCommand(kNmtEventSwReset);
+	// tOplkError oplkRet =  OplkQtApi::ExecuteNmtCommand(240, kNmtCmdSwReset);
+	if (oplkRet != kErrorOk)
+	{
+		QMessageBox::critical(this, "Restart Powerlink failed",
+							 QString("Restart Powerlink failed with error: %1 ")
+							  .arg(debugstr_getRetValStr(oplkRet)),
+							 QMessageBox::Close);
+	}
 }
 
 void MainWindow::on_actionAbout_triggered()
