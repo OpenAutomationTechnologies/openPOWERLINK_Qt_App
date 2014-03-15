@@ -12,26 +12,33 @@ TARGET = plk_qt_gui
 TEMPLATE = app
 
 ################################TargetInstallPath#######################################
-release:DESTDIR = ../plk_qt_gui/release
-release:OBJECTS_DIR = ../plk_qt_gui/release/.obj
-release:MOC_DIR = ../plk_qt_gui/release/.moc
-release:RCC_DIR = ../plk_qt_gui/release/.rcc
-release:UI_DIR = ../plk_qt_gui/release/.ui
+CONFIG(release, debug|release) {
+	DESTDIR = ../plk_qt_gui/release
+	OBJECTS_DIR = ../plk_qt_gui/release/.obj
+	MOC_DIR = ../plk_qt_gui/release/.moc
+	RCC_DIR = ../plk_qt_gui/release/.rcc
+	UI_DIR = ../plk_qt_gui/release/.ui
+}
+CONFIG(debug, debug|release) {
+	DESTDIR = ../plk_qt_gui/debug
+	OBJECTS_DIR = ../plk_qt_gui/debug/.obj
+	MOC_DIR = ../plk_qt_gui/debug/.moc
+	RCC_DIR = ../plk_qt_gui/debug/.rcc
+	UI_DIR = ../plk_qt_gui/debug/.ui
+}
 
-debug:DESTDIR = ../plk_qt_gui/debug
-debug:OBJECTS_DIR = ../plk_qt_gui/debug/.obj
-debug:MOC_DIR = ../plk_qt_gui/debug/.moc
-debug:RCC_DIR = ../plk_qt_gui/debug/.rcc
-debug:UI_DIR = ../plk_qt_gui/debug/.ui
+INCLUDEPATH += include \
+			$$PWD/../plk_qt_api/include \
+			$$PWD/../../../stack/include
 
-INCLUDEPATH += include
-
-win32: INCLUDEPATH +=  $$PWD/../../../contrib/pcap/windows/WpdPack/Include
-
-win32: LIBS += -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lwpcap \
-			   -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lPacket
-
-win32: DEPENDPATH +=  $$PWD/../../../contrib/pcap/windows/WpdPack/Lib
+#oplkCfg.h
+win32: INCLUDEPATH += $$PWD/../../../stack/proj/windows/liboplkmn
+######Link to application##########
+unix:!macx: INCLUDEPATH += $$PWD/../../../stack/proj/linux/liboplkmn
+##########for userspace-demon###########
+#unix:!macx: INCLUDEPATH += $$PWD/../../../stack/proj/linux/liboplkmnapp-userintf
+#######link to kernel space-demon#######
+#unix:!macx: INCLUDEPATH += $$PWD/../../../stack/proj/linux/liboplkmnapp-kernelintf
 
 SOURCES += src/main.cpp \
 		   src/MainWindow.cpp \
@@ -75,3 +82,62 @@ FORMS    += ui/MainWindow.ui \
 
 RESOURCES += \
 	ui/resources/images.qrc
+
+INCLUDEPATH += $$PWD/../plk_qt_api/debug
+DEPENDPATH += $$PWD/../plk_qt_api/debug
+
+
+######Link to application##########
+unix:!macx: INCLUDEPATH += $$PWD/../../../stack/proj/linux/liboplkmn
+##########for userspace-demon###########
+#unix:!macx: INCLUDEPATH += $$PWD/../../../stack/proj/linux/liboplkmnapp-userintf
+#######link to kernel space-demon#######
+#unix:!macx: INCLUDEPATH += $$PWD/../../../stack/proj/linux/liboplkmnapp-kernelintf
+
+
+###########################LIB-PATH######################################################
+
+CONFIG(release, debug|release): LIBS += -L$$PWD/../plk_qt_api/release/ -lPlkQtApi
+CONFIG(debug, debug|release): LIBS += -L$$PWD/../plk_qt_api/debug/ -lPlkQtApi
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../stack/lib/windows/x86 -loplkmn
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../stack/lib/windows/x86 -loplkmn_d
+######Link to application##########
+else:unix:!macx:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../stack/lib/linux/i686/ -loplkmn
+else:unix:!macx:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../stack/lib/linux/i686/ -loplkmn_d
+##########for userspace-demon###########
+#else:unix:!macx:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../stack/lib/linux/i686/ -loplkmnapp-userintf
+#else:unix:!macx:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../stack/lib/linux/i686/ -loplkmnapp-userintf_d
+#######link to kernel space-demon#######
+#else:unix:!macx:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../stack/lib/linux/i686/ -loplkmnapp-kernelintf
+#else:unix:!macx:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../stack/lib/linux/i686/ -loplkmnapp-kernelintf_d
+
+
+win32: LIBS += -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lwpcap \
+			   -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lPacket
+
+###########################PRE_TARGETDEPS######################################################
+unix:!macx:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../stack/lib/linux/i686/liboplkmn_d.a
+unix:!macx:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../plk_qt_api/debug/libPlkQtApi.a
+
+
+###########################LIB-INCLUDE-PATH######################################################
+
+CONFIG(release, debug|release): INCLUDEPATH += $$PWD/../plk_qt_api/release
+CONFIG(debug, debug|release): INCLUDEPATH += $$PWD/../plk_qt_api/debug
+
+win32:CONFIG(release, debug|release): INCLUDEPATH += $$PWD/../../../stack/lib/windows/x86
+else:win32:CONFIG(debug, debug|release): INCLUDEPATH += $$PWD/../../../stack/lib/windows/x86
+else:unix:!macx: INCLUDEPATH += $$PWD/../../../stack/lib/linux/i686
+
+win32: INCLUDEPATH += $$PWD/../../../contrib/pcap/windows/WpdPack/Include
+
+
+###########################DEPENDPATH######################################################
+CONFIG(release, debug|release): DEPENDPATH += $$PWD/../plk_qt_api/release
+CONFIG(debug, debug|release): DEPENDPATH += $$PWD/../plk_qt_api/debug
+
+win32: DEPENDPATH += $$PWD/../../../stack/lib/windows/x86 \
+			  $$PWD/../../../contrib/pcap/windows/WpdPack/Lib
+
+unix:!macx: LIBS += -lpcap -lrt -lpthread
