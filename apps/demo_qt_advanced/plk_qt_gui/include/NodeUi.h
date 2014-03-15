@@ -5,20 +5,23 @@
 #include <QFrame>
 #include <QLabel>
 
+#include <oplk/nmt.h>
+
 class NodeUi : public QFrame
 {
 	Q_OBJECT
 
 public:
-	explicit NodeUi(const QString& nodeName, QWidget *parent = 0);
-	void SetNodeStatus(int state);
+	explicit NodeUi(const uint nodeId, QWidget *parent = 0);
+	Q_INVOKABLE void HandleNodeStateChanged(tNmtState nmtState);
+	unsigned int GetNodeId() const;
 
 private:
 	QHBoxLayout *nodeLayout;
 	QLabel *name;
 	QLabel *statusImage;
 	QPixmap statusPixmap;
-	QString statusStr;
+	unsigned int nodeId;
 	// Q_DISABLE_COPY(Node)
 };
 
