@@ -11,6 +11,8 @@
 
 #include <fstream>
 
+const unsigned int localNodeId = 240;
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	sdoTab(new SdoTransfer()),
@@ -19,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	nwInterfaceDialog(new SelectNwInterfaceDialog()),
 	nmtCmdWindow(new NmtCommandsDock()),
 	cnStatus(new NodeStatusDock()),
-	mnNode(new NodeUi("MN - 240")),
+	mnNode(new NodeUi(localNodeId)),
 	piVar(NULL),
 	piMemory(NULL)
 {
@@ -33,6 +35,13 @@ MainWindow::MainWindow(QWidget *parent) :
 							  stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3); \
 							  border-radius: 5px; \
 							  spacing: 3px; } ");
+
+// TODO Handle return values
+	int index = this->mnNode->metaObject()->indexOfMethod(
+					QMetaObject::normalizedSignature(
+						"HandleNodeStateChanged(tNmtState)").constData());
+// TODO Handle return values
+	bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->mnNode), this->mnNode->metaObject()->method(index));
 
 }
 
@@ -131,7 +140,7 @@ void MainWindow::on_actionStart_triggered()
 	}
 
 	tOplkError oplkRet = kErrorGeneralError;
-	oplkRet = OplkQtApi::InitStack(240, this->nwInterfaceDialog->GetDevName().toStdString());
+	oplkRet = OplkQtApi::InitStack(localNodeId, this->nwInterfaceDialog->GetDevName().toStdString());
 	if (oplkRet != kErrorOk)
 	{
 		QMessageBox::critical(this, "Init Powerlink failed",
@@ -182,8 +191,6 @@ void MainWindow::on_actionStart_triggered()
 
 	this->addDockWidget(Qt::BottomDockWidgetArea, this->log);
 	this->log->show();
-
-	this->mnNode->SetNodeStatus(0);
 
 	this->ui.tabWidget->addTab(this->sdoTab, "SDO Transfer");
 
