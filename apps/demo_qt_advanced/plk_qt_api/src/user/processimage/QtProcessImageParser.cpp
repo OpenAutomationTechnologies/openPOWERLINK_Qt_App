@@ -398,7 +398,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 	}
 }
 
-void QtProcessImageParser::RaiseException(const std::string& message,
+void QtProcessImageParser::RaiseException(std::string message,
 								XmlParserException::XmlParserErrors errCode)
 {
 	this->xml.raiseError();
