@@ -62,15 +62,6 @@ public:
 		const std::map<std::string, Channel>& channels);
 
 	/**
-	 * \brief   Overridden function of Add Channel of the ProcessImage Class.
-	 *
-	 * \param[in] channel  The Channel object
-	 * \retval true   If it is added successfully.
-	 * \retval false  If it fails to add.
-	 */
-	bool virtual AddChannelInternal(const Channel& channel);
-
-	/**
 	 * \brief   Sets the value for a channel in the ProcessImage.
 	 *
 	 * \param[in] channelName  The name of the Channel.
@@ -96,6 +87,17 @@ public:
 	void SetRawData(const std::vector<BYTE>& value,
 			const UINT byteOffset,
 			const UINT bitOffset = 0);
+
+private:
+
+	/**
+	 * \brief   Overridden function of Add Channel of the ProcessImage Class.
+	 *
+	 * \param[in] channel  The Channel object
+	 * \retval true   If it is added successfully.
+	 * \retval false  If it fails to add.
+	 */
+	bool virtual AddChannelInternal(const Channel& channel);
 };
 
 #endif // _PROCESSIMAGEIN_H_
