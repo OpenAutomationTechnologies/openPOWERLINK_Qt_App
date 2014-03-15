@@ -145,6 +145,28 @@ public:
 	void ResetProcessImage();
 
 	/**
+	 * \brief   Returns the value that the Channel holds.
+	 *
+	 * \param[in] channelName  The Channel name.
+	 * \return Returns the requested value
+	 * \throws std::out_of_range If name not found
+	 */
+	std::vector<BYTE> GetRawValue(const std::string& channelName) const;
+
+	/**
+	 * \brief   Returns the value at the given BYTE and bit offsets.
+	 *
+	 * \param[in] bitSize     Size of the data in bits.
+	 * \param[in] byteOffset  Offset in bytes.
+	 * \param[in] bitOffset   Offset in bits with in a single BYTE
+	 *						  (i.e. in the range of 0 to 7).
+	 * \return Returns the requested value.
+	 */
+	std::vector<BYTE> GetRawData(const UINT bitSize,
+									const UINT byteOffset,
+									const UINT bitOffset = 0) const;
+
+	/**
 	 * \brief Returns the raw value of the ProcessImage variable.
 	 *        The returned datatype depends on the datatype of the channel
 	 *

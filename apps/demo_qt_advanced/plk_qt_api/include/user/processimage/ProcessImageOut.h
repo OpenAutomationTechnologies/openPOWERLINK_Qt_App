@@ -40,7 +40,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include <map>
 #include <string>
-#include <vector>
 
 #include "user/processimage/Channel.h"
 #include "user/processimage/ProcessImage.h"
@@ -61,6 +60,7 @@ public:
 	ProcessImageOut(const UINT byteSize,
 		const std::map<std::string, Channel>& channels);
 
+private:
 	/**
 	 * \brief   Add Channel of the ProcessImage Class.
 	 *
@@ -70,27 +70,6 @@ public:
 	 */
 	bool virtual AddChannelInternal(const Channel& channel);
 
-	/**
-	 * \brief   Returns the value that the Channel holds.
-	 *
-	 * \param[in] channelName  The Channel name.
-	 * \return Returns the requested value
-	 * \throws std::out_of_range If name not found
-	 */
-	std::vector<BYTE> GetRawValue(const std::string& channelName) const;
-
-	/**
-	 * \brief   Returns the value at the given BYTE and bit offsets.
-	 *
-	 * \param[in] bitSize     Size of the data in bits.
-	 * \param[in] byteOffset  Offset in bytes.
-	 * \param[in] bitOffset   Offset in bits with in a single BYTE
-	 *						  (i.e. in the range of 0 to 7).
-	 * \return Returns the requested value.
-	 */
-	std::vector<BYTE> GetRawData(const UINT bitSize,
-									const UINT byteOffset,
-									const UINT bitOffset = 0) const;
 };
 
 #endif // _PROCESSIMAGEOUT_H_

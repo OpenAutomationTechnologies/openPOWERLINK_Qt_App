@@ -36,9 +36,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "user/processimage/ProcessImageOut.h"
-#include <bitset>
-#include <sstream>
-#include <stdexcept>
 
 /*******************************************************************************
 * Public functions
@@ -55,6 +52,9 @@ ProcessImageOut::ProcessImageOut(const UINT byteSize,
 
 }
 
+/*******************************************************************************
+* Private functions
+*******************************************************************************/
 bool ProcessImageOut::AddChannelInternal(const Channel& channel)
 {
 	if (channel.GetDirection() == Direction::PI_OUT)
@@ -64,74 +64,5 @@ bool ProcessImageOut::AddChannelInternal(const Channel& channel)
 		return true;
 	}
 	return false;
-}
-
-std::vector<BYTE> ProcessImageOut::GetRawValue(const std::string& channelName) const
-{
-	Channel channelObj = this->GetChannel(channelName);
-	return this->GetRawData(channelObj.GetBitSize(),
-					channelObj.GetByteOffset(),
-					channelObj.GetBitOffset());
-}
-
-std::vector<BYTE> ProcessImageOut::GetRawData(const UINT bitSize,
-											const UINT byteOffset,
-											const UINT bitOffset) const
-{
-	// TODO: Check for Powerlink possible maximum for input args.
-
-	if (((byteOffset * 8) + bitOffset + bitSize) > (this->GetSize() * 8))
-	{
-		std::ostringstream msg;
-		msg << "The total size of input args:" << ((byteOffset * 8) + bitOffset + bitSize);
-		msg << " exceeds the size of the ProcessImage:" << (this->GetSize() * 8);
-		msg << " Note: Sizes are in bits";
-		throw std::out_of_range(msg.str());
-	}
-
-	std::vector<BYTE> rawData;
-	BYTE* piDataPtr = this->GetProcessImageDataPtr();
-	if (piDataPtr)
-	{
-		piDataPtr += byteOffset;
-		if ((bitSize % 8) == 0)
-		{
-			// rawData.reserve(bitSize / 8);
-			for (UINT i = 0; i < (bitSize / 8); ++i)
-			{
-				 piDataPtr += i;
-				 rawData.push_back(*piDataPtr);
-			}
-		}
-		else if (bitSize < 8)
-		{
-			// rawData.reserve(1);
-			std::bitset<8> piFirstByte = *piDataPtr;
-			std::bitset<8> bitValue;
-			for (UINT pos = 0; pos < bitSize; ++pos)
-			{
-				bitValue.set(pos, piFirstByte[bitOffset + pos]);
-			}
-			ULONG longVal = bitValue.to_ulong();
-			BYTE data = static_cast<BYTE>(longVal);
-			rawData.push_back(data);
-		}
-		else
-		{
-			// TODO: Discuss. Bitsize is multiples of 8. or ranges from 0-7.
-			std::ostringstream msg;
-			msg << "Invalid bitSize. " << bitSize ;
-			throw std::invalid_argument(msg.str());
-		}
-	}
-	else
-	{
-		//TODO Discuss Fails in Linux
-//		std::ostringstream msg;
-//		msg << " ProcessImage data pointer is NULL.";
-//		msg << "Check the allocation of memory for the output ProcessImage";
-//		throw std::bad_alloc(msg.str().c_str());
-	}
-	return rawData;
 }
 
