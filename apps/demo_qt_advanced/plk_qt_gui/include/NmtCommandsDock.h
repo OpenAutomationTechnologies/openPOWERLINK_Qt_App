@@ -2,6 +2,7 @@
 #define _NMT_COMMANDS_DOCK_H_
 
 #include "ui_NmtCommandsDock.h"
+#include "user/nmtu.h"
 
 class NmtCommandsDock : public QDockWidget
 {
@@ -17,6 +18,7 @@ private slots:
 
 private:
 	Ui::NmtCommandsDock ui;
+	tNmtCommand nmtCommand;
 	// enum nmtCommand;
 	// Q_DISABLE_COPY(NmtCommandsDock)
 };
