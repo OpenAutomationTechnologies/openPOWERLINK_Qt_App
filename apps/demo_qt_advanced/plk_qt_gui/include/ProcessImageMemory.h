@@ -9,10 +9,11 @@ class ProcessImageMemory : public QFrame
 
 public:
 	explicit ProcessImageMemory(QWidget *parent = 0);
-
+	~ProcessImageMemory();
 private:
 	Ui::ProcessImageMemory ui;
 	void CreateVerticalHeaders();
+	void CreateCells();
 	void ResizeColumnsToContents();
 	// Q_DISABLE_COPY(ProcessImageMemory)
 };

@@ -11,6 +11,8 @@ public:
 	// bool has to be Pi direction
 	explicit ChannelUi(bool direction, QString channelName, QWidget *parent = 0);
 
+	~ChannelUi();
+
 	void UpdateSelectCheckBox(Qt::CheckState forceState);
 
 	Qt::CheckState GetSelectCheckBoxState();
