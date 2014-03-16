@@ -1,6 +1,4 @@
 #include "ProcessImageVariables.h"
-#include <QCheckBox>
-#include <QStringList>
 
 const uint processImageInSize = 20;
 const uint processImageOutSize = 20;
@@ -15,8 +13,23 @@ ProcessImageVariables::ProcessImageVariables(QWidget *parent) :
 
 ProcessImageVariables::~ProcessImageVariables()
 {
-//	qDeleteAll(this->inputChannels.constBegin(), this->inputChannels.constEnd());
-//	qDeleteAll(this->outputChannels.constBegin(), this->outputChannels.constEnd());
+	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+		 channel != this->inputChannels.end(); ++channel)
+	{
+		if (*channel)
+		{
+			delete (*channel);
+		}
+	}
+
+	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+		 channel != this->outputChannels.end(); ++channel)
+	{
+		if (*channel)
+		{
+			delete (*channel);
+		}
+	}
 }
 
 void ProcessImageVariables::PrepareInputRows()
@@ -42,12 +55,12 @@ void ProcessImageVariables::on_inputCheckAll_stateChanged(int checkedState)
 {
 	if (checkedState != Qt::PartiallyChecked)
 	{
-		for (QList<ChannelUi*>::iterator i = this->inputChannels.begin();
-			 i != this->inputChannels.end(); ++i)
+		for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+			 channel != this->inputChannels.end(); ++channel)
 		{
-			if (*i)
+			if (*channel)
 			{
-				(*i)->UpdateSelectCheckBox((Qt::CheckState) checkedState);
+				(*channel)->UpdateSelectCheckBox((Qt::CheckState) checkedState);
 			}
 		}
 	}
@@ -57,12 +70,12 @@ void ProcessImageVariables::on_outputCheckAll_stateChanged(int checkedState)
 {
 	if (checkedState != Qt::PartiallyChecked)
 	{
-		for (QList<ChannelUi*>::iterator i = this->outputChannels.begin();
-			 i != this->outputChannels.end(); ++i)
+		for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+			 channel != this->outputChannels.end(); ++channel)
 		{
-			if (*i)
+			if (*channel)
 			{
-				(*i)->UpdateSelectCheckBox((Qt::CheckState) checkedState);
+				(*channel)->UpdateSelectCheckBox((Qt::CheckState) checkedState);
 			}
 		}
 	}
@@ -72,12 +85,12 @@ void ProcessImageVariables::on_inputForceAll_stateChanged(int checkedState)
 {
 	if (checkedState != Qt::PartiallyChecked)
 	{
-		for (QList<ChannelUi*>::iterator i = this->inputChannels.begin();
-			 i != this->inputChannels.end(); ++i)
+		for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+			 channel != this->inputChannels.end(); ++channel)
 		{
-			if (*i)
+			if (*channel)
 			{
-				(*i)->UpdateForceCheckBox((Qt::CheckState) checkedState);
+				(*channel)->UpdateForceCheckBox((Qt::CheckState) checkedState);
 			}
 		}
 	}
@@ -85,14 +98,14 @@ void ProcessImageVariables::on_inputForceAll_stateChanged(int checkedState)
 
 void ProcessImageVariables::on_inputHideCheckedBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator i = this->inputChannels.begin();
-		 i != this->inputChannels.end(); ++i)
+	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+		 channel != this->inputChannels.end(); ++channel)
 	{
-		if (*i)
+		if (*channel)
 		{
-			if ((*i)->GetSelectCheckBoxState() == Qt::Checked)
+			if ((*channel)->GetSelectCheckBoxState() == Qt::Checked)
 			{
-				(*i)->hide();
+				(*channel)->hide();
 			}
 		}
 	}
@@ -100,26 +113,26 @@ void ProcessImageVariables::on_inputHideCheckedBtn_clicked()
 
 void ProcessImageVariables::on_inputShowAllBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator i = this->inputChannels.begin();
-		 i != this->inputChannels.end(); ++i)
+	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+		 channel != this->inputChannels.end(); ++channel)
 	{
-		if (*i)
+		if (*channel)
 		{
-			(*i)->show();
+			(*channel)->show();
 		}
 	}
 }
 
 void ProcessImageVariables::on_outHideCheckedBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator i = this->outputChannels.begin();
-		 i != this->outputChannels.end(); ++i)
+	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+		 channel != this->outputChannels.end(); ++channel)
 	{
-		if (*i)
+		if (*channel)
 		{
-			if ((*i)->GetSelectCheckBoxState() == Qt::Checked)
+			if ((*channel)->GetSelectCheckBoxState() == Qt::Checked)
 			{
-				(*i)->hide();
+				(*channel)->hide();
 			}
 		}
 	}
@@ -127,12 +140,12 @@ void ProcessImageVariables::on_outHideCheckedBtn_clicked()
 
 void ProcessImageVariables::on_outShowAllBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator i = this->outputChannels.begin();
-		 i != this->outputChannels.end(); ++i)
+	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+		 channel != this->outputChannels.end(); ++channel)
 	{
-		if (*i)
+		if (*channel)
 		{
-			(*i)->show();
+			(*channel)->show();
 		}
 	}
 }
@@ -149,24 +162,24 @@ Qt::CheckState ProcessImageVariables::GetOutputSelectAllCheckBoxState() const
 
 void ProcessImageVariables::UpdateInputs()
 {
-	for (QList<ChannelUi*>::iterator i = this->inputChannels.begin();
-		 i != this->inputChannels.end(); ++i)
+	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+		 channel != this->inputChannels.end(); ++channel)
 	{
-		if (*i)
+		if (*channel)
 		{
-			(*i)->UpdateCurrentValue();
+			(*channel)->UpdateCurrentValue();
 		}
 	}
 }
 
 void ProcessImageVariables::UpdateOutputs()
 {
-	for (QList<ChannelUi*>::iterator i = this->outputChannels.begin();
-		 i != this->outputChannels.end(); ++i)
+	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+		 channel != this->outputChannels.end(); ++channel)
 	{
-		if (*i)
+		if (*channel)
 		{
-			(*i)->UpdateCurrentValue();
+			(*channel)->UpdateCurrentValue();
 		}
 	}
 }

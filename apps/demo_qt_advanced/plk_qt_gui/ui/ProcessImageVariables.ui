@@ -82,9 +82,6 @@
             <height>99</height>
            </rect>
           </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(255, 255, 255);</string>
-          </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <layout class="QVBoxLayout" name="inputProcessImage"/>
@@ -273,9 +270,6 @@
             <height>99</height>
            </rect>
           </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(255, 255, 255);</string>
-          </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <layout class="QVBoxLayout" name="outputProcessImage"/>
@@ -366,7 +360,7 @@
             <enum>Qt::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>Current Value</string>
+            <string>Current Value(Hex)</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

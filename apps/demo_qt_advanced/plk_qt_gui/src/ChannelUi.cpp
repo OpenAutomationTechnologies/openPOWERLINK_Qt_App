@@ -15,6 +15,14 @@ ChannelUi::ChannelUi(bool direction, QString channelName, QWidget *parent) :
 	}
 	// this->
 }
+ChannelUi::~ChannelUi()
+{
+	delete this->ui.channelName;
+	delete this->ui.check;
+	delete this->ui.currentValue;
+	delete this->ui.force;
+	delete this->ui.horizontalLayout;
+}
 
 void ChannelUi::on_check_stateChanged(int arg1)
 {
