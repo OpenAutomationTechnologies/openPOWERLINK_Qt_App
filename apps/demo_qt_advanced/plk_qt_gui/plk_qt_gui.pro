@@ -52,7 +52,8 @@ SOURCES += src/main.cpp \
 	src/LoggerWindow.cpp \
 	src/ChannelUi.cpp \
 	src/NodeUi.cpp \
-	src/AboutDialog.cpp
+	src/AboutDialog.cpp \
+	src/DataSyncThread.cpp
 
 HEADERS  += include/MainWindow.h \
 	include/SdoTransfer.h \
@@ -65,7 +66,8 @@ HEADERS  += include/MainWindow.h \
 	include/LoggerWindow.h \
 	include/ChannelUi.h \
 	include/NodeUi.h \
-	include/AboutDialog.h
+	include/AboutDialog.h \
+	include/DataSyncThread.h
 
 FORMS    += ui/MainWindow.ui \
 	ui/MainWindow.ui \

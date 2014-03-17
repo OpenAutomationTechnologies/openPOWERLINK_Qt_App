@@ -4,12 +4,13 @@
 #include "QDesktopServices"
 
 #include "api/OplkQtApi.h"
-#include "user/processimage/ProcessImageParser.h"
 #include "common/XmlParserException.h"
 
 #include <oplk/debugstr.h>
 
 #include <fstream>
+
+#include "DataSyncThread.h"
 
 const unsigned int localNodeId = 240;
 
@@ -23,7 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	cnStatus(new NodeStatusDock()),
 	mnNode(new NodeUi(localNodeId)),
 	piVar(NULL),
-	piMemory(NULL)
+	piMemory(NULL),
+	parser(NULL),
+	dataSync(NULL)
 {
 	this->ui.setupUi(this);
 
@@ -109,14 +112,12 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.statusbar->addPermanentWidget(this->mnNode);
 	this->mnNode->show();
 
-	ProcessImageParser *pi = NULL;
-
 	try
 	{
-		pi = ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
+		this->parser = ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
 		std::ifstream ifsXap("xap.xml");
 		std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
-		pi->Parse(xapData.c_str());
+		this->parser->Parse(xapData.c_str());
 	}
 	catch(const std::exception& ex)
 	{
@@ -125,11 +126,14 @@ void MainWindow::on_actionStart_triggered()
 							  .arg(ex.what()),
 							 QMessageBox::Close);
 		qDebug("An Exception has occured: %s", ex.what());
+		return;
 	}
 
-	ProcessImageIn *piIn = &(static_cast<ProcessImageIn&>(pi->GetProcessImage(Direction::PI_IN)));
-	ProcessImageOut *piOut = &(static_cast<ProcessImageOut&>(pi->GetProcessImage(Direction::PI_OUT)));
+//	ProcessImageIn *piIn = &(static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN)));
+//	ProcessImageOut *piOut = &(static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT)));
 
+	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN));
+	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT));
 	//TODO Start powerlink and only if success enable the stop button.
 	if (this->nwInterfaceDialog->GetDevName() == "")
 	{
@@ -151,7 +155,8 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	oplkRet = OplkQtApi::AllocateProcessImage(*piIn, *piOut);
+	this->dataSync = new DataSyncThread(*(this->parser));
+	oplkRet = OplkQtApi::AllocateProcessImage(piIn, piOut);
 	if (oplkRet != kErrorOk)
 	{
 		QMessageBox::critical(this, "ProcessImage allocation failed",
@@ -178,7 +183,6 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionRestart->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
-// 	this->ui.statusbar->showMessage("asdfaskdasfsdfksdf");
 
 	this->addDockWidget(Qt::RightDockWidgetArea, this->nmtCmdWindow);
 	this->setCorner( Qt::TopLeftCorner, Qt::LeftDockWidgetArea );
@@ -194,9 +198,14 @@ void MainWindow::on_actionStart_triggered()
 
 	this->ui.tabWidget->addTab(this->sdoTab, "SDO Transfer");
 
-	/* Moved to DataInOutThread and create ui there.*/
-	this->piVar = new ProcessImageVariables();
+	// Start DataSync thread after starting stack.
+	this->dataSync->start();
+
+	this->piVar = new ProcessImageVariables(piIn, piOut);
 	this->ui.tabWidget->addTab(this->piVar, "ProcessImage Variables view");
+
+	connect(this->dataSync, SIGNAL(SignalUpdateInputValues()), this->piVar, SLOT(UpdateInputs()));
+	connect(this->dataSync, SIGNAL(SignalUpdateOutputValues()), this->piVar, SLOT(UpdateOutputs()));
 
 	this->piMemory = new ProcessImageMemory();
 	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
@@ -204,6 +213,8 @@ void MainWindow::on_actionStart_triggered()
 
 void MainWindow::on_actionStop_triggered()
 {
+	// exit datasync thread if it is running
+	// TODO delete thread.
 	tOplkError oplkRet = OplkQtApi::StopStack();
 	if (oplkRet != kErrorOk)
 	{
@@ -231,6 +242,7 @@ void MainWindow::on_actionStop_triggered()
 
 	delete this->piVar;
 	delete this->piMemory;
+	delete this->parser;
 }
 
 void MainWindow::on_actionRestart_triggered()
@@ -256,7 +268,7 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionHelp_triggered()
 {
 	QString helpUrl = "http://openpowerlink.sourceforge.net";
-	if (!QDesktopServices::openUrl(QUrl(helpUrl, QUrl::TolerantMode)))
+	if (!QDesktopServices::openUrl(QUrl(helpUrl)))
 	{
 		QMessageBox::warning(this, "Web Browser not found",
 						QString("Make sure you have any default web browser.\n If not manually go to the link %1").arg(helpUrl),

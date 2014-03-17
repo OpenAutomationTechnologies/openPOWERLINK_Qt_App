@@ -1,12 +1,11 @@
 #include "ProcessImageVariables.h"
 
-const uint processImageInSize = 20;
-const uint processImageOutSize = 20;
-
-ProcessImageVariables::ProcessImageVariables(QWidget *parent) :
-	QFrame(parent)
+ProcessImageVariables::ProcessImageVariables(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent) :
+	QFrame(parent),
+	inPi(in),
+	outPi(out)
 {
-	ui.setupUi(this);
+	this->ui.setupUi(this);
 	this->PrepareInputRows();
 	this->PrepareOutputRows();
 }
@@ -35,19 +34,27 @@ ProcessImageVariables::~ProcessImageVariables()
 void ProcessImageVariables::PrepareInputRows()
 {
 	// TODO Loop through processImage In from the QtProcessImageParser and add the channel.
-	for (uint i = 0; i < processImageInSize; ++i)
+	ChannelUi *channel = NULL;
+	for (std::map<std::string, Channel>::const_iterator it = this->inPi.cbegin();
+		 it!=this->inPi.cend(); ++it)
 	{
-		this->inputChannels.push_back(new ChannelUi(false, "true, obj.get_ChannelName()" ));
-		this->ui.inputProcessImage->addWidget(this->inputChannels.at(i));
+		// qDebug(qPrintable(QString::fromStdString(it->first)));
+		channel = new ChannelUi(it->second);
+		this->inputChannels.push_back(channel);
+		this->ui.inputProcessImage->addWidget(channel);
 	}
 }
 
 void ProcessImageVariables::PrepareOutputRows()
 {
-	for (uint i = 0; i < processImageOutSize; ++i)
+	ChannelUi *channel = NULL;
+	for (std::map<std::string, Channel>::const_iterator it = this->outPi.cbegin();
+		 it!=this->outPi.cend(); ++it)
 	{
-		this->outputChannels.push_back(new ChannelUi(true, "true, obj.get_ChannelName()" ));
-		this->ui.outputProcessImage->addWidget(this->outputChannels.at(i));
+		// qDebug(qPrintable(QString::fromStdString(it->first)));
+		channel = new ChannelUi(it->second);
+		this->outputChannels.push_back(channel);
+		this->ui.outputProcessImage->addWidget(channel);
 	}
 }
 
@@ -167,7 +174,7 @@ void ProcessImageVariables::UpdateInputs()
 	{
 		if (*channel)
 		{
-			(*channel)->UpdateCurrentValue();
+			(*channel)->UpdateInputChannelCurrentValue(&(this->inPi));
 		}
 	}
 }
@@ -179,7 +186,8 @@ void ProcessImageVariables::UpdateOutputs()
 	{
 		if (*channel)
 		{
-			(*channel)->UpdateCurrentValue();
+			(*channel)->UpdateOutputChannelCurrentValue(&(this->outPi));
 		}
 	}
 }
+

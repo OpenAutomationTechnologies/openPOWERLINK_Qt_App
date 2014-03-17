@@ -5,23 +5,26 @@
 #include "ChannelUi.h"
 #include <QList>
 
+#include "user/processimage/ProcessImageIn.h"
+#include "user/processimage/ProcessImageOut.h"
+
 class ProcessImageVariables : public QFrame
 {
 	Q_OBJECT
 
 public:
-	explicit ProcessImageVariables(QWidget *parent = 0);
+	explicit ProcessImageVariables(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent = 0);
 
 	Qt::CheckState GetInputSelectAllCheckBoxState() const;
 
 	Qt::CheckState GetOutputSelectAllCheckBoxState() const;
 
+	~ProcessImageVariables();
+
+public slots:
 	void UpdateInputs();
 
 	void UpdateOutputs();
-
-	~ProcessImageVariables();
-
 
 private slots:
 	void on_inputCheckAll_stateChanged(int arg1);
@@ -42,6 +45,9 @@ private:
 	Ui::ProcessImageVariables ui;
 	QList<ChannelUi*> inputChannels;
 	QList<ChannelUi*> outputChannels;
+
+	ProcessImageIn &inPi;
+	ProcessImageOut &outPi;
 
 	void PrepareInputRows();
 	void PrepareOutputRows();

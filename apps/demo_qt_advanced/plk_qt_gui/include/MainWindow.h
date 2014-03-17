@@ -12,6 +12,10 @@
 #include "NodeStatusDock.h"
 #include "NodeUi.h"
 
+#include "DataSyncThread.h"
+
+#include "user/processimage/ProcessImageParser.h"
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -49,6 +53,8 @@ private:
 	NmtCommandsDock *nmtCmdWindow; /// NMT command
 	NodeStatusDock *cnStatus; /// CN status list
 	NodeUi *mnNode; /// MN status frame
+	ProcessImageParser *parser;
+	DataSyncThread *dataSync;
 	// Q_DISABLE_COPY(MainWindow)
 };
 
