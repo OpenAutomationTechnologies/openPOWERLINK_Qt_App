@@ -72,7 +72,7 @@
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
-     <property name="clearButtonEnabled">
+     <property name="readOnly">
       <bool>true</bool>
      </property>
     </widget>
@@ -121,12 +121,6 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="placeholderText">
-      <string/>
-     </property>
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
      </property>
     </widget>
    </item>
