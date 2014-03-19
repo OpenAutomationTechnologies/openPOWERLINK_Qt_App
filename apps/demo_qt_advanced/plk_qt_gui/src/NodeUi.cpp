@@ -13,13 +13,14 @@ NodeUi::NodeUi(const uint nodeId, QWidget *parent) :
 	statusImage(new QLabel()),
 	statusPixmap(QPixmap(QSize(27, 27)))
 {
-/// Node name
+	this->setMaximumSize(QSize(16777215, 45));
+	/// Node name
 	if (this->nodeId == 240)
 		this->name->setText(QString("MN - %1 : ").arg(this->nodeId));
 	else
 		this->name->setText(QString("CN - %1").arg(this->nodeId));
 
-	this->name->setFont(QFont("Arial", 15, QFont::Bold));
+	this->name->setFont(QFont("Arial", 11, QFont::Bold));
 	this->nodeLayout->addWidget(this->name);
 
 /// Node name
@@ -38,6 +39,7 @@ NodeUi::NodeUi(const uint nodeId, QWidget *parent) :
 
 	this->nodeLayout->update();
 }
+
 unsigned int NodeUi::GetNodeId() const
 {
 	return this->nodeId;

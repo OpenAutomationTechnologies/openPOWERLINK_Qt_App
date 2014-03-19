@@ -15,14 +15,15 @@ public:
 	// NodeStatusDock& GetInstance();
 	QStringList GetAvailableCnList();
 	/**
-	 * \brief   Handles the Node State changed singals
+	 * \brief   Handles the Node State changed signals
 	 *
 	 * \param[in] nodeId	nodeId of the node which changes the state.
 	 * \param[in] nmtState	New state of the node.
 	 */
 	Q_INVOKABLE void HandleNodeStateChanged(const int nodeId, tNmtState nmtState);
 	Q_INVOKABLE void HandleNodeFound(const int nodeId);
-	Q_INVOKABLE void HandleNodeStateChanged(tNmtState nmtState);
+	Q_INVOKABLE void HandleMnStateChanged(tNmtState nmtState);
+	
 private:
 	Ui::NodeStatusDock ui;
 	// TODO replace with QList

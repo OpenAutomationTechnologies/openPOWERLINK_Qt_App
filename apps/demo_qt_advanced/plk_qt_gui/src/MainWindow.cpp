@@ -33,11 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui.actionStop->setDisabled(true);
 	this->ui.actionRestart->setEnabled(false);
 
-	this->ui.toolBar->setStyleSheet("QToolBar { background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, \
-							  stop: 0 #6B7FBF, stop: 0.4 #DDDDDD, \
-							  stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3); \
-							  border-radius: 5px; \
-							  spacing: 3px; } ");
+//	this->ui.toolBar->setStyleSheet("QToolBar { background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, \
+//							  stop: 0 #6B7FBF, stop: 0.4 #DDDDDD, \
+//							  stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3); \
+//							  border-radius: 5px; \
+//							  spacing: 3px; } ");
 
 // TODO Handle return values
 	int index = this->mnNode->metaObject()->indexOfMethod(
