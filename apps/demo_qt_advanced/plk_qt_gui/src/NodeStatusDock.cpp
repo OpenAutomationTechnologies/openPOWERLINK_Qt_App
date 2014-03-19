@@ -48,14 +48,14 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 // TODO Handle return values
 	index = this->metaObject()->indexOfMethod(
 					QMetaObject::normalizedSignature(
-						"HandleNodeStateChanged(tNmtState)").constData());
+						"HandleMnStateChanged(tNmtState)").constData());
 // TODO Handle return values
 	ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this),
 							this->metaObject()->method(index));
 
 }
 
-void NodeStatusDock::HandleNodeStateChanged(tNmtState nmtState)
+void NodeStatusDock::HandleMnStateChanged(tNmtState nmtState)
 {
 	// Change all CN states for Stack shutdown / MN dead.
 	if ((nmtState == kNmtGsOff) || (nmtState < kNmtMsOperational))
@@ -63,29 +63,32 @@ void NodeStatusDock::HandleNodeStateChanged(tNmtState nmtState)
 		for (QList<NodeUi*>::iterator it = this->nodelists.begin();
 			 it != this->nodelists.end(); ++it)
 		{
-			this->HandleNodeStateChanged((*it)->GetNodeId(), kNmtCsNotActive);
+			(*it)->hide();
+			// this->HandleNodeStateChanged((*it)->GetNodeId(), kNmtCsNotActive);
 		}
 	}
 }
 
 void NodeStatusDock::HandleNodeStateChanged(const int nodeId, tNmtState nmtState)
 {
+	// qDebug("HandleN %d %s", nodeId, debugstr_getNmtStateStr(nmtState));
 	if ((nodeId > 0) && (nodeId <= kMaxCnNodes))
 	{
 		if ((this->nodelists.at(nodeId - 1)))
 		{
 			this->nodelists.at(nodeId - 1)->HandleNodeStateChanged(nmtState);
 			// Hide CN for Loss of PRes
-			if (nmtState == kNmtCsNotActive)
-			{
-				this->nodelists.at(nodeId - 1)->hide();
-			}
+//			if (nmtState == kNmtCsNotActive)
+//			{
+//				this->nodelists.at(nodeId - 1)->hide();
+//			}
 		}
 	}
 }
 
 void NodeStatusDock::HandleNodeFound(const int nodeId)
 {
+	// qDebug(" F %d ", nodeId);
 	if ((nodeId > 0) && (nodeId <= kMaxCnNodes))
 	{
 		if (this->nodelists.at(nodeId - 1))
