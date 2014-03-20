@@ -66,6 +66,12 @@ int main(int argc, char *argv[])
 	OplkQtApi::RegisterLocalNodeStateChangedEventHandler(
 				receiver1, receiver1.metaObject()->method(methodIndex2));
 
+	int methodIndex3 = receiver1.metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+							"HandleNodeFound(const int)").constData());
+	OplkQtApi::RegisterNodeFoundEventHandler(receiver1,
+					receiver1.metaObject()->method(methodIndex3));
+
 	/* RegisterEventLogger */
 	OplkQtApi::RegisterEventLogger(receiver1, receiver1.metaObject()->method(
 		receiver1.metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
