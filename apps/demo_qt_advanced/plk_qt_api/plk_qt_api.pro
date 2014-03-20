@@ -15,18 +15,21 @@ DEFINES += PLKQTAPI_LIB CONFIG_MN
 
 
 ################################TargetInstallPath#######################################
-release:DESTDIR = ../plk_qt_api/release
-release:OBJECTS_DIR = ../plk_qt_api/release/.obj
-release:MOC_DIR = ../plk_qt_api/release/.moc
-release:RCC_DIR = ../plk_qt_api/release/.rcc
-release:UI_DIR = ../plk_qt_api/release/.ui
 
-debug:DESTDIR = ../plk_qt_api/debug
-debug:OBJECTS_DIR = ../plk_qt_api/debug/.obj
-debug:MOC_DIR = ../plk_qt_api/debug/.moc
-debug:RCC_DIR = ../plk_qt_api/debug/.rcc
-debug:UI_DIR = ../plk_qt_api/debug/.ui
-
+CONFIG(release, debug|release) {
+	DESTDIR = ../plk_qt_api/release
+	OBJECTS_DIR = ../plk_qt_api/release/.obj
+	MOC_DIR = ../plk_qt_api/release/.moc
+	RCC_DIR = ../plk_qt_api/release/.rcc
+	UI_DIR = ../plk_qt_api/release/.ui
+}
+CONFIG(debug, debug|release) {
+	DESTDIR = ../plk_qt_api/debug
+	OBJECTS_DIR = ../plk_qt_api/debug/.obj
+	MOC_DIR = ../plk_qt_api/debug/.moc
+	RCC_DIR = ../plk_qt_api/debug/.rcc
+	UI_DIR = ../plk_qt_api/debug/.ui
+}
 
 ###########################INCLUDEPATH######################################################
 INCLUDEPATH += include \
