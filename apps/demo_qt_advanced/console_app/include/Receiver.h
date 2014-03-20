@@ -83,6 +83,13 @@ public:
 	 * \param[in] result	Result of the SDO transfer.
 	 */
 	Q_INVOKABLE void HandleSdoTransferFinished(const SdoTransferResult result);
+
+	/**
+	 * \brief   Handles the remote node found events.
+	 *
+	 * \param[in] nodeid  Id of the node found.
+	 */
+	Q_INVOKABLE void HandleNodeFound(const int nodeid);
 };
 
 #endif // _RECEIVER_H_

@@ -63,3 +63,8 @@ void Receiver::HandleSdoTransferFinished(const SdoTransferResult result)
 
 	}
 }
+
+void Receiver::HandleNodeFound(const int nodeId)
+{
+	qDebug("Node %d found.", nodeId);
+}
