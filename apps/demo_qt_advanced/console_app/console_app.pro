@@ -8,17 +8,18 @@ CONFIG   += console
 CONFIG   -= app_bundle
 TEMPLATE = app
 
-release:DESTDIR = ../console_app/release
-release:OBJECTS_DIR = ../console_app/release/.obj
-release:MOC_DIR = ../console_app/release/.moc
-release:RCC_DIR = ../console_app/release/.rcc
-release:UI_DIR = ../console_app/release/.ui
-
-debug:DESTDIR = ../console_app/debug
-debug:OBJECTS_DIR = ../console_app/debug/.obj
-debug:MOC_DIR = ../console_app/debug/.moc
-debug:RCC_DIR = ../console_app/debug/.rcc
-debug:UI_DIR = ../console_app/debug/.ui
+CONFIG(release, debug|release) {
+	DESTDIR = ../console_app/release
+	OBJECTS_DIR = ../console_app/release/.obj
+	MOC_DIR = ../console_app/release/.moc
+	RCC_DIR = ../console_app/release/.rcc
+}
+CONFIG(debug, debug|release) {
+	DESTDIR = ../console_app/debug
+	OBJECTS_DIR = ../console_app/debug/.obj
+	MOC_DIR = ../console_app/debug/.moc
+	RCC_DIR = ../console_app/debug/.rcc
+}
 
 QMAKE_CXXFLAGS += -Wall
 unix:QMAKE_CXXFLAGS += -pthread -Wextra -pedantic
@@ -71,7 +72,7 @@ unix:!macx: LIBS += -lpcap -lpthread -lrt
 ###########################PRE_TARGETDEPS######################################################
 
 unix:!macx:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../stack/lib/linux/i686/liboplkmn_d.a
-unix:!macx: PRE_TARGETDEPS += $$PWD/../plk_qt_api/debug/libPlkQtApi.a
+unix:!macx:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../plk_qt_api/debug/libPlkQtApi.a
 
 
 ###########################LIB-INCLUDE-PATH######################################################
