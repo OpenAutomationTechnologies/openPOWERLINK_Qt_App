@@ -39,7 +39,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include <string>
 
+#if (TARGET_SYSTEM == _WIN32_)
+#include "Windows.h"
+#else
 #include <oplk/basictypes.h>
+#endif
 
 #include "common/QtApiGlobal.h"
 #include "user/processimage/Direction.h"
