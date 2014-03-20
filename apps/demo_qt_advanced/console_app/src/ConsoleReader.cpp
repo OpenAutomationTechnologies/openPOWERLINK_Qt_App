@@ -68,10 +68,10 @@ ConsoleReader::ConsoleReader()
 {
 	devName.resize(128);
 
-	sdoReadTransferJob = new SdoTransferJob(0, 0x1006, 0x00, (void*) sdoReadData,
+	sdoReadTransferJob = new SdoTransferJob(3, 0x1006, 0x00, (void*) &sdoReadData,
 		sizeof(UINT32), kSdoTypeAsnd, kSdoAccessTypeRead);
 
-	sdoWriteTransferJob = new SdoTransferJob(240, 0x1006, 0x00, (void*) sdoWriteData,
+	sdoWriteTransferJob = new SdoTransferJob(240, 0x1006, 0x00, (void*) &sdoWriteData,
 		sizeof(UINT32), kSdoTypeAsnd, kSdoAccessTypeWrite);
 }
 
@@ -111,10 +111,6 @@ void ConsoleReader::run()
 		pi->Parse(xapData.c_str());
 		// char* a = NULL;
 		// pi->Parse(a);
-	}
-	catch(const XmlParserException& ex)
-	{
-		qDebug("An Exception has occured: %s", ex.whatException());
 	}
 	catch(const std::exception& ex)
 	{
@@ -186,10 +182,10 @@ void ConsoleReader::run()
 						qDebug("SDO Read: SDO Receiver function:%s not found", sdoReceiverFunction.c_str());
 					}
 
-					oplkRet =  OplkQtApi::TransferObject(*(this->sdoReadTransferJob),
+					oplkRet = OplkQtApi::TransferObject(*(this->sdoReadTransferJob),
 							   this->receiver, this->receiver.metaObject()->method(methodIndex));
 
-					qDebug("Ret sdo %x",oplkRet);
+					qDebug("Ret sdo %x", oplkRet);
 
 					break;
 				}
@@ -360,7 +356,7 @@ void ConsoleReader::run()
 					oplkRet = OplkQtApi::StopStack();
 					if (oplkRet != kErrorOk)
 					{
-						qDebug("StartStack retCode %x", oplkRet);
+						qDebug("Stop Stack retCode %x", oplkRet);
 					}
 					stackStarted = false;
 
