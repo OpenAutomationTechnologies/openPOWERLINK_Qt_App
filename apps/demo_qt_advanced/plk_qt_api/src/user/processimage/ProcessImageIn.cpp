@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <bitset>
 #include <sstream>
 #include <stdexcept>
-
+#include <oplk/oplkinc.h>
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
@@ -67,9 +67,76 @@ bool ProcessImageIn::AddChannelInternal(const Channel& channel)
 	return false;
 }
 
+void ProcessImageIn::SetRawValue(const std::string& channelName, const void* const value, const size_t dataLenBits)
+{
+	//TODO Check value + (datalen / 8) != NULL
+	Channel channel = this->GetChannel(channelName);
+
+	//Checking if the requested data is available in the ProcessImage
+	if (((channel.GetByteOffset() * 8) + channel.GetBitOffset() + dataLenBits) > (this->GetSize() * 8))
+	{
+		std::ostringstream msg;
+		msg << "The total size of input args:" << ((channel.GetByteOffset() * 8) + channel.GetBitOffset() + dataLenBits);
+		msg << " exceeds the size of the ProcessImage:" << (this->GetSize() * 8);
+		msg << " Note: Sizes are in bits";
+		throw std::out_of_range(msg.str());
+	}
+
+	// Check for the dataLen is within the channel's limit
+	if (dataLenBits > channel.GetBitSize())
+	{
+		std::ostringstream msg;
+		msg << "Invalid dataLen. Exceeds bitSize : " << channel.GetBitSize() ;
+		throw std::invalid_argument(msg.str());
+	}
+
+	BYTE* piDataPtr = this->GetProcessImageDataPtr();
+	if (piDataPtr)
+	{
+		// Move the PI data pointer to the given channels byte offset.
+		piDataPtr += channel.GetByteOffset();
+		if ((channel.GetBitSize() % 8) == 0)
+		{
+			EPL_MEMCPY(piDataPtr, value, (dataLenBits / 8));
+		}
+		else if (channel.GetBitSize() < 8)
+		{
+			std::bitset<8> piFirstByte = *piDataPtr;
+			BYTE* value1Byte = (BYTE*)value;
+			std::bitset<8> extractedFirstByte = *value1Byte;
+//			qDebug("   Ex: %u", extractedFirstByte.to_ulong());
+			for (UINT pos = 0; pos < channel.GetBitSize(); ++pos)
+			{
+				piFirstByte.set((channel.GetBitOffset() + pos), extractedFirstByte[pos]);
+			}
+			ULONG longVal = piFirstByte.to_ulong();
+//			qDebug("Fin:    %u", longVal);
+			*piDataPtr = static_cast<BYTE>(longVal);
+		}
+		else
+		{
+			// TODO Discuss. Bitsize is multiples of 8. or ranges from 0-7.
+			std::ostringstream msg;
+			msg << "Invalid bitSize for the channel:" << channelName;
+			msg << ". bitSize: " << channel.GetBitSize() ;
+			throw std::invalid_argument(msg.str());
+		}
+	}
+	else
+	{
+		//TODO Discuss Fails in Linux
+//		std::ostringstream msg;
+//		msg << " ProcessImage data pointer is NULL.";
+//		msg << "Check the allocation of memory for the input ProcessImage";
+//		throw std::bad_alloc(msg.str().c_str());
+	}
+}
+
 void ProcessImageIn::SetRawValue(const std::string& channelName,
 						std::vector<BYTE>& value)
 {
+	// FIXME: Consider checking Value size before passing in.
+
 	Channel channel = this->GetChannel(channelName);
 	BYTE* piDataPtr = this->GetProcessImageDataPtr();
 	if (piDataPtr)
@@ -82,8 +149,8 @@ void ProcessImageIn::SetRawValue(const std::string& channelName,
 		{
 			for (UINT i = 0; i < (bitSize / 8); ++i)
 			{
-				piDataPtr += i;
 				*piDataPtr = value[i];
+				++piDataPtr;
 			}
 		}
 		else if (bitSize < 8)
@@ -138,8 +205,8 @@ void ProcessImageIn::SetRawData(const std::vector<BYTE>& value,
 		{
 			for (UINT i = 0; i < value.size(); ++i)
 			{
-				piDataPtr += i;
 				*piDataPtr = value[i];
+				++piDataPtr;
 			}
 		}
 		else if ((bitOffset < 8))
@@ -153,6 +220,7 @@ void ProcessImageIn::SetRawData(const std::vector<BYTE>& value,
 				piFirstByte.set(pos, extractedFirstByte[pos]);
 			}
 			ULONG longVal = piFirstByte.to_ulong();
+			// qDebug("%lu", longVal);
 
 			/* set the updated value to the piData pointer. */
 			*piDataPtr = static_cast<BYTE>(longVal);
@@ -160,7 +228,7 @@ void ProcessImageIn::SetRawData(const std::vector<BYTE>& value,
 			/* Update the data, start from the 2nd byte if available */
 			for (UINT i = 1; i < value.size(); ++i)
 			{
-				piDataPtr += i;
+				++piDataPtr;
 				*piDataPtr = value[i];
 			}
 		}

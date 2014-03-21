@@ -42,6 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "user/processimage/ProcessImage.h"
 
+#include <oplk/oplkinc.h>
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
@@ -97,14 +98,14 @@ std::map<std::string, Channel>::const_iterator ProcessImage::cbegin() const
 {
 	// C++11
 	//TODO Fails in Linux
-	return this->channels.cbegin();
+	return this->channels.begin();
 }
 
 std::map<std::string, Channel>::const_iterator ProcessImage::cend() const
 {
 	// C++11
 	//TODO Fails in Linux
-	return this->channels.cend();
+	return this->channels.end();
 }
 
 const Channel ProcessImage::GetChannel(const std::string& name) const
@@ -174,10 +175,53 @@ void ProcessImage::ResetProcessImage()
 
 std::vector<BYTE> ProcessImage::GetRawValue(const std::string& channelName) const
 {
-	Channel channelObj = this->GetChannel(channelName);
-	return this->GetRawData(channelObj.GetBitSize(),
-					channelObj.GetByteOffset(),
-					channelObj.GetBitOffset());
+	Channel channel = this->GetChannel(channelName);
+	return this->GetRawData(channel.GetBitSize(),
+					channel.GetByteOffset(),
+					channel.GetBitOffset());
+}
+
+void ProcessImage::GetRawValue(const std::string& channelName,
+								void* const value,
+								size_t dataLen) const
+{
+	Channel channel = this->GetChannel(channelName);
+	UINT bitSize = channel.GetBitSize();
+	if (bitSize < dataLen)
+	{
+		std::ostringstream msg;
+		msg << "Invalid value or dataLen. DataLength: " << dataLen ;
+		throw std::invalid_argument(msg.str());
+	}
+
+	BYTE* piDataPtr = this->GetProcessImageDataPtr();
+	if (piDataPtr)
+	{
+		// Move the PI data pointer to the given channels byte offset.
+		piDataPtr += channel.GetByteOffset();
+		if ((bitSize % 8) == 0)
+		{
+			EPL_MEMCPY(value, piDataPtr, (dataLen / 8));
+		}
+		else if (bitSize < 8)
+		{
+			std::bitset<8> piFirstByte = *piDataPtr;
+			std::bitset<8> bitValue;
+			for (UINT pos = 0; pos < bitSize; ++pos)
+			{
+				bitValue.set(pos, piFirstByte[channel.GetBitOffset() + pos]);
+			}
+			ULONG longVal = bitValue.to_ulong();
+			*piDataPtr = static_cast<BYTE>(longVal);
+		}
+		else
+		{
+			// TODO: Discuss. Bitsize is multiples of 8. or ranges from 0-7.
+			std::ostringstream msg;
+			msg << "Invalid bitSize. " << bitSize ;
+			throw std::invalid_argument(msg.str());
+		}
+	}
 }
 
 std::vector<BYTE> ProcessImage::GetRawData(const UINT bitSize,
@@ -204,8 +248,8 @@ std::vector<BYTE> ProcessImage::GetRawData(const UINT bitSize,
 		{
 			for (UINT i = 0; i < (bitSize / 8); ++i)
 			{
-				 piDataPtr += i;
-				 rawData.push_back(*piDataPtr);
+				rawData.push_back(*piDataPtr);
+				++piDataPtr;
 			}
 		}
 		else if (bitSize < 8)

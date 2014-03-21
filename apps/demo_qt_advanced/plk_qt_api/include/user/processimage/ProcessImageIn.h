@@ -64,6 +64,19 @@ public:
 	/**
 	 * \brief   Sets the value for a channel in the ProcessImage.
 	 *
+	 * The value is expected in 'Little Endian'
+	 *
+	 * \param[in] channelName
+	 * \param[in] value
+	 * \param[in] dataLenBits Length of the value in bits
+	 */
+	void SetRawValue(const std::string& channelName, const void* const value, const size_t dataLenBits);
+
+	/**
+	 * \brief   Sets the value for a channel in the ProcessImage.
+	 *
+	 * The value is expected in 'Little Endian'
+	 *
 	 * \param[in] channelName  The name of the Channel.
 	 * \param[in] value        The value to be assigned for the Channel.
 	 * \throws std::out_of_range  If the requested channel name is not found
@@ -75,6 +88,8 @@ public:
 
 	/**
 	 * \brief   Sets the value for the given byte and bit offsets.
+	 * 
+	 * The value is expected in 'Little Endian'
 	 *
 	 * \param[in] value       The value to be assigned at the given offset.
 	 * \param[in] byteOffset  Offset in bytes.
