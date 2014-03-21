@@ -358,6 +358,9 @@ tOplkError OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
 
 		case kNmtNodeEventNmtState:
 			TriggerNodeStateChanged(nodeEvent->m_uiNodeId, nodeEvent->m_NmtState);
+			TriggerPrintLog(QString("Node Event: (Node=%1, State: %2)")
+					.arg(nodeEvent->m_uiNodeId)
+					.arg(debugstr_getNmtStateStr(nodeEvent->m_NmtState)));
 			break;
 
 		case kNmtNodeEventError:
