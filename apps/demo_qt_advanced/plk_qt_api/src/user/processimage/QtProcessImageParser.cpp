@@ -108,9 +108,9 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 
 void QtProcessImageParser::ParseProcessImage()
 {
-	while (xml.readNextStartElement())
+	while (this->xml.readNextStartElement())
 	{
-		if (xml.name() == QString::fromStdString(
+		if (this->xml.name() == QString::fromStdString(
 					 ProcessImageParser::processImage_element_name).right(-1))
 		{
 			qDebug("Read ProcesImage ");
@@ -125,9 +125,9 @@ void QtProcessImageParser::ParseProcessImage()
 		}
 	}
 
-	if ((xml.tokenType() == QXmlStreamReader::EndElement))
+	if ((this->xml.tokenType() == QXmlStreamReader::EndElement))
 	{
-		if (xml.name() == QString::fromStdString(
+		if (this->xml.name() == QString::fromStdString(
 			ProcessImageParser::applicationProcess_element_name).right(-1))
 		{
 			// success case.
@@ -152,9 +152,9 @@ void QtProcessImageParser::ParseProcessImage()
 
 void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 {
-	while (xml.readNextStartElement())
+	while (this->xml.readNextStartElement())
 	{
-		if (xml.name() == QString::fromStdString(
+		if (this->xml.name() == QString::fromStdString(
 							ProcessImageParser::channel_element_name).right(-1))
 		{
 			qDebug("Channel, ");
@@ -168,12 +168,12 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 								 XmlParserException::UNEXPECTEDELEMENT);
 		}
 
-		if (!xml.readNextStartElement())
+		if (!(this->xml.readNextStartElement()))
 		{
 			// qDebug("NExtStartelement _ ReadChannels : %s", qPrintable(xml.name().toString()));
 			if ((this->xml.tokenType() == QXmlStreamReader::EndElement))
 			{
-				if ((xml.name() == QString::fromStdString(
+				if ((this->xml.name() == QString::fromStdString(
 								 ProcessImageParser::channel_element_name).right(-1)) )
 				{
 					// qDebug("9");
@@ -207,7 +207,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 
 	if ((this->xml.tokenType() == QXmlStreamReader::EndElement))
 	{
-		if ((xml.name() == QString::fromStdString(
+		if ((this->xml.name() == QString::fromStdString(
 					ProcessImageParser::processImage_element_name).right(-1)) )
 		{
 			// qDebug("8");
