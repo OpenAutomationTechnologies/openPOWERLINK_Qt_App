@@ -138,14 +138,7 @@ public:
 	const std::vector<Channel> GetChannelsByNodeId(const UINT nodeId) const;
 
 	/**
-	 * \brief Resets all the members of this class.
-	 *
-	 * Clears the Channels, sets bytesize to zero and reset datapointer to NULL;
-	 */
-	void ResetProcessImage();
-
-	/**
-	 * \brief   Returns the value that the Channel holds.
+	 * \brief   Returns the value in 'Big Endian' that the Channel holds.
 	 *
 	 * \param[in] channelName  The Channel name.
 	 * \return Returns the requested value
@@ -154,7 +147,17 @@ public:
 	std::vector<BYTE> GetRawValue(const std::string& channelName) const;
 
 	/**
-	 * \brief   Returns the value at the given BYTE and bit offsets.
+	 * \brief   Returns the value in 'Big Endian' that the Channel holds.
+	 * \param[in] channelName The Channel name.
+	 * \param[out] value      The requested value.
+	 * \param[in] dataLen     Size of the data in bits.
+	 */
+	void GetRawValue(const std::string& channelName,
+						void* const value,
+						size_t dataLen) const;
+
+	/**
+	 * \brief   Returns the value 'Big Endian' present at the given BYTE and bit offsets.
 	 *
 	 * \param[in] bitSize     Size of the data in bits.
 	 * \param[in] byteOffset  Offset in bytes.
