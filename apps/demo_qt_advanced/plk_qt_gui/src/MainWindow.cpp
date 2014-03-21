@@ -207,8 +207,12 @@ void MainWindow::on_actionStart_triggered()
 	connect(this->dataSync, SIGNAL(SignalUpdateInputValues()), this->piVar, SLOT(UpdateInputs()));
 	connect(this->dataSync, SIGNAL(SignalUpdateOutputValues()), this->piVar, SLOT(UpdateOutputs()));
 
-	this->piMemory = new ProcessImageMemory();
+	this->piMemory = new ProcessImageMemory(piIn, piOut);
 	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
+
+	connect(this->dataSync, SIGNAL(SignalUpdateInputValues()), this->piMemory, SLOT(UpdateInputValue()));
+	connect(this->dataSync, SIGNAL(SignalUpdateOutputValues()), this->piMemory, SLOT(UpdateOutputValue()));
+
 }
 
 void MainWindow::on_actionStop_triggered()

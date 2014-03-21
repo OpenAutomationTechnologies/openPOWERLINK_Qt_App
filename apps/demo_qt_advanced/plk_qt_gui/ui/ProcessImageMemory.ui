@@ -35,8 +35,14 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="inputHeading">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
          <property name="text">
-          <string>Input ProcessImage</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Input ProcessImage&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -45,6 +51,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="inputTable">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
          <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
@@ -57,11 +66,6 @@
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
-         <column>
-          <property name="text">
-           <string>00</string>
-          </property>
-         </column>
          <column>
           <property name="text">
            <string>01</string>
@@ -151,8 +155,17 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="outHeading">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
          <property name="text">
-          <string>Output ProcessImage</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Output ProcessImage&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -161,6 +174,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="outTable">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
          <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
@@ -173,11 +189,6 @@
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
-         <column>
-          <property name="text">
-           <string>00</string>
-          </property>
-         </column>
          <column>
           <property name="text">
            <string>01</string>
