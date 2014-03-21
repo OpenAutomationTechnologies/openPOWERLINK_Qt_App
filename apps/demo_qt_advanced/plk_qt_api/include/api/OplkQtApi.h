@@ -56,8 +56,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
  * \brief Class provides the interface to the user to use the API's of the openPOWERLINK stack.
  *
- * OplkQtApi class provides the easy to use inteface to use the API's of the
- * openPOWERLINK stack v2. It also provides the posibility to register and
+ * OplkQtApi class provides the easy to use interface to use the API's of the
+ * openPOWERLINK stack v2. It also provides the possibility to register and
  * unregister for various events triggered by the stack.
  */
 class PLKQTAPI_EXPORT OplkQtApi// : QObject // TODO: check if we need
@@ -70,7 +70,7 @@ public:
 	 *
 	 * Sets the default configuration parameters to stack.
 	 *
-	 * \param[in] nodeId            nodeId to be assigned to the local stack-instance. (Reffered as Local NodeId)
+	 * \param[in] nodeId            nodeId to be assigned to the local stack-instance. (Referred as Local NodeId)
 	 * \param[in] networkInterface  network interface .
 	 * \return Returns a tOplkError error code.
 	 */
@@ -174,7 +174,7 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief  Un subscribers the receiver from recieving the NodeFound signal.
+	 * \brief  Un subscribers the receiver from receiving the NodeFound signal.
 	 *
 	 * \note The receiverFunction should have the same signature as
 	 *        OplkEventHandler::SignalNodeFound(const int)
@@ -201,7 +201,7 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief  Un subscribers the receiver from recieving the NodeStateChanged signals.
+	 * \brief  Un subscribers the receiver from receiving the NodeStateChanged signals.
 	 * \note The receiverFunction should have the same signature as
 	 *       OplkEventHandler::SignalNodeStateChanged(const int, tNmtState)
 	 * \param[in] receiver          Object that handles the event.
@@ -228,7 +228,7 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief  Un subscribers the receiver from recieving the LocalNodeStateChanged signals.
+	 * \brief  Un subscribers the receiver from receiving the LocalNodeStateChanged signals.
 	 * \note The receiverFunction should have the same signature as
 	 *       OplkEventHandler::SignalLocalNodeStateChanged(tNmtState)
 	 * \param[in] receiver          Object that handles the event.
