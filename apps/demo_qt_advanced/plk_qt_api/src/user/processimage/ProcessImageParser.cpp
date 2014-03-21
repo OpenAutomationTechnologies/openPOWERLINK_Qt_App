@@ -86,11 +86,11 @@ ProcessImage& ProcessImageParser::GetProcessImage(const Direction::eDirection di
 {
 	if (direction == Direction::PI_IN)
 	{
-		return in;
+		return this->in;
 	}
 	else
 	{
-		return out;
+		return this->out;
 	}
 }
 

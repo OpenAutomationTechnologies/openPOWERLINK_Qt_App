@@ -109,8 +109,8 @@ std::map<std::string, Channel>::const_iterator ProcessImage::cend() const
 
 const Channel ProcessImage::GetChannel(const std::string& name) const
 {
-	std::map<std::string, Channel>::const_iterator cIt = channels.find(name);
-	if (cIt != channels.end())
+	std::map<std::string, Channel>::const_iterator cIt = this->channels.find(name);
+	if (cIt != this->channels.end())
 	{
 		return cIt->second;
 	}
@@ -126,8 +126,8 @@ const std::vector<Channel> ProcessImage::GetChannelsByOffset(const UINT byteOffs
 {
 	std::vector<Channel> channelCollection;
 
-	for (std::map<std::string, Channel>::const_iterator cIt = channels.begin();
-		 cIt != channels.end(); ++cIt)
+	for (std::map<std::string, Channel>::const_iterator cIt = this->channels.begin();
+		 cIt != this->channels.end(); ++cIt)
 	{
 		if (byteOffset == cIt->second.GetByteOffset())
 		{
@@ -145,8 +145,8 @@ const std::vector<Channel> ProcessImage::GetChannelsByNodeId(const UINT nodeId) 
 	std::ostringstream nodeName("CN");
 	nodeName << nodeId;
 
-	for (std::map<std::string, Channel>::const_iterator cIt = channels.begin();
-		 cIt != channels.end(); ++cIt)
+	for (std::map<std::string, Channel>::const_iterator cIt = this->channels.begin();
+		 cIt != this->channels.end(); ++cIt)
 	{
 		std::string channelName = cIt->first;
 		UINT pos = channelName.find(".");
