@@ -44,6 +44,9 @@
       <bool>false</bool>
      </property>
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
       <property name="horizontalSpacing">
        <number>15</number>
       </property>
@@ -64,6 +67,26 @@
           <string>0xF0</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>0x01</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0x02</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0x03</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0x04</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="1" column="0">
@@ -74,7 +97,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBox">
+       <widget class="QSpinBox" name="index">
         <property name="prefix">
          <string>0x</string>
         </property>
@@ -100,7 +123,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox_2">
+       <widget class="QSpinBox" name="subIndex">
         <property name="prefix">
          <string>0x</string>
         </property>
@@ -123,48 +146,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="dataType">
-        <item>
-         <property name="text">
-          <string>Unsigned8</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Unsigned16</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Unsigned32</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Unsigned64</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Signed8</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Signed16</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Signed32</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Signed64</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="dataType"/>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="labelProtocol">
@@ -174,18 +156,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="sdoVia">
-        <item>
-         <property name="text">
-          <string>ASnd</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>UDP</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="sdoVia"/>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="labelSdoType">
@@ -199,6 +170,9 @@
       </item>
       <item row="5" column="1">
        <widget class="QGroupBox" name="groupBoxSdoType">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="checkable">
          <bool>false</bool>
         </property>
@@ -223,6 +197,9 @@
            <property name="text">
             <string>Read</string>
            </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -244,6 +221,9 @@
       </item>
       <item row="6" column="1">
        <widget class="QLineEdit" name="sdoResultValue">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
         </property>
@@ -251,6 +231,9 @@
       </item>
       <item row="7" column="1">
        <widget class="QPushButton" name="executeTransfer">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string>Execute</string>
         </property>
@@ -263,6 +246,9 @@
        <widget class="QLabel" name="transferStatus">
         <property name="text">
          <string>Transfer Status</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
