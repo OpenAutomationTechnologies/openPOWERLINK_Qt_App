@@ -54,8 +54,10 @@ private:
 	bool IsValidValue();
 	void UpdateSdoTransferReturnValue();
 	void SetMaskForValue();
+
 	// TODO Has to be moved to API library or stack
 	QString GetAbortCodeString(UINT32 abortCode);
+	void GetConfiguredNodeIdList(QStringList &nodeIdList);
 
 };
 
