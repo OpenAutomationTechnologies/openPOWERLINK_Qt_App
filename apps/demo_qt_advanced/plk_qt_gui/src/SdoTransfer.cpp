@@ -180,7 +180,11 @@ void SdoTransfer::on_executeTransfer_clicked()
 
 void SdoTransfer::on_nodeId_activated(int index)
 {
-	// this->ui.nodeId->addItems(NodeStatusDock::GetAvailableCnList());
+	qDebug("on_nodeId_activated");
+	this->ui.nodeId->clear();
+	QStringList nodeIdList;
+	this->GetConfiguredNodeIdList(nodeIdList);
+	this->ui.nodeId->insertItems(0, nodeIdList);
 }
 
 void SdoTransfer::HandleSdoTransferFinished(const SdoTransferResult result)
@@ -329,8 +333,7 @@ void SdoTransfer::UpdateSdoTransferReturnValue()
 				qDebug("Conversion failed ULONGLONG. MetaType %d", this->metaDataTypeIndex);
 			}
 
-			this->ui.sdoResultValue->setText(
-						QString("0x%1")
+			this->ui.sdoResultValue->setText(QString("0x%1")
 						.arg(data, (sdoDataSize * 2), 16, QLatin1Char('0')));
 			break;
 		}
@@ -348,7 +351,7 @@ void SdoTransfer::UpdateSdoTransferReturnValue()
 			}
 
 			this->ui.sdoResultValue->setText(QString("0x%1")
-											.arg(data, (sdoDataSize * 2), 16, QLatin1Char('0')));
+						.arg(data, (sdoDataSize * 2), 16, QLatin1Char('0')));
 			break;
 		}
 		case QMetaType::QString:
@@ -448,9 +451,7 @@ bool SdoTransfer::IsValidValue()
 void SdoTransfer::on_sdoResultValue_editingFinished()
 {
 	qDebug("editing finishd");
-	bool result = false;
-	result = this->IsValidValue();
-	if (result == false)
+	if (!(this->IsValidValue()))
 	{
 		qDebug("InvalidValue");
 		this->ui.transferStatus->setText("Datatype-Value Mismatch");
@@ -458,8 +459,45 @@ void SdoTransfer::on_sdoResultValue_editingFinished()
 	}
 }
 
+void SdoTransfer::GetConfiguredNodeIdList(QStringList &nodeIdList)
+{
+	DWORD nodeAssignment;
+	UINT size = sizeof (nodeAssignment);
+	// Can read upto subindex 00th
+	for (UINT subIndex = 1; subIndex < 240; ++subIndex)
+	{
+//		SdoTransferJob transferjob = SdoTransferJob(0xF0,
+//									0x1F81,
+//									subIndex,
+//									(void*)(&nodeAssignment),
+//									QMetaType::sizeOf(this->metaDataTypeIndex),
+//									kSdoTypeAsnd,
+//									kSdoAccessTypeRead);
+//		tOplkError oplkRet =  OplkQtApi::TransferObject(transferjob,
+//										*(this),
+//										this->receiverMetaObject);
+
+		/* TODO Implement new API in library for easy use.
+		 *  There is no need of preparing the receiver and reciever function here
+		 * */
+		tOplkError oplkRet = oplk_readLocalObject(0x1F81, subIndex,
+										(void*)(&nodeAssignment),
+										&size);
+		if (oplkRet != kErrorOk)
+		{
+			qDebug("Local Read Error: %s", debugstr_getRetValStr(oplkRet));
+		}
+
+		if (nodeAssignment != 0)
+		nodeIdList.push_back(QString("0x%1").arg(subIndex, 2, 16, QLatin1Char('0')));
+	}
+	nodeIdList.push_back("0xF0");
+}
+
 QString SdoTransfer::GetAbortCodeString(UINT32 abortCode)
 {
+	/* TODO Move this to API of SDO transfer
+	 * */
 	QString abortStr;
 	switch (abortCode)
 	{
@@ -600,9 +638,7 @@ QString SdoTransfer::GetAbortCodeString(UINT32 abortCode)
 		}
 		case SDO_AC_OBJECT_DICTIONARY_NOT_EXIST:
 		{
-			abortStr = "Object dictionary dynamic generation fails or no object \
-					   dictionary is present (e.g. object dictionary is generated from \
-					   file and generation fails because of a file error)";
+			abortStr = "Object dictionary dynamic generation fails or no object dictionary is present (e.g. object dictionary is generated from file and generation fails because of a file error)";
 			break;
 		}
 		case SDO_AC_CONFIG_DATA_EMPTY:
