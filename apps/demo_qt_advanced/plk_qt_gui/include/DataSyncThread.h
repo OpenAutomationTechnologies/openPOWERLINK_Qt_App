@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   DataSyncThread.h
 
-\brief
+\brief  Describes the transfer of processimage data in a thread by using
+		Qt 5.2 threads.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +33,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _DATASYNCTHREAD_H_
-#define _DATASYNCTHREAD_H_
+#ifndef _DATA_SYNC_THREAD_H_
+#define _DATA_SYNC_THREAD_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -42,13 +43,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QThread>
 #include <oplk/errordefs.h>
 
-#include <user/processimage/ProcessImageParser.h>
-
-#include "ProcessImageVariables.h"
-#include "ProcessImageMemory.h"
-
 /**
  * \brief The DataSyncThread class
+ *
+ * Describes the thread to transfer synchronous processimage data.
  */
 class DataSyncThread : public QThread
 {
@@ -59,14 +57,9 @@ public:
 
 	virtual ~DataSyncThread();
 
-	/**
-	 * \brief run
-	 */
-	virtual void run();
-
 signals:
 	/**
-	 * \brief SignalUpdateInputValues
+	 * \brief A signal to UpdateInputValues
 	 */
 	void SignalUpdateInputValues();
 
@@ -77,18 +70,20 @@ signals:
 
 private:
 
-	/**
-	 * \brief DataSyncThread
-	 * \param syncThread
-	 */
 	DataSyncThread(const DataSyncThread& syncThread);
 	DataSyncThread& operator=(const DataSyncThread& syncThread);
 
 	/**
-	 * \brief ProcessSync
-	 * \return
+	 * \brief The reimplemented function of run.
+	 */
+	virtual void run();
+
+	/**
+	 * \brief Process the processimage data transfer.
+	 * \return a tOplkError error code.
 	 */
 	tOplkError ProcessSync();
+
 };
 
-#endif // _DATASYNCTHREAD_H_
+#endif // _DATA_SYNC_THREAD_H_

@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   DialogOpenCdc.cpp
 
-\brief
+\brief  Implements the Open CDC dialog and the actions involved in it.
 
 \author Ramakrishnan Periyakaruppan
 

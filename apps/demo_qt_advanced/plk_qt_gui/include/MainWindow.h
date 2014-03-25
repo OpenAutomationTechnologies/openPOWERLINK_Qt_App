@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   MainWindow.h
 
-\brief
+\brief  Contains the actions and methods for the mainwindow GUI layout by
+		using the Qt 5.2 QMainWindow.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +33,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _MAINWINDOW_H_
-#define _MAINWINDOW_H_
+#ifndef _MAIN_WINDOW_H_
+#define _MAIN_WINDOW_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -55,17 +56,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "DataSyncThread.h"
 
 /**
- * \brief The MainWindow class
+ * \brief The MainWindow class inherits the QMainWindow and implements
+ * the actions on it.
  */
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * \brief MainWindow
-	 * \param[in] parent
-	 */
+
 	explicit MainWindow(QWidget *parent = 0);
 
 	~MainWindow();
@@ -73,22 +72,23 @@ public:
 private slots:
 
 	/**
-	 * \brief Defines the actions while the full screen menu is choosen.
+	 * \brief Toggles the state of the window between fullscreen and normal mode.
+	 * \note Full screen can also be triggered by pressing F11 keyboard shortcut.
 	 */
 	void on_actionToggle_Full_Screen_triggered();
 
 	/**
-	 * \brief on_actionOpen_CDC_triggered
+	 * \brief Triggers displaying of the open CDC dialog window.
 	 */
 	void on_actionOpen_CDC_triggered();
 
 	/**
-	 * \brief on_actionQuit_triggered
+	 * \brief Triggers the closing of the application
 	 */
 	void on_actionQuit_triggered();
 
 	/**
-	 * \brief on_actionSelect_Interface_triggered.
+	 * \brief Triggers displaying of PCAP select network interface dialog.
 	 *
 	 * \retval true if selected any network interface.
 	 * \retval false if no network interface is selected.
@@ -96,43 +96,48 @@ private slots:
 	bool on_actionSelect_Interface_triggered();
 
 	/**
-	 * \brief on_actionStart_triggered
+	 * \brief Triggers start of the oplk stack.
+	 *
+	 * Imports the xap.xml, displays the necessary GUI and starts the oplk stack.
 	 */
 	void on_actionStart_triggered();
 
 	/**
-	 * \brief on_actionStop_triggered
+	 * \brief Triggers stop of the oplk stack.
+	 *
+	 * Clean-up all the memory allocated by the stack and removes the gui
+	 * elements and stops the oplk stack.
 	 */
 	void on_actionStop_triggered();
 
 	/**
-	 * \brief on_actionRestart_triggered
+	 * \brief Triggers an event kNmtEventSwReset to the MN(local) node.
 	 */
 	void on_actionRestart_triggered();
 
 	/**
-	 * \brief on_actionAbout_triggered
+	 * \brief Displays the about/info window.
 	 */
 	void on_actionAbout_triggered();
 
 	/**
-	 * \brief on_actionHelp_triggered
+	 * \brief Triggers the actions linked to the help menu.
 	 */
 	void on_actionHelp_triggered();
 
 private:
-	Ui::MainWindow ui;                         /// MainWindow UI instance
-	SdoTransfer *sdoTab;                       /// SDO ui
-	LoggerWindow *log;                         /// Logging window
-	ProcessImageVariables *piVar;              /// Pi variable view
-	ProcessImageMemory *piMemory;              /// Pi memory view
-	DialogOpenCdc *cdcDialog;                  /// CDC dialog window
-	SelectNwInterfaceDialog *networkInterface; /// Network select interface dialog
-	NmtCommandsDock *nmtCmdWindow;             /// NMT command
-	NodeStatusDock *cnStatus;                  /// CN status list
-	NodeUi *mnNode;                            /// MN status frame
-	ProcessImageParser *parser;                /// ProcessImage xml Parser instance
-	DataSyncThread *dataSync;                  /// ProcessImageDataSync Thread
+	Ui::MainWindow ui;                         ///< MainWindow UI instance
+	SdoTransfer *sdoTab;                       ///< SDO ui
+	LoggerWindow *log;                         ///< Logging window
+	ProcessImageVariables *piVar;              ///< Pi variable view
+	ProcessImageMemory *piMemory;              ///< Pi memory view
+	DialogOpenCdc *cdcDialog;                  ///< CDC dialog window
+	SelectNwInterfaceDialog *networkInterface; ///< Network select interface dialog
+	NmtCommandsDock *nmtCmdWindow;             ///< NMT command
+	NodeStatusDock *cnStatus;                  ///< CN status list
+	NodeUi *mnNode;                            ///< MN status frame
+	ProcessImageParser *parser;                ///< ProcessImage xml Parser instance
+	DataSyncThread *dataSync;                  ///< ProcessImageDataSync Thread
 };
 
-#endif // _MAINWINDOW_H_
+#endif // _MAIN_WINDOW_H_

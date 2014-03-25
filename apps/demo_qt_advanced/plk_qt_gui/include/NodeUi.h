@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   NodeUi.h
 
-\brief
+\brief  Inherits the QFrame and handles the status of the individual node.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <oplk/nmt.h>
 
 /**
- * \brief The NodeUi class
+ * \brief The NodeUi class inherits the QFrame and updates the status of the node.
  */
 class NodeUi : public QFrame
 {
@@ -53,31 +53,35 @@ class NodeUi : public QFrame
 
 public:
 	/**
-	 * \brief NodeUi
-	 * \param[in] nodeId
+	 * \brief Constructs a node status frame with the given nodeId.
+	 * \param[in] nodeId node id for which the frame has been created.
 	 * \param[in] parent
 	 */
 	explicit NodeUi(const UINT nodeId, QWidget *parent = 0);
 
 	/**
-	 * \brief
+	 * \brief  Handles the state changes of the corresponding node.
 	 *
-	 * \param[in] nmtState
+	 * Updates the state of the node with the respective colour
+	 * and updates the tool tip.
+	 *
+	 * \param[in] nmtState The new state of the node.
 	 */
 	Q_INVOKABLE void HandleNodeStateChanged(tNmtState nmtState);
 
 	/**
-	 * \brief GetNodeId
-	 * \return
+	 * \return The node id of the current instance.
 	 */
 	const UINT GetNodeId() const;
 
+	//TODO Destructor
+
 private:
-	QHBoxLayout *nodeLayout;
-	QLabel *name;
-	QLabel *statusImage;
-	QPixmap statusPixmap;
-	const UINT nodeId;
+	QHBoxLayout *nodeLayout; ///< The layout for the node frame.
+	QLabel *name;            ///< A label to specify the name of the node.
+	QLabel *statusImage;     ///< A label to display the status of the node.
+	QPixmap statusPixmap;    ///< Pixmap to hold the image of the status.
+	const UINT nodeId;       ///< The node id of this node frame.
 };
 
 #endif // _NODE_UI_H_

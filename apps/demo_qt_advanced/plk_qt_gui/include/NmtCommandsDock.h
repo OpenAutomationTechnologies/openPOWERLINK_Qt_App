@@ -2,7 +2,9 @@
 ********************************************************************************
 \file   NmtCommandsDock.h
 
-\brief
+\brief  NmtCommandsDock uses the Qt 5.2 QDockWidget to provide the possibility
+		for the user to send any possible NMT command to the any node in
+		the network.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -43,36 +45,32 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_NmtCommandsDock.h"
 
 /**
- * \brief The NmtCommandsDock class
+ * \brief The NmtCommandsDock class inherits QDockWidget and provides the possibility
+ * for the user to send any possible NMT command to the any node in the network.
  */
 class NmtCommandsDock : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * \brief NmtCommandsDock
-	 * \param[in] parent
-	 */
 	explicit NmtCommandsDock(QWidget *parent = 0);
 
 private slots:
 	/**
-	 * \brief on_sendNmtBtn_clicked
+	 * \brief Triggers the NMT command to the stack.
 	 */
 	void on_sendNmtBtn_clicked();
 
 	/**
-	 * \brief on_nmtCommand_currentIndexChanged
-	 * \param[in] index Choosen index of the NMT command
+	 * \brief Updates the equivalent NMT command whenever the selection has been changed.
+	 * \param[in] index Chosen index of the NMT command dropdown
 	 */
 	void on_nmtCommand_currentIndexChanged(int index);
 
 private:
-	Ui::NmtCommandsDock ui;
-	tNmtCommand nmtCommand;
-	// enum nmtCommand;
-	// Q_DISABLE_COPY(NmtCommandsDock)
+	Ui::NmtCommandsDock ui; ///< NMT command ui instance
+	tNmtCommand nmtCommand; ///< currently selected NMT command
+	///It can also be done by having a map of nmt command.
 };
 
 #endif // _NMT_COMMANDS_DOCK_H_

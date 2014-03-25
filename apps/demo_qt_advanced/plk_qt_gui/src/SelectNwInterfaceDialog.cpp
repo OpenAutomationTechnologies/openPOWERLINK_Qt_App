@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   SelectNwInterfaceDialog.cpp
 
-\brief
+\brief  Implements the network selection dialog using the PCAP interface.
 
 \author Ramakrishnan Periyakaruppan
 

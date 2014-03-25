@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   NmtCommandsDock.cpp
 
-\brief
+\brief  Implements the NmtCommandDock class using the oplkQtApi library.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -72,6 +72,13 @@ void NmtCommandsDock::on_sendNmtBtn_clicked()
 	}
 }
 
+/**
+ * This can also be done as
+ * A function to get the NMT command by passing the CurrentIndex of the
+ * NMT dropdown at the time of the send NMT button clicked.
+ * signature: tNmtCommand GetNmtCommand(int currentIndex);
+ */
+
 void NmtCommandsDock::on_nmtCommand_currentIndexChanged(int index)
 {
 	/* It can be also done by parsing the string and getting the 0xXX
@@ -80,6 +87,7 @@ void NmtCommandsDock::on_nmtCommand_currentIndexChanged(int index)
 
 	switch (index)
 	{
+		//TODO fallthrough case 0 and default.
 		case 0:
 			this->nmtCommand = kNmtCmdInvalidService;
 			break;

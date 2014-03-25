@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   NodeUi.cpp
 
-\brief
+\brief  Implements the NodeUi frame.
 
 \author Ramakrishnan Periyakaruppan
 

@@ -17,23 +17,13 @@
     <height>175</height>
    </size>
   </property>
-  <property name="toolTip">
-   <string>ccc</string>
-  </property>
   <property name="windowTitle">
    <string>LogWindow</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <property name="toolTip">
-    <string>bb</string>
-   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPlainTextEdit" name="txtBxConsoleLog">
-      <property name="toolTip">
-       <string>aa</string>
-      </property>
-     </widget>
+     <widget class="QPlainTextEdit" name="txtBxConsoleLog"/>
     </item>
    </layout>
   </widget>

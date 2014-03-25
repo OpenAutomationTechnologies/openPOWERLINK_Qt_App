@@ -2,7 +2,10 @@
 ********************************************************************************
 \file   ProcessImageVariables.cpp
 
-\brief
+\brief  Implements the variables view of the input and output processimage data
+from the oplk stack.
+
+\todo  This can also be done with QTableWidget to prepare the input and output tables.
 
 \author Ramakrishnan Periyakaruppan
 

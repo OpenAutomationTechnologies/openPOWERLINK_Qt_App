@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   ChannelUi.h
 
-\brief
+\brief  Provides an user-interface instance of an individual channel in
+		the ProcessImage.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -45,7 +46,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * \brief The ChannelUi class
+ * \brief The ChannelUi class constructs the single frame for the each channels
+ *  present in the processimage
  */
 class ChannelUi : public QWidget
 {
@@ -53,66 +55,71 @@ class ChannelUi : public QWidget
 
 public:
 	/**
-	 * \brief ChannelUi
-	 * \param[in] channel
+	 * \brief Constructs the ChannelUi instance and holds the properties of
+	 * the channel in it.
+	 *
+	 * \param[in] channel  The Channel instance for which the UI frame is generated.
 	 * \param[in] parent
 	 */
-	explicit ChannelUi(Channel channel, QWidget *parent = 0);
+	explicit ChannelUi(const Channel &channel, QWidget *parent = 0);
 
 	~ChannelUi();
 
 	/**
-	 * \brief UpdateSelectCheckBox
+	 * \brief Sets the state of the 'select check box' to the given state.
 	 *
-	 * \param[in] forceState
+	 * \param[in] state The check box state.
 	 */
-	void UpdateSelectCheckBox(Qt::CheckState forceState);
+	void UpdateSelectCheckBox(Qt::CheckState state);
 
 	/**
-	 * \brief GetSelectCheckBoxState
-	 *
-	 * \return the state of the check box.
+	 * \return the state of the select check box.
 	 */
 	Qt::CheckState GetSelectCheckBoxState() const;
 
 	/**
-	 * \brief UpdateForceCheckBox
-	 * \param forceState
+	 * \brief Sets the state of the 'force check box' to the given state.
+	 *
+	 * \param[in] state The check box state.
 	 */
-	void UpdateForceCheckBox(Qt::CheckState forceState);
+	void UpdateForceCheckBox(Qt::CheckState state);
 
 	/**
-	 * \brief UpdateInputChannelCurrentValue
-	 * \param in
+	 * \brief Updates the Input Channel's Current Value.
+	 *
+	 * Updates the current value and if any value is forced, it updates the
+	 * force value to the input processimage.
+	 *
+	 * \param[in,out] in Input processImage instance.
 	 */
 	void UpdateInputChannelCurrentValue(ProcessImageIn *in);
 
 	/**
-	 * \brief UpdateOutputChannelCurrentValue
-	 * \param out
+	 * \brief Updates the Output Channel's Current Value.
+	 *
+	 * \param[in] out Output processImage instance.
 	 */
 	void UpdateOutputChannelCurrentValue(const ProcessImageOut *out);
 
 private:
-	Ui::ChannelFrame ui;
+	Ui::ChannelFrame ui;   ///< ChannelFrame ui instance.
 	// TODO change to ptr. TODO ptr in channelMap in api-lib
-	Channel channel;
+	const Channel channel; ///< Processimage channel properties.
 
 	/**
-	 * \brief SetCurrentValue
-	 * \param[in] setStr
+	 * \brief Sets the current value text box with the given string.
+	 *
+	 * \param[in] setStr The string to be updated in the textbox.
 	 */
 	void SetCurrentValue(QString setStr);
 
 	/**
-	 * \brief GetForceValue
-	 * \return
+	 * \return the string present in the force value textbox.
 	 */
 	const QString GetForceValue() const;
 
 	/**
-	 * \brief GetForceCheckBoxState
-	 * \return
+	 * \return the state of the force check box.
 	 */
 	Qt::CheckState GetForceCheckBoxState() const;
 };

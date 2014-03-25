@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   ProcessImageVariables.h
 
-\brief
+\brief  Describes the variables view of the input and output processimage data
+		from the oplk stack.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +33,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _PROCESSIMAGEVARIABLES_H_
-#define _PROCESSIMAGEVARIABLES_H_
+#ifndef _PROCESSIMAGE_VARIABLES_H_
+#define _PROCESSIMAGE_VARIABLES_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -46,7 +47,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * \brief The ProcessImageVariables class
+ * \brief The ProcessImageVariables class inherits the QFrame and describes the
+ * logic to update the input and output processimage data from the oplk stack.
  */
 class ProcessImageVariables : public QFrame
 {
@@ -54,9 +56,12 @@ class ProcessImageVariables : public QFrame
 
 public:
 	/**
-	 * \brief ProcessImageVariables
-	 * \param[in] in
-	 * \param[in] out
+	 * \brief Constructs the ProcessImageVariables ui instance and prepares the
+	 * variables row based on the number of channels present in the
+	 * ProcessImageIn and ProcessImageOut.
+	 *
+	 * \param[in] in   The input ProcessImage instance.
+	 * \param[in] out  The output ProcessImage instance.
 	 * \param[in] parent
 	 */
 	explicit ProcessImageVariables(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent = 0);
@@ -65,72 +70,80 @@ public:
 
 public slots:
 	/**
-	 * \brief UpdateInputs
+	 * \brief Updates the processimage input channels value from and/or to the stack.
 	 */
 	void UpdateInputs();
 
 	/**
-	 * \brief UpdateOutputs
+	 * \brief Update the processimage output channels value from the stack.
 	 */
 	void UpdateOutputs();
 
 private slots:
 	/**
-	 * \brief on_inputCheckAll_stateChanged
-	 * \param arg1
+	 * \brief Updates the state of the all the channels select check box
+	 * for the input processimage table.
+	 *
+	 * \param checkedState The state of the check box.
 	 */
-	void on_inputCheckAll_stateChanged(int arg1);
+	void on_inputCheckAll_stateChanged(int checkedState);
 
 	/**
-	 * \brief on_outputCheckAll_stateChanged
-	 * \param arg1
+	 * \brief Updates the state of the all the channels select check box
+	 * for the output processimage table.
+	 *
+	 * \param checkedState The state of the check box.
 	 */
-	void on_outputCheckAll_stateChanged(int arg1);
+	void on_outputCheckAll_stateChanged(int checkedState);
 
 	/**
-	 * \brief on_inputForceAll_stateChanged
-	 * \param arg1
+	 * \brief Updates the state of the all the channels force check box
+	 * for the input processimage table.
+	 *
+	 * \param checkedState The state of the check box.
 	 */
-	void on_inputForceAll_stateChanged(int arg1);
+	void on_inputForceAll_stateChanged(int checkedState);
 
 	/**
-	 * \brief on_inputHideCheckedBtn_clicked
+	 * \brief Hides all the channels selected in the input processimage.
 	 */
 	void on_inputHideCheckedBtn_clicked();
 
 	/**
-	 * \brief on_inputShowAllBtn_clicked
+	 * \brief Shows all the channels present in the input processimage.
 	 */
 	void on_inputShowAllBtn_clicked();
 
 	/**
-	 * \brief on_outHideCheckedBtn_clicked
+	 * \brief Hides all the channels selected in the output processimage.
 	 */
 	void on_outHideCheckedBtn_clicked();
 
 	/**
-	 * \brief on_outShowAllBtn_clicked
+	 * \brief Shows all the channels present in the output processimage.
 	 */
 	void on_outShowAllBtn_clicked();
 
 private:
-	Ui::ProcessImageVariables ui;
+	Ui::ProcessImageVariables ui;      ///< processimage variables ui instance.
 
-	QList<ChannelUi*> inputChannels;
-	QList<ChannelUi*> outputChannels;
+	QList<ChannelUi*> inputChannels;   ///< Input channel ui instance list.
+	QList<ChannelUi*> outputChannels;  ///< Output channel ui instance list.
 
-	ProcessImageIn &inPi;
-	const ProcessImageOut &outPi;
+	ProcessImageIn &inPi;              ///< Input processimage instance.
+	const ProcessImageOut &outPi;      ///< Output processimage instance.
 
 	/**
-	 * \brief PrepareInputRows
+	 * \brief Generates the rows of ui channels by parsing the input
+	 * processimage instance.
 	 */
 	void PrepareInputRows();
 
 	/**
-	 * \brief PrepareOutputRows
+	 * \brief Generates the rows of ui channels by parsing the output
+	 * processimage instance.
 	 */
 	void PrepareOutputRows();
 };
 
-#endif // _PROCESSIMAGEVARIABLES_H_
+#endif // _PROCESSIMAGE_VARIABLES_H_

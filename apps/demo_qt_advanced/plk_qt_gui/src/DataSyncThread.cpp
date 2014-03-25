@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   DataSyncThread.cpp
 
-\brief
+\brief  Implements the transfer of processimage data in a thread by
+		using Qt 5.2 threads.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -53,6 +54,10 @@ DataSyncThread::~DataSyncThread()
 {
 
 }
+
+/*******************************************************************************
+* Private functions
+*******************************************************************************/
 
 void DataSyncThread::run()
 {

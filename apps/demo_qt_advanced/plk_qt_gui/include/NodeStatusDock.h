@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   NodeStatusDock.h
 
-\brief
+\brief  NodeStatusDock uses the Qt 5.2 QDockWidget to implement the list of
+		CN nodes currently available in the network.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +33,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _NODESTATUSDOCK_H_
-#define _NODESTATUSDOCK_H_
+#ifndef _NODE_STATUS_DOCK_H_
+#define _NODE_STATUS_DOCK_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -45,27 +46,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NodeUi.h"
 
 /**
- * \brief The NodeStatusDock class
+ * \brief The NodeStatusDock class inherits QDockWidget and handles the node
+ *  state changes from the oplk stack.
  */
 class NodeStatusDock : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * \brief NodeStatusDock
-	 * \param parent
-	 */
 	explicit NodeStatusDock(QWidget *parent = 0);
 
 	/**
 	 * \brief GetAvailableCnList
-	 * \return the currently available CN node's list.
+	 * \return The currently available CN node's list.
 	 */
 	QStringList GetAvailableCnList();
 
 	/**
-	 * \brief   Handles the Node State changed signals
+	 * \brief   Handles the CN node state changed signals
 	 *
 	 * \param[in] nodeId    nodeId of the node which changes the state.
 	 * \param[in] nmtState  New state of the node.
@@ -73,25 +71,25 @@ public:
 	Q_INVOKABLE void HandleNodeStateChanged(const int nodeId, tNmtState nmtState);
 
 	/**
-	 * \brief
+	 * \brief   Handles the CN node found signals.
 	 *
-	 * \param[in] nodeId
+	 * \param[in] nodeId  nodeId of the node which is found in the network.
 	 */
 	Q_INVOKABLE void HandleNodeFound(const int nodeId);
 
 	/**
-	 * \brief
+	 * \brief   Handles the MN state changes to sync with the CN status.
 	 *
-	 * \param[in] nmtState
+	 * \param[in] nmtState The new state of the MN node.
 	 **/
 	Q_INVOKABLE void HandleMnStateChanged(tNmtState nmtState);
 
 private:
-	Ui::NodeStatusDock ui;
+	Ui::NodeStatusDock ui;  ///< Node status dock ui instance.
 
-	QList<NodeUi*> nodelists;
+	QList<NodeUi*> nodelists; ///< List for maintaining the Node frames.
 	// May be we can use QMap
 	// QMap<const UINT, NodeUi*> nodelist;
 };
 
-#endif // _NODESTATUSDOCK_H_
+#endif // _NODE_STATUS_DOCK_H_
