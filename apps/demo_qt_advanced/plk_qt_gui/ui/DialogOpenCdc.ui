@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Ramakrishnan Periyakaruppan</author>
  <class>DialogOpenCdc</class>
  <widget class="QDialog" name="DialogOpenCdc">
   <property name="geometry">

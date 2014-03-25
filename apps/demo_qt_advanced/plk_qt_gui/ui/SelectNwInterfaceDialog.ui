@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Ramakrishnan Periyakaruppan</author>
  <class>SelectNwInterfaceDialog</class>
  <widget class="QDialog" name="SelectNwInterfaceDialog">
   <property name="geometry">
@@ -18,16 +19,6 @@
     <normaloff>:/new/images/network_interface.gif</normaloff>:/new/images/network_interface.gif</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Select the Network Interface</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
    <item>
     <widget class="QListWidget" name="listWidget"/>
    </item>
