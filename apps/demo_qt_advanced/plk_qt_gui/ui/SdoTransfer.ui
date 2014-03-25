@@ -44,20 +44,32 @@
      <property name="checkable">
       <bool>false</bool>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <property name="horizontalSpacing">
-       <number>15</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>12</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="labelNodeId">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelSubIndex">
         <property name="text">
-         <string>Node Id</string>
+         <string>Sub index</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelProtocol">
+        <property name="text">
+         <string>SDO via</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelIndex">
+        <property name="text">
+         <string>Index</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="labelValue">
+        <property name="text">
+         <string>Value</string>
         </property>
        </widget>
       </item>
@@ -68,36 +80,40 @@
           <string>0xF0</string>
          </property>
         </item>
-        <item>
-         <property name="text">
-          <string>0x01</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>0x02</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>0x03</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>0x04</string>
-         </property>
-        </item>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labelIndex">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelNodeId">
         <property name="text">
-         <string>Index</string>
+         <string>Node id</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelDataType">
+        <property name="text">
+         <string>Data type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelSdoType">
+        <property name="text">
+         <string>Access type</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="updateNodeListButton">
+        <property name="text">
+         <string>Update</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
        <widget class="QSpinBox" name="index">
         <property name="prefix">
          <string>0x</string>
@@ -116,14 +132,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="labelSubIndex">
-        <property name="text">
-         <string>Sub Index</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
+      <item row="2" column="1" colspan="2">
        <widget class="QSpinBox" name="subIndex">
         <property name="prefix">
          <string>0x</string>
@@ -139,37 +148,13 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="labelDataType">
-        <property name="text">
-         <string>DataType</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
+      <item row="3" column="1" colspan="2">
        <widget class="QComboBox" name="dataType"/>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="labelProtocol">
-        <property name="text">
-         <string>Protocol</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
+      <item row="4" column="1" colspan="2">
        <widget class="QComboBox" name="sdoVia"/>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="labelSdoType">
-        <property name="text">
-         <string>SdoType</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
+      <item row="5" column="1" colspan="2">
        <widget class="QGroupBox" name="groupBoxSdoType">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -213,14 +198,7 @@
         </layout>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="labelValue">
-        <property name="text">
-         <string>Value</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
+      <item row="6" column="1" colspan="2">
        <widget class="QLineEdit" name="sdoResultValue">
         <property name="readOnly">
          <bool>true</bool>
@@ -230,7 +208,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="7" column="1" colspan="2">
        <widget class="QPushButton" name="executeTransfer">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -243,7 +221,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0" colspan="2">
+      <item row="8" column="0" colspan="3">
        <widget class="QLabel" name="transferStatus">
         <property name="text">
          <string>Transfer Status</string>

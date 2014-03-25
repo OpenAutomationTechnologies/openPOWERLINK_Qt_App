@@ -108,7 +108,7 @@ SdoTransfer::SdoTransfer(QWidget *parent) :
 #endif
 
 	QString receiverFunction = "HandleSdoTransferFinished(const SdoTransferResult)";
-	INT sdoResultHandlerIndex = this->metaObject()->indexOfMethod(
+	const INT sdoResultHandlerIndex = this->metaObject()->indexOfMethod(
 									QMetaObject::normalizedSignature(receiverFunction.toUtf8().constData()));
 	Q_ASSERT(sdoResultHandlerIndex != -1);
 	// If asserted check for the receiverFunction name
@@ -132,15 +132,15 @@ void SdoTransfer::on_executeTransfer_clicked()
 /* Get the user inputs from the UI */
 	bool conversionSuccess = false;
 	// Using C language conversion
-	UINT nodeId = this->ui.nodeId->currentText().toUInt(&conversionSuccess, 0);
+	const UINT nodeId = this->ui.nodeId->currentText().toUInt(&conversionSuccess, 0);
 	if (!conversionSuccess)
 	{
 		qDebug("Invalid Nodeid");
 	}
 
-	UINT index = this->ui.index->value(); // -ve values are not emitted
-	UINT subIndex = this->ui.subIndex->value(); // -ve values are not emitted
-	QString dataTypeStr = this->ui.dataType->currentText();
+	const UINT index = this->ui.index->value(); // -ve values are not emitted
+	const UINT subIndex = this->ui.subIndex->value(); // -ve values are not emitted
+	// QString dataTypeStr = this->ui.dataType->currentText();
 
 	//SDO transfer protocol from selection
 	tSdoType sdoProtocol = kSdoTypeAuto;
@@ -183,7 +183,7 @@ void SdoTransfer::on_executeTransfer_clicked()
 	this->ui.sdoTransferLog->append(QString("\n\n%1 Initialized for NodeId: 0x%2, DataType:%3, Index:%4, SubIndex:%5 via: %6")
 											.arg(((sdoAccessType == kSdoAccessTypeRead) ? "Read" : "Write"))
 											.arg(QString::number(nodeId, 16))
-											.arg(dataTypeStr)
+											.arg(this->ui.dataType->currentText())
 											.arg(QString::number(index, 16))
 											.arg(QString::number(subIndex, 16))
 											.arg(this->ui.sdoVia->currentText()));
@@ -224,15 +224,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 	}
 }
 
-void SdoTransfer::on_nodeId_activated(int index)
-{
-	qDebug("on_nodeId_activated");
-	this->ui.nodeId->clear();
-	QStringList nodeIdList;
-	this->GetConfiguredNodeIdList(nodeIdList);
-	this->ui.nodeId->insertItems(0, nodeIdList);
-}
-
 void SdoTransfer::HandleSdoTransferFinished(const SdoTransferResult result)
 {
 	this->ui.transferStatus->setText("");
@@ -270,7 +261,7 @@ void SdoTransfer::on_dataType_currentIndexChanged(const QString &dataTypeStr)
 
 void SdoTransfer::SetMaskForValue()
 {
-	UINT sdoDataSize = QMetaType::sizeOf(this->metaDataTypeIndex);
+	const UINT sdoDataSize = QMetaType::sizeOf(this->metaDataTypeIndex);
 
 	// SEtting to FFFFF...
 	quint64 maxUnsignedDataVal = (~((quint64)0x0));
@@ -362,7 +353,7 @@ void SdoTransfer::SetMaskForValue()
 
 void SdoTransfer::UpdateSdoTransferReturnValue()
 {
-	UINT sdoDataSize = QMetaType::sizeOf(this->metaDataTypeIndex);
+	const UINT sdoDataSize = QMetaType::sizeOf(this->metaDataTypeIndex);
 
 	switch (this->metaDataTypeIndex)
 	{
@@ -540,7 +531,7 @@ void SdoTransfer::GetConfiguredNodeIdList(QStringList &nodeIdList)
 	nodeIdList.push_back("0xF0");
 }
 
-QString SdoTransfer::GetAbortCodeString(UINT32 abortCode)
+const QString SdoTransfer::GetAbortCodeString(const UINT32 abortCode) const
 {
 	/* TODO Move this to API of SDO transfer
 	 * */
@@ -700,3 +691,11 @@ QString SdoTransfer::GetAbortCodeString(UINT32 abortCode)
 	return abortStr;
 }
 
+
+void SdoTransfer::on_updateNodeListButton_clicked()
+{
+	this->ui.nodeId->clear();
+	QStringList nodeIdList;
+	this->GetConfiguredNodeIdList(nodeIdList);
+	this->ui.nodeId->insertItems(0, nodeIdList);
+}

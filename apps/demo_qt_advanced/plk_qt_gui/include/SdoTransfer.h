@@ -57,11 +57,11 @@ private slots:
 
 	void on_executeTransfer_clicked();
 
-	void on_nodeId_activated(int index);
-
 	void on_dataType_currentIndexChanged(const QString &arg1);
 
 	void on_sdoResultValue_editingFinished();
+
+	void on_updateNodeListButton_clicked();
 
 private:
 	Ui::SdoTransfer ui;
@@ -93,7 +93,7 @@ private:
 	void SetMaskForValue();
 
 	// TODO Has to be moved to API library or stack
-	QString GetAbortCodeString(UINT32 abortCode);
+	const QString GetAbortCodeString(const UINT32 abortCode) const;
 	void GetConfiguredNodeIdList(QStringList &nodeIdList);
 
 };
