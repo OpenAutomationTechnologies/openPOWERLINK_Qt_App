@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   ChannelUi.cpp
 
-\brief
+\brief  Implements the actions handled with the channel.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Public functions
 *******************************************************************************/
 
-ChannelUi::ChannelUi(Channel channel, QWidget *parent) :
+ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 	QWidget(parent),
 	channel(channel)
 {
@@ -56,7 +56,7 @@ ChannelUi::ChannelUi(Channel channel, QWidget *parent) :
 		this->ui.force->hide();
 		this->ui.forceValue->hide();
 	}
-	this->setToolTip(QString("Size = %1  ByteOffset = 0x%2  BitOffset = 0x%3")
+	this->setToolTip(QString("Size = %1 bits \nByteOffset = 0x%2 \nBitOffset = 0x%3")
 					 .arg(this->channel.GetBitSize())
 					 .arg(this->channel.GetByteOffset(), 0, 16)
 					 .arg(this->channel.GetBitOffset(), 0, 16));
@@ -85,9 +85,9 @@ ChannelUi::~ChannelUi()
 	delete this->ui.horizontalLayout;
 }
 
-void ChannelUi::UpdateSelectCheckBox(Qt::CheckState forceState)
+void ChannelUi::UpdateSelectCheckBox(Qt::CheckState state)
 {
-	this->ui.check->setChecked(forceState);
+	this->ui.check->setChecked(state);
 }
 
 Qt::CheckState ChannelUi::GetSelectCheckBoxState() const
@@ -95,9 +95,9 @@ Qt::CheckState ChannelUi::GetSelectCheckBoxState() const
 	return this->ui.check->checkState();
 }
 
-void ChannelUi::UpdateForceCheckBox(Qt::CheckState forceState)
+void ChannelUi::UpdateForceCheckBox(Qt::CheckState state)
 {
-	this->ui.force->setChecked(forceState);
+	this->ui.force->setChecked(state);
 }
 
 void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
@@ -121,7 +121,9 @@ void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 			const QString forceValue = this->GetForceValue();
 			const qlonglong forc = forceValue.toLongLong(0, 16);
 			// qDebug("%u", forc);
-			in->SetRawValue(this->channel.GetName(), (const void*) &forc, this->channel.GetBitSize());
+			in->SetRawValue(this->channel.GetName(),
+							(const void*) &forc,
+							this->channel.GetBitSize());
 		}
 	}
 	catch(const std::exception& ex)

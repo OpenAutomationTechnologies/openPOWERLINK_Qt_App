@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   DialogOpenCdc.h
 
-\brief
+\brief  Refer DialogOpenCdc class
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _UI_DIALOGOPENCDC_H_
-#define _UI_DIALOGOPENCDC_H_
+#ifndef _UI_DIALOG_OPEN_CDC_H_
+#define _UI_DIALOG_OPEN_CDC_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -42,27 +42,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_DialogOpenCdc.h"
 
 /**
- * \brief The DialogOpenCdc class
+ * \brief The DialogOpenCdc class inherits the QDialog to read the CDC and
+ * xap.xml path from the user.
  */
 class DialogOpenCdc : public QDialog
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * \brief DialogOpenCdc
-	 * \param parent
-	 */
 	explicit DialogOpenCdc(QWidget *parent = 0);
 
 private slots:
 	/**
-	 * \brief on_browseCDC_clicked
+	 * \brief Allows the user to select the path of the CDC
 	 */
 	void on_browseCDC_clicked();
 
 	/**
-	 * \brief on_openCdcDialog_accepted
+	 * \brief Validates the availability of the CDC and xap.xml files
 	 */
 	void on_openCdcDialog_accepted();
 
@@ -82,4 +79,4 @@ private:
 	QString cdcPath;
 };
 
-#endif // _UI_DIALOGOPENCDC_H_
+#endif // _UI_DIALOG_OPEN_CDC_H_

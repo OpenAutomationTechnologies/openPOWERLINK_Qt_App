@@ -2,7 +2,10 @@
 ********************************************************************************
 \file   ProcessImageMemory.h
 
-\brief
+\brief  Describes the memory view of the input and output processimage data
+		from the oplk stack using the Qt 5.2 QTableWidgets.
+
+\todo  Implement input processimage editing from the table.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +35,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _PROCESSIMAGEMEMORY_H_
-#define _PROCESSIMAGEMEMORY_H_
+#ifndef _PROCESSIMAGE_MEMORY_H_
+#define _PROCESSIMAGE_MEMORY_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -44,7 +47,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * \brief The ProcessImageMemory class
+ * \brief The ProcessImageMemory class inherits the QFrame and describes the
+ * logic to update the input and output processimage data in a memory view format
+ * by using the QTableWidgets.
  */
 class ProcessImageMemory : public QFrame
 {
@@ -52,9 +57,11 @@ class ProcessImageMemory : public QFrame
 
 public:
 	/**
-	 * \brief ProcessImageMemory
-	 * \param[in] in
-	 * \param[in] out
+	 * \brief Constructs the ProcessImageMemory instance and prepares the
+	 * Table based on the size of the ProcessImageIn and ProcessImageOut.
+	 *
+	 * \param[in] in      The input ProcessImage instance.
+	 * \param[in] out     The output ProcessImage instance.
 	 * \param[in] parent
 	 */
 	explicit ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent = 0);
@@ -63,35 +70,38 @@ public:
 
 public slots:
 	/**
-	 * \brief UpdateInputValue
+	 * \brief Updates the processimage input table value from and/or to the stack.
 	 */
 	void UpdateInputValue();
 
 	/**
-	 * \brief UpdateOutputValue
+	 * \brief Update the processimage output table value from the stack.
 	 */
 	void UpdateOutputValue();
 
 private:
-	Ui::ProcessImageMemory ui;
+	Ui::ProcessImageMemory ui;     ///< ProcessImage memory view Ui instance.
 
-	ProcessImageIn &inPi;
-	const ProcessImageOut &outPi;
+	ProcessImageIn &inPi;          ///< Input processimage instance.
+	const ProcessImageOut &outPi;  ///< Output processimage instance.
 
 	/**
-	 * \brief CreateVerticalHeaders
+	 * \brief Creates the vertical headers for the input and output
+	 * processimage table.
 	 */
 	void CreateVerticalHeaders();
 
 	/**
-	 * \brief CreateCells
+	 * \brief Creates the cells needed dynamically depending on the size of the
+	 * input and output processimage.
 	 */
 	void CreateCells();
 
 	/**
-	 * \brief ResizeColumnsToContents
+	 * \brief Resize the input and output processimage table's columns
+	 *  to contents width.
 	 */
 	void ResizeColumnsToContents();
 };
 
-#endif // _PROCESSIMAGEMEMORY_H_
+#endif // _PROCESSIMAGE_MEMORY_H_

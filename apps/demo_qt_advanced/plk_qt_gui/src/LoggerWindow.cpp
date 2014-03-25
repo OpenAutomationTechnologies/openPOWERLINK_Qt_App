@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   LoggerWindow.cpp
 
-\brief
+\brief  Implements the Logging mechanism and the actions involved in it.
 
 \author Ramakrishnan Periyakaruppan
 

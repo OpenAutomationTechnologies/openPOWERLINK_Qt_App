@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   ProcessImageMemory.cpp
 
-\brief
+\brief  Implements the memory view of the input and output processimage data
+from the oplk stack using the Qt 5.2 QTableWidgets.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -194,12 +195,10 @@ void ProcessImageMemory::UpdateInputValue()
 		UINT row = 0;
 		UINT col = 0;
 		QTableWidgetItem *cell = NULL;
-		//qDebug("Input size %d", value.size());
+
 		for (std::vector<BYTE>::const_iterator it = value.begin();
 				it != value.end(); ++it)
 		{
-			// string = QString("%1").arg(*it, 0, 16).rightJustified(2, '0');
-			// qDebug("row:%d col:%d  val: %s", row, col, string.toUtf8().constData());
 			const bool isSortenabled = this->ui.inputTable->isSortingEnabled();
 			this->ui.inputTable->setSortingEnabled(false);
 
@@ -235,7 +234,7 @@ void ProcessImageMemory::UpdateOutputValue()
 		UINT row = 0;
 		UINT col = 0;
 		QTableWidgetItem *cell = NULL;
-		// qDebug("Output size %d", value.size());
+
 		for (std::vector<BYTE>::const_iterator it = value.begin();
 				it != value.end(); ++it)
 		{

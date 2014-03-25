@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   SdoTransfer.h
 
-\brief
+\brief  SDO Transfer describes the individual ui frame for the SDO transer
+		and its actions.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +33,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _SDOTRANSFER_H_
-#define _SDOTRANSFER_H_
+#ifndef _SDO_TRANSFER_H_
+#define _SDO_TRANSFER_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -46,111 +47,114 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QMap>
 
 /**
- * \brief The SdoTransfer class
+ * \brief The SdoTransfer class prepares the ui frame and describes the
+ * actions involved in it.
  */
 class SdoTransfer : public QFrame
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * \brief SdoTransfer
-	 * \param parent
-	 */
+
 	explicit SdoTransfer(QWidget *parent = 0);
 
 private slots:
 	/**
-	 * \brief on_read_toggled
-	 * \param checked
+	 * \brief Toggles the state of the value textbox based on the read/write.
+	 * \param selected The state of the read radio button.
 	 */
-	void on_read_toggled(bool checked);
+	void on_read_toggled(bool selected);
 
 	/**
-	 * \brief on_executeTransfer_clicked
+	 * \brief Executes the SDO transfer.
 	 */
 	void on_executeTransfer_clicked();
 
 	/**
-	 * \brief on_dataType_currentIndexChanged
-	 * \param arg1
+	 * \brief Sets the mask and validator depending on the selected datatype.
+	 * \param dataType The selected datatype.
 	 */
-	void on_dataType_currentIndexChanged(const QString &arg1);
+	void on_dataType_currentIndexChanged(const QString &dataType);
 
 	/**
-	 * \brief on_sdoResultValue_editingFinished
+	 * \brief Validates the value after the editing has been completed.
 	 */
 	void on_sdoResultValue_editingFinished();
 
 	/**
-	 * \brief on_updateNodeListButton_clicked
+	 * \brief Updates the nodeId dropdown with the list of configured node id's.
 	 */
 	void on_updateNodeListButton_clicked();
 
 private:
 	Ui::SdoTransfer ui;
 
-	QVariant sdoTransferData;
+	QVariant sdoTransferData;      ///< The transfer data.
 
-	QValidator *sdoValueValidator;
-	quint64 maxDataValue;
-	qint64 minDataValue;
+	QValidator *sdoValueValidator; ///< Validator for the input value.
+	quint64 maxDataValue;          ///< Maximum limit of value for the sdoTransferData.
+	qint64 minDataValue;           ///< Minimum limit of value for the sdoTransferData.
 
-//TODO can have a qmap for sdoVia also
-	const QString sdoViaUdpStr;
-	const QString sdoViaASndStr;
+	//TODO static qmap
+	const QString sdoViaUdpStr;    ///< UDP String
+	const QString sdoViaASndStr;   ///< ASnd String
 
-	SdoTransferJob *sdoTransferJob;
+	SdoTransferJob *sdoTransferJob;///< SDO Transfer Job instance.
 
 	// receiver object should be a part of the class object.
 	// Because the receiver function needs the objects memory while for RemoteSDO Transfer.
-	QMetaMethod receiverMetaObject;
-	QMetaType::Type metaDataTypeIndex;
+	//TODO static const
+	QMetaMethod receiverFunction;    ///< MetaMethod object for the receiver Function
+
+	QMetaType::Type metaDataTypeIndex; ///< The metatype of the Datatype selected.
 
 	/**
-	 * \brief CreateDataTypeMap
-	 * \return
+	 * \return a dataType map
 	 */
 	static QMap<QString, QMetaType::Type> CreateDataTypeMap();
-	static const QMap<QString, QMetaType::Type> dataTypeMap;
+
+	static const QMap<QString, QMetaType::Type> dataTypeMap; ///< Map to hold the datatype list
 
 	/**
-	 * \brief
+	 * \brief   Handles the SDO transfer result events from the remote SDO Transfer.
 	 *
-	 * \param[in] result
+	 * \param[in] result The result of the SDO transfer
 	 */
 	Q_INVOKABLE void HandleSdoTransferFinished(const SdoTransferResult result);
 
 	/**
-	 * \brief IsValidValue
-	 * \return
+	 * \brief Checks for the value is a valid value or not.
+	 *
+	 * It also updates the datatype of the sdoTransferData.
+	 * \retval true  If the value is valid.
+	 * \retval false If the value is not-valid or if it doesn't falls within the selected range.
 	 */
 	bool IsValidValue();
 
 	/**
-	 * \brief UpdateSdoTransferReturnValue
+	 * \brief Updates the SDO transfer value with the value in the SdoTransferData
+	 * which has been used for the SDO Transfer.
 	 */
 	void UpdateSdoTransferReturnValue();
 
 	/**
-	 * \brief SetMaskForValue
+	 * \brief Sets the mask for the input value based on the selected datatype.
 	 */
 	void SetMaskForValue();
 
 	// TODO Has to be moved to API library or stack
 	/**
-	 * \brief GetAbortCodeString
-	 * \param[in] abortCode
-	 * \return
+	 * \param[in] abortCode SDO abort code.
+	 * \return the corresponding string for the given SDO abort code.
 	 */
 	const QString GetAbortCodeString(const UINT32 abortCode) const;
 
 	/**
-	 * \brief GetConfiguredNodeIdList
+	 * \brief Returns the list of configured node-id list.
 	 * \param[out] nodeIdList
 	 */
 	void GetConfiguredNodeIdList(QStringList &nodeIdList);
 
 };
 
-#endif // _SDOTRANSFER_H_
+#endif // _SDO_TRANSFER_H_

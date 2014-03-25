@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   SdoTransfer.cpp
 
-\brief
+\brief  Implements the SDO Transfer user interface actions and results.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -107,18 +107,19 @@ SdoTransfer::SdoTransfer(QWidget *parent) :
 	this->ui.sdoVia->addItem(this->sdoViaUdpStr);
 #endif
 
-	QString receiverFunction = "HandleSdoTransferFinished(const SdoTransferResult)";
+	const QString receiverFunctionstr = "HandleSdoTransferFinished(const SdoTransferResult)";
 	const INT sdoResultHandlerIndex = this->metaObject()->indexOfMethod(
-									QMetaObject::normalizedSignature(receiverFunction.toUtf8().constData()));
+									QMetaObject::normalizedSignature(
+									receiverFunctionstr.toUtf8().constData()));
 	Q_ASSERT(sdoResultHandlerIndex != -1);
 	// If asserted check for the receiverFunction name
-	this->receiverMetaObject = this->metaObject()->method(sdoResultHandlerIndex);
+	this->receiverFunction = this->metaObject()->method(sdoResultHandlerIndex);
 }
 
-void SdoTransfer::on_read_toggled(bool checked)
+void SdoTransfer::on_read_toggled(bool selected)
 {
 	this->ui.sdoResultValue->clear();
-	this->ui.sdoResultValue->setReadOnly(checked);
+	this->ui.sdoResultValue->setReadOnly(selected);
 }
 
 void SdoTransfer::on_executeTransfer_clicked()
@@ -177,7 +178,7 @@ void SdoTransfer::on_executeTransfer_clicked()
 	qDebug("Max: %d Min:%d", this->maxDataValue, this->minDataValue);
 	tOplkError oplkRet =  OplkQtApi::TransferObject(*(this->sdoTransferJob),
 										*(this),
-										this->receiverMetaObject);
+										this->receiverFunction);
 
 	//update the SDO log
 	this->ui.sdoTransferLog->append(QString("\n\n%1 Initialized for NodeId: 0x%2, DataType:%3, Index:%4, SubIndex:%5 via: %6")
@@ -244,17 +245,17 @@ void SdoTransfer::HandleSdoTransferFinished(const SdoTransferResult result)
 	else
 	{
 		this->ui.transferStatus->setText("Last Transfer Completed");
-		qDebug("RAM %u", (*((quint64*)(&(this->sdoTransferData)))));
+		qDebug("Writedata %u", (*((quint64*)(&(this->sdoTransferData)))));
 		this->UpdateSdoTransferReturnValue();
 	}
 
 	this->ui.groupBoxSdoTransfer->setEnabled(true);
 }
 
-void SdoTransfer::on_dataType_currentIndexChanged(const QString &dataTypeStr)
+void SdoTransfer::on_dataType_currentIndexChanged(const QString &dataType)
 {
 	this->ui.sdoResultValue->clear();
-	this->metaDataTypeIndex = SdoTransfer::dataTypeMap[dataTypeStr];
+	this->metaDataTypeIndex = SdoTransfer::dataTypeMap[dataType];
 	this->SetMaskForValue();
 	this->ui.sdoResultValue->setValidator(this->sdoValueValidator);
 }
@@ -436,10 +437,13 @@ bool SdoTransfer::IsValidValue()
 			}
 
 			//check the data size
-			if ((data <= this->maxDataValue) || (data >= 0) || (!res))
+			if ((data <= this->maxDataValue) || (!res))
+			{
+				result = true;
+			}
+			else
 			{
 				data = 0;
-				result = true;
 			}
 
 			this->sdoTransferData = QVariant(this->metaDataTypeIndex, (void*)&data);
@@ -458,12 +462,16 @@ bool SdoTransfer::IsValidValue()
 				qDebug("Conversion failed LONGLONG. MetaType %d", this->metaDataTypeIndex);
 			}
 
+			//TODO if loop double check. failing
 			//check the data size
 			if (((this->maxDataValue - data) >= 0)
 					|| (data >= this->minDataValue) || (!res))
 			{
-				data = 0;
 				result = true;
+			}
+			else
+			{
+				data = 0;
 			}
 
 			this->sdoTransferData = QVariant(this->metaDataTypeIndex, (void*)&data);
@@ -498,6 +506,7 @@ void SdoTransfer::on_sdoResultValue_editingFinished()
 
 void SdoTransfer::GetConfiguredNodeIdList(QStringList &nodeIdList)
 {
+	//TODO This function shall be moved to the API library
 	DWORD nodeAssignment;
 	UINT size = sizeof (nodeAssignment);
 	// Can read upto subindex 00th
@@ -533,7 +542,7 @@ void SdoTransfer::GetConfiguredNodeIdList(QStringList &nodeIdList)
 
 const QString SdoTransfer::GetAbortCodeString(const UINT32 abortCode) const
 {
-	/* TODO Move this to API of SDO transfer
+	/* TODO Move this to API of SDO transfer with std::map implementation
 	 * */
 	QString abortStr;
 	switch (abortCode)

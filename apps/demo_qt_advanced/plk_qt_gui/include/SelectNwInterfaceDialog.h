@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   SelectNwInterfaceDialog.h
 
-\brief
+\brief  Refer SelectNwInterfaceDialog class
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _SELECTNWINTERFACEDIALOG_H_
-#define _SELECTNWINTERFACEDIALOG_H_
+#ifndef _SELECT_NW_INTERFACE_DIALOG_H_
+#define _SELECT_NW_INTERFACE_DIALOG_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -41,58 +41,59 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_SelectNwInterfaceDialog.h"
 
 /**
- * \brief The SelectNwInterfaceDialog class
+ * \brief The network interface select dialog class
+ *
+ * Describes the logic to query the network interface available in any
+ * system using the PCAP interface.
  */
 class SelectNwInterfaceDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * \brief SelectNwInterfaceDialog
-	 * \param parent
-	 */
+
 	explicit SelectNwInterfaceDialog(QWidget *parent = 0);
 
 	/**
-	 * \brief GetDevName
-	 * \return
+	 * \return The selected network device name
 	 */
 	QString GetDevName(void) const;
 
 	/**
-	 * \brief GetDevDescription
-	 * \return
+	 * \return The selected network device's description
 	 */
 	QString GetDevDescription(void) const;
 
+	//TODO bool or return number of items in list.
 	/**
-	 * \brief FillList
-	 * \return
+	 * \brief Fills the listwidget with the list of available network interface
+	 * descriptions.
+	 * \retval -1 if no list found.(fail)
+	 * \retval 0  if list has valid entries.(success)
 	 */
 	int FillList(void);
 
 private slots:
 	/**
-	 * \brief on_listWidget_itemDoubleClicked
-	 * \param item
+	 * \brief Marks the item for selection and exits the dialog.
+	 * \param item The selected item.
 	 */
 	void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
 
 	/**
-	 * \brief on_buttonBox_accepted
+	 * \brief Closes the dialog and and saves the selected item.
 	 */
 	void on_buttonBox_accepted();
 
 	/**
-	 * \brief on_buttonBox_rejected
+	 * \brief Cancels the item selection process.
 	 */
 	void on_buttonBox_rejected();
 
 private:
 	Ui::SelectNwInterfaceDialog ui; /// Select Network interface ui instance
-	QString devName;              /// network device name
+	QString devName;                /// network device name
 	QString devDescription;         /// network device description
 };
 
-#endif // _SELECTNWINTERFACEDIALOG_H_
+#endif // _SELECT_NW_INTERFACE_DIALOG_H_

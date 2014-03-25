@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   AboutDialog.cpp
 
-\brief
+\brief Implements the about window
 
 \author Ramakrishnan Periyakaruppan
 
@@ -51,7 +51,7 @@ const QString buildTime = QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Da
 AboutDialog::AboutDialog(QWidget *parent) :
 	QDialog(parent)
 {
-	ui.setupUi(this);
+	this->ui.setupUi(this);
 	this->ui.builtOn->setText(buildTime);
 	// TODO get version from stack
 	this->ui.stackVersion->setText("oplk v2.0-b1");

@@ -2,10 +2,10 @@
 ********************************************************************************
 \file   MainWindow.cpp
 
-\brief  Main UI window for the application.
+\brief  The main window of the application.
 
-The file contains the all the layout for the widgets and handles
-the menu actions and toolbar actions.
+The file contains the definitions of all the layouts present in the mainwindow
+and for the widgets and handles the menu actions and toolbar actions.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -143,6 +143,7 @@ void MainWindow::on_actionOpen_CDC_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
+	// TODO discuss. Oplk Stop?
 	this->close();
 }
 

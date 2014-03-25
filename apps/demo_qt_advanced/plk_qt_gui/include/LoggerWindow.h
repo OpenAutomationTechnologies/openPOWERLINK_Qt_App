@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   LoggerWindow.h
 
-\brief
+\brief  Refer to LoggerWindow
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _LOGGERWINDOW_H_
-#define _LOGGERWINDOW_H_
+#ifndef _LOGGER_WINDOW_H_
+#define _LOGGER_WINDOW_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -42,28 +42,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_LoggerWindow.h"
 
 /**
- * \brief The LoggerWindow class
+ * \brief The LoggerWindow class inherits QDockWidget and updates the log
+ * messages from the stack's event handler.
  */
 class LoggerWindow : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * \brief LoggerWindow
-	 * \param[in] parent
-	 */
 	explicit LoggerWindow(QWidget *parent = 0);
 
 	/**
-	 * \brief Handles the print log signals
+	 * \brief Handles the print log signals.
+	 *
 	 *  Receives the print log signals from the stack and appends to the log window.
-	 * \param[in] str Log string
+	 *
+	 * \param[in] str The log string to be appended to the logwindow.
 	 **/
 	Q_INVOKABLE void HandlePrintLog(const QString& str);
 
 private:
-	Ui::LoggerWindow ui;
+	Ui::LoggerWindow ui;  ///< Logger window ui instance.
 };
 
-#endif // _LOGGERWINDOW_H_
+#endif // _LOGGER_WINDOW_H_

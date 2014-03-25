@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   NodeStatusDock.cpp
 
-\brief
+\brief  Implements the node status dock and updates the status of the available CN node id's.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -46,15 +46,6 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	QDockWidget(parent)
 {
 	this->ui.setupUi(this);
-
-//	this->nodelist = new NodeUi*[kMaxCnNodes + 1];
-//	for (UINT i = 1; i <= kMaxCnNodes; ++i)
-//	{
-//		this->nodelist[i] = new NodeUi(i);
-//		this->ui.verticalLayout->addWidget(this->nodelist[i]);
-//		//this->nodelist[i]->setToolTip(QString("CN %1") .arg(i));
-//		this->nodelist[i]->hide();
-//	}
 
 	NodeUi *nodeUi = NULL;
 	for (UINT i = 0; i < kMaxCnNodes; ++i)
