@@ -71,6 +71,30 @@ ProcessImageVariables::~ProcessImageVariables()
 	}
 }
 
+void ProcessImageVariables::UpdateInputs()
+{
+	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+		 channel != this->inputChannels.end(); ++channel)
+	{
+		if (*channel)
+		{
+			(*channel)->UpdateInputChannelCurrentValue(&(this->inPi));
+		}
+	}
+}
+
+void ProcessImageVariables::UpdateOutputs()
+{
+	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+		 channel != this->outputChannels.end(); ++channel)
+	{
+		if (*channel)
+		{
+			(*channel)->UpdateOutputChannelCurrentValue(&(this->outPi));
+		}
+	}
+}
+
 
 /*******************************************************************************
 * Private functions
@@ -198,40 +222,6 @@ void ProcessImageVariables::on_outShowAllBtn_clicked()
 		if (*channel)
 		{
 			(*channel)->show();
-		}
-	}
-}
-
-Qt::CheckState ProcessImageVariables::GetInputSelectAllCheckBoxState() const
-{
-	return this->ui.inputCheckAll->checkState();
-}
-
-Qt::CheckState ProcessImageVariables::GetOutputSelectAllCheckBoxState() const
-{
-	return this->ui.outputCheckAll->checkState();
-}
-
-void ProcessImageVariables::UpdateInputs()
-{
-	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
-		 channel != this->inputChannels.end(); ++channel)
-	{
-		if (*channel)
-		{
-			(*channel)->UpdateInputChannelCurrentValue(&(this->inPi));
-		}
-	}
-}
-
-void ProcessImageVariables::UpdateOutputs()
-{
-	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
-		 channel != this->outputChannels.end(); ++channel)
-	{
-		if (*channel)
-		{
-			(*channel)->UpdateOutputChannelCurrentValue(&(this->outPi));
 		}
 	}
 }

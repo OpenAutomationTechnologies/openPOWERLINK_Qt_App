@@ -41,62 +41,52 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <QThread>
 #include <oplk/errordefs.h>
-#include "ProcessImageVariables.h"
-#include "ProcessImageMemory.h"
 
 #include <user/processimage/ProcessImageParser.h>
 
+#include "ProcessImageVariables.h"
+#include "ProcessImageMemory.h"
+
 /**
- * @brief The DataSyncThread class
+ * \brief The DataSyncThread class
  */
 class DataSyncThread : public QThread
 {
 	Q_OBJECT
 
 public:
-	/**
-	 * @brief DataSyncThread
-	 * @param parser
-	 */
-	DataSyncThread(ProcessImageParser &parser);
+	DataSyncThread();
+
+	virtual ~DataSyncThread();
 
 	/**
-	 * @brief run
+	 * \brief run
 	 */
-	void run();
+	virtual void run();
 
 signals:
 	/**
-	 * @brief SignalUpdateInputValues
+	 * \brief SignalUpdateInputValues
 	 */
 	void SignalUpdateInputValues();
 
 	/**
-	 * @brief SignalUpdateOutputValues
+	 * \brief SignalUpdateOutputValues
 	 */
 	void SignalUpdateOutputValues();
 
 private:
-	/**
-	 * @brief in
-	 */
-	ProcessImageIn *in;
 
 	/**
-	 * @brief out
-	 */
-	ProcessImageOut *out;
-
-	/**
-	 * @brief DataSyncThread
-	 * @param syncThread
+	 * \brief DataSyncThread
+	 * \param syncThread
 	 */
 	DataSyncThread(const DataSyncThread& syncThread);
 	DataSyncThread& operator=(const DataSyncThread& syncThread);
 
 	/**
-	 * @brief ProcessSync
-	 * @return
+	 * \brief ProcessSync
+	 * \return
 	 */
 	tOplkError ProcessSync();
 };

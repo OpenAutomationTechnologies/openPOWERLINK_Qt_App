@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_AboutDialog.h"
 
 /**
- * @brief The AboutDialog class
+ * \brief The AboutDialog class
  */
 class AboutDialog : public QDialog
 {
@@ -49,14 +49,14 @@ class AboutDialog : public QDialog
 
 public:
 	/**
-	 * @brief AboutDialog
-	 * @param parent
+	 * \brief AboutDialog
+	 * \param[in] parent
 	 */
 	explicit AboutDialog(QWidget *parent = 0);
 
 private slots:
 	/**
-	 * @brief on_okButton_clicked
+	 * \brief on_okButton_clicked
 	 */
 	void on_okButton_clicked();
 

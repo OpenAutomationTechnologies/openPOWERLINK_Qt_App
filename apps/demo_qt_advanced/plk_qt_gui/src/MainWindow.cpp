@@ -2,7 +2,10 @@
 ********************************************************************************
 \file   MainWindow.cpp
 
-\brief
+\brief  Main UI window for the application.
+
+The file contains the all the layout for the widgets and handles
+the menu actions and toolbar actions.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -35,24 +38,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "MainWindow.h"
+#include <fstream>
+
 #include <QMessageBox>
-#include "AboutDialog.h"
 #include "QDesktopServices"
+
+#include <oplk/debugstr.h>
 
 #include "api/OplkQtApi.h"
 #include "common/XmlParserException.h"
 
-#include <oplk/debugstr.h>
-
-#include <fstream>
-
+#include "MainWindow.h"
+#include "AboutDialog.h"
 #include "DataSyncThread.h"
+
 
 /*******************************************************************************
 * Module global variables
 *******************************************************************************/
-const unsigned int localNodeId = 240;
+const UINT localNodeId = 240; /// Local node id is set to MN nodeid. This application is designed to run as MN only.
 
 
 /*******************************************************************************
@@ -64,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	sdoTab(new SdoTransfer()),
 	log(new LoggerWindow()),
 	cdcDialog(new DialogOpenCdc()),
-	nwInterfaceDialog(new SelectNwInterfaceDialog()),
+	networkInterface(new SelectNwInterfaceDialog()),
 	nmtCmdWindow(new NmtCommandsDock()),
 	cnStatus(new NodeStatusDock()),
 	mnNode(new NodeUi(localNodeId)),
@@ -78,18 +82,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui.actionStop->setDisabled(true);
 	this->ui.actionRestart->setEnabled(false);
 
-//	this->ui.toolBar->setStyleSheet("QToolBar { background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, \
-//							  stop: 0 #6B7FBF, stop: 0.4 #DDDDDD, \
-//							  stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3); \
-//							  border-radius: 5px; \
-//							  spacing: 3px; } ");
-
-// TODO Handle return values
-	int index = this->mnNode->metaObject()->indexOfMethod(
+	const int index = this->mnNode->metaObject()->indexOfMethod(
 					QMetaObject::normalizedSignature(
 						"HandleNodeStateChanged(tNmtState)").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the function name
+
 // TODO Handle return values
-	bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->mnNode), this->mnNode->metaObject()->method(index));
+	const bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->mnNode), this->mnNode->metaObject()->method(index));
 
 }
 
@@ -97,11 +97,12 @@ MainWindow::~MainWindow()
 {
 	delete this->sdoTab;
 	delete this->log;
-	delete this->nwInterfaceDialog;
 	delete this->cdcDialog;
+	delete this->networkInterface;
 	delete this->nmtCmdWindow;
 	delete this->cnStatus;
 	delete this->mnNode;
+
 	if (!this->piVar)
 	{
 		delete this->piVar;
@@ -110,6 +111,16 @@ MainWindow::~MainWindow()
 	if (!this->piMemory)
 	{
 		delete this->piMemory;
+	}
+
+	if (!this->parser)
+	{
+		delete this->parser;
+	}
+
+	if (!this->dataSync)
+	{
+		delete this->dataSync;
 	}
 }
 
@@ -137,7 +148,7 @@ void MainWindow::on_actionQuit_triggered()
 
 bool MainWindow::on_actionSelect_Interface_triggered()
 {
-	if (this->nwInterfaceDialog->FillList() < 0)
+	if (this->networkInterface->FillList() < 0)
 	{
 		QMessageBox::warning(this, "PCAP not working!",
 							 "No PCAP interfaces found!\n"
@@ -146,7 +157,7 @@ bool MainWindow::on_actionSelect_Interface_triggered()
 		return false;
 	}
 
-	if (this->nwInterfaceDialog->exec() == QDialog::Rejected)
+	if (this->networkInterface->exec() == QDialog::Rejected)
 	{
 		return false;
 	}
@@ -178,13 +189,10 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-//	ProcessImageIn *piIn = &(static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN)));
-//	ProcessImageOut *piOut = &(static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT)));
-
 	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN));
 	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT));
 	//TODO Start powerlink and only if success enable the stop button.
-	if (this->nwInterfaceDialog->GetDevName() == "")
+	if (this->networkInterface->GetDevName() == "")
 	{
 		if (!this->on_actionSelect_Interface_triggered())
 		{
@@ -193,7 +201,7 @@ void MainWindow::on_actionStart_triggered()
 	}
 
 	tOplkError oplkRet = kErrorGeneralError;
-	oplkRet = OplkQtApi::InitStack(localNodeId, this->nwInterfaceDialog->GetDevName().toStdString());
+	oplkRet = OplkQtApi::InitStack(localNodeId, this->networkInterface->GetDevName().toStdString());
 	if (oplkRet != kErrorOk)
 	{
 		QMessageBox::critical(this, "Init Powerlink failed",
@@ -204,7 +212,7 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	this->dataSync = new DataSyncThread(*(this->parser));
+	this->dataSync = new DataSyncThread();
 	oplkRet = OplkQtApi::AllocateProcessImage(piIn, piOut);
 	if (oplkRet != kErrorOk)
 	{
@@ -227,7 +235,7 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	this->ui.statusbar->showMessage(this->nwInterfaceDialog->GetDevDescription());
+	this->ui.statusbar->showMessage(this->networkInterface->GetDevDescription());
 
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionRestart->setEnabled(true);
@@ -283,11 +291,10 @@ void MainWindow::on_actionStop_triggered()
 	this->ui.actionRestart->setEnabled(false);
 	this->ui.actionStop->setEnabled(false);
 
-	// this->sdoTab->hide();
 	this->removeDockWidget(this->cnStatus);
 	this->removeDockWidget(this->log);
 	this->removeDockWidget(this->nmtCmdWindow);
-	// MN Status is not hidden.
+	// MN Status is not hidden after the stack is once started and stopped.
 
 	this->ui.tabWidget->removeTab(1);
 	this->ui.tabWidget->removeTab(2);

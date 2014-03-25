@@ -2,7 +2,9 @@
 ********************************************************************************
 \file   main.cpp
 
-\brief
+\brief  Main entry point of the QT MN demo application
+
+The file contains the main source code of the QT MN demo application
 
 \author Ramakrishnan Periyakaruppan
 
@@ -43,9 +45,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
-	MainWindow w;
-	w.show();
+	QApplication app(argc, argv);
+	MainWindow mainWindow;
+	mainWindow.show();
 
-	return a.exec();
+	return app.exec();
 }

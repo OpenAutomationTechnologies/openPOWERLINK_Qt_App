@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <oplk/debugstr.h>
 
-const uint kMaxCnNodes = 239;
+const UINT kMaxCnNodes = 239;
 
 NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	QDockWidget(parent)
@@ -48,7 +48,7 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	this->ui.setupUi(this);
 
 //	this->nodelist = new NodeUi*[kMaxCnNodes + 1];
-//	for (uint i = 1; i <= kMaxCnNodes; ++i)
+//	for (UINT i = 1; i <= kMaxCnNodes; ++i)
 //	{
 //		this->nodelist[i] = new NodeUi(i);
 //		this->ui.verticalLayout->addWidget(this->nodelist[i]);
@@ -57,7 +57,7 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 //	}
 
 	NodeUi *nodeUi = NULL;
-	for (uint i = 0; i < kMaxCnNodes; ++i)
+	for (UINT i = 0; i < kMaxCnNodes; ++i)
 	{
 		nodeUi = new NodeUi(i + 1);
 		nodeUi->hide();
@@ -65,10 +65,12 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 		this->ui.verticalLayout->addWidget(nodeUi);
 	}
 
-	// TODO Handle return values
 	int index = this->metaObject()->indexOfMethod(
 					QMetaObject::normalizedSignature(
 					"HandleNodeStateChanged(const int, tNmtState)").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the Function name
+
 	// TODO Handle return values
 	bool ret = OplkQtApi::RegisterNodeStateChangedEventHandler(*(this),
 							this->metaObject()->method(index));
@@ -78,14 +80,19 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	index = this->metaObject()->indexOfMethod(
 					QMetaObject::normalizedSignature(
 					"HandleNodeFound(const int)").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the Function name
+
 	// TODO Handle return values
 	ret = OplkQtApi::RegisterNodeFoundEventHandler(*(this),
 							this->metaObject()->method(index));
 
-// TODO Handle return values
 	index = this->metaObject()->indexOfMethod(
 					QMetaObject::normalizedSignature(
 						"HandleMnStateChanged(tNmtState)").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the Function name
+
 // TODO Handle return values
 	ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this),
 							this->metaObject()->method(index));
@@ -138,7 +145,8 @@ void NodeStatusDock::HandleNodeFound(const int nodeId)
 QStringList NodeStatusDock::GetAvailableCnList()
 {
 	QStringList cnList;
-//	for (uint i = 1; i <= kMaxCnNodes; ++i)
+//TODO
+//	for (UINT i = 1; i <= kMaxCnNodes; ++i)
 //	{
 //		if ((this->nodelist[i]))
 //		{

@@ -44,21 +44,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 const QString buildTime = QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Date);
 
-//#if defined(_WIN32)
-//	#if defined(_MSC_VER)
-//	const uint buildVersion = _MSC_FULL_VER; // _MSC_VER
-//	const QString compilerName = "MSVC";
-//	#endif
-//#elif defined(_linux_)
-//	#if defined(__GNUG__)
-//	const uint buildVersion = _MSC_FULL_VER; // _MSC_VER
-//	#define GCC_VERSION (__GNUC__ * 10000 \
-//							   + __GNUC_MINOR__ * 100 \
-//							   + __GNUC_PATCHLEVEL__)
-//	const QString compilerName = "gcc/g++";
-//	#endif
-//#endif
-
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
@@ -68,8 +53,8 @@ AboutDialog::AboutDialog(QWidget *parent) :
 {
 	ui.setupUi(this);
 	this->ui.builtOn->setText(buildTime);
+	// TODO get version from stack
 	this->ui.stackVersion->setText("oplk v2.0-b1");
-	// qDebug(qPrintable(QString::number(buildVersion)));
 }
 
 /*******************************************************************************

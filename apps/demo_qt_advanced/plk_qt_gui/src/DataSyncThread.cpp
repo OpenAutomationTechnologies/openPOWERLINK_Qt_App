@@ -44,10 +44,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Public functions
 *******************************************************************************/
 
-DataSyncThread::DataSyncThread(ProcessImageParser &parser)
+DataSyncThread::DataSyncThread()
 {
-	this->in = &(static_cast<ProcessImageIn&>(parser.GetProcessImage(Direction::PI_IN)));
-	this->out = &(static_cast<ProcessImageOut&>(parser.GetProcessImage(Direction::PI_OUT)));
+
+}
+
+DataSyncThread::~DataSyncThread()
+{
+
 }
 
 void DataSyncThread::run()

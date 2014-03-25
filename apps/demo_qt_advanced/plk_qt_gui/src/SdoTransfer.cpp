@@ -332,7 +332,7 @@ void SdoTransfer::SetMaskForValue()
 		case QMetaType::QChar:
 		{
 			//Only V-String is handled
-			QRegExp validateStr(QString("^[!\"#$%&'()*+,-./0-9:;<=>?@A-Z[\\]^_`a-z{|}~]{0,%1}$")
+			QRegExp validateStr(QString("^[!\"#$%&'()*+,-./0-9:;<=>?\A-Z[\\]^_`a-z{|}~]{0,%1}$")
 								.arg(sdoDataSize));
 
 			if (this->sdoValueValidator != NULL)

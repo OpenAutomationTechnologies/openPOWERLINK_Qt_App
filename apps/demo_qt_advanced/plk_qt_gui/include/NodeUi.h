@@ -44,22 +44,40 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <oplk/nmt.h>
 
+/**
+ * \brief The NodeUi class
+ */
 class NodeUi : public QFrame
 {
 	Q_OBJECT
 
 public:
-	explicit NodeUi(const uint nodeId, QWidget *parent = 0);
+	/**
+	 * \brief NodeUi
+	 * \param[in] nodeId
+	 * \param[in] parent
+	 */
+	explicit NodeUi(const UINT nodeId, QWidget *parent = 0);
+
+	/**
+	 * \brief
+	 *
+	 * \param[in] nmtState
+	 */
 	Q_INVOKABLE void HandleNodeStateChanged(tNmtState nmtState);
-	unsigned int GetNodeId() const;
+
+	/**
+	 * \brief GetNodeId
+	 * \return
+	 */
+	const UINT GetNodeId() const;
 
 private:
 	QHBoxLayout *nodeLayout;
 	QLabel *name;
 	QLabel *statusImage;
 	QPixmap statusPixmap;
-	unsigned int nodeId;
-	// Q_DISABLE_COPY(Node)
+	const UINT nodeId;
 };
 
 #endif // _NODE_UI_H_

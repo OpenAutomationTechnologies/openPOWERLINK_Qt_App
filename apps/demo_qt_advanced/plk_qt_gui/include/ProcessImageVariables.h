@@ -45,48 +45,91 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageIn.h"
 #include "user/processimage/ProcessImageOut.h"
 
+/**
+ * \brief The ProcessImageVariables class
+ */
 class ProcessImageVariables : public QFrame
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * \brief ProcessImageVariables
+	 * \param[in] in
+	 * \param[in] out
+	 * \param[in] parent
+	 */
 	explicit ProcessImageVariables(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent = 0);
-
-	Qt::CheckState GetInputSelectAllCheckBoxState() const;
-
-	Qt::CheckState GetOutputSelectAllCheckBoxState() const;
 
 	~ProcessImageVariables();
 
 public slots:
+	/**
+	 * \brief UpdateInputs
+	 */
 	void UpdateInputs();
 
+	/**
+	 * \brief UpdateOutputs
+	 */
 	void UpdateOutputs();
 
 private slots:
+	/**
+	 * \brief on_inputCheckAll_stateChanged
+	 * \param arg1
+	 */
 	void on_inputCheckAll_stateChanged(int arg1);
 
+	/**
+	 * \brief on_outputCheckAll_stateChanged
+	 * \param arg1
+	 */
 	void on_outputCheckAll_stateChanged(int arg1);
 
+	/**
+	 * \brief on_inputForceAll_stateChanged
+	 * \param arg1
+	 */
 	void on_inputForceAll_stateChanged(int arg1);
 
+	/**
+	 * \brief on_inputHideCheckedBtn_clicked
+	 */
 	void on_inputHideCheckedBtn_clicked();
 
+	/**
+	 * \brief on_inputShowAllBtn_clicked
+	 */
 	void on_inputShowAllBtn_clicked();
 
+	/**
+	 * \brief on_outHideCheckedBtn_clicked
+	 */
 	void on_outHideCheckedBtn_clicked();
 
+	/**
+	 * \brief on_outShowAllBtn_clicked
+	 */
 	void on_outShowAllBtn_clicked();
 
 private:
 	Ui::ProcessImageVariables ui;
+
 	QList<ChannelUi*> inputChannels;
 	QList<ChannelUi*> outputChannels;
 
 	ProcessImageIn &inPi;
-	ProcessImageOut &outPi;
+	const ProcessImageOut &outPi;
 
+	/**
+	 * \brief PrepareInputRows
+	 */
 	void PrepareInputRows();
+
+	/**
+	 * \brief PrepareOutputRows
+	 */
 	void PrepareOutputRows();
 };
 

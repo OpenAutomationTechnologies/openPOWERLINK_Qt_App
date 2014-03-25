@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_DialogOpenCdc.h"
 
 /**
- * @brief The DialogOpenCdc class
+ * \brief The DialogOpenCdc class
  */
 class DialogOpenCdc : public QDialog
 {
@@ -50,30 +50,30 @@ class DialogOpenCdc : public QDialog
 
 public:
 	/**
-	 * @brief DialogOpenCdc
-	 * @param parent
+	 * \brief DialogOpenCdc
+	 * \param parent
 	 */
 	explicit DialogOpenCdc(QWidget *parent = 0);
 
 private slots:
 	/**
-	 * @brief on_browseCDC_clicked
+	 * \brief on_browseCDC_clicked
 	 */
 	void on_browseCDC_clicked();
 
 	/**
-	 * @brief on_openCdcDialog_accepted
+	 * \brief on_openCdcDialog_accepted
 	 */
 	void on_openCdcDialog_accepted();
 
 	/**
-	 * @brief on_openCdcDialog_rejected
+	 * \brief on_openCdcDialog_rejected
 	 */
 	void on_openCdcDialog_rejected();
 
 	/**
-	 * @brief on_cdcPath_textEdited
-	 * @param arg1
+	 * \brief on_cdcPath_textEdited
+	 * \param[in] arg1 unused
 	 */
 	void on_cdcPath_textEdited(const QString &arg1);
 

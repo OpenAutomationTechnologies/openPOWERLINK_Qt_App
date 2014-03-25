@@ -37,9 +37,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include "ProcessImageMemory.h"
 #include "oplk/oplk.h"
-#include <QDebug>
-//const uint inSize = 1490;
-//const uint outSize = 1;
 
 /*******************************************************************************
 * Public functions
@@ -50,9 +47,9 @@ ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out,
 	outPi(out)
 {
 	this->ui.setupUi(this);
-	//this->ui.inputTable->setRowCount((in.GetSize() / 16) + 1);
-	UINT inputRowCount = (in.GetSize() / this->ui.inputTable->columnCount()) + 1;
-	UINT outputRowCount = (out.GetSize() / this->ui.outTable->columnCount()) + 1;
+
+	const UINT inputRowCount = (in.GetSize() / this->ui.inputTable->columnCount()) + 1;
+	const UINT outputRowCount = (out.GetSize() / this->ui.outTable->columnCount()) + 1;
 	this->ui.inputTable->setRowCount(inputRowCount);
 	this->ui.outTable->setRowCount(outputRowCount);
 
@@ -74,9 +71,9 @@ ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out,
 ProcessImageMemory::~ProcessImageMemory()
 {
 	QTableWidgetItem *item = NULL;
-	for (uint row = 0; row < this->ui.inputTable->rowCount(); ++row)
+	for (UINT row = 0; row < this->ui.inputTable->rowCount(); ++row)
 	{
-		for (uint col = 0; col < this->ui.inputTable->columnCount(); ++col)
+		for (UINT col = 0; col < this->ui.inputTable->columnCount(); ++col)
 		{
 			item = this->ui.inputTable->item(row, col);
 			if (item != NULL)
@@ -86,9 +83,9 @@ ProcessImageMemory::~ProcessImageMemory()
 		}
 	}
 
-	for (uint row = 0; row < this->ui.outTable->rowCount(); ++row)
+	for (UINT row = 0; row < this->ui.outTable->rowCount(); ++row)
 	{
-		for (uint col = 0; col < this->ui.outTable->columnCount(); ++col)
+		for (UINT col = 0; col < this->ui.outTable->columnCount(); ++col)
 		{
 			item = this->ui.outTable->item(row, col);
 			if (item != NULL)
@@ -98,7 +95,7 @@ ProcessImageMemory::~ProcessImageMemory()
 		}
 	}
 
-	for (uint row = 0; row < this->ui.inputTable->rowCount(); ++row)
+	for (UINT row = 0; row < this->ui.inputTable->rowCount(); ++row)
 	{
 		item = this->ui.inputTable->verticalHeaderItem(row);
 		if (item != NULL)
@@ -107,7 +104,7 @@ ProcessImageMemory::~ProcessImageMemory()
 		}
 	}
 
-	for (uint col = 0; col < this->ui.inputTable->columnCount(); ++col)
+	for (UINT col = 0; col < this->ui.inputTable->columnCount(); ++col)
 	{
 		item = this->ui.inputTable->horizontalHeaderItem(col);
 		if (item != NULL)
@@ -116,7 +113,7 @@ ProcessImageMemory::~ProcessImageMemory()
 		}
 	}
 
-	for (uint row = 0; row < this->ui.outTable->rowCount(); ++row)
+	for (UINT row = 0; row < this->ui.outTable->rowCount(); ++row)
 	{
 		item = this->ui.outTable->verticalHeaderItem(row);
 		if (item != NULL)
@@ -125,7 +122,7 @@ ProcessImageMemory::~ProcessImageMemory()
 		}
 	}
 
-	for (uint col = 0; col < this->ui.outTable->columnCount(); ++col)
+	for (UINT col = 0; col < this->ui.outTable->columnCount(); ++col)
 	{
 		item = this->ui.outTable->horizontalHeaderItem(col);
 		if (item != NULL)
@@ -141,7 +138,7 @@ ProcessImageMemory::~ProcessImageMemory()
 void ProcessImageMemory::CreateVerticalHeaders()
 {
 	QTableWidgetItem *item = NULL;
-	for (uint i = 0; i < ((this->inPi.GetSize() / this->ui.inputTable->columnCount()) + 1);
+	for (UINT i = 0; i < ((this->inPi.GetSize() / this->ui.inputTable->columnCount()) + 1);
 		 ++i)
 	{
 		item = new QTableWidgetItem();
@@ -149,7 +146,7 @@ void ProcessImageMemory::CreateVerticalHeaders()
 		this->ui.inputTable->setVerticalHeaderItem(i, item);
 	}
 
-	for (uint i = 0; i < ((this->outPi.GetSize() / this->ui.outTable->columnCount()) + 1);
+	for (UINT i = 0; i < ((this->outPi.GetSize() / this->ui.outTable->columnCount()) + 1);
 		 ++i)
 	{
 		item = new QTableWidgetItem();
@@ -162,9 +159,9 @@ void ProcessImageMemory::CreateVerticalHeaders()
 void ProcessImageMemory::CreateCells()
 {
 	QTableWidgetItem *item = NULL;
-	for (uint row = 0; row < this->ui.inputTable->rowCount(); ++row)
+	for (UINT row = 0; row < this->ui.inputTable->rowCount(); ++row)
 	{
-		for (uint col = 0; col <this->ui.inputTable->columnCount(); ++col)
+		for (UINT col = 0; col <this->ui.inputTable->columnCount(); ++col)
 		{
 			item = new QTableWidgetItem();
 			item->setFont(QFont("Courier", 9));
@@ -172,9 +169,9 @@ void ProcessImageMemory::CreateCells()
 		}
 	}
 
-	for (uint row = 0; row < this->ui.outTable->rowCount(); ++row)
+	for (UINT row = 0; row < this->ui.outTable->rowCount(); ++row)
 	{
-		for (uint col = 0; col <this->ui.outTable->columnCount(); ++col)
+		for (UINT col = 0; col <this->ui.outTable->columnCount(); ++col)
 		{
 			item = new QTableWidgetItem();
 			item->setFont(QFont("Courier", 9));
@@ -203,7 +200,7 @@ void ProcessImageMemory::UpdateInputValue()
 		{
 			// string = QString("%1").arg(*it, 0, 16).rightJustified(2, '0');
 			// qDebug("row:%d col:%d  val: %s", row, col, string.toUtf8().constData());
-			bool isSortenabled = this->ui.inputTable->isSortingEnabled();
+			const bool isSortenabled = this->ui.inputTable->isSortingEnabled();
 			this->ui.inputTable->setSortingEnabled(false);
 
 			cell = this->ui.inputTable->item(row, col);
@@ -224,6 +221,7 @@ void ProcessImageMemory::UpdateInputValue()
 	}
 	catch(const std::exception& ex)
 	{
+		// TODO Discuss about exposing the error to the user.
 		qDebug("An Exception has occured: %s", ex.what());
 	}
 }
@@ -241,7 +239,7 @@ void ProcessImageMemory::UpdateOutputValue()
 		for (std::vector<BYTE>::const_iterator it = value.begin();
 				it != value.end(); ++it)
 		{
-			bool isSortenabled = this->ui.outTable->isSortingEnabled();
+			const bool isSortenabled = this->ui.outTable->isSortingEnabled();
 			this->ui.outTable->setSortingEnabled(false);
 
 			cell = this->ui.outTable->item(row, col);
@@ -263,6 +261,7 @@ void ProcessImageMemory::UpdateOutputValue()
 	}
 	catch(const std::exception& ex)
 	{
+		// TODO Discuss about exposing the error to the user.
 		qDebug("An Exception has occured: %s", ex.what());
 	}
 }
