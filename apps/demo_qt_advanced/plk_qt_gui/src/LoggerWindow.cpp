@@ -4,6 +4,10 @@
 
 \brief  Implements the Logging mechanism and the actions involved in it.
 
+\todo
+		- New UI for the logger window which gives user the option to select
+			receiving the logs
+
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited

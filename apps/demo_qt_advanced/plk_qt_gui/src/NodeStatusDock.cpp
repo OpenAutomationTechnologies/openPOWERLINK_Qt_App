@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   NodeStatusDock.cpp
 
-\brief  Implements the node status dock and updates the status of the available CN node id's.
+\brief  Implements the node status dock and updates the status of the available
+		CN node id's.
 
 \author Ramakrishnan Periyakaruppan
 

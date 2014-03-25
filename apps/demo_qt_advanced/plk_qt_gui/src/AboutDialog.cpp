@@ -4,6 +4,10 @@
 
 \brief Implements the about window
 
+\todo
+		- Get the stack version string from stack
+		- Version number for the application
+
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited

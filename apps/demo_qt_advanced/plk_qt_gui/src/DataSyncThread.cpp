@@ -5,6 +5,10 @@
 \brief  Implements the transfer of processimage data in a thread by
 		using Qt 5.2 threads.
 
+\todo
+		- Implement mutex and wait condition before the thread terminates it.
+		- Export the refresh-rate as a settings
+
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited

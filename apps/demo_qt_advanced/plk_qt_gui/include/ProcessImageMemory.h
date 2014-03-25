@@ -5,8 +5,6 @@
 \brief  Describes the memory view of the input and output processimage data
 		from the oplk stack using the Qt 5.2 QTableWidgets.
 
-\todo  Implement input processimage editing from the table.
-
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited

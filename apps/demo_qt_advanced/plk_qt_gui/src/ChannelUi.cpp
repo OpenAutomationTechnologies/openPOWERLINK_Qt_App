@@ -4,6 +4,10 @@
 
 \brief  Implements the actions handled with the channel.
 
+\todo
+		- Validation for SetForceValue text box
+		- Handle signed values also
+
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited

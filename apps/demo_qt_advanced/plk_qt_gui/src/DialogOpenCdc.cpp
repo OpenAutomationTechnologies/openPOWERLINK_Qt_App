@@ -4,6 +4,9 @@
 
 \brief  Implements the Open CDC dialog and the actions involved in it.
 
+\todo
+		- Implement getting the file path for the xap.xml
+
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited

@@ -4,6 +4,9 @@
 
 \brief  Implements the NodeUi frame.
 
+\todo
+		- It can have a progressbar to display the CFM download status.
+
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited
