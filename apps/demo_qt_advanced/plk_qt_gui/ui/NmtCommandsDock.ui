@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Ramakrishnan Periyakaruppan</author>
  <class>NmtCommandsDock</class>
  <widget class="QDockWidget" name="NmtCommandsDock">
   <property name="geometry">
@@ -12,8 +13,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>150</width>
-    <height>100</height>
+    <width>243</width>
+    <height>133</height>
    </size>
   </property>
   <property name="maximumSize">
