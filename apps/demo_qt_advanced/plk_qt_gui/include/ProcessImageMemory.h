@@ -43,27 +43,55 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageIn.h"
 #include "user/processimage/ProcessImageOut.h"
 
+/**
+ * \brief The ProcessImageMemory class
+ */
 class ProcessImageMemory : public QFrame
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * \brief ProcessImageMemory
+	 * \param[in] in
+	 * \param[in] out
+	 * \param[in] parent
+	 */
 	explicit ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent = 0);
+
 	~ProcessImageMemory();
+
 public slots:
+	/**
+	 * \brief UpdateInputValue
+	 */
 	void UpdateInputValue();
+
+	/**
+	 * \brief UpdateOutputValue
+	 */
 	void UpdateOutputValue();
+
 private:
 	Ui::ProcessImageMemory ui;
 
 	ProcessImageIn &inPi;
-	ProcessImageOut &outPi;
+	const ProcessImageOut &outPi;
 
+	/**
+	 * \brief CreateVerticalHeaders
+	 */
 	void CreateVerticalHeaders();
-	void CreateCells();
-	void ResizeColumnsToContents();
 
-	// Q_DISABLE_COPY(ProcessImageMemory)
+	/**
+	 * \brief CreateCells
+	 */
+	void CreateCells();
+
+	/**
+	 * \brief ResizeColumnsToContents
+	 */
+	void ResizeColumnsToContents();
 };
 
 #endif // _PROCESSIMAGEMEMORY_H_

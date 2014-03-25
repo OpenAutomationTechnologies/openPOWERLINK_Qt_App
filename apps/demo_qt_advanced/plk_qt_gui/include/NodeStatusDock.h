@@ -41,34 +41,57 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QList>
 
 #include "ui_NodeStatusDock.h"
+
 #include "NodeUi.h"
 
+/**
+ * \brief The NodeStatusDock class
+ */
 class NodeStatusDock : public QDockWidget
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * \brief NodeStatusDock
+	 * \param parent
+	 */
 	explicit NodeStatusDock(QWidget *parent = 0);
-	// NodeStatusDock& GetInstance();
+
+	/**
+	 * \brief GetAvailableCnList
+	 * \return the currently available CN node's list.
+	 */
 	QStringList GetAvailableCnList();
+
 	/**
 	 * \brief   Handles the Node State changed signals
 	 *
-	 * \param[in] nodeId	nodeId of the node which changes the state.
-	 * \param[in] nmtState	New state of the node.
+	 * \param[in] nodeId    nodeId of the node which changes the state.
+	 * \param[in] nmtState  New state of the node.
 	 */
 	Q_INVOKABLE void HandleNodeStateChanged(const int nodeId, tNmtState nmtState);
+
+	/**
+	 * \brief
+	 *
+	 * \param[in] nodeId
+	 */
 	Q_INVOKABLE void HandleNodeFound(const int nodeId);
+
+	/**
+	 * \brief
+	 *
+	 * \param[in] nmtState
+	 **/
 	Q_INVOKABLE void HandleMnStateChanged(tNmtState nmtState);
 
 private:
 	Ui::NodeStatusDock ui;
-	// TODO replace with QList
-	// NodeUi **nodelist;
+
 	QList<NodeUi*> nodelists;
 	// May be we can use QMap
-	// QMap<const uint, NodeUi*> nodelist;
-	// Q_DISABLE_COPY(NodeStatusDock)
+	// QMap<const UINT, NodeUi*> nodelist;
 };
 
 #endif // _NODESTATUSDOCK_H_

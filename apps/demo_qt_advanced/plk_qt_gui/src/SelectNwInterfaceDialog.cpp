@@ -44,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 SelectNwInterfaceDialog::SelectNwInterfaceDialog(QWidget *parent) :
 	QDialog(parent),
-	m_devName("")
+	devName("")
 {
 	this->ui.setupUi(this);
 }
@@ -78,8 +78,6 @@ int SelectNwInterfaceDialog::FillList(void)
 		}
 		this->ui.listWidget->addItem(devDesc);
 
-		// QString devName(seldev->name);
-		// QVariant data(devName);
 		QVariant data(QString(seldev->name));
 		QListWidgetItem *newItem = this->ui.listWidget->item(numIntf);
 		newItem->setData(Qt::UserRole, data);
@@ -97,7 +95,7 @@ int SelectNwInterfaceDialog::FillList(void)
 
 QString SelectNwInterfaceDialog::GetDevName(void) const
 {
-	return this->m_devName;
+	return this->devName;
 }
 
 QString SelectNwInterfaceDialog::GetDevDescription(void) const
@@ -110,9 +108,7 @@ QString SelectNwInterfaceDialog::GetDevDescription(void) const
 *******************************************************************************/
 void SelectNwInterfaceDialog::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
-	qDebug("double clicked");
-	this->m_devName = item->data(Qt::UserRole).toString();
-	//m_devName = item->data(Qt::StatusTipRole).toString();
+	this->devName = item->data(Qt::UserRole).toString();
 	this->devDescription = item->text();
 	this->ui.buttonBox->accepted();
 }
@@ -120,16 +116,17 @@ void SelectNwInterfaceDialog::on_listWidget_itemDoubleClicked(QListWidgetItem *i
 void SelectNwInterfaceDialog::on_buttonBox_accepted()
 {
 	// Only Single selection so taking 0;
+	//FIXME error while pressing ok without selecting any item. SelectedItems returns NULL
 	QListWidgetItem *item = this->ui.listWidget->selectedItems().at(0);
 	if (item)
 	{
-		this->m_devName = item->data(Qt::UserRole).toString();
+		this->devName = item->data(Qt::UserRole).toString();
 		this->devDescription = item->text();
 	}
 }
 
 void SelectNwInterfaceDialog::on_buttonBox_rejected()
 {
-	this->m_devName = "";
+	this->devName = "";
 	this->devDescription = "";
 }

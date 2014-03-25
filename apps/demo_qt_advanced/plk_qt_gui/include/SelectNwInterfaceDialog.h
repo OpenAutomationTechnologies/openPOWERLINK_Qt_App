@@ -40,27 +40,59 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include "ui_SelectNwInterfaceDialog.h"
 
+/**
+ * \brief The SelectNwInterfaceDialog class
+ */
 class SelectNwInterfaceDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * \brief SelectNwInterfaceDialog
+	 * \param parent
+	 */
 	explicit SelectNwInterfaceDialog(QWidget *parent = 0);
+
+	/**
+	 * \brief GetDevName
+	 * \return
+	 */
 	QString GetDevName(void) const;
+
+	/**
+	 * \brief GetDevDescription
+	 * \return
+	 */
 	QString GetDevDescription(void) const;
+
+	/**
+	 * \brief FillList
+	 * \return
+	 */
 	int FillList(void);
 
 private slots:
+	/**
+	 * \brief on_listWidget_itemDoubleClicked
+	 * \param item
+	 */
 	void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
 
+	/**
+	 * \brief on_buttonBox_accepted
+	 */
 	void on_buttonBox_accepted();
 
+	/**
+	 * \brief on_buttonBox_rejected
+	 */
 	void on_buttonBox_rejected();
 
 private:
-	Ui::SelectNwInterfaceDialog ui;
-	QString m_devName;
-	QString devDescription;
+	Ui::SelectNwInterfaceDialog ui; /// Select Network interface ui instance
+	QString devName;              /// network device name
+	QString devDescription;         /// network device description
 };
 
 #endif // _SELECTNWINTERFACEDIALOG_H_

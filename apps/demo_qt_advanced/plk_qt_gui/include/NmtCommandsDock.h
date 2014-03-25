@@ -38,11 +38,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "ui_NmtCommandsDock.h"
 #include "user/nmtu.h"
 
+#include "ui_NmtCommandsDock.h"
+
 /**
- * @brief The NmtCommandsDock class
+ * \brief The NmtCommandsDock class
  */
 class NmtCommandsDock : public QDockWidget
 {
@@ -50,20 +51,20 @@ class NmtCommandsDock : public QDockWidget
 
 public:
 	/**
-	 * @brief NmtCommandsDock
-	 * @param parent
+	 * \brief NmtCommandsDock
+	 * \param[in] parent
 	 */
 	explicit NmtCommandsDock(QWidget *parent = 0);
 
 private slots:
 	/**
-	 * @brief on_sendNmtBtn_clicked
+	 * \brief on_sendNmtBtn_clicked
 	 */
 	void on_sendNmtBtn_clicked();
 
 	/**
-	 * @brief on_nmtCommand_currentIndexChanged
-	 * @param index
+	 * \brief on_nmtCommand_currentIndexChanged
+	 * \param[in] index Choosen index of the NMT command
 	 */
 	void on_nmtCommand_currentIndexChanged(int index);
 

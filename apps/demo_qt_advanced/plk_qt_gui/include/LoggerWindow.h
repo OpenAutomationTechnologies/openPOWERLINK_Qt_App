@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_LoggerWindow.h"
 
 /**
- * @brief The LoggerWindow class
+ * \brief The LoggerWindow class
  */
 class LoggerWindow : public QDockWidget
 {
@@ -50,19 +50,20 @@ class LoggerWindow : public QDockWidget
 
 public:
 	/**
-	 * @brief LoggerWindow
-	 * @param parent
+	 * \brief LoggerWindow
+	 * \param[in] parent
 	 */
 	explicit LoggerWindow(QWidget *parent = 0);
 
 	/**
-	 * @param busyString;
+	 * \brief Handles the print log signals
+	 *  Receives the print log signals from the stack and appends to the log window.
+	 * \param[in] str Log string
 	 **/
 	Q_INVOKABLE void HandlePrintLog(const QString& str);
 
 private:
 	Ui::LoggerWindow ui;
-	// Q_DISABLE_COPY(LogerWindow)
 };
 
 #endif // _LOGGERWINDOW_H_

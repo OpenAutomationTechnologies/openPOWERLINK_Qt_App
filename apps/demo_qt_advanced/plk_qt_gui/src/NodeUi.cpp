@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-NodeUi::NodeUi(const uint nodeId, QWidget *parent) :
+NodeUi::NodeUi(const UINT nodeId, QWidget *parent) :
 	QFrame(parent),
 	nodeId(nodeId),
 	nodeLayout(new QHBoxLayout(this)),
@@ -80,7 +80,7 @@ NodeUi::NodeUi(const uint nodeId, QWidget *parent) :
 	this->nodeLayout->update();
 }
 
-unsigned int NodeUi::GetNodeId() const
+const UINT NodeUi::GetNodeId() const
 {
 	return this->nodeId;
 }

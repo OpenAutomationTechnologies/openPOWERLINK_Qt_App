@@ -56,15 +56,6 @@ NmtCommandsDock::NmtCommandsDock(QWidget *parent) :
 *******************************************************************************/
 void NmtCommandsDock::on_sendNmtBtn_clicked()
 {
-//	bool ok = false;
-//	const int nodeid = this->ui.nodeId->text().toInt(&ok, 16);
-//	if (!ok) {
-//		//NodeId hex failed, handle error here
-//		QMessageBox::critical(this, "Execute NmtCommand failed",
-//							 this->ui.nodeId->text(),
-//							 QMessageBox::Close);
-//	}
-
 	//Send NMT command is not working for MN.
 	// TODO in API library.
 	const int nodeid = this->ui.nodeId->text().toInt(0, 16);

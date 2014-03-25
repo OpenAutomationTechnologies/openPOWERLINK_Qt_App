@@ -58,12 +58,12 @@ ChannelUi::ChannelUi(Channel channel, QWidget *parent) :
 	}
 	this->setToolTip(QString("Size = %1  ByteOffset = 0x%2  BitOffset = 0x%3")
 					 .arg(this->channel.GetBitSize())
-					 .arg(this->channel.GetByteOffset())
-					 .arg(this->channel.GetBitOffset()));
+					 .arg(this->channel.GetByteOffset(), 0, 16)
+					 .arg(this->channel.GetBitOffset(), 0, 16));
 	if ((this->channel.GetBitSize() % 8) == 0)
 	{
 		QString inputMask;
-		for (uint i = 0; i < (this->channel.GetBitSize() / 4); ++i)
+		for (UINT i = 0; i < (this->channel.GetBitSize() / 4); ++i)
 		{
 			inputMask.append("H");
 		}
@@ -85,49 +85,19 @@ ChannelUi::~ChannelUi()
 	delete this->ui.horizontalLayout;
 }
 
-void ChannelUi::on_check_stateChanged(int arg1)
-{
-
-}
-
-void ChannelUi::on_force_stateChanged(int arg1)
-{
-
-}
-
 void ChannelUi::UpdateSelectCheckBox(Qt::CheckState forceState)
 {
 	this->ui.check->setChecked(forceState);
 }
 
-Qt::CheckState ChannelUi::GetSelectCheckBoxState()
+Qt::CheckState ChannelUi::GetSelectCheckBoxState() const
 {
 	return this->ui.check->checkState();
-}
-
-void ChannelUi::SetCurrentValue(QString setStr)
-{
-	this->ui.currentValue->setText(setStr);
-}
-
-QString ChannelUi::GetCurrentValue()
-{
-	return this->ui.currentValue->text();
-}
-
-QString ChannelUi::GetForceValue()
-{
-	return this->ui.forceValue->text();
 }
 
 void ChannelUi::UpdateForceCheckBox(Qt::CheckState forceState)
 {
 	this->ui.force->setChecked(forceState);
-}
-
-Qt::CheckState ChannelUi::GetForceCheckBoxState()
-{
-	return this->ui.force->checkState();
 }
 
 void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
@@ -144,11 +114,6 @@ void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 		{
 			string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
 		}
-//		for (std::vector<BYTE>::const_iterator it = value.begin();
-//				it != value.end(); ++it)
-//		{
-//			string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
-//		}
 		this->SetCurrentValue(string);
 
 		if (this->ui.force->checkState() == Qt::Checked)
@@ -161,11 +126,12 @@ void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 	}
 	catch(const std::exception& ex)
 	{
+		// TODO Discuss about exposing the error to the user.
 		qDebug("An Exception has occured: %s", ex.what());
 	}
 }
 
-void ChannelUi::UpdateOutputChannelCurrentValue(ProcessImageOut *out)
+void ChannelUi::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 {
 	try
 	{
@@ -179,21 +145,37 @@ void ChannelUi::UpdateOutputChannelCurrentValue(ProcessImageOut *out)
 		{
 			string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
 		}
-//		for (std::vector<BYTE>::const_iterator it = value.begin();
-//				it != value.end(); ++it)
-//		{
-//			string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
-//		}
 		this->SetCurrentValue(string);
 	}
 	catch(const std::exception& ex)
 	{
+		// TODO Discuss about exposing the error to the user.
 		qDebug("An Exception has occured: %s", ex.what());
 	}
-	// TODO test.
 
+// TODO test.
 //	qulonglong val;
 //	out->GetRawValue(this->channel.GetName(), (void*) &val, this->channel.GetBitSize());
 //	qDebug("%u", val);
 //	this->SetCurrentValue(QString("0x%1").arg(val, 0, 10));
+}
+
+
+/*******************************************************************************
+* Private functions
+*******************************************************************************/
+
+void ChannelUi::SetCurrentValue(QString setStr)
+{
+	this->ui.currentValue->setText(setStr);
+}
+
+const QString ChannelUi::GetForceValue() const
+{
+	return this->ui.forceValue->text();
+}
+
+Qt::CheckState ChannelUi::GetForceCheckBoxState() const
+{
+	return this->ui.force->checkState();
 }

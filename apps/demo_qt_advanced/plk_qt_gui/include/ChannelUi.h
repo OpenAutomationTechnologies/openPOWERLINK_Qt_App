@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * @brief The ChannelUi class
+ * \brief The ChannelUi class
  */
 class ChannelUi : public QWidget
 {
@@ -53,90 +53,68 @@ class ChannelUi : public QWidget
 
 public:
 	/**
-	 * @brief ChannelUi
-	 * @param channel
-	 * @param parent
+	 * \brief ChannelUi
+	 * \param[in] channel
+	 * \param[in] parent
 	 */
 	explicit ChannelUi(Channel channel, QWidget *parent = 0);
 
-	/*
-	 *
-	 */
 	~ChannelUi();
 
 	/**
-	 * @brief UpdateSelectCheckBox
-	 * @param forceState
+	 * \brief UpdateSelectCheckBox
+	 *
+	 * \param[in] forceState
 	 */
 	void UpdateSelectCheckBox(Qt::CheckState forceState);
 
 	/**
-	 * @brief GetSelectCheckBoxState
-	 * @return
+	 * \brief GetSelectCheckBoxState
+	 *
+	 * \return the state of the check box.
 	 */
-	Qt::CheckState GetSelectCheckBoxState();
+	Qt::CheckState GetSelectCheckBoxState() const;
 
 	/**
-	 * @brief SetCurrentValue
-	 * @param setStr
-	 */
-	void SetCurrentValue(QString setStr);
-
-	/**
-	 * @brief GetCurrentValue
-	 * @return
-	 */
-	QString GetCurrentValue();
-
-	/**
-	 * @brief GetForceValue
-	 * @return
-	 */
-	QString GetForceValue();
-
-	/**
-	 * @brief UpdateForceCheckBox
-	 * @param forceState
+	 * \brief UpdateForceCheckBox
+	 * \param forceState
 	 */
 	void UpdateForceCheckBox(Qt::CheckState forceState);
 
 	/**
-	 * @brief GetForceCheckBoxState
-	 * @return
-	 */
-	Qt::CheckState GetForceCheckBoxState();
-
-	/**
-	 * @brief UpdateInputChannelCurrentValue
-	 * @param in
+	 * \brief UpdateInputChannelCurrentValue
+	 * \param in
 	 */
 	void UpdateInputChannelCurrentValue(ProcessImageIn *in);
 
 	/**
-	 * @brief UpdateOutputChannelCurrentValue
-	 * @param out
+	 * \brief UpdateOutputChannelCurrentValue
+	 * \param out
 	 */
-	void UpdateOutputChannelCurrentValue(ProcessImageOut *out);
-
-private slots:
-	/**
-	 * @brief on_check_stateChanged
-	 * @param arg1
-	 */
-	void on_check_stateChanged(int arg1);
-
-	/**
-	 * @brief on_force_stateChanged
-	 * @param arg1
-	 */
-	void on_force_stateChanged(int arg1);
+	void UpdateOutputChannelCurrentValue(const ProcessImageOut *out);
 
 private:
 	Ui::ChannelFrame ui;
 	// TODO change to ptr. TODO ptr in channelMap in api-lib
 	Channel channel;
 
-	//Q_DISABLE_COPY(Channel)
+	/**
+	 * \brief SetCurrentValue
+	 * \param[in] setStr
+	 */
+	void SetCurrentValue(QString setStr);
+
+	/**
+	 * \brief GetForceValue
+	 * \return
+	 */
+	const QString GetForceValue() const;
+
+	/**
+	 * \brief GetForceCheckBoxState
+	 * \return
+	 */
+	Qt::CheckState GetForceCheckBoxState() const;
 };
 
 #endif // _UI_CHANNEL_H_

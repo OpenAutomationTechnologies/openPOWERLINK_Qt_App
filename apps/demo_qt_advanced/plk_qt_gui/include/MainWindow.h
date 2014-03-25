@@ -38,7 +38,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
+
+#include "user/processimage/ProcessImageParser.h"
+
 #include "ui_MainWindow.h"
+
 #include "SdoTransfer.h"
 #include "LoggerWindow.h"
 #include "ProcessImageVariables.h"
@@ -48,14 +52,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NmtCommandsDock.h"
 #include "NodeStatusDock.h"
 #include "NodeUi.h"
-
 #include "DataSyncThread.h"
 
-#include "user/processimage/ProcessImageParser.h"
-
-
 /**
- * @brief The MainWindow class
+ * \brief The MainWindow class
  */
 class MainWindow : public QMainWindow
 {
@@ -63,79 +63,76 @@ class MainWindow : public QMainWindow
 
 public:
 	/**
-	 * @brief MainWindow
-	 * @param parent
+	 * \brief MainWindow
+	 * \param[in] parent
 	 */
 	explicit MainWindow(QWidget *parent = 0);
 
-	/**
-	 *
-	 *
-	 */
 	~MainWindow();
 
 private slots:
 
 	/**
-	 * @brief on_actionToggle_Full_Screen_triggered
+	 * \brief Defines the actions while the full screen menu is choosen.
 	 */
 	void on_actionToggle_Full_Screen_triggered();
 
 	/**
-	 * @brief on_actionOpen_CDC_triggered
+	 * \brief on_actionOpen_CDC_triggered
 	 */
 	void on_actionOpen_CDC_triggered();
 
 	/**
-	 * @brief on_actionQuit_triggered
+	 * \brief on_actionQuit_triggered
 	 */
 	void on_actionQuit_triggered();
 
 	/**
-	 * @brief on_actionSelect_Interface_triggered
-	 * @return
+	 * \brief on_actionSelect_Interface_triggered.
+	 *
+	 * \retval true if selected any network interface.
+	 * \retval false if no network interface is selected.
 	 */
 	bool on_actionSelect_Interface_triggered();
 
 	/**
-	 * @brief on_actionStart_triggered
+	 * \brief on_actionStart_triggered
 	 */
 	void on_actionStart_triggered();
 
 	/**
-	 * @brief on_actionStop_triggered
+	 * \brief on_actionStop_triggered
 	 */
 	void on_actionStop_triggered();
 
 	/**
-	 * @brief on_actionRestart_triggered
+	 * \brief on_actionRestart_triggered
 	 */
 	void on_actionRestart_triggered();
 
 	/**
-	 * @brief on_actionAbout_triggered
+	 * \brief on_actionAbout_triggered
 	 */
 	void on_actionAbout_triggered();
 
 	/**
-	 * @brief on_actionHelp_triggered
+	 * \brief on_actionHelp_triggered
 	 */
 	void on_actionHelp_triggered();
 
 private:
-	Ui::MainWindow ui;
-	SdoTransfer *sdoTab; /// SDO ui
-	LoggerWindow *log; /// Logging window
-	ProcessImageVariables *piVar; /// Pi variable view
-	ProcessImageMemory *piMemory; /// Pi memory view
-	DialogOpenCdc *cdcDialog;  /// CDC dialog window
-	SelectNwInterfaceDialog *nwInterfaceDialog; /// Network select interface dialog
-	NmtCommandsDock *nmtCmdWindow; /// NMT command
-	NodeStatusDock *cnStatus; /// CN status list
-	NodeUi *mnNode; /// MN status frame
-	ProcessImageParser *parser;
-	DataSyncThread *dataSync;
-	// Q_DISABLE_COPY(MainWindow)
+	Ui::MainWindow ui;                         /// MainWindow UI instance
+	SdoTransfer *sdoTab;                       /// SDO ui
+	LoggerWindow *log;                         /// Logging window
+	ProcessImageVariables *piVar;              /// Pi variable view
+	ProcessImageMemory *piMemory;              /// Pi memory view
+	DialogOpenCdc *cdcDialog;                  /// CDC dialog window
+	SelectNwInterfaceDialog *networkInterface; /// Network select interface dialog
+	NmtCommandsDock *nmtCmdWindow;             /// NMT command
+	NodeStatusDock *cnStatus;                  /// CN status list
+	NodeUi *mnNode;                            /// MN status frame
+	ProcessImageParser *parser;                /// ProcessImage xml Parser instance
+	DataSyncThread *dataSync;                  /// ProcessImageDataSync Thread
 };
 
 #endif // _MAINWINDOW_H_

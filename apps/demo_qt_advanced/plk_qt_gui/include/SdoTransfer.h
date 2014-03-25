@@ -45,22 +45,46 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QMetaMethod>
 #include <QMap>
 
+/**
+ * \brief The SdoTransfer class
+ */
 class SdoTransfer : public QFrame
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * \brief SdoTransfer
+	 * \param parent
+	 */
 	explicit SdoTransfer(QWidget *parent = 0);
 
 private slots:
+	/**
+	 * \brief on_read_toggled
+	 * \param checked
+	 */
 	void on_read_toggled(bool checked);
 
+	/**
+	 * \brief on_executeTransfer_clicked
+	 */
 	void on_executeTransfer_clicked();
 
+	/**
+	 * \brief on_dataType_currentIndexChanged
+	 * \param arg1
+	 */
 	void on_dataType_currentIndexChanged(const QString &arg1);
 
+	/**
+	 * \brief on_sdoResultValue_editingFinished
+	 */
 	void on_sdoResultValue_editingFinished();
 
+	/**
+	 * \brief on_updateNodeListButton_clicked
+	 */
 	void on_updateNodeListButton_clicked();
 
 private:
@@ -83,17 +107,48 @@ private:
 	QMetaMethod receiverMetaObject;
 	QMetaType::Type metaDataTypeIndex;
 
+	/**
+	 * \brief CreateDataTypeMap
+	 * \return
+	 */
 	static QMap<QString, QMetaType::Type> CreateDataTypeMap();
 	static const QMap<QString, QMetaType::Type> dataTypeMap;
 
+	/**
+	 * \brief
+	 *
+	 * \param[in] result
+	 */
 	Q_INVOKABLE void HandleSdoTransferFinished(const SdoTransferResult result);
 
+	/**
+	 * \brief IsValidValue
+	 * \return
+	 */
 	bool IsValidValue();
+
+	/**
+	 * \brief UpdateSdoTransferReturnValue
+	 */
 	void UpdateSdoTransferReturnValue();
+
+	/**
+	 * \brief SetMaskForValue
+	 */
 	void SetMaskForValue();
 
 	// TODO Has to be moved to API library or stack
+	/**
+	 * \brief GetAbortCodeString
+	 * \param[in] abortCode
+	 * \return
+	 */
 	const QString GetAbortCodeString(const UINT32 abortCode) const;
+
+	/**
+	 * \brief GetConfiguredNodeIdList
+	 * \param[out] nodeIdList
+	 */
 	void GetConfiguredNodeIdList(QStringList &nodeIdList);
 
 };
