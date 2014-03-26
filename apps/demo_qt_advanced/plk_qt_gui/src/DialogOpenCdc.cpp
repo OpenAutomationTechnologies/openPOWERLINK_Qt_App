@@ -47,7 +47,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
-	QDialog(parent)
+	QDialog(parent),
+	cdcFile(""),
+	xapFile("")
 {
 	this->ui.setupUi(this);
 }
@@ -58,31 +60,62 @@ DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
 
 void DialogOpenCdc::on_browseCDC_clicked()
 {
-	// for 3rd parameter use default path or last used path using QSettings
-	this->cdcPath = QFileDialog::getOpenFileName(this, "Choose CDC...",
-					 QString(), tr("Concise Device Configuration File(*.cdc *.CDC)"));
-	qDebug(this->cdcPath.toStdString().c_str());
-	this->ui.cdcPath->setText(this->cdcPath);
+	QString cdcPath = QFileDialog::getExistingDirectory(this, tr("Choose the path for the CDC and xap.xml"),
+						"",
+						QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+	qDebug(cdcPath.toStdString().c_str());
+	this->cdcFile = cdcPath.toStdString();
+	cdcFile.append("/mnobd.cdc");
+
+	this->ui.cdcPath->setText(QString::fromStdString(this->cdcFile));
+
+	this->xapFile = cdcPath.toStdString();
+	xapFile.append("/xap.xml");
+
+	this->ui.xapPath->setText(QString::fromStdString(this->xapFile));
 }
 
-void DialogOpenCdc::on_openCdcDialog_accepted()
+const char* DialogOpenCdc::GetCdcFileName() const
 {
-	// CDC file will be exist because it is selected via ui. If not the user pasted the value
-	// Also check for is readable and symlink QFileInfo
-	if(QFile::exists(this->cdcPath))
+	if (!this->cdcFile.empty())
+		return this->cdcFile.c_str();
+	else
+		return NULL;
+}
+
+const char* DialogOpenCdc::GetXapFileName() const
+{
+	if (!this->xapFile.empty())
+		return this->xapFile.c_str();
+	else
+		return NULL;
+}
+
+void DialogOpenCdc::on_okButton_clicked()
+{
+	if (QFile::exists(QString::fromStdString(this->cdcFile))
+		&& QFile::exists(QString::fromStdString(this->xapFile)))
 	{
-
+		this->accept();
 	}
-	this->on_browseCDC_clicked();
-	// Strip /*.cdc and append xap.xml and check if file exists. and return error here.
+	else
+	{
+		this->ui.message->setText("<font color='red'>CDC and/or xap is not found in the path specified</font>");
+	}
 }
 
-void DialogOpenCdc::on_openCdcDialog_rejected()
+void DialogOpenCdc::on_cdcPath_editingFinished()
 {
-
+	this->cdcFile = this->ui.cdcPath->text().toStdString();
 }
 
-void DialogOpenCdc::on_cdcPath_textEdited(const QString &arg1)
+void DialogOpenCdc::on_xapPath_editingFinished()
 {
-	this->on_browseCDC_clicked();
+	this->xapFile = this->ui.xapPath->text().toStdString();
+}
+
+void DialogOpenCdc::on_cancelButton_clicked()
+{
+	this->reject();
 }

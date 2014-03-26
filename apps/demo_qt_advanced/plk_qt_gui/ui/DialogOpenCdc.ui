@@ -18,15 +18,15 @@
    <iconset resource="resources/images.qrc">
     <normaloff>:/new/images/cdc.gif</normaloff>:/new/images/cdc.gif</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" colspan="4">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Choose configuration</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="labelCdcPath">
         <property name="text">
          <string>CDC Path</string>
         </property>
@@ -43,7 +43,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="labelXapPath">
         <property name="text">
          <string>Xap.xml Path</string>
         </property>
@@ -51,9 +51,6 @@
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QLineEdit" name="xapPath">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
         <property name="placeholderText">
          <string>Xap.xml is expected to be present on the CDC path</string>
         </property>
@@ -62,53 +59,27 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <widget class="QDialogButtonBox" name="openCdcDialog">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="cancelButton">
+     <property name="text">
+      <string>Cancel</string>
      </property>
     </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="okButton">
+     <property name="text">
+      <string>Ok</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="message"/>
    </item>
   </layout>
  </widget>
  <resources>
   <include location="resources/images.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>openCdcDialog</sender>
-   <signal>accepted()</signal>
-   <receiver>DialogOpenCdc</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openCdcDialog</sender>
-   <signal>rejected()</signal>
-   <receiver>DialogOpenCdc</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

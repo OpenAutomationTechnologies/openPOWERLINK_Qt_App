@@ -173,17 +173,36 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.statusbar->addPermanentWidget(this->mnNode);
 	this->mnNode->show();
 
+	if (!(this->cdcDialog->GetXapFileName()) || !(this->cdcDialog->GetXapFileName()))
+	{
+		if (this->cdcDialog->exec() == QDialog::Rejected)
+		{
+			QMessageBox::critical(this, "CDC, Xap.xml not found",
+								 QString("CDC file and xap.xml not found"),
+								 QMessageBox::Close);
+			return;
+		}
+	}
+
 	try
 	{
 		this->parser = ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
-		std::ifstream ifsXap("xap.xml");
+
+		if (!(this->cdcDialog->GetXapFileName()))
+		{
+			QMessageBox::critical(this, "File not found",
+								 QString("xap.xml not found"),
+								 QMessageBox::Close);
+			return;
+		}
+		std::ifstream ifsXap(this->cdcDialog->GetXapFileName());
 		std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
 		this->parser->Parse(xapData.c_str());
 	}
 	catch(const std::exception& ex)
 	{
 		QMessageBox::critical(this, "Xml Parsing failed!",
-							 QString("xap.xml has found errors with your xap.xml.\n Error: %1 ")
+							 QString("XmlReader has found errors with your xap file.\n Error: %1 ")
 							  .arg(ex.what()),
 							 QMessageBox::Close);
 		qDebug("An Exception has occured: %s", ex.what());
@@ -210,6 +229,16 @@ void MainWindow::on_actionStart_triggered()
 							  .arg(debugstr_getRetValStr(oplkRet)),
 							 QMessageBox::Close);
 		qDebug("InitStack retCode %x", oplkRet);
+		return;
+	}
+
+	oplkRet = OplkQtApi::SetCdc(this->cdcDialog->GetCdcFileName());
+	if (oplkRet != kErrorOk)
+	{
+		QMessageBox::critical(this, "SetCDC failed",
+							 QString("SetCDC failed: %1 ")
+							  .arg(debugstr_getRetValStr(oplkRet)),
+							 QMessageBox::Close);
 		return;
 	}
 

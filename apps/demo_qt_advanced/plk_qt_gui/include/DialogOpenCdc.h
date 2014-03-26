@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 #include "ui_DialogOpenCdc.h"
+#include <string>
 
 /**
  * \brief The DialogOpenCdc class inherits the QDialog to read the CDC and
@@ -52,31 +53,46 @@ class DialogOpenCdc : public QDialog
 public:
 	explicit DialogOpenCdc(QWidget *parent = 0);
 
+	/**
+	 * \return The CDC's full path with name mnobd.cdc
+	 */
+	const char* GetCdcFileName() const;
+
+	/**
+	 * \return The xap xml's full path with name xap.xml
+	 */
+	const char* GetXapFileName() const;
+
 private slots:
 	/**
-	 * \brief Allows the user to select the path of the CDC
+	 * \brief Allows the user to select the path of the CDC.
 	 */
 	void on_browseCDC_clicked();
 
 	/**
-	 * \brief Validates the availability of the CDC and xap.xml files
+	 * \brief Validates the availability of the CDC and xap.xml files.
 	 */
-	void on_openCdcDialog_accepted();
+	void on_okButton_clicked();
 
 	/**
-	 * \brief on_openCdcDialog_rejected
+	 * \brief Sets the CDC filename.
 	 */
-	void on_openCdcDialog_rejected();
+	void on_cdcPath_editingFinished();
 
 	/**
-	 * \brief on_cdcPath_textEdited
-	 * \param[in] arg1 unused
+	 * \brief Sets the xap filename.
 	 */
-	void on_cdcPath_textEdited(const QString &arg1);
+	void on_xapPath_editingFinished();
+
+	/**
+	 * \brief Closes the CDC dialog.
+	 */
+	void on_cancelButton_clicked();
 
 private:
 	Ui::DialogOpenCdc ui;
-	QString cdcPath;
+	std::string cdcFile;
+	std::string xapFile;
 };
 
 #endif // _UI_DIALOG_OPEN_CDC_H_
