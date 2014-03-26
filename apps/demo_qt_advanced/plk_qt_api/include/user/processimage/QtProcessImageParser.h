@@ -98,7 +98,7 @@ private:
 	 * \param[in] message Error message
 	 * \param[in] errCode Error code
 	 */
-	void QtProcessImageParser::RaiseException(std::string message,
+	void RaiseException(std::string message,
 									XmlParserException::XmlParserErrors errCode);
 };
 
