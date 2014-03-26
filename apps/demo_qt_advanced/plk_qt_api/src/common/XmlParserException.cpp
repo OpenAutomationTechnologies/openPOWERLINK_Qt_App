@@ -58,7 +58,12 @@ XmlParserException::XmlParserException(std::string& message,
 	this->message += stream.str();
 }
 
-const char* XmlParserException::what() const
+XmlParserException::~XmlParserException() throw()
+{
+
+}
+
+const char* XmlParserException::what() const throw()
 {
 	return this->message.c_str();
 }
