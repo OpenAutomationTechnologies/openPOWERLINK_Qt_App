@@ -80,7 +80,7 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 					qDebug("2");
 					qDebug("Unexpected element detected");
 					this->RaiseException("Unexpected element detected",
-										 XmlParserException::UNEXPECTEDELEMENT);
+										 XmlParserException::UN_EXPECTED_ELEMENT);
 				}
 			}
 			else
@@ -93,7 +93,7 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 			qDebug("3");
 			std::string msg = this->xml.errorString().toStdString();
 			qDebug("err %s line: %d col:%d ", qPrintable(this->xml.errorString()), this->xml.lineNumber(), this->xml.columnNumber());
-			this->RaiseException(msg, XmlParserException::NOTWELLFORMED);
+			this->RaiseException(msg, XmlParserException::NOT_WELL_FORMED);
 		}
 	}
 	catch(XmlParserException &ex)
@@ -121,7 +121,7 @@ void QtProcessImageParser::ParseProcessImage()
 			qDebug("4");
 			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
-								 XmlParserException::UNEXPECTEDELEMENT);
+								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 	}
 
@@ -139,18 +139,18 @@ void QtProcessImageParser::ParseProcessImage()
 			qDebug("5");
 			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
-								 XmlParserException::UNEXPECTEDELEMENT);
+								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 	}
 	else
 	{
 		qDebug("6");
 		this->RaiseException(this->xml.errorString().toStdString(),
-							 XmlParserException::NOTWELLFORMED);
+							 XmlParserException::NOT_WELL_FORMED);
 	}
 }
 
-void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
+void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 {
 	while (this->xml.readNextStartElement())
 	{
@@ -165,7 +165,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 			qDebug("7");
 			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
-								 XmlParserException::UNEXPECTEDELEMENT);
+								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 
 		if (!(this->xml.readNextStartElement()))
@@ -185,7 +185,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 					qDebug("10");
 					qDebug("Unexpected element detected");
 					this->RaiseException("Unexpected element detected",
-										 XmlParserException::UNEXPECTEDELEMENT);
+										 XmlParserException::UN_EXPECTED_ELEMENT);
 				}
 			}
 			else
@@ -193,7 +193,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 				qDebug("11");
 				// Throw error. XML format error.
 				this->RaiseException(this->xml.errorString().toStdString(),
-									 XmlParserException::NOTWELLFORMED);
+									 XmlParserException::NOT_WELL_FORMED);
 			}
 		}
 		else
@@ -201,7 +201,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 			qDebug("12");
 			qDebug("Unexpected start element detected");
 			this->RaiseException("Unexpected element detected",
-								 XmlParserException::UNEXPECTEDELEMENT);
+								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 	}
 
@@ -219,7 +219,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 			qDebug("13");
 			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
-								 XmlParserException::UNEXPECTEDELEMENT);
+								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 	}
 	else
@@ -227,7 +227,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 		qDebug("14");
 		// Throw error. XML format error.
 		this->RaiseException(this->xml.errorString().toStdString(),
-							 XmlParserException::NOTWELLFORMED);
+							 XmlParserException::NOT_WELL_FORMED);
 	}
 	//TODO while breaks by itself Throw unexpected/xml error.
 }
@@ -235,7 +235,7 @@ void QtProcessImageParser::ParseChannels(Direction::eDirection direction)
 void QtProcessImageParser::ParseProcessImageAttributes()
 {
 	QXmlStreamAttributes attrib = this->xml.attributes();
-	Direction::eDirection direction = Direction::UNDEFINED;
+	Direction::Direction direction = Direction::UNDEFINED;
 	UINT byteSize = 0;
 
 	if (attrib.hasAttribute(QString::fromStdString(
@@ -253,7 +253,7 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 		std::string message = "ProcessImage attribute '";
 		message.append(ProcessImageParser::processImage_attribute_Type);
 		message.append("' not found");
-		this->RaiseException(message, XmlParserException::ATTRIBUTENOTFOUND);
+		this->RaiseException(message, XmlParserException::ATTRIBUTE_NOT_FOUND);
 	}
 
 	if (attrib.hasAttribute(QString::fromStdString(
@@ -270,7 +270,7 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 		std::string message = "ProcessImage attribute '";
 		message.append(ProcessImageParser::processImage_attribute_byteSize);
 		message.append("' not found");
-		this->RaiseException(message, XmlParserException::ATTRIBUTENOTFOUND);
+		this->RaiseException(message, XmlParserException::ATTRIBUTE_NOT_FOUND);
 	}
 
 	if (direction == Direction::PI_OUT)
@@ -289,14 +289,14 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 		std::string message = "ProcessImage attribute '";
 		message.append(ProcessImageParser::processImage_attribute_Type);
 		message.append("' has invalid value");
-		this->RaiseException(message, XmlParserException::INVALIDATTRIBUTEVALUE);
+		this->RaiseException(message, XmlParserException::INVALID_ATTRIBUTE_VALUE);
 	}
 }
 
-void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection direction)
+void QtProcessImageParser::ParseChannelAttributes(Direction::Direction direction)
 {
 	std::string name;                       //Name="CN1.X20DO9322.DigitalOutput01"
-	IECDataType::eIECDataType dataType = IECDataType::UNDEFINED;   //dataType="BITSTRING" from IECDatatype
+	IECDataType::IECDataType dataType = IECDataType::UNDEFINED;   //dataType="BITSTRING" from IECDatatype
 	UINT byteOffset = 0;                    //PIOffset="0x0000"
 	UINT bitOffset = 0;                     //BitOffset="0x00"
 	UINT bitSize = 0;                       //dataSize="1"
@@ -315,7 +315,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_name);
 		message.append("' not found.");
-		this->RaiseException(message, XmlParserException::ATTRIBUTENOTFOUND);
+		this->RaiseException(message, XmlParserException::ATTRIBUTE_NOT_FOUND);
 	}
 
 	if (attributes.hasAttribute(QString::fromStdString(
@@ -324,7 +324,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 		std::string iecDataTypeStr;
 		iecDataTypeStr = attributes.value(QString::fromStdString(
 							ProcessImageParser::channel_attribute_dataType)).toString().toStdString();
-		dataType = IECDataType::GetIECDatatype(iecDataTypeStr);
+		dataType = GetIECDatatype(iecDataTypeStr);
 		// TODO check for invalid value.
 	}
 	else
@@ -333,7 +333,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_dataType);
 		message.append("' not found.");
-		this->RaiseException(message, XmlParserException::ATTRIBUTENOTFOUND);
+		this->RaiseException(message, XmlParserException::ATTRIBUTE_NOT_FOUND);
 	}
 
 	if (attributes.hasAttribute(QString::fromStdString(
@@ -349,7 +349,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_bitSize);
 		message.append("' not found.");
-		this->RaiseException(message, XmlParserException::ATTRIBUTENOTFOUND);
+		this->RaiseException(message, XmlParserException::ATTRIBUTE_NOT_FOUND);
 	}
 
 	if (attributes.hasAttribute(QString::fromStdString(
@@ -365,7 +365,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_byteOffset);
 		message.append("' not found.");
-		this->RaiseException(message, XmlParserException::ATTRIBUTENOTFOUND);
+		this->RaiseException(message, XmlParserException::ATTRIBUTE_NOT_FOUND);
 	}
 
 	if (attributes.hasAttribute(QString::fromStdString(
@@ -399,7 +399,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::eDirection directio
 }
 
 void QtProcessImageParser::RaiseException(std::string message,
-								XmlParserException::XmlParserErrors errCode)
+								XmlParserException::XmlParserError errCode)
 {
 	this->xml.raiseError();
 	XmlParserException ex(message, errCode, this->xml.lineNumber(), this->xml.columnNumber());

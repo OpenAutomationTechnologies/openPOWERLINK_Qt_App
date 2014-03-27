@@ -41,16 +41,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 namespace Direction
 {
-/**
- * List of directions available for a ProcessImage.
- *
- */
-enum eDirection
-{
-	UNDEFINED = 0,
-	PI_IN,
-	PI_OUT
-}; // eDirection
+	/**
+	 * List of directions available for a ProcessImage.
+	 *
+	 */
+	enum Direction
+	{
+		UNDEFINED = 0,
+		PI_IN,
+		PI_OUT
+	}; // Direction
 
 } // Direction
 #endif // _DIRECTION_H_

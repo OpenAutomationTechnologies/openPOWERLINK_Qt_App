@@ -53,7 +53,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * xml(xap.xml) contents.
  *
  * The user can request the any type of parser available in
- * ProcessImageParserType::eProcessImageParserType to parse the xml.
+ * ProcessImageParserType::ProcessImageParserType to parse the xml.
  */
 class PLKQTAPI_EXPORT ProcessImageParser
 {
@@ -67,7 +67,7 @@ public:
 	 * \throws std::invalid_argument if the requested ProcessImage parser is not available.
 	 */
 	static ProcessImageParser* NewInstance(
-			const ProcessImageParserType::eProcessImageParserType type);
+			const ProcessImageParserType::ProcessImageParserType type);
 
 	/**
 	 * \brief   Parses the buffer containing the ProcessImage xml description.
@@ -82,7 +82,7 @@ public:
 	 * \param[in] direction  The ProcessImage direction
 	 * \return Returns the reference to the requested ProcessImage instance.
 	 */
-	ProcessImage& GetProcessImage(const Direction::eDirection direction);
+	ProcessImage& GetProcessImage(const Direction::Direction direction);
 
 	virtual ~ProcessImageParser();
 
