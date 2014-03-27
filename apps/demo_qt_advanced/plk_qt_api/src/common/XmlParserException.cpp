@@ -44,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 XmlParserException::XmlParserException(std::string& message,
-			XmlParserErrors errCode,
+			XmlParserError errCode,
 			UINT lineNumber,
 			UINT colNumber)
 			:	message(message),
@@ -68,7 +68,7 @@ const char* XmlParserException::what() const throw()
 	return this->message.c_str();
 }
 
-XmlParserException::XmlParserErrors XmlParserException::GetErrorCode() const
+XmlParserException::XmlParserError XmlParserException::GetErrorCode() const
 {
 	return this->errCode;
 }

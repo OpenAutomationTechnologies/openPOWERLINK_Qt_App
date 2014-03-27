@@ -68,7 +68,7 @@ ProcessImageParser::~ProcessImageParser()
 }
 
 ProcessImageParser* ProcessImageParser::NewInstance(
-		const ProcessImageParserType::eProcessImageParserType type)
+		const ProcessImageParserType::ProcessImageParserType type)
 {
 	if (type == ProcessImageParserType::QT_XML_PARSER)
 	{
@@ -82,7 +82,7 @@ ProcessImageParser* ProcessImageParser::NewInstance(
 	}
 }
 
-ProcessImage& ProcessImageParser::GetProcessImage(const Direction::eDirection direction)
+ProcessImage& ProcessImageParser::GetProcessImage(const Direction::Direction direction)
 {
 	if (direction == Direction::PI_IN)
 	{

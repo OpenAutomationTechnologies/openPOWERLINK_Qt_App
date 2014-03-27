@@ -43,11 +43,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Public functions
 *******************************************************************************/
 Channel::Channel(const std::string& name,
-		IECDataType::eIECDataType dataType,
+		IECDataType::IECDataType dataType,
 		const UINT byteOffset,
 		const UINT bitOffset,
 		const UINT bitSize,
-		Direction::eDirection direction) :
+		Direction::Direction direction) :
 		name(name),
 		dataType(dataType),
 		byteOffset(byteOffset),
@@ -63,7 +63,7 @@ const std::string& Channel::GetName() const
 	return this->name;
 }
 
-IECDataType::eIECDataType Channel::GetDataType() const
+IECDataType::IECDataType Channel::GetDataType() const
 {
 	return this->dataType;
 }
@@ -83,7 +83,7 @@ UINT Channel::GetBitSize() const
 	return this->bitSize;
 }
 
-Direction::eDirection Channel::GetDirection() const
+Direction::Direction Channel::GetDirection() const
 {
 	return this->direction;
 }

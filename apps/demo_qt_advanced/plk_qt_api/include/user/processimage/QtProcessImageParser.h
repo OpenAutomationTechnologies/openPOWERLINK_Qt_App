@@ -78,7 +78,7 @@ private:
 	 * \param[in] direction  The direction of the ProcessImage channels.
 	 * \throws XmlParserException If any error occurred.
 	 */
-	void ParseChannels(Direction::eDirection direction);
+	void ParseChannels(Direction::Direction direction);
 
 	/**
 	 * \brief Parses the attributes present in the ProcessImage tag.
@@ -91,7 +91,7 @@ private:
 	 * \param[in] direction  The direction of the ProcessImage channels.
 	 * \throws XmlParserException If any error occurred.
 	 */
-	void ParseChannelAttributes(Direction::eDirection direction);
+	void ParseChannelAttributes(Direction::Direction direction);
 
 	/**
 	 * \brief Constructs the exception instance and raises exception.
@@ -99,7 +99,7 @@ private:
 	 * \param[in] errCode Error code
 	 */
 	void RaiseException(std::string message,
-									XmlParserException::XmlParserErrors errCode);
+						XmlParserException::XmlParserError errCode);
 };
 
 #endif // _QTPROCESSIMAGEPARSER_H_

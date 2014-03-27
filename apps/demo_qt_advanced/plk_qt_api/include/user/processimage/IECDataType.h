@@ -45,39 +45,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 namespace IECDataType
 {
-/**
- * List of datatypes derived from the IEC standards.
- */
-enum eIECDataType
-{
-	UNDEFINED = 0,  ///< Undefined (Used in error handling)
-	IEC_BOOL,       ///< Bool,BitString (1 bit)
-	IEC_BYTE,       ///< Byte (8 bit)
-	IEC_CHAR,       ///< Char (8 bit)
-	IEC_WORD,       ///< Word (16 bit)
-	IEC_DWORD,      ///< Dword (32 bit)
-	IEC_LWORD,      ///< Lword (64 bit)
-	IEC_SINT,       ///< Signed short integer (1 byte)
-	IEC_INT,        ///< Signed integer (2 byte)
-	IEC_DINT,       ///< Double integer (4 byte)
-	IEC_LINT,       ///< Long integer (8 byte)
-	IEC_USINT,      ///< Unsigned short integer (1 byte)
-	IEC_UINT,       ///< Unsigned integer (2 byte)
-	IEC_UDINT,      ///< Unsigned double integer (4 byte)
-	IEC_ULINT,      ///< Unsigned long integer (8 byte)
-	IEC_REAL,       ///< REAL (4 byte)
-	IEC_LREAL,      ///< LREAL (8 byte)
-	IEC_STRING,     ///< Variable length single byte character string
-	IEC_WSTRING     ///< Variable length double byte character string
-};
+	/**
+	 * List of datatypes derived from the IEC standards.
+	 */
+	enum IECDataType
+	{
+		UNDEFINED = 0,  ///< Undefined (Used in error handling)
+		IEC_BOOL,       ///< Bool,BitString (1 bit)
+		IEC_BYTE,       ///< Byte (8 bit)
+		IEC_CHAR,       ///< Char (8 bit)
+		IEC_WORD,       ///< Word (16 bit)
+		IEC_DWORD,      ///< Dword (32 bit)
+		IEC_LWORD,      ///< Lword (64 bit)
+		IEC_SINT,       ///< Signed short integer (1 byte)
+		IEC_INT,        ///< Signed integer (2 byte)
+		IEC_DINT,       ///< Double integer (4 byte)
+		IEC_LINT,       ///< Long integer (8 byte)
+		IEC_USINT,      ///< Unsigned short integer (1 byte)
+		IEC_UINT,       ///< Unsigned integer (2 byte)
+		IEC_UDINT,      ///< Unsigned double integer (4 byte)
+		IEC_ULINT,      ///< Unsigned long integer (8 byte)
+		IEC_REAL,       ///< REAL (4 byte)
+		IEC_LREAL,      ///< LREAL (8 byte)
+		IEC_STRING,     ///< Variable length single byte character string
+		IEC_WSTRING     ///< Variable length double byte character string
+	};
+
+} // namespace IECDataType
 
 /**
  * \brief   Convert string value to the equivalent IECDataType.
  * \param[in]  iecDataTypeStr  The string with IEC datatype.
  * \return The matching IECDataType.
  */
-IECDataType::eIECDataType GetIECDatatype(const std::string& iecDataTypeStr);
-
-} // namespace IECDataType
+IECDataType::IECDataType GetIECDatatype(const std::string& iecDataTypeStr);
 
 #endif // _IECDATATYPE_H_

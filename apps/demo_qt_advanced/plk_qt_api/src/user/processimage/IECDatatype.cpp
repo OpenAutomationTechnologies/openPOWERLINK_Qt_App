@@ -41,12 +41,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-namespace IECDataType
-{
 
-IECDataType::eIECDataType GetIECDatatype(const std::string& iecDataTypeStr)
+IECDataType::IECDataType GetIECDatatype(const std::string& iecDataTypeStr)
 {
-	IECDataType::eIECDataType iecDataType = IECDataType::UNDEFINED;
+	IECDataType::IECDataType iecDataType = IECDataType::UNDEFINED;
 
 	if (CompareCaseInsensitive("BOOL", iecDataTypeStr)
 		|| CompareCaseInsensitive("Boolean", iecDataTypeStr)
@@ -142,4 +140,3 @@ IECDataType::eIECDataType GetIECDatatype(const std::string& iecDataTypeStr)
 
 } // GetIecDataType
 
-} // namespace IECDatatype

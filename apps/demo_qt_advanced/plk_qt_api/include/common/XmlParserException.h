@@ -53,28 +53,26 @@ class PLKQTAPI_EXPORT XmlParserException : public std::exception
 {
 public:
 	/**
-	 * The XmlParserErrors enum
+	 * The XmlParserError enums
 	 */
-	enum XmlParserErrors
+	enum XmlParserError
 	{
 		UNDEFINED = 0,
-		INVALIDARGUMENT,
-		NOTWELLFORMED,
-		PREMATUREENDOFDOCUMENT,
-		UNEXPECTEDELEMENT,
-		UNEXPECTEDATTRIBUTE,
-		ATTRIBUTENOTFOUND,
-		INVALIDATTRIBUTEVALUE
+		INVALID_ARGUMENT,
+		NOT_WELL_FORMED,
+		PREMATURE_END_OF_DOCUMENT,
+		UN_EXPECTED_ELEMENT,
+		UN_EXPECTED_ATTRIBUTE,
+		ATTRIBUTE_NOT_FOUND,
+		INVALID_ATTRIBUTE_VALUE
 	};
 
 	virtual ~XmlParserException() throw();
 
 	XmlParserException(std::string& message,
-					   XmlParserErrors errCode = UNDEFINED,
+					   XmlParserError errCode = UNDEFINED,
 					   UINT lineNumber = 0,
 					   UINT colNumber = 0);
-
-	// XmlParserException(const XmlParserException & other);
 
 	/**
 	 * \return The formatted string containing the exception message
@@ -85,11 +83,11 @@ public:
 	/**
 	 * \return The error code.
 	 */
-	XmlParserErrors GetErrorCode() const;
+	XmlParserError GetErrorCode() const;
 
 private:
 	std::string message;
-	XmlParserErrors errCode;
+	XmlParserError errCode;
 	UINT lineNumber;
 	UINT colNumber;
 };
