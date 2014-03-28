@@ -39,7 +39,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/QtProcessImageParser.h"
 #include "user/processimage/IECDataType.h"
 #include "common/XmlParserException.h"
-#include <QDebug>
 
 /*******************************************************************************
 * Private functions
@@ -58,8 +57,6 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 	{
 		while ( !(this->xml.atEnd() || this->xml.hasError()))
 		{
-			// QXmlStreamReader::TokenType token = this->xml.readNext();
-
 			QXmlStreamReader::TokenType token = this->xml.readNext();
 			/* If token is StartDocument, Go to next.*/
 			if (token == QXmlStreamReader::StartDocument)
@@ -71,28 +68,18 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 				if (this->xml.name() == QString::fromStdString(
 									ProcessImageParser::applicationProcess_element_name).right(-1))
 				{
-					qDebug("Application process");
 					this->ParseProcessImage();
-					// qDebug("26: %s", qPrintable(xml.name().toString()));
 				}
 				else
 				{
-					qDebug("2");
-					qDebug("Unexpected element detected");
 					this->RaiseException("Unexpected element detected",
 										 XmlParserException::UN_EXPECTED_ELEMENT);
 				}
 			}
-			else
-			{
-				// qDebug("20: %s", qPrintable(xml.name().toString()));
-			}
 		}
 		if (this->xml.hasError())
 		{
-			qDebug("3");
 			std::string msg = this->xml.errorString().toStdString();
-			qDebug("err %s line: %d col:%d ", qPrintable(this->xml.errorString()), this->xml.lineNumber(), this->xml.columnNumber());
 			this->RaiseException(msg, XmlParserException::NOT_WELL_FORMED);
 		}
 	}
@@ -113,13 +100,10 @@ void QtProcessImageParser::ParseProcessImage()
 		if (this->xml.name() == QString::fromStdString(
 					 ProcessImageParser::processImage_element_name).right(-1))
 		{
-			qDebug("Read ProcesImage ");
 			this->ParseProcessImageAttributes();
 		}
 		else
 		{
-			qDebug("4");
-			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
 								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
@@ -131,20 +115,16 @@ void QtProcessImageParser::ParseProcessImage()
 			ProcessImageParser::applicationProcess_element_name).right(-1))
 		{
 			// success case.
-			// qDebug("15");
 			return;
 		}
 		else
 		{
-			qDebug("5");
-			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
 								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 	}
 	else
 	{
-		qDebug("6");
 		this->RaiseException(this->xml.errorString().toStdString(),
 							 XmlParserException::NOT_WELL_FORMED);
 	}
@@ -157,40 +137,32 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 		if (this->xml.name() == QString::fromStdString(
 							ProcessImageParser::channel_element_name).right(-1))
 		{
-			qDebug("Channel, ");
 			this->ParseChannelAttributes(direction);
 		}
 		else
 		{
-			qDebug("7");
-			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
 								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 
 		if (!(this->xml.readNextStartElement()))
 		{
-			// qDebug("NExtStartelement _ ReadChannels : %s", qPrintable(xml.name().toString()));
 			if ((this->xml.tokenType() == QXmlStreamReader::EndElement))
 			{
 				if ((this->xml.name() == QString::fromStdString(
 								 ProcessImageParser::channel_element_name).right(-1)) )
 				{
-					// qDebug("9");
 					// success case. Where we need to process the remainining channels.
 					continue;
 				}
 				else
 				{
-					qDebug("10");
-					qDebug("Unexpected element detected");
 					this->RaiseException("Unexpected element detected",
 										 XmlParserException::UN_EXPECTED_ELEMENT);
 				}
 			}
 			else
 			{
-				qDebug("11");
 				// Throw error. XML format error.
 				this->RaiseException(this->xml.errorString().toStdString(),
 									 XmlParserException::NOT_WELL_FORMED);
@@ -198,8 +170,6 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 		}
 		else
 		{
-			qDebug("12");
-			qDebug("Unexpected start element detected");
 			this->RaiseException("Unexpected element detected",
 								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
@@ -210,22 +180,17 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 		if ((this->xml.name() == QString::fromStdString(
 					ProcessImageParser::processImage_element_name).right(-1)) )
 		{
-			// qDebug("8");
 			// Success Case. All Channels has been processed.
-			return;//check if 'return' is better
+			return;
 		}
 		else
 		{
-			qDebug("13");
-			qDebug("Unexpected element detected");
 			this->RaiseException("Unexpected element detected",
 								 XmlParserException::UN_EXPECTED_ELEMENT);
 		}
 	}
 	else
 	{
-		qDebug("14");
-		// Throw error. XML format error.
 		this->RaiseException(this->xml.errorString().toStdString(),
 							 XmlParserException::NOT_WELL_FORMED);
 	}
@@ -249,7 +214,6 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 	}
 	else
 	{
-		qDebug("17");
 		std::string message = "ProcessImage attribute '";
 		message.append(ProcessImageParser::processImage_attribute_Type);
 		message.append("' not found");
@@ -266,7 +230,6 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 	}
 	else
 	{
-		qDebug("18");
 		std::string message = "ProcessImage attribute '";
 		message.append(ProcessImageParser::processImage_attribute_byteSize);
 		message.append("' not found");
@@ -285,7 +248,6 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 	}
 	else
 	{
-		qDebug("19");
 		std::string message = "ProcessImage attribute '";
 		message.append(ProcessImageParser::processImage_attribute_Type);
 		message.append("' has invalid value");
@@ -311,7 +273,6 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::Direction direction
 	}
 	else
 	{
-		qDebug("21");
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_name);
 		message.append("' not found.");
@@ -329,7 +290,6 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::Direction direction
 	}
 	else
 	{
-		qDebug("22");
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_dataType);
 		message.append("' not found.");
@@ -345,7 +305,6 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::Direction direction
 	}
 	else
 	{
-		qDebug("23");
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_bitSize);
 		message.append("' not found.");
@@ -361,7 +320,6 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::Direction direction
 	}
 	else
 	{
-		qDebug("24");
 		std::string message = "Channel attribute '";
 		message.append(ProcessImageParser::channel_attribute_byteOffset);
 		message.append("' not found.");
