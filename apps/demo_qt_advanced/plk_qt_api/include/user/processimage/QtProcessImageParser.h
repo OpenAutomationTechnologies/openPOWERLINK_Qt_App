@@ -93,13 +93,6 @@ private:
 	 */
 	void ParseChannelAttributes(Direction::Direction direction);
 
-	/**
-	 * \brief Constructs the exception instance and raises exception.
-	 * \param[in] message Error message
-	 * \param[in] errCode Error code
-	 */
-	void RaiseException(std::string message,
-						XmlParserException::XmlParserError errCode);
 };
 
 #endif // _QTPROCESSIMAGEPARSER_H_
