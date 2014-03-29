@@ -78,7 +78,7 @@ private:
 	 * \param[in] direction  The direction of the ProcessImage channels.
 	 * \throws XmlParserException If any error occurred.
 	 */
-	void ParseChannels(Direction::Direction direction);
+	void ParseChannels(Direction::Direction direction); //TODO const input
 
 	/**
 	 * \brief Parses the attributes present in the ProcessImage tag.
@@ -91,7 +91,7 @@ private:
 	 * \param[in] direction  The direction of the ProcessImage channels.
 	 * \throws XmlParserException If any error occurred.
 	 */
-	void ParseChannelAttributes(Direction::Direction direction);
+	void ParseChannelAttributes(Direction::Direction direction); //TODO const input
 
 };
 

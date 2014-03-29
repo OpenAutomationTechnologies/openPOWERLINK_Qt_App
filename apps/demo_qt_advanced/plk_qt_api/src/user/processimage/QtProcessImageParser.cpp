@@ -82,11 +82,10 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 		}
 		if (this->xml.hasError())
 		{
-			XmlParserException ex(this->xml.errorString().toStdString(),
+			throw XmlParserException(this->xml.errorString().toStdString(),
 								XmlParserException::NOT_WELL_FORMED,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
-			throw ex;
 		}
 	}
 	catch(XmlParserException &ex)
@@ -110,11 +109,17 @@ void QtProcessImageParser::ParseProcessImage()
 		}
 		else
 		{
-			XmlParserException ex("Unexpected element detected",
+			if (this->xml.hasError())
+			{
+				throw XmlParserException(this->xml.errorString().toStdString(),
+									XmlParserException::UNDEFINED,
+									this->xml.lineNumber(),
+									this->xml.columnNumber());
+			}
+			throw XmlParserException("Unexpected element detected",
 								XmlParserException::UN_EXPECTED_ELEMENT,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
-			throw ex;
 		}
 	}
 
@@ -128,20 +133,25 @@ void QtProcessImageParser::ParseProcessImage()
 		}
 		else
 		{
-			XmlParserException ex("Unexpected element detected",
+			if (this->xml.hasError())
+			{
+				throw XmlParserException(this->xml.errorString().toStdString(),
+									XmlParserException::UNDEFINED,
+									this->xml.lineNumber(),
+									this->xml.columnNumber());
+			}
+			throw XmlParserException("Unexpected element detected",
 								XmlParserException::UN_EXPECTED_ELEMENT,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
-			throw ex;
 		}
 	}
 	else
 	{
-		XmlParserException ex(this->xml.errorString().toStdString(),
+		throw XmlParserException(this->xml.errorString().toStdString(),
 							XmlParserException::NOT_WELL_FORMED,
 							this->xml.lineNumber(),
 							this->xml.columnNumber());
-		throw ex;
 	}
 }
 
@@ -156,11 +166,17 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 		}
 		else
 		{
-			XmlParserException ex("Unexpected element detected",
+			if (this->xml.hasError())
+			{
+				throw XmlParserException(this->xml.errorString().toStdString(),
+									XmlParserException::UNDEFINED,
+									this->xml.lineNumber(),
+									this->xml.columnNumber());
+			}
+			throw XmlParserException("Unexpected element detected",
 								XmlParserException::UN_EXPECTED_ELEMENT,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
-			throw ex;
 		}
 
 		if (!(this->xml.readNextStartElement()))
@@ -175,30 +191,41 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 				}
 				else
 				{
-					XmlParserException ex("Unexpected element detected",
+					if (this->xml.hasError())
+					{
+						throw XmlParserException(this->xml.errorString().toStdString(),
+											XmlParserException::UNDEFINED,
+											this->xml.lineNumber(),
+											this->xml.columnNumber());
+					}
+					throw XmlParserException("Unexpected element detected",
 										XmlParserException::UN_EXPECTED_ELEMENT,
 										this->xml.lineNumber(),
 										this->xml.columnNumber());
-					throw ex;
 				}
 			}
 			else
 			{
 				// Throw error. XML format error.
-				XmlParserException ex(this->xml.errorString().toStdString(),
+				throw XmlParserException(this->xml.errorString().toStdString(),
 									XmlParserException::NOT_WELL_FORMED,
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
-				throw ex;
 			}
 		}
 		else
 		{
-			XmlParserException ex("Unexpected element detected",
+			if (this->xml.hasError())
+			{
+				throw XmlParserException(this->xml.errorString().toStdString(),
+									XmlParserException::UNDEFINED,
+									this->xml.lineNumber(),
+									this->xml.columnNumber());
+			}
+			throw XmlParserException("Unexpected element detected",
 								XmlParserException::UN_EXPECTED_ELEMENT,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
-			throw ex;
 		}
 	}
 
@@ -212,26 +239,39 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 		}
 		else
 		{
-			XmlParserException ex("Unexpected element detected",
+			if (this->xml.hasError())
+			{
+				throw XmlParserException(this->xml.errorString().toStdString(),
+									XmlParserException::UNDEFINED,
+									this->xml.lineNumber(),
+									this->xml.columnNumber());
+			}
+			throw XmlParserException("Unexpected element detected",
 								XmlParserException::UN_EXPECTED_ELEMENT,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
-			throw ex;
 		}
 	}
 	else
 	{
-		XmlParserException ex(this->xml.errorString().toStdString(),
+		throw XmlParserException(this->xml.errorString().toStdString(),
 							XmlParserException::NOT_WELL_FORMED,
 							this->xml.lineNumber(),
 							this->xml.columnNumber());
-		throw ex;
 	}
 	//TODO while breaks by itself Throw unexpected/xml error.
 }
 
 void QtProcessImageParser::ParseProcessImageAttributes()
 {
+	if (this->xml.hasError())
+	{
+		throw XmlParserException(this->xml.errorString().toStdString(),
+							XmlParserException::UNDEFINED,
+							this->xml.lineNumber(),
+							this->xml.columnNumber());
+	}
+
 	QXmlStreamAttributes attrib = this->xml.attributes();
 	Direction::Direction direction = Direction::UNDEFINED;
 	UINT byteSize = 0;
@@ -302,6 +342,14 @@ void QtProcessImageParser::ParseProcessImageAttributes()
 
 void QtProcessImageParser::ParseChannelAttributes(Direction::Direction direction)
 {
+	if (this->xml.hasError())
+	{
+		throw XmlParserException(this->xml.errorString().toStdString(),
+							XmlParserException::UNDEFINED,
+							this->xml.lineNumber(),
+							this->xml.columnNumber());
+	}
+
 	std::string name;                       //Name="CN1.X20DO9322.DigitalOutput01"
 	IECDataType::IECDataType dataType = IECDataType::UNDEFINED;   //dataType="BITSTRING" from IECDatatype
 	UINT byteOffset = 0;                    //PIOffset="0x0000"
