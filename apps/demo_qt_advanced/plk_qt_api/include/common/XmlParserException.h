@@ -86,9 +86,9 @@ public:
 
 private:
 	std::string message;
-	XmlParserError errCode;
-	UINT lineNumber;
-	UINT colNumber;
+	const XmlParserError errCode;
+	const UINT lineNumber;
+	const UINT colNumber;
 };
 
 #endif // _XML_PARSER_EXCEPTION_H_
