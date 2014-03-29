@@ -58,7 +58,6 @@ public:
 	enum XmlParserError
 	{
 		UNDEFINED = 0,
-		INVALID_ARGUMENT,
 		NOT_WELL_FORMED,
 		PREMATURE_END_OF_DOCUMENT,
 		UN_EXPECTED_ELEMENT,
@@ -67,12 +66,12 @@ public:
 		INVALID_ATTRIBUTE_VALUE
 	};
 
-	virtual ~XmlParserException() throw();
+	XmlParserException(const std::string& message,
+					   const XmlParserError errCode,
+					   const UINT lineNumber,
+					   const UINT colNumber);
 
-	XmlParserException(std::string& message,
-					   XmlParserError errCode = UNDEFINED,
-					   UINT lineNumber = 0,
-					   UINT colNumber = 0);
+	virtual ~XmlParserException() throw();
 
 	/**
 	 * \return The formatted string containing the exception message
