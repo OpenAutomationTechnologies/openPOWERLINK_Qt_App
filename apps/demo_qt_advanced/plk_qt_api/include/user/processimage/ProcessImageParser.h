@@ -72,6 +72,9 @@ public:
 	/**
 	 * \brief   Parses the buffer containing the ProcessImage xml description.
 	 *
+	 * \note If any exception has occurred the you have to request a new parser
+	 * with NewInstance() and "delete" the old one.
+	 *
 	 * \param[in] xmlDescription  Pointer to the buffer containing the xml description.
 	 * \throws std::invalid_argument if xml file buffer is NULL.
 	 * \throws XmlParserException If any error occurred.

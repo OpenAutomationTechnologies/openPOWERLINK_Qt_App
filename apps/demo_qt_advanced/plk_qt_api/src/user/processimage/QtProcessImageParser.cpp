@@ -53,48 +53,37 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 	// Adds the xml contents.
 	this->xml.addData(xmlDescription);
 
-	try
+	while ( !(this->xml.atEnd() || this->xml.hasError()))
 	{
-		while ( !(this->xml.atEnd() || this->xml.hasError()))
+		QXmlStreamReader::TokenType token = this->xml.readNext();
+		/* If token is StartDocument, Go to next.*/
+		if (token == QXmlStreamReader::StartDocument)
 		{
-			QXmlStreamReader::TokenType token = this->xml.readNext();
-			/* If token is StartDocument, Go to next.*/
-			if (token == QXmlStreamReader::StartDocument)
-			{
-				continue;
-			}
-			if (token == QXmlStreamReader::StartElement)
-			{
-				if (this->xml.name() == QString::fromStdString(
-									ProcessImageParser::applicationProcess_element_name).right(-1))
-				{
-					this->ParseProcessImage();
-				}
-				else
-				{
-					XmlParserException ex("Unexpected element detected",
-										XmlParserException::UN_EXPECTED_ELEMENT,
-										this->xml.lineNumber(),
-										this->xml.columnNumber());
-					throw ex;
-				}
-			}
+			continue;
 		}
-		if (this->xml.hasError())
+		if (token == QXmlStreamReader::StartElement)
 		{
-			throw XmlParserException(this->xml.errorString().toStdString(),
-								XmlParserException::NOT_WELL_FORMED,
-								this->xml.lineNumber(),
-								this->xml.columnNumber());
+			if (this->xml.name() == QString::fromStdString(
+								ProcessImageParser::applicationProcess_element_name).right(-1))
+			{
+				this->ParseProcessImage();
+			}
+			else
+			{
+				XmlParserException ex("Unexpected element detected",
+									XmlParserException::UN_EXPECTED_ELEMENT,
+									this->xml.lineNumber(),
+									this->xml.columnNumber());
+				throw ex;
+			}
 		}
 	}
-	catch(XmlParserException &ex)
+	if (this->xml.hasError())
 	{
-		// do cleanups
-		this->xml.clear();
-		this->in.ResetProcessImage();
-		this->out.ResetProcessImage();
-		throw;
+		throw XmlParserException(this->xml.errorString().toStdString(),
+							XmlParserException::NOT_WELL_FORMED,
+							this->xml.lineNumber(),
+							this->xml.columnNumber());
 	}
 }
 
