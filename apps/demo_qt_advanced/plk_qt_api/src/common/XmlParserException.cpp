@@ -43,10 +43,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Public functions
 *******************************************************************************/
 
-XmlParserException::XmlParserException(std::string& message,
-			XmlParserError errCode,
-			UINT lineNumber,
-			UINT colNumber)
+XmlParserException::XmlParserException(const std::string& message,
+			const XmlParserError errCode,
+			const UINT lineNumber,
+			const UINT colNumber)
 			:	message(message),
 				errCode(errCode),
 				lineNumber(lineNumber),
