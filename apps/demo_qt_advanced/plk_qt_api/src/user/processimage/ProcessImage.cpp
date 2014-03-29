@@ -166,13 +166,6 @@ bool ProcessImage::AddChannel(const Channel& channel)
 	return this->AddChannelInternal(channel);
 }
 
-void ProcessImage::ResetProcessImage()
-{
-	this->channels.clear();
-	this->byteSize = 0;
-	this->data = NULL;
-}
-
 std::vector<BYTE> ProcessImage::GetRawValue(const std::string& channelName) const
 {
 	Channel channel = this->GetChannel(channelName);
