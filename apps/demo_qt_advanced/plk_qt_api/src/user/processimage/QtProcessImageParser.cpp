@@ -63,8 +63,8 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 		}
 		if (token == QXmlStreamReader::StartElement)
 		{
-			if (this->xml.name() == QString::fromStdString(
-								ProcessImageParser::applicationProcess_element_name).right(-1))
+			if (this->xml.name().compare(QString::fromStdString(
+					ProcessImageParser::applicationProcess_element_name)) == 0)
 			{
 				this->ParseProcessImage();
 			}
@@ -91,8 +91,8 @@ void QtProcessImageParser::ParseProcessImage()
 {
 	while (this->xml.readNextStartElement())
 	{
-		if (this->xml.name() == QString::fromStdString(
-					 ProcessImageParser::processImage_element_name).right(-1))
+		if (this->xml.name().compare(QString::fromStdString(
+				ProcessImageParser::processImage_element_name)) == 0)
 		{
 			this->ParseProcessImageAttributes();
 		}
@@ -114,8 +114,8 @@ void QtProcessImageParser::ParseProcessImage()
 
 	if ((this->xml.tokenType() == QXmlStreamReader::EndElement))
 	{
-		if (this->xml.name() == QString::fromStdString(
-			ProcessImageParser::applicationProcess_element_name).right(-1))
+		if (this->xml.name().compare(QString::fromStdString(
+				ProcessImageParser::applicationProcess_element_name)) == 0)
 		{
 			// success case.
 			return;
@@ -148,8 +148,8 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 {
 	while (this->xml.readNextStartElement())
 	{
-		if (this->xml.name() == QString::fromStdString(
-							ProcessImageParser::channel_element_name).right(-1))
+		if (this->xml.name().compare(QString::fromStdString(
+					ProcessImageParser::channel_element_name)) == 0)
 		{
 			this->ParseChannelAttributes(direction);
 		}
@@ -172,8 +172,8 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 		{
 			if ((this->xml.tokenType() == QXmlStreamReader::EndElement))
 			{
-				if ((this->xml.name() == QString::fromStdString(
-								 ProcessImageParser::channel_element_name).right(-1)) )
+				if (this->xml.name().compare(QString::fromStdString(
+							ProcessImageParser::channel_element_name)) == 0)
 				{
 					// success case. Where we need to process the remainining channels.
 					continue;
@@ -220,8 +220,8 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 
 	if ((this->xml.tokenType() == QXmlStreamReader::EndElement))
 	{
-		if ((this->xml.name() == QString::fromStdString(
-					ProcessImageParser::processImage_element_name).right(-1)) )
+		if (this->xml.name().compare(QString::fromStdString(
+					ProcessImageParser::processImage_element_name)) == 0)
 		{
 			// Success Case. All Channels has been processed.
 			return;
