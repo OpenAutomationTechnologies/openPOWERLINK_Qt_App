@@ -1,9 +1,8 @@
 /**
 ********************************************************************************
-\file   XmlParserException.cpp
+\file   XmlParserError.cpp
 
-\brief  Definitions of a Xml parser exception uses the std exception
-		to provide the availability to throw exceptions.
+\brief  Provides the methods to access the enum strings.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -36,40 +35,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <sstream>
-#include "common/XmlParserException.h"
+#include "common/XmlParserError.h"
 
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
 
-XmlParserException::XmlParserException(const std::string& message,
-			const XmlParserError::XmlParserError errCode,
-			const UINT lineNumber,
-			const UINT colNumber)
-			:	message(message),
-				errCode(errCode),
-				lineNumber(lineNumber),
-				colNumber(colNumber)
+std::string GetXmlParserErrorString(XmlParserError::XmlParserError errorCode)
 {
-	std::ostringstream stream;
-	stream << " line:" << this->lineNumber;
-	stream << " column: " << this->colNumber;
-	this->message += stream.str();
+	std::string errorString;
+	switch (errorCode)
+	{
+		case XmlParserError::NOT_WELL_FORMED:
+			errorString = "Document not well formed. Check the xml tags.";
+			break;
+		case XmlParserError::PREMATURE_END_OF_DOCUMENT:
+			errorString = "Document has nothing to parse";
+			break;
+		case XmlParserError::UN_EXPECTED_ELEMENT:
+			errorString = "Un-expected element encountered";
+			break;
+		case XmlParserError::UN_EXPECTED_ATTRIBUTE:
+			errorString = "Un-expected attribute encountered";
+			break;
+		case XmlParserError::ATTRIBUTE_NOT_FOUND:
+			errorString = "Attribute not found";
+			break;
+		case XmlParserError::INVALID_ATTRIBUTE_VALUE:
+			errorString = "Invalid value for the attribute";
+			break;
+		case XmlParserError::UNDEFINED:
+		default:
+			errorString = "Undefined error";
+	}
+	return errorString;
 }
-
-XmlParserException::~XmlParserException() throw()
-{
-
-}
-
-const char* XmlParserException::what() const throw()
-{
-	return this->message.c_str();
-}
-
-XmlParserError::XmlParserError XmlParserException::GetErrorCode() const
-{
-	return this->errCode;
-}
-

@@ -109,6 +109,16 @@ protected:
 	static const std::string processImage_element_name;
 	static const std::string channel_element_name;
 
+	static const std::string processImage_attribute_type_not_found;
+	static const std::string processImage_attribute_byteSize_not_found;
+	static const std::string channel_attribute_name_not_found;
+	static const std::string channel_attribute_dataType_not_found;
+	static const std::string channel_attribute_bitSize_not_found;
+	static const std::string channel_attribute_byteOffset_not_found;
+	static const std::string channel_attribute_bitOffset_not_found;
+
+	static const std::string processImage_attribute_type_invalid_value;
+
 private:
 	ProcessImageParser(const ProcessImageParser& rhs);
 
