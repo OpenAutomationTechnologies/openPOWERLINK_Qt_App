@@ -54,7 +54,7 @@ static const std::string defaultCDCFilename = CONFIG_OBD_DEF_CONCISEDCF_FILENAME
 /*******************************************************************************
 * Static member variables
 *******************************************************************************/
-tEplApiInitParam OplkQtApi::initParam; ///< initparam.
+tOplkApiInitParam OplkQtApi::initParam; ///< initparam.
 bool OplkQtApi::cdcSet = false;  ///< Flag to detect CDC has been set or not.
 
 /*******************************************************************************
@@ -63,65 +63,65 @@ bool OplkQtApi::cdcSet = false;  ///< Flag to detect CDC has been set or not.
 
 void OplkQtApi::SetInitParam()
 {
-	EPL_MEMSET(&OplkQtApi::initParam, 0, sizeof (OplkQtApi::initParam));
-	OplkQtApi::initParam.m_uiSizeOfStruct = sizeof (OplkQtApi::initParam);
+	OPLK_MEMSET(&OplkQtApi::initParam, 0, sizeof (OplkQtApi::initParam));
+	OplkQtApi::initParam.sizeOfInitParam = sizeof (OplkQtApi::initParam);
 
-	OplkQtApi::initParam.m_fAsyncOnly = FALSE;
+	OplkQtApi::initParam.fAsyncOnly = FALSE;
 
-	OplkQtApi::initParam.m_dwFeatureFlags = UINT_MAX;      // 0x1F82: NMT_FeatureFlags_U32
-	OplkQtApi::initParam.m_dwCycleLen = kCycleLen;         // required for error detection
-	OplkQtApi::initParam.m_uiIsochrTxMaxPayload = 256;     // const
-	OplkQtApi::initParam.m_uiIsochrRxMaxPayload = 256;     // const
-	OplkQtApi::initParam.m_dwPresMaxLatency = 50000;       // const; only required for IdentRes
-	OplkQtApi::initParam.m_uiPreqActPayloadLimit = 36;     // required for initialisation (+28 bytes)
-	OplkQtApi::initParam.m_uiPresActPayloadLimit = 36;     // required for initialisation of Pres frame (+28 bytes)
-	OplkQtApi::initParam.m_dwAsndMaxLatency = 150000;      // const; only required for IdentRes
-	OplkQtApi::initParam.m_uiMultiplCycleCnt = 0;          // required for error detection
-	OplkQtApi::initParam.m_uiAsyncMtu = 1500;              // required to set up max frame size
-	OplkQtApi::initParam.m_uiPrescaler = 2;                // required for sync
-	OplkQtApi::initParam.m_dwLossOfFrameTolerance = 500000;
-	OplkQtApi::initParam.m_dwAsyncSlotTimeout = 3000000;
-	OplkQtApi::initParam.m_dwWaitSocPreq = 150000;
-	OplkQtApi::initParam.m_dwDeviceType = UINT_MAX;        // NMT_DeviceType_U32
-	OplkQtApi::initParam.m_dwVendorId = UINT_MAX;          // NMT_IdentityObject_REC.VendorId_U32
-	OplkQtApi::initParam.m_dwProductCode = UINT_MAX;       // NMT_IdentityObject_REC.ProductCode_U32
-	OplkQtApi::initParam.m_dwRevisionNumber = UINT_MAX;    // NMT_IdentityObject_REC.RevisionNo_U32
-	OplkQtApi::initParam.m_dwSerialNumber = UINT_MAX;      // NMT_IdentityObject_REC.SerialNo_U32
+	OplkQtApi::initParam.featureFlags = UINT_MAX;      // 0x1F82: NMT_FeatureFlags_U32
+	OplkQtApi::initParam.cycleLen = kCycleLen;         // required for error detection
+	OplkQtApi::initParam.isochrTxMaxPayload = 256;     // const
+	OplkQtApi::initParam.isochrRxMaxPayload = 256;     // const
+	OplkQtApi::initParam.presMaxLatency = 50000;       // const; only required for IdentRes
+	OplkQtApi::initParam.preqActPayloadLimit = 36;     // required for initialisation (+28 bytes)
+	OplkQtApi::initParam.presActPayloadLimit = 36;     // required for initialisation of Pres frame (+28 bytes)
+	OplkQtApi::initParam.asndMaxLatency = 150000;      // const; only required for IdentRes
+	OplkQtApi::initParam.multiplCylceCnt = 0;          // required for error detection
+	OplkQtApi::initParam.asyncMtu = 1500;              // required to set up max frame size
+	OplkQtApi::initParam.prescaler = 2;                // required for sync
+	OplkQtApi::initParam.lossOfFrameTolerance = 500000;
+	OplkQtApi::initParam.asyncSlotTimeout = 3000000;
+	OplkQtApi::initParam.waitSocPreq = 150000;
+	OplkQtApi::initParam.deviceType = UINT_MAX;        // NMT_DeviceType_U32
+	OplkQtApi::initParam.vendorId = UINT_MAX;          // NMT_IdentityObject_REC.VendorId_U32
+	OplkQtApi::initParam.productCode = UINT_MAX;       // NMT_IdentityObject_REC.ProductCode_U32
+	OplkQtApi::initParam.revisionNumber = UINT_MAX;    // NMT_IdentityObject_REC.RevisionNo_U32
+	OplkQtApi::initParam.serialNumber = UINT_MAX;      // NMT_IdentityObject_REC.SerialNo_U32
 
-	OplkQtApi::initParam.m_dwSubnetMask = kSubnetMask;
-	OplkQtApi::initParam.m_dwDefaultGateway = 0;
-	EPL_MEMCPY(OplkQtApi::initParam.m_sHostname, kHostName.c_str(), sizeof(OplkQtApi::initParam.m_sHostname));
-	OplkQtApi::initParam.m_uiSyncNodeId = EPL_C_ADR_SYNC_ON_SOA;
-	OplkQtApi::initParam.m_fSyncOnPrcNode = FALSE;
+	OplkQtApi::initParam.subnetMask = kSubnetMask;
+	OplkQtApi::initParam.defaultGateway = 0;
+	OPLK_MEMCPY(OplkQtApi::initParam.sHostname, kHostName.c_str(), sizeof(OplkQtApi::initParam.sHostname));
+	OplkQtApi::initParam.syncNodeId = C_ADR_SYNC_ON_SOA;
+	OplkQtApi::initParam.fSyncOnPrcNode = FALSE;
 
 	// write 00:00:00:00:00:00 to MAC address, so that the driver uses the real hardware address
-	EPL_MEMCPY(OplkQtApi::initParam.m_abMacAddress, abMacAddr, sizeof(OplkQtApi::initParam.m_abMacAddress));
+	OPLK_MEMCPY(OplkQtApi::initParam.aMacAddress, abMacAddr, sizeof(OplkQtApi::initParam.aMacAddress));
 
 	// set callback functions
-	OplkQtApi::initParam.m_pfnCbEvent = OplkEventHandler::GetInstance().GetEventCbFunc();
-	if (OplkQtApi::initParam.m_pfnCbEvent == NULL)
+	OplkQtApi::initParam.pfnCbEvent = OplkEventHandler::GetInstance().GetEventCbFunc();
+	if (OplkQtApi::initParam.pfnCbEvent == NULL)
 	{
 		qDebug("Null Call back");
 		// Never expecting to happen
 		// If needed Throw std err or return kErrorInvalidInstanceParam
 	}
 
-	OplkQtApi::initParam.m_pfnCbSync = NULL;
-	OplkQtApi::initParam.m_pEventUserArg = NULL;
-//	OplkQtApi::initParam.m_HwParam.m_uiDevNumber = 0;
-//	OplkQtApi::initParam.m_dwSyncResLatency = 0;
+	OplkQtApi::initParam.pfnCbSync = NULL;
+	OplkQtApi::initParam.pEventUserArg = NULL;
+//	OplkQtApi::initParam.hwParam.devNum = 0;
+//	OplkQtApi::initParam.syncResLatency = 0;
 
 
-	OplkQtApi::initParam.m_pszDevName = NULL;       // NMT_ManufactDevName_VS (0x1008/0 local OD)
-	OplkQtApi::initParam.m_pszHwVersion = NULL;     // NMT_ManufactHwVers_VS  (0x1009/0 local OD)
-	OplkQtApi::initParam.m_pszSwVersion = NULL;     // NMT_ManufactSwVers_VS  (0x100A/0 local OD)
+	OplkQtApi::initParam.pDevName = NULL;       // NMT_ManufactDevName_VS (0x1008/0 local OD)
+	OplkQtApi::initParam.pHwVersion = NULL;     // NMT_ManufactHwVers_VS  (0x1009/0 local OD)
+	OplkQtApi::initParam.pSwVersion = NULL;     // NMT_ManufactSwVers_VS  (0x100A/0 local OD)
 
-//	OplkQtApi::initParam.m_qwVendorSpecificExt1 = 0;
-//	OplkQtApi::initParam.m_dwVerifyConfigurationDate = 0; // CFM_VerifyConfiguration_REC.ConfDate_U32
-//	OplkQtApi::initParam.m_dwVerifyConfigurationTime = 0; // CFM_VerifyConfiguration_REC.ConfTime_U32
-//	OplkQtApi::initParam.m_dwApplicationSwDate = 0;       // PDL_LocVerApplSw_REC.ApplSwDate_U32 on programmable device or date portion of NMT_ManufactSwVers_VS on non-programmable device
-//	OplkQtApi::initParam.m_dwApplicationSwTime = 0;       // PDL_LocVerApplSw_REC.ApplSwTime_U32 on programmable device or time portion of NMT_ManufactSwVers_VS on non-programmable device
-//	OplkQtApi::initParam.m_abVendorSpecificExt2[48] = 0;
+//	OplkQtApi::initParam.vendorSpecificExt1 = 0;
+//	OplkQtApi::initParam.verifyConfigurationDate = 0; // CFM_VerifyConfiguration_REC.ConfDate_U32
+//	OplkQtApi::initParam.verifyConfigurationTime = 0; // CFM_VerifyConfiguration_REC.ConfTime_U32
+//	OplkQtApi::initParam.applicationSwDate = 0;       // PDL_LocVerApplSw_REC.ApplSwDate_U32 on programmable device or date portion of NMT_ManufactSwVers_VS on non-programmable device
+//	OplkQtApi::initParam.applicationSwTime = 0;       // PDL_LocVerApplSw_REC.ApplSwTime_U32 on programmable device or time portion of NMT_ManufactSwVers_VS on non-programmable device
+//	OplkQtApi::initParam.aVendorSpecificExt2[48] = 0;
 }
 
 /*******************************************************************************
@@ -132,10 +132,10 @@ tOplkError OplkQtApi::InitStack(const UINT nodeId,
 {
 	OplkQtApi::SetInitParam();
 
-	OplkQtApi::initParam.m_uiNodeId = nodeId;
-	OplkQtApi::initParam.m_dwIpAddress = (kIpAddress & kSubnetMask) | OplkQtApi::initParam.m_uiNodeId;
+	OplkQtApi::initParam.nodeId = nodeId;
+	OplkQtApi::initParam.ipAddress = (kIpAddress & kSubnetMask) | OplkQtApi::initParam.nodeId;
 
-	OplkQtApi::initParam.m_HwParam.m_pszDevName = networkInterface.c_str();
+	OplkQtApi::initParam.hwParam.pDevName = networkInterface.c_str();
 
 	return (oplk_init(&OplkQtApi::initParam));
 }
@@ -309,7 +309,7 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 	 */
 	qRegisterMetaType<SdoTransferResult>("SdoTransferResult");
 
-	if ( ((sdoTransferJob.GetNodeId() != initParam.m_uiNodeId)
+	if ( ((sdoTransferJob.GetNodeId() != initParam.nodeId)
 		 && (sdoTransferJob.GetNodeId() != 0)) )
 	{
 		receiverContext = new ReceiverContext(&receiver, &receiverFunction);
@@ -369,7 +369,7 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 	}
 
 	if ((oplkRet != kErrorApiTaskDeferred)
-		&& ((sdoTransferJob.GetNodeId() != initParam.m_uiNodeId)
+		&& ((sdoTransferJob.GetNodeId() != initParam.nodeId)
 		&& (sdoTransferJob.GetNodeId() != 0)))
 	{
 		// Non-Local OD access: error case
@@ -411,7 +411,7 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 		return oplkRet;
 	}
 
-	// OplkQtApi::initParam.m_pfnCbSync = NULL;
+	// OplkQtApi::initParam.pfnCbSync = NULL;
 
 	/* sets the ProcessImage pointer from the allocated memory to the ProcessImage::data */
 	in.SetProcessImageDataPtr((const BYTE*)oplk_getProcessImageIn());

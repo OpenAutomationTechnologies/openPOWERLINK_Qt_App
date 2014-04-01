@@ -266,7 +266,7 @@ public:
 					const QMetaMethod& receiverFunction);
 
 private:
-	static tEplApiInitParam initParam;
+	static tOplkApiInitParam initParam;
 	static bool cdcSet;
 
 	OplkQtApi();

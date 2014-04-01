@@ -72,7 +72,7 @@ public:
 	/**
 	 * \return Returns the address of event callback function
 	 */
-	tEplApiCbEvent GetEventCbFunc(void);
+	tOplkApiCbEvent GetEventCbFunc(void);
 
 private:
 
@@ -98,8 +98,8 @@ private:
 	 * \param[in] userArg    User specific argument
 	 * \return Returns a tOplkError error code.
 	 */
-	static tOplkError AppCbEvent(tEplApiEventType eventType,
-								 tEplApiEventArg* eventArg,
+	static tOplkError AppCbEvent(tOplkApiEventType eventType,
+								 tOplkApiEventArg* eventArg,
 								 void* userArg);
 
 	/**
@@ -119,7 +119,7 @@ private:
 	 * \param[in] userArg        User specific argument.
 	 * \return Returns a tOplkError error code.
 	 */
-	tOplkError ProcessErrorWarningEvent(tEplEventError* internalError,
+	tOplkError ProcessErrorWarningEvent(tEventError* internalError,
 										void* userArg);
 
 	/**
@@ -139,7 +139,7 @@ private:
 	 * \param[in] userArg    User specific argument.
 	 * \return Returns a tOplkError error code.
 	 */
-	tOplkError ProcessNodeEvent(tEplApiEventNode* nodeEvent, void* userArg);
+	tOplkError ProcessNodeEvent(tOplkApiEventNode* nodeEvent, void* userArg);
 
 	/**
 	 * \brief   Process the events generated during the SDO transfer
@@ -168,7 +168,7 @@ private:
 	 * \param[in] userArg    User specific argument.
 	 * \return Returns a tOplkError error code.
 	 */
-	tOplkError ProcessCfmResultEvent(tEplApiEventCfmResult* cfmResult,
+	tOplkError ProcessCfmResultEvent(tOplkApiEventCfmResult* cfmResult,
 									 void* userArg);
 
 	/**
