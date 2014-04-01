@@ -1,9 +1,8 @@
 /**
 ********************************************************************************
-\file   XmlParserException.cpp
+\file   XmlParserError.h
 
-\brief  Definitions of a Xml parser exception uses the std exception
-		to provide the availability to throw exceptions.
+\brief  Describes errorcodes for the xml parsers.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -33,43 +32,34 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/*******************************************************************************
-* INCLUDES
-*******************************************************************************/
-#include <sstream>
-#include "common/XmlParserException.h"
+#ifndef _XMLPARSERERROR_H_
+#define _XMLPARSERERROR_H_
 
-/*******************************************************************************
-* Public functions
-*******************************************************************************/
+#include <string>
 
-XmlParserException::XmlParserException(const std::string& message,
-			const XmlParserError::XmlParserError errCode,
-			const UINT lineNumber,
-			const UINT colNumber)
-			:	message(message),
-				errCode(errCode),
-				lineNumber(lineNumber),
-				colNumber(colNumber)
+namespace XmlParserError
 {
-	std::ostringstream stream;
-	stream << " line:" << this->lineNumber;
-	stream << " column: " << this->colNumber;
-	this->message += stream.str();
-}
-
-XmlParserException::~XmlParserException() throw()
-{
+	/**
+	 * List of errors available for an XML parser.
+	 *
+	 */
+	enum XmlParserError
+	{
+		UNDEFINED = 0,
+		NOT_WELL_FORMED,
+		PREMATURE_END_OF_DOCUMENT,
+		UN_EXPECTED_ELEMENT,
+		UN_EXPECTED_ATTRIBUTE,
+		ATTRIBUTE_NOT_FOUND,
+		INVALID_ATTRIBUTE_VALUE
+	};
 
 }
 
-const char* XmlParserException::what() const throw()
-{
-	return this->message.c_str();
-}
+/**
+ * \param errorCode
+ * \return Returns the error string based on the errorCode.
+ */
+std::string GetXmlParserErrorString(XmlParserError::XmlParserError errorCode);
 
-XmlParserError::XmlParserError XmlParserException::GetErrorCode() const
-{
-	return this->errCode;
-}
-
+#endif // _XMLPARSERERROR_H_

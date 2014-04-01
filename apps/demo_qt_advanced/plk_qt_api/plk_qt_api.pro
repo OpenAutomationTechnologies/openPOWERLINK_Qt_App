@@ -60,7 +60,8 @@ HEADERS += include/api/OplkEventHandler.h \
 		   include/user/processimage/ProcessImageParser.h \
 		   include/user/processimage/ProcessImageParserType.h \
 		   include/user/processimage/QtProcessImageParser.h \
-		   include/common/XmlParserException.h
+		   include/common/XmlParserException.h \
+		   include/common/XmlParserError.h
 
 SOURCES += src/api/OplkEventHandler.cpp \
 		   src/api/OplkQtApi.cpp \
@@ -75,7 +76,8 @@ SOURCES += src/api/OplkEventHandler.cpp \
 		   src/user/processimage/QtProcessImageParser.cpp \
 		   src/common/Utility.cpp \
 		   src/user/processimage/IECDataType.cpp \
-		   src/common/XmlParserException.cpp
+		   src/common/XmlParserException.cpp \
+    		   src/common/XmlParserError.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../stack/lib/windows/x86 -loplkmn
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../stack/lib/windows/x86 -loplkmn_d

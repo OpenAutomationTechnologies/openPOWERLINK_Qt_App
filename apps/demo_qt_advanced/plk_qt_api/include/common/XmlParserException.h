@@ -44,6 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <oplk/basictypes.h>
 
 #include <common/QtApiGlobal.h>
+#include <common/XmlParserError.h>
 
 /**
  * \brief Inherits std::exception to provide the exception constructs for the
@@ -52,22 +53,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class PLKQTAPI_EXPORT XmlParserException : public std::exception
 {
 public:
-	/**
-	 * The XmlParserError enums
-	 */
-	enum XmlParserError
-	{
-		UNDEFINED = 0,
-		NOT_WELL_FORMED,
-		PREMATURE_END_OF_DOCUMENT,
-		UN_EXPECTED_ELEMENT,
-		UN_EXPECTED_ATTRIBUTE,
-		ATTRIBUTE_NOT_FOUND,
-		INVALID_ATTRIBUTE_VALUE
-	};
 
 	XmlParserException(const std::string& message,
-					   const XmlParserError errCode,
+					   const XmlParserError::XmlParserError errCode,
 					   const UINT lineNumber,
 					   const UINT colNumber);
 
@@ -82,11 +70,11 @@ public:
 	/**
 	 * \return The error code.
 	 */
-	XmlParserError GetErrorCode() const;
+	XmlParserError::XmlParserError GetErrorCode() const;
 
 private:
 	std::string message;
-	const XmlParserError errCode;
+	const XmlParserError::XmlParserError errCode;
 	const UINT lineNumber;
 	const UINT colNumber;
 };

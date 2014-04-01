@@ -58,6 +58,37 @@ const std::string ProcessImageParser::applicationProcess_element_name = "Applica
 const std::string ProcessImageParser::processImage_element_name = "ProcessImage";
 const std::string ProcessImageParser::channel_element_name = "Channel";
 
+const std::string ProcessImageParser::processImage_attribute_type_not_found =
+		ProcessImageParser::processImage_element_name + "attribute '" +
+		ProcessImageParser::processImage_attribute_Type + "' not found";
+
+const std::string ProcessImageParser::processImage_attribute_byteSize_not_found =
+		ProcessImageParser::processImage_element_name + "attribute '" +
+		ProcessImageParser::processImage_attribute_byteSize + "' not found";
+
+const std::string ProcessImageParser::channel_attribute_name_not_found =
+		ProcessImageParser::channel_element_name + "attribute '" +
+		ProcessImageParser::channel_attribute_name + "' not found";
+
+const std::string ProcessImageParser::channel_attribute_dataType_not_found =
+		ProcessImageParser::channel_element_name + "attribute '" +
+		ProcessImageParser::channel_attribute_dataType + "' not found";
+
+const std::string ProcessImageParser::channel_attribute_bitSize_not_found =
+		ProcessImageParser::channel_element_name + "attribute '" +
+		ProcessImageParser::channel_attribute_bitSize + "' not found";
+
+const std::string ProcessImageParser::channel_attribute_byteOffset_not_found =
+		ProcessImageParser::channel_element_name + "attribute '" +
+		ProcessImageParser::channel_attribute_byteOffset + "' not found";
+
+const std::string ProcessImageParser::channel_attribute_bitOffset_not_found =
+		ProcessImageParser::channel_element_name + "attribute '" +
+		ProcessImageParser::channel_attribute_bitOffset + "' not found";
+
+const std::string ProcessImageParser::processImage_attribute_type_invalid_value =
+		ProcessImageParser::processImage_element_name + "attribute '" +
+		ProcessImageParser::processImage_attribute_Type + "' has invalid value";
 
 /*******************************************************************************
 * Public functions
