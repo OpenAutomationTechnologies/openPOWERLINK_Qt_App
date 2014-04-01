@@ -66,7 +66,8 @@ else:unix:!macx:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../stack/lib
 
 win32: LIBS += -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lwpcap \
 			   -L$$PWD/../../../contrib/pcap/windows/WpdPack/Lib/ -lPacket
-unix:!macx: LIBS += -lpcap -lpthread -lrt
+unix:!macx: LIBS += -lpcap
+#-lpthread -lrt
 
 
 ###########################PRE_TARGETDEPS######################################################

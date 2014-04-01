@@ -39,10 +39,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include <string>
 
-#if (TARGET_SYSTEM == _WIN32_)
-#include "Windows.h"
-#else
+#ifdef __unix__
 #include <oplk/basictypes.h>
+#else
+#include "Windows.h"
 #endif
 
 #include "common/QtApiGlobal.h"
