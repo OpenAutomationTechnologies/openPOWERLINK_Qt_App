@@ -56,7 +56,7 @@ void OplkEventHandler::AwaitNmtGsOff()
 	OplkEventHandler::mutex.unlock();
 }
 
-tEplApiCbEvent OplkEventHandler::GetEventCbFunc(void)
+tOplkApiCbEvent OplkEventHandler::GetEventCbFunc(void)
 {
 	return AppCbEvent;
 }
@@ -74,56 +74,56 @@ OplkEventHandler& OplkEventHandler::GetInstance()
 	return instance;
 }
 
-tOplkError OplkEventHandler::AppCbEvent(tEplApiEventType eventType,
-								tEplApiEventArg* eventArg,
+tOplkError OplkEventHandler::AppCbEvent(tOplkApiEventType eventType,
+								tOplkApiEventArg* eventArg,
 								void* userArg)
 {
 	tOplkError oplkRet = kErrorGeneralError;
 
 	switch (eventType)
 	{
-		case kEplApiEventNmtStateChange:
+		case kOplkApiEventNmtStateChange:
 			oplkRet = OplkEventHandler::GetInstance().ProcessNmtStateChangeEvent(
-										&eventArg->m_NmtStateChange, userArg);
+										&eventArg->nmtStateChange, userArg);
 			break;
 
-		case kEplApiEventCriticalError:
-		case kEplApiEventWarning:
+		case kOplkApiEventCriticalError:
+		case kOplkApiEventWarning:
 			oplkRet = OplkEventHandler::GetInstance().ProcessErrorWarningEvent(
-										&eventArg->m_InternalError, userArg);
+										&eventArg->internalError, userArg);
 			break;
 
-		case kEplApiEventHistoryEntry:
+		case kOplkApiEventHistoryEntry:
 			oplkRet = OplkEventHandler::GetInstance().ProcessHistoryEvent(
-										&eventArg->m_ErrHistoryEntry, userArg);
+										&eventArg->errorHistoryEntry, userArg);
 			break;
 
-		case kEplApiEventNode:
+		case kOplkApiEventNode:
 			oplkRet = OplkEventHandler::GetInstance().ProcessNodeEvent(
-										&eventArg->m_Node, userArg);
+										&eventArg->nodeEvent, userArg);
 			break;
 
-		case kEplApiEventSdo:
+		case kOplkApiEventSdo:
 			oplkRet = OplkEventHandler::GetInstance().ProcessSdoEvent(
-										&eventArg->m_Sdo, userArg);
+										&eventArg->sdoInfo, userArg);
 			break;
 
-		case kEplApiEventCfmProgress:
+		case kOplkApiEventCfmProgress:
 			oplkRet = OplkEventHandler::GetInstance().ProcessCfmProgressEvent(
-										&eventArg->m_CfmProgress, userArg);
+										&eventArg->cfmProgress, userArg);
 			break;
 
-		case kEplApiEventCfmResult:
+		case kOplkApiEventCfmResult:
 			oplkRet = OplkEventHandler::GetInstance().ProcessCfmResultEvent(
-										&eventArg->m_CfmResult, userArg);
+										&eventArg->cfmResult, userArg);
 			break;
 
-		// case kEplApiEventRequestNmt:
-		case kEplApiEventUserDef:
-		case kEplApiEventBoot:
-		case kEplApiEventObdAccess:
-		case kEplApiEventLed:
-		case kEplApiEventReceivedAsnd:
+		// case kOplkApiEventRequestNmt:
+		case kOplkApiEventUserDef:
+		case kOplkApiEventBoot:
+		case kOplkApiEventObdAccess:
+		case kOplkApiEventLed:
+		case kOplkApiEventReceivedAsnd:
 			// Ignored events.
 			oplkRet = kErrorOk;
 			break;
@@ -279,7 +279,7 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 }
 
 tOplkError OplkEventHandler::ProcessErrorWarningEvent(
-								tEplEventError* internalError,
+								tEventError* internalError,
 								void* userArg)
 {
 
@@ -287,28 +287,28 @@ tOplkError OplkEventHandler::ProcessErrorWarningEvent(
 
 	OplkEventHandler::TriggerPrintLog(
 		QString("Err/Warn: Source = %1 (0x%2) EplError = %3 (0x%4)")
-		.arg(debugstr_getEventSourceStr(internalError->m_EventSource))
-		.arg(internalError->m_EventSource, 2, 16, QLatin1Char('0'))
-		.arg(debugstr_getRetValStr(internalError->m_EplError))
-		.arg(internalError->m_EplError, 3, 16, QLatin1Char('0')));
+		.arg(debugstr_getEventSourceStr(internalError->eventSource))
+		.arg(internalError->eventSource, 2, 16, QLatin1Char('0'))
+		.arg(debugstr_getRetValStr(internalError->oplkError))
+		.arg(internalError->oplkError, 3, 16, QLatin1Char('0')));
 
-	switch (internalError->m_EventSource)
+	switch (internalError->eventSource)
 	{
-		case kEplEventSourceEventk:
-		case kEplEventSourceEventu:
+		case kEventSourceEventk:
+		case kEventSourceEventu:
 		{
 			// error occurred within event processing
 			// either in kernel or in user part
 			OplkEventHandler::TriggerPrintLog(QString(" OrgSource = %1 %2")
-				.arg(debugstr_getEventSourceStr(internalError->m_Arg.m_EventSource))
-				.arg(internalError->m_Arg.m_EventSource, 2, 16, QLatin1Char('0')));
+				.arg(debugstr_getEventSourceStr(internalError->errorArg.eventSource))
+				.arg(internalError->errorArg.eventSource, 2, 16, QLatin1Char('0')));
 			break;
 		}
-		case kEplEventSourceDllk:
+		case kEventSourceDllk:
 			// error occurred within the data link layer (e.g. interrupt processing)
 			// the ULONG argument contains the DLL state and the NMT event
 			OplkEventHandler::TriggerPrintLog(QString(" val = %1")
-				.arg(internalError->m_Arg.m_dwArg, 0, 16));
+				.arg(internalError->errorArg.uintArg, 0, 16));
 			break;
 
 		default:
@@ -326,58 +326,58 @@ tOplkError OplkEventHandler::ProcessHistoryEvent(
 
 	OplkEventHandler::TriggerPrintLog(
 		QString("HistoryEntry: Type=0x%1 Code=0x%2 (0x%3 %4 %5 %6 %7 %8 %9 %10)")
-		.arg(historyEntry->m_wEntryType, 4, 16, QLatin1Char('0'))
-		.arg(historyEntry->m_wErrorCode, 4, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[0], 2, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[1], 2, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[2], 2, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[3], 2, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[4], 2, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[5], 2, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[6], 2, 16, QLatin1Char('0'))
-		.arg((WORD)historyEntry->m_abAddInfo[7], 2, 16, QLatin1Char('0')));
+		.arg(historyEntry->entryType, 4, 16, QLatin1Char('0'))
+		.arg(historyEntry->errorCode, 4, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[0], 2, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[1], 2, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[2], 2, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[3], 2, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[4], 2, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[5], 2, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[6], 2, 16, QLatin1Char('0'))
+		.arg((WORD)historyEntry->aAddInfo[7], 2, 16, QLatin1Char('0')));
 
 	return kErrorOk;
 }
 
-tOplkError OplkEventHandler::ProcessNodeEvent(tEplApiEventNode* nodeEvent,
+tOplkError OplkEventHandler::ProcessNodeEvent(tOplkApiEventNode* nodeEvent,
 								void* userArg)
 {
 	UNUSED_PARAMETER(userArg);
 
-	switch (nodeEvent->m_NodeEvent)
+	switch (nodeEvent->nodeEvent)
 	{
 		case kNmtNodeEventCheckConf:
 			OplkEventHandler::TriggerPrintLog(
 					QString("Node Event: (Node=%2, CheckConf)")
-					.arg(nodeEvent->m_uiNodeId));
+					.arg(nodeEvent->nodeId));
 			break;
 
 		case kNmtNodeEventUpdateConf:
 			OplkEventHandler::TriggerPrintLog(
 					QString("Node Event: (Node=%1, UpdateConf)")
-					.arg(nodeEvent->m_uiNodeId));
+					.arg(nodeEvent->nodeId));
 			break;
 
 		case kNmtNodeEventFound:
-			OplkEventHandler::TriggerNodeFound(nodeEvent->m_uiNodeId);
+			OplkEventHandler::TriggerNodeFound(nodeEvent->nodeId);
 			break;
 
 		case kNmtNodeEventNmtState:
-			OplkEventHandler::TriggerNodeStateChanged(nodeEvent->m_uiNodeId, nodeEvent->m_NmtState);
+			OplkEventHandler::TriggerNodeStateChanged(nodeEvent->nodeId, nodeEvent->nmtState);
 			OplkEventHandler::TriggerPrintLog(
 					QString("Node Event: (Node=%1, State: %2)")
-					.arg(nodeEvent->m_uiNodeId)
-					.arg(debugstr_getNmtStateStr(nodeEvent->m_NmtState)));
+					.arg(nodeEvent->nodeId)
+					.arg(debugstr_getNmtStateStr(nodeEvent->nmtState)));
 			break;
 
 		case kNmtNodeEventError:
 		{
 			OplkEventHandler::TriggerPrintLog(
 					QString("AppCbEvent (Node=%1): Error = %2 (0x%3)")
-					.arg(nodeEvent->m_uiNodeId)
-					.arg(debugstr_getEmergErrCodeStr(nodeEvent->m_wErrorCode))
-					.arg(nodeEvent->m_wErrorCode, 4, 16, QLatin1Char('0')));
+					.arg(nodeEvent->nodeId)
+					.arg(debugstr_getEmergErrCodeStr(nodeEvent->errorCode))
+					.arg(nodeEvent->errorCode, 4, 16, QLatin1Char('0')));
 			break;
 		}
 		default:
@@ -396,10 +396,10 @@ tOplkError OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
 
 	switch (sdoEvent->sdoComConState)
 	{
-		case kEplSdoComTransferTxAborted:
-		case kEplSdoComTransferRxAborted:
-		case kEplSdoComTransferFinished:
-		case kEplSdoComTransferLowerLayerAbort:
+		case kSdoComTransferTxAborted:
+		case kSdoComTransferRxAborted:
+		case kSdoComTransferFinished:
+		case kSdoComTransferLowerLayerAbort:
 		{
 			OplkEventHandler::TriggerSdoTransferFinished(*sdoEvent,
 						(const ReceiverContext*)sdoEvent->pUserArg);
@@ -407,8 +407,8 @@ tOplkError OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
 			break;
 		}
 
-		case kEplSdoComTransferNotActive:
-		case kEplSdoComTransferRunning:
+		case kSdoComTransferNotActive:
+		case kSdoComTransferRunning:
 		{
 			//Segmented transfer
 			oplkRet = kErrorOk;
@@ -448,58 +448,58 @@ tOplkError OplkEventHandler::ProcessCfmProgressEvent(
 }
 
 tOplkError OplkEventHandler::ProcessCfmResultEvent(
-								tEplApiEventCfmResult* cfmResult,
+								tOplkApiEventCfmResult* cfmResult,
 								void* userArg)
 {
 	UNUSED_PARAMETER(userArg);
 
-	switch (cfmResult->m_NodeCommand)
+	switch (cfmResult->nodeCommand)
 	{
 		case kNmtNodeCommandConfOk:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, ConfOk)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		case kNmtNodeCommandConfErr:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, ConfErr)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		case kNmtNodeCommandConfReset:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, ConfReset)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		case kNmtNodeCommandConfRestored:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, ConfRestored)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		case kNmtNodeCommandBoot:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, BootCommand)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		case kNmtNodeCommandSwOk:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, Sw-Ok)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		case kNmtNodeCommandSwUpdated:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, Sw-Updated)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		case kNmtNodeCommandStart:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%1, NodeStart)")
-						.arg(cfmResult->m_uiNodeId));
+						.arg(cfmResult->nodeId));
 			break;
 		default:
 			OplkEventHandler::TriggerPrintLog(
 						QString("CFM Result: (Node=%d, CfmResult=0x%X)")
-						.arg(cfmResult->m_uiNodeId)
-					.arg(cfmResult->m_NodeCommand, 4, 16, QLatin1Char('0')));
+						.arg(cfmResult->nodeId)
+					.arg(cfmResult->nodeCommand, 4, 16, QLatin1Char('0')));
 			break;
 	}
 	return kErrorOk;
