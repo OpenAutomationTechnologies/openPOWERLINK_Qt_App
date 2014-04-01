@@ -40,6 +40,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QCoreApplication>
 
 #include <oplk/oplk.h>
+#ifdef __unix__
+#include <common/target.h>
+#endif
 
 #include "api/OplkQtApi.h"
 
@@ -48,6 +51,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 int main(int argc, char *argv[])
 {
+	#ifdef __unix__
+		target_init();
+	#endif
+
 	QCoreApplication application(argc, argv);
 
 	qDebug("------------------------------------------------------\n");
