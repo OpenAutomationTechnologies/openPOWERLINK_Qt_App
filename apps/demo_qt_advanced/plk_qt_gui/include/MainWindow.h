@@ -111,11 +111,6 @@ private slots:
 	void on_actionStop_triggered();
 
 	/**
-	 * \brief Triggers an event kNmtEventSwReset to the MN(local) node.
-	 */
-	void on_actionRestart_triggered();
-
-	/**
 	 * \brief Displays the about/info window.
 	 */
 	void on_actionAbout_triggered();

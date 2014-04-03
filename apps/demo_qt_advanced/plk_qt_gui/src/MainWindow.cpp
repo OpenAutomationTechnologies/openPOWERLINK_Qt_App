@@ -79,7 +79,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui.setupUi(this);
 
 	this->ui.actionStop->setDisabled(true);
-	this->ui.actionRestart->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -253,7 +252,6 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.statusbar->showMessage(this->networkInterface->GetDevDescription());
 
 	this->ui.actionStop->setEnabled(true);
-	this->ui.actionRestart->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
 
 	this->addDockWidget(Qt::RightDockWidgetArea, this->nmtCmdWindow);
@@ -303,7 +301,6 @@ void MainWindow::on_actionStop_triggered()
 	}
 
 	this->ui.actionStart->setEnabled(true);
-	this->ui.actionRestart->setEnabled(false);
 	this->ui.actionStop->setEnabled(false);
 
 	this->removeDockWidget(this->cnStatus);
@@ -318,20 +315,6 @@ void MainWindow::on_actionStop_triggered()
 	delete this->piVar;
 	delete this->piMemory;
 	delete this->parser;
-}
-
-void MainWindow::on_actionRestart_triggered()
-{
-// NMT restart
-	 tOplkError oplkRet = oplk_execNmtCommand(kNmtEventSwReset);
-	// tOplkError oplkRet =  OplkQtApi::ExecuteNmtCommand(240, kNmtCmdSwReset);
-	if (oplkRet != kErrorOk)
-	{
-		QMessageBox::critical(this, "Restart Powerlink failed",
-							 QString("Restart Powerlink failed with error: %1 ")
-							  .arg(debugstr_getRetValStr(oplkRet)),
-							 QMessageBox::Close);
-	}
 }
 
 void MainWindow::on_actionAbout_triggered()

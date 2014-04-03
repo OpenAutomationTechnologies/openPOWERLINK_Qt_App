@@ -77,7 +77,6 @@
     <addaction name="separator"/>
     <addaction name="actionStart"/>
     <addaction name="actionStop"/>
-    <addaction name="actionRestart"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -121,7 +120,6 @@
    <addaction name="actionSelect_Interface"/>
    <addaction name="actionStart"/>
    <addaction name="actionStop"/>
-   <addaction name="actionRestart"/>
    <addaction name="separator"/>
    <addaction name="actionAbout"/>
   </widget>
@@ -174,11 +172,6 @@
    </property>
    <property name="text">
     <string>Stop</string>
-   </property>
-  </action>
-  <action name="actionRestart">
-   <property name="text">
-    <string>Restart</string>
    </property>
   </action>
   <action name="actionAbout">
