@@ -58,7 +58,7 @@ void NmtCommandsDock::on_sendNmtBtn_clicked()
 {
 	//Send NMT command is not working for MN.
 	// TODO in API library.
-	const int nodeid = this->ui.nodeId->text().toInt(0, 16);
+	const int nodeid = this->ui.nodeId->text().toInt();
 	qDebug("%d", nodeid);
 	tOplkError oplkRet = OplkQtApi::ExecuteNmtCommand(nodeid, this->nmtCommand);
 	if (oplkRet != kErrorOk)
