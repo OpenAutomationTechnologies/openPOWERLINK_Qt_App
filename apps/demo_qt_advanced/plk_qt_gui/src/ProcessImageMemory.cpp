@@ -69,7 +69,7 @@ ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out,
 
 	this->CreateVerticalHeaders();
 	this->CreateCells();
-	this->ResizeColumnsToContents();
+	// this->ResizeColumnsToContents();
 }
 
 ProcessImageMemory::~ProcessImageMemory()
@@ -146,7 +146,9 @@ void ProcessImageMemory::CreateVerticalHeaders()
 		 ++i)
 	{
 		item = new QTableWidgetItem();
-		item->setText((QString("%1").arg(i * 16, 0, 16)).rightJustified(4, '0'));
+		item->setText((QString("%1")
+					   .arg(i * this->ui.inputTable->columnCount(), 0, 16))
+					  .rightJustified(4, '0'));
 		this->ui.inputTable->setVerticalHeaderItem(i, item);
 	}
 
@@ -155,7 +157,9 @@ void ProcessImageMemory::CreateVerticalHeaders()
 	{
 		item = new QTableWidgetItem();
 		item->setFont(QFont("Courier", 9));
-		item->setText((QString("%1").arg(i * 16, 0, 16)).rightJustified(4, '0'));
+		item->setText((QString("%1")
+					   .arg(i * this->ui.outTable->columnCount(), 0, 16))
+					  .rightJustified(4, '0'));
 		this->ui.outTable->setVerticalHeaderItem(i, item);
 	}
 }
