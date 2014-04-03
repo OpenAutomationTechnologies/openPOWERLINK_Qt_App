@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include <QMessageBox>
+#include <QDateTime>
 
 #include "SdoTransfer.h"
 #include "api/OplkQtApi.h"
@@ -90,7 +91,7 @@ SdoTransfer::SdoTransfer(QWidget *parent) :
 	sdoValueValidator(NULL)
 {
 	this->ui.setupUi(this);
-
+	this->ui.sdoTransferLog->setLineWrapMode(QTextEdit::NoWrap);
 	this->ui.dataType->clear();
 
 	UINT index;
@@ -168,13 +169,20 @@ void SdoTransfer::on_executeTransfer_clicked()
 	else if (this->ui.write->isChecked())
 	{
 		sdoAccessType = kSdoAccessTypeWrite;
+		if (this->ui.sdoResultValue->text().isEmpty())
+		{
+			QMessageBox::warning(this, "SDO Transfer - Failed",
+								 "Enter a valid value",
+								 QMessageBox::Close);
+			return;
+		}
 	}
 
-	/* disable the user input objects */
-	this->ui.groupBoxSdoTransfer->setEnabled(false);
 	/* Update the transfer status */
 	this->ui.transferStatus->setText("Transferring...");
-
+	
+	/* disable the user input objects */
+	this->ui.groupBoxSdoTransfer->setEnabled(false);
 	// Prepare the SDO transfer job
 	this->sdoTransferJob = new SdoTransferJob(nodeId,
 									index,
@@ -190,26 +198,35 @@ void SdoTransfer::on_executeTransfer_clicked()
 										this->receiverFunction);
 
 	//update the SDO log
-	this->ui.sdoTransferLog->append(QString("\n\n%1 Initialized for NodeId: 0x%2, DataType:%3, Index:%4, SubIndex:%5 via: %6")
-											.arg(((sdoAccessType == kSdoAccessTypeRead) ? "Read" : "Write"))
-											.arg(this->ui.nodeId->currentText())
-											.arg(this->ui.dataType->currentText())
-											.arg(QString::number(index, 16))
-											.arg(QString::number(subIndex, 16))
-											.arg(this->ui.sdoVia->currentText()));
+	QString logMessage = QString("SDO transfer %1 (Node=%2, Data type=%3, Index=0x%4, Sub index=0x%5 via=%6")
+						 .arg(((sdoAccessType == kSdoAccessTypeRead) ? "Read" : "Write"))
+						 .arg(QString::number(nodeId, 10))
+						 .arg(this->ui.dataType->currentText())
+						 .arg(QString::number(index, 16))
+						 .arg(QString::number(subIndex, 16))
+						 .arg(this->ui.sdoVia->currentText());
+
 	if (sdoAccessType == kSdoAccessTypeWrite)
 	{
-		this->ui.sdoTransferLog->append(
-				QString("WriteValue: %1")
-				.arg(this->ui.sdoResultValue->text(), 0, 16));
+//		logMessage.append(QString(" Value=%1(0x%2)")
+//				.arg(QString::number(this->ui.sdoResultValue->text().toULongLong(), 10))
+//				.arg(this->ui.sdoResultValue->text(), 0, 16));
+		logMessage.append(QString(" Value=%1")
+				.arg(this->ui.sdoResultValue->text()));
 	}
+	else
+	{
+		logMessage.append(")");
+	}
+
+	this->UpdateLog(logMessage);
 
 	//handle the return from the api
 	if (oplkRet == kErrorOk)
 	{
 		//Local OD access successful
-		this->ui.transferStatus->setText("Last Transfer Completed");
-		this->ui.sdoTransferLog->append(QString("SdoTransfer finished successfully"));
+		this->ui.transferStatus->setText("Transfer completed");
+		this->UpdateLog(QString("SdoTransfer completed successfully"));
 		this->UpdateSdoTransferReturnValue();
 		this->ui.groupBoxSdoTransfer->setEnabled(true);
 	}
@@ -221,10 +238,11 @@ void SdoTransfer::on_executeTransfer_clicked()
 	else
 	{
 		//Failed OD Access
-		QString errorMessage = QString("Transfer Aborted.\n%1")
+		QString errorMessage = QString("SDO transfer failed. Err=0x%1(%2)")
+									.arg(QString::number(oplkRet, 16))
 									.arg(debugstr_getRetValStr(oplkRet));
 		this->ui.transferStatus->setText(errorMessage);
-		this->ui.sdoTransferLog->append(errorMessage);
+		this->UpdateLog(errorMessage);
 		this->ui.groupBoxSdoTransfer->setEnabled(true);
 	}
 
@@ -238,22 +256,26 @@ void SdoTransfer::HandleSdoTransferFinished(const SdoTransferResult result)
 {
 	this->ui.transferStatus->setText("");
 	//update the SDO log
-	this->ui.sdoTransferLog->append(QString("TransferFinished for NodeId:0x%1, Index:0x%2, SubIndex:0x%3 Transfer Result:%4")
-			.arg(QString::number(result.GetNodeId(), 16))
+	this->UpdateLog(QString("Transfer finished (Node=%1, Index=0x%2, Sub index=0x%3 Result=0x%4(%5))")
+			.arg(QString::number(result.GetNodeId(), 10))
 			.arg(QString::number(result.GetIndex(), 16))
 			.arg(QString::number(result.GetSubIndex(), 16))
+			.arg(QString::number(result.GetSdoComConState(), 16))
 			.arg(debugstr_getSdoComConStateStr(result.GetSdoComConState())));
 
 	// Check the result of Remote Node OD access from the abort codes
-	if (result.GetAbortCode() != 0)
+	if ((result.GetAbortCode() != 0)
+		|| (result.GetSdoComConState() != kSdoComTransferFinished))
 	{
-		this->ui.transferStatus->setText(QString("Transfer Aborted.\n0x%1(%2)")
+		QString abortmsg = QString("Abort code=0x%1(%2)")
 									.arg(QString::number(result.GetAbortCode(), 16))
-									.arg(this->GetAbortCodeString(result.GetAbortCode())));
+									.arg(this->GetAbortCodeString(result.GetAbortCode()));
+		this->ui.transferStatus->setText(abortmsg);
+		this->UpdateLog(abortmsg);
 	}
 	else
 	{
-		this->ui.transferStatus->setText("Last Transfer Completed");
+		this->ui.transferStatus->setText("Transfer Completed");
 		qDebug("Writedata %u", (*((quint64*)(&(this->sdoTransferData)))));
 		this->UpdateSdoTransferReturnValue();
 	}
@@ -709,11 +731,22 @@ const QString SdoTransfer::GetAbortCodeString(const UINT32 abortCode) const
 	return abortStr;
 }
 
-
 void SdoTransfer::on_updateNodeListButton_clicked()
 {
 	this->ui.nodeId->clear();
 	QStringList nodeIdList;
 	this->GetConfiguredNodeIdList(nodeIdList);
 	this->ui.nodeId->insertItems(0, nodeIdList);
+}
+
+void SdoTransfer::UpdateLog(const QString& logMessage)
+{
+	QString log;
+
+	log.append(QDateTime::currentDateTime().toString("yyyy/MM/dd-hh:mm:ss.zzz"));
+	log.append(" - ");
+	log.append(logMessage);
+
+	// emit sdo log(formattedLog)
+	this->ui.sdoTransferLog->append(log);
 }

@@ -155,6 +155,11 @@ private:
 	 */
 	void GetConfiguredNodeIdList(QStringList &nodeIdList);
 
+	/**
+	 * \brief Updates the log message to the SDO Transfer log with the date time.
+	 * \param[in] logMessage The message to be updated.
+	 */
+	void UpdateLog(const QString& logMessage);
 };
 
 #endif // _SDO_TRANSFER_H_

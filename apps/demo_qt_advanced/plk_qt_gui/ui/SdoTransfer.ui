@@ -81,14 +81,6 @@
         <property name="editable">
          <bool>true</bool>
         </property>
-        <property name="currentText">
-         <string>240</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>0xF0</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="0" column="0">
