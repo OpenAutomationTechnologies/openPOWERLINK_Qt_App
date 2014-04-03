@@ -40,14 +40,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "MainWindow.h"
 #include <QApplication>
 
+#ifdef __unix__
+#include <common/target.h>
+#endif
+
 /*******************************************************************************
 * Public function
 *******************************************************************************/
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
-	MainWindow mainWindow;
-	mainWindow.show();
+	#ifdef __unix__
+		target_init();
+	#endif
 
-	return app.exec();
+	MainWindow   *mainWindow = NULL;
+	QApplication *app = NULL;
+
+	app        = new QApplication(argc, argv);
+	mainWindow = new MainWindow;
+	mainWindow->show();
+
+	return app->exec();
 }
