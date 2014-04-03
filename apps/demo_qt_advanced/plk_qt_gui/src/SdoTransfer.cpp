@@ -39,6 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
+#include <QMessageBox>
+
 #include "SdoTransfer.h"
 #include "api/OplkQtApi.h"
 #include "oplk/debugstr.h"
@@ -128,19 +130,17 @@ void SdoTransfer::on_read_toggled(bool selected)
 
 void SdoTransfer::on_executeTransfer_clicked()
 {
-/* disable the user input objects */
-	this->ui.groupBoxSdoTransfer->setEnabled(false);
 
-/* Update the transfer status */
-	this->ui.transferStatus->setText("Transferring...");
-
-/* Get the user inputs from the UI */
+	/* Get the user inputs from the UI */
 	bool conversionSuccess = false;
 	// Using C language conversion
 	const UINT nodeId = this->ui.nodeId->currentText().toUInt(&conversionSuccess, 0);
 	if (!conversionSuccess)
 	{
-		qDebug("Invalid Nodeid");
+		QMessageBox::warning(this, "SDO Transfer - Failed",
+							 "Invalid node id",
+							 QMessageBox::Close);
+		return;
 	}
 
 	const UINT index = this->ui.index->value(); // -ve values are not emitted
@@ -170,6 +170,11 @@ void SdoTransfer::on_executeTransfer_clicked()
 		sdoAccessType = kSdoAccessTypeWrite;
 	}
 
+	/* disable the user input objects */
+	this->ui.groupBoxSdoTransfer->setEnabled(false);
+	/* Update the transfer status */
+	this->ui.transferStatus->setText("Transferring...");
+
 	// Prepare the SDO transfer job
 	this->sdoTransferJob = new SdoTransferJob(nodeId,
 									index,
@@ -187,7 +192,7 @@ void SdoTransfer::on_executeTransfer_clicked()
 	//update the SDO log
 	this->ui.sdoTransferLog->append(QString("\n\n%1 Initialized for NodeId: 0x%2, DataType:%3, Index:%4, SubIndex:%5 via: %6")
 											.arg(((sdoAccessType == kSdoAccessTypeRead) ? "Read" : "Write"))
-											.arg(QString::number(nodeId, 16))
+											.arg(this->ui.nodeId->currentText())
 											.arg(this->ui.dataType->currentText())
 											.arg(QString::number(index, 16))
 											.arg(QString::number(subIndex, 16))
@@ -539,9 +544,9 @@ void SdoTransfer::GetConfiguredNodeIdList(QStringList &nodeIdList)
 		}
 
 		if (nodeAssignment != 0)
-		nodeIdList.push_back(QString("0x%1").arg(subIndex, 2, 16, QLatin1Char('0')));
+			nodeIdList.push_back(QString::number(subIndex));
 	}
-	nodeIdList.push_back("0xF0");
+	nodeIdList.push_back("240");
 }
 
 const QString SdoTransfer::GetAbortCodeString(const UINT32 abortCode) const
