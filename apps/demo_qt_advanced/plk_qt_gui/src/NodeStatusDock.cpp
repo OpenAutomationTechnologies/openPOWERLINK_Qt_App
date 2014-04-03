@@ -5,6 +5,8 @@
 \brief  Implements the node status dock and updates the status of the available
 		CN node id's.
 
+\todo   Rename to Network status Dock.
+
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited
@@ -41,18 +43,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <oplk/debugstr.h>
 
-const UINT kMaxCnNodes = 239;
+const UINT kMaxNodes = 240;
+//TODO have nodeId in common place.
+const UINT kmnNodeId = 240;
 
 NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	QDockWidget(parent)
 {
 	this->ui.setupUi(this);
 
+	// this->ui.verticalLayout->setDirection(QBoxLayout::Down);
+	this->ui.verticalLayout->setAlignment(Qt::AlignTop);
+
 	NodeUi *nodeUi = NULL;
-	for (UINT i = 0; i < kMaxCnNodes; ++i)
+	for (UINT i = 0; i < kMaxNodes; ++i)
 	{
-		nodeUi = new NodeUi(i + 1);
-		nodeUi->hide();
+		if (i == 0)
+		{
+			nodeUi = new NodeUi(kmnNodeId);
+		}
+		else
+		{
+			nodeUi = new NodeUi(i);
+			nodeUi->hide();
+		}
 		this->nodelists.push_back(nodeUi);
 		this->ui.verticalLayout->addWidget(nodeUi);
 	}
@@ -93,14 +107,19 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 
 void NodeStatusDock::HandleMnStateChanged(tNmtState nmtState)
 {
+	//At (0) refers to the MN index.
+	this->nodelists.at(0)->HandleNodeStateChanged(nmtState);
+
 	// Change all CN states for Stack shutdown / MN dead.
-	if ((nmtState == kNmtGsOff) || (nmtState < kNmtMsOperational))
+	if ((nmtState == kNmtMsBasicEthernet) || (nmtState < kNmtMsOperational))
 	{
 		for (QList<NodeUi*>::iterator it = this->nodelists.begin();
 			 it != this->nodelists.end(); ++it)
 		{
-			(*it)->hide();
-			// this->HandleNodeStateChanged((*it)->GetNodeId(), kNmtCsNotActive);
+			if ((*it)->GetNodeId() != kmnNodeId)
+			{
+				(*it)->hide();
+			}
 		}
 	}
 }
@@ -108,11 +127,11 @@ void NodeStatusDock::HandleMnStateChanged(tNmtState nmtState)
 void NodeStatusDock::HandleNodeStateChanged(const int nodeId, tNmtState nmtState)
 {
 	// qDebug("HandleN %d %s", nodeId, debugstr_getNmtStateStr(nmtState));
-	if ((nodeId > 0) && (nodeId <= kMaxCnNodes))
+	if ((nodeId > 0) && (nodeId <= kMaxNodes))
 	{
-		if ((this->nodelists.at(nodeId - 1)))
+		if ((this->nodelists.at(nodeId)))
 		{
-			this->nodelists.at(nodeId - 1)->HandleNodeStateChanged(nmtState);
+			this->nodelists.at(nodeId)->HandleNodeStateChanged(nmtState);
 			// Hide CN for Loss of PRes
 //			if (nmtState == kNmtCsNotActive)
 //			{
@@ -125,11 +144,11 @@ void NodeStatusDock::HandleNodeStateChanged(const int nodeId, tNmtState nmtState
 void NodeStatusDock::HandleNodeFound(const int nodeId)
 {
 	// qDebug(" F %d ", nodeId);
-	if ((nodeId > 0) && (nodeId <= kMaxCnNodes))
+	if ((nodeId > 0) && (nodeId <= kMaxNodes))
 	{
-		if (this->nodelists.at(nodeId - 1))
+		if (this->nodelists.at(nodeId))
 		{
-			this->nodelists.at(nodeId - 1)->show();
+			this->nodelists.at(nodeId)->show();
 		}
 	}
 }
