@@ -13,7 +13,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>80</width>
+    <width>93</width>
     <height>175</height>
    </size>
   </property>
@@ -23,11 +23,41 @@
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QPushButton" name="clear">
+      <property name="maximumSize">
+       <size>
+        <width>75</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Clear</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QPlainTextEdit" name="txtBxConsoleLog"/>
     </item>
    </layout>
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>clear</sender>
+   <signal>clicked()</signal>
+   <receiver>txtBxConsoleLog</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>46</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>320</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
