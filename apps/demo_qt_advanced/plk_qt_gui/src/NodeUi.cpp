@@ -56,17 +56,24 @@ NodeUi::NodeUi(const UINT nodeId, QWidget *parent) :
 	statusImage(new QLabel()),
 	statusPixmap(QPixmap(QSize(27, 27)))
 {
-	this->setMaximumSize(QSize(16777215, 45));
-	/// Node name
-	if (this->nodeId == 240)
-		this->name->setText(QString("MN - %1 : ").arg(this->nodeId));
-	else
-		this->name->setText(QString("CN - %1").arg(this->nodeId));
+	this->setMaximumSize(QSize(200, 45));
 
-	this->name->setFont(QFont("Arial", 11, QFont::Bold));
+/// Setting node name
+	if (this->nodeId == 240)
+	{
+		this->name->setText(QString("MN-%1 ").arg(this->nodeId));
+		this->name->setMinimumWidth(75);
+		this->name->setFont(QFont("Arial", 11, QFont::Bold));
+	}
+	else
+	{
+		this->name->setText(QString("      CN-%1 ").arg(this->nodeId));
+		this->name->setMinimumWidth(100);
+		this->name->setFont(QFont("Arial", 10, QFont::Bold));
+	}
 	this->nodeLayout->addWidget(this->name);
 
-/// Node name
+
 	this->statusPixmap.fill(Qt::transparent);
 
 	QPainter painter(&(this->statusPixmap));
@@ -90,8 +97,10 @@ const UINT NodeUi::GetNodeId() const
 
 void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
 {
-	this->setToolTip(QString("%1 %2") .arg(this->name->text())
-			.arg(debugstr_getNmtStateStr(nmtState)));
+	this->setToolTip((QString("%1 : %2")
+					.arg(this->name->text())
+					.arg(debugstr_getNmtStateStr(nmtState)))
+					.trimmed());
 
 	QPainter painter(&(this->statusPixmap));
 	painter.setRenderHint(QPainter::Antialiasing, true);

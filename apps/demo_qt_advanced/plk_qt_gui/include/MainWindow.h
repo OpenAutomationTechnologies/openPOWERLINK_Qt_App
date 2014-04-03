@@ -135,7 +135,6 @@ private:
 	SelectNwInterfaceDialog *networkInterface; ///< Network select interface dialog
 	NmtCommandsDock *nmtCmdWindow;             ///< NMT command
 	NodeStatusDock *cnStatus;                  ///< CN status list
-	NodeUi *mnNode;                            ///< MN status frame
 	ProcessImageParser *parser;                ///< ProcessImage xml Parser instance
 	DataSyncThread *dataSync;                  ///< ProcessImageDataSync Thread
 };

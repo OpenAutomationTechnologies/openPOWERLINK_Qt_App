@@ -71,7 +71,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	networkInterface(new SelectNwInterfaceDialog()),
 	nmtCmdWindow(new NmtCommandsDock()),
 	cnStatus(new NodeStatusDock()),
-	mnNode(new NodeUi(localNodeId)),
 	piVar(NULL),
 	piMemory(NULL),
 	parser(NULL),
@@ -81,16 +80,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->ui.actionStop->setDisabled(true);
 	this->ui.actionRestart->setEnabled(false);
-
-	const int index = this->mnNode->metaObject()->indexOfMethod(
-					QMetaObject::normalizedSignature(
-						"HandleNodeStateChanged(tNmtState)").constData());
-	Q_ASSERT(index != -1);
-	// If asserted check for the function name
-
-// TODO Handle return values
-	const bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->mnNode), this->mnNode->metaObject()->method(index));
-
 }
 
 MainWindow::~MainWindow()
@@ -101,7 +90,6 @@ MainWindow::~MainWindow()
 	delete this->networkInterface;
 	delete this->nmtCmdWindow;
 	delete this->cnStatus;
-	delete this->mnNode;
 
 	if (!this->piVar)
 	{
@@ -169,9 +157,6 @@ bool MainWindow::on_actionSelect_Interface_triggered()
 void MainWindow::on_actionStart_triggered()
 {
 	// No need to save the return value of the addTab
-
-	this->ui.statusbar->addPermanentWidget(this->mnNode);
-	this->mnNode->show();
 
 	if (!(this->cdcDialog->GetXapFileName()) || !(this->cdcDialog->GetXapFileName()))
 	{
