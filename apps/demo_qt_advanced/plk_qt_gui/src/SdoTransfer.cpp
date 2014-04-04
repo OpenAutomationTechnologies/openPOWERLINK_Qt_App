@@ -126,7 +126,7 @@ SdoTransfer::SdoTransfer(QWidget *parent) :
 void SdoTransfer::on_read_toggled(bool selected)
 {
 	this->ui.sdoResultValue->clear();
-	this->ui.sdoResultValue->setReadOnly(selected);
+	this->ui.sdoResultValue->setDisabled(selected);
 }
 
 void SdoTransfer::on_executeTransfer_clicked()
