@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>548</width>
-    <height>392</height>
+    <width>574</width>
+    <height>311</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,23 +20,26 @@
   <property name="frameShadow">
    <enum>QFrame::Raised</enum>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
     <widget class="QGroupBox" name="groupBoxSdoTransfer">
      <property name="minimumSize">
       <size>
        <width>200</width>
-       <height>350</height>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>230</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="title">
       <string>SDO Transfer (Read / Write)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
      <property name="flat">
       <bool>false</bool>
@@ -45,117 +48,7 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QLabel" name="labelSubIndex">
-        <property name="text">
-         <string>Sub index</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="labelProtocol">
-        <property name="text">
-         <string>SDO via</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labelIndex">
-        <property name="text">
-         <string>Index</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="labelValue">
-        <property name="text">
-         <string>Value</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="nodeId">
-        <property name="inputMethodHints">
-         <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhPreferNumbers</set>
-        </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="labelNodeId">
-        <property name="text">
-         <string>Node id</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="labelDataType">
-        <property name="text">
-         <string>Data type</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="labelSdoType">
-        <property name="text">
-         <string>Access type</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="updateNodeListButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QSpinBox" name="index">
-        <property name="prefix">
-         <string>0x</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>65535</number>
-        </property>
-        <property name="value">
-         <number>4096</number>
-        </property>
-        <property name="displayIntegerBase">
-         <number>16</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QSpinBox" name="subIndex">
-        <property name="prefix">
-         <string>0x</string>
-        </property>
-        <property name="maximum">
-         <number>255</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="displayIntegerBase">
-         <number>16</number>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1" colspan="2">
-       <widget class="QComboBox" name="dataType"/>
-      </item>
-      <item row="4" column="1" colspan="2">
-       <widget class="QComboBox" name="sdoVia"/>
-      </item>
-      <item row="5" column="1" colspan="2">
+      <item row="5" column="1">
        <widget class="QGroupBox" name="groupBoxSdoType">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -199,17 +92,50 @@
         </layout>
        </widget>
       </item>
-      <item row="6" column="1" colspan="2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelNodeId">
+        <property name="text">
+         <string>Node id</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
        <widget class="QLineEdit" name="sdoResultValue">
         <property name="enabled">
          <bool>false</bool>
         </property>
-        <property name="clearButtonEnabled">
-         <bool>true</bool>
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
         </property>
        </widget>
       </item>
-      <item row="7" column="1" colspan="2">
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="subIndex">
+        <property name="prefix">
+         <string>0x</string>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>16</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="sdoVia"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelDataType">
+        <property name="text">
+         <string>Data type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
        <widget class="QPushButton" name="executeTransfer">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -222,7 +148,50 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0" colspan="3">
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelProtocol">
+        <property name="text">
+         <string>SDO via</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="index">
+        <property name="prefix">
+         <string>0x</string>
+        </property>
+        <property name="minimum">
+         <number>1000</number>
+        </property>
+        <property name="maximum">
+         <number>65535</number>
+        </property>
+        <property name="value">
+         <number>4102</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>16</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelSubIndex">
+        <property name="text">
+         <string>Sub index</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelIndex">
+        <property name="text">
+         <string>Index</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="dataType"/>
+      </item>
+      <item row="9" column="0" colspan="3">
        <widget class="QLabel" name="transferStatus">
         <property name="text">
          <string>Transfer Status</string>
@@ -232,10 +201,51 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelSdoType">
+        <property name="text">
+         <string>Access type</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="updateNodeListButton">
+        <property name="text">
+         <string>Update</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="nodeId">
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhPreferNumbers</set>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="sdoResultValueHex">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" rowspan="2">
+       <widget class="QLabel" name="labelValue">
+        <property name="text">
+         <string>Value</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="0" column="1">
     <widget class="QDockWidget" name="dockWidget">
      <property name="windowTitle">
       <string>SDO Transfer Result log</string>
@@ -252,5 +262,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>sdoResultValue</sender>
+   <signal>returnPressed()</signal>
+   <receiver>executeTransfer</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>150</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>150</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
