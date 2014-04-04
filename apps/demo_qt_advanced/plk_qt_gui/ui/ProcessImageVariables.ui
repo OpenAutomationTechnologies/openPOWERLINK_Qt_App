@@ -151,7 +151,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Current Value(Hex)</string>
+            <string>Current Value(HEX)</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -209,7 +209,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Force Value(Hex)  </string>
+            <string>Force Value(HEX)  </string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -361,7 +361,7 @@
             <enum>Qt::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>Current Value(Hex)</string>
+            <string>Current Value(HEX)</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
