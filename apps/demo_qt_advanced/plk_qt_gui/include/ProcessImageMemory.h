@@ -77,6 +77,16 @@ public slots:
 	 */
 	void UpdateOutputValue();
 
+private slots:
+	/**
+	 * \brief Triggers editing input processimage cells.
+	 *
+	 * Overrides the value to the processimage data.
+	 *
+	 * \param cell The pointer to the cell's widget.
+	 */
+	void on_inputTable_itemChanged(QTableWidgetItem *cell);
+
 private:
 	Ui::ProcessImageMemory ui;     ///< ProcessImage memory view Ui instance.
 

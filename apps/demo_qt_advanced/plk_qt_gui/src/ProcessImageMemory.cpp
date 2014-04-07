@@ -6,7 +6,8 @@
 from the oplk stack using the Qt 5.2 QTableWidgets.
 
 \todo
-		- Implement input processimage editing from the table.
+		- Input validation for InputProcessImage cells while editing.
+		- Block inputting padded cells.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -206,14 +207,11 @@ void ProcessImageMemory::UpdateInputValue()
 		for (std::vector<BYTE>::const_iterator it = value.begin();
 				it != value.end(); ++it)
 		{
-			const bool isSortenabled = this->ui.inputTable->isSortingEnabled();
-			this->ui.inputTable->setSortingEnabled(false);
-
 			cell = this->ui.inputTable->item(row, col);
 			if (cell)
-				cell->setText(QString("%1").arg(*it, 0, 16).rightJustified(2, '0'));
+				cell->setText((QString("%1").arg(*it, 0, 16).rightJustified(2, '0'))
+							  .toUpper());
 
-			this->ui.inputTable->setSortingEnabled(isSortenabled);
 			if ((col + 1) == this->ui.inputTable->columnCount())
 			{
 				++row;
@@ -245,14 +243,10 @@ void ProcessImageMemory::UpdateOutputValue()
 		for (std::vector<BYTE>::const_iterator it = value.begin();
 				it != value.end(); ++it)
 		{
-			const bool isSortenabled = this->ui.outTable->isSortingEnabled();
-			this->ui.outTable->setSortingEnabled(false);
-
 			cell = this->ui.outTable->item(row, col);
 			if (cell)
-				cell->setText(QString("%1").arg(*it, 0, 16).rightJustified(2, '0'));
-
-			this->ui.outTable->setSortingEnabled(isSortenabled);
+				cell->setText((QString("%1").arg(*it, 0, 16).rightJustified(2, '0'))
+							  .toUpper());
 
 			if ((col + 1) == this->ui.outTable->columnCount())
 			{
@@ -268,6 +262,27 @@ void ProcessImageMemory::UpdateOutputValue()
 	catch(const std::exception& ex)
 	{
 		// TODO Discuss about exposing the error to the user.
+		qDebug("An Exception has occured: %s", ex.what());
+	}
+}
+
+void ProcessImageMemory::on_inputTable_itemChanged(QTableWidgetItem *cell)
+{
+	try
+	{
+		UINT row = cell->row();
+		UINT col = cell->column();
+
+		bool ok = false;
+		UINT horiz = this->ui.inputTable->horizontalHeaderItem(col)->text().toUInt(&ok, 16);
+		UINT vertic = this->ui.inputTable->verticalHeaderItem(row)->text().toUInt(&ok, 16);
+
+		std::vector<BYTE> value;
+		value.push_back((BYTE) cell->text().toUInt(&ok, 16));
+		this->inPi.SetRawData(value, (horiz + vertic));
+	}
+	catch(const std::exception& ex)
+	{
 		qDebug("An Exception has occured: %s", ex.what());
 	}
 }
