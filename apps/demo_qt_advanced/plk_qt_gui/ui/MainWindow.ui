@@ -102,9 +102,9 @@
     <enum>Qt::LeftToRight</enum>
    </property>
   </widget>
-  <widget class="QToolBar" name="POWERLINK">
+  <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>openPOWERLINK</string>
    </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -121,7 +121,6 @@
    <addaction name="actionStart"/>
    <addaction name="actionStop"/>
    <addaction name="separator"/>
-   <addaction name="actionAbout"/>
   </widget>
   <action name="actionOpen_CDC">
    <property name="icon">
