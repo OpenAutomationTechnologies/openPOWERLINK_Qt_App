@@ -14,17 +14,17 @@ TEMPLATE = app
 ################################TargetInstallPath#######################################
 CONFIG(release, debug|release) {
 	DESTDIR = ../plk_qt_gui/release
-	OBJECTS_DIR = ../plk_qt_gui/release/.obj
-	MOC_DIR = ../plk_qt_gui/release/.moc
-	RCC_DIR = ../plk_qt_gui/release/.rcc
-	UI_DIR = ../plk_qt_gui/release/.ui
+	OBJECTS_DIR = release/.obj
+	MOC_DIR = release/.moc
+	RCC_DIR = release/.rcc
+	UI_DIR = release/.ui
 }
 CONFIG(debug, debug|release) {
 	DESTDIR = ../plk_qt_gui/debug
-	OBJECTS_DIR = ../plk_qt_gui/debug/.obj
-	MOC_DIR = ../plk_qt_gui/debug/.moc
-	RCC_DIR = ../plk_qt_gui/debug/.rcc
-	UI_DIR = ../plk_qt_gui/debug/.ui
+	OBJECTS_DIR = debug/.obj
+	MOC_DIR = debug/.moc
+	RCC_DIR = debug/.rcc
+	UI_DIR = debug/.ui
 }
 
 INCLUDEPATH += include \
