@@ -77,21 +77,19 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	Q_ASSERT(index != -1);
 	// If asserted check for the Function name
 
-	// TODO Handle return values
 	bool ret = OplkQtApi::RegisterNodeStateChangedEventHandler(*(this),
 							this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
 
-
-	// TODO Handle return values
 	index = this->metaObject()->indexOfMethod(
 					QMetaObject::normalizedSignature(
 					"HandleNodeFound(const int)").constData());
 	Q_ASSERT(index != -1);
 	// If asserted check for the Function name
 
-	// TODO Handle return values
 	ret = OplkQtApi::RegisterNodeFoundEventHandler(*(this),
 							this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
 
 	index = this->metaObject()->indexOfMethod(
 					QMetaObject::normalizedSignature(
@@ -99,10 +97,9 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	Q_ASSERT(index != -1);
 	// If asserted check for the Function name
 
-// TODO Handle return values
 	ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this),
 							this->metaObject()->method(index));
-
+	Q_ASSERT(ret != false);
 }
 
 void NodeStatusDock::HandleMnStateChanged(tNmtState nmtState)
