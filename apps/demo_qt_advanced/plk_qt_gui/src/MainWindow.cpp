@@ -74,11 +74,22 @@ MainWindow::MainWindow(QWidget *parent) :
 	piVar(NULL),
 	piMemory(NULL),
 	parser(NULL),
-	dataSync(NULL)
+	dataSync(NULL),
+	status(NULL)
 {
 	this->ui.setupUi(this);
-
+	this->status = new StatusBar(this);
+	this->setStatusBar(this->status);
 	this->ui.actionStop->setDisabled(true);
+	int index = this->status->metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+						"UpdateNmtStatus(tNmtState)").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the Function name
+
+	bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->status),
+							this->status->metaObject()->method(index));
+	Q_ASSERT(ret != false);
 }
 
 MainWindow::~MainWindow()
@@ -157,16 +168,19 @@ void MainWindow::on_actionStart_triggered()
 {
 	// No need to save the return value of the addTab
 
-	if (!(this->cdcDialog->GetXapFileName()) || !(this->cdcDialog->GetXapFileName()))
+	if (!(this->cdcDialog->GetCdcFileName()) || !(this->cdcDialog->GetXapFileName()))
 	{
 		if (this->cdcDialog->exec() == QDialog::Rejected)
 		{
-			QMessageBox::critical(this, "CDC, Xap.xml not found",
-								 QString("CDC file and xap.xml not found"),
+			QMessageBox::critical(this, QStringLiteral("CDC, Xap.xml not found"),
+								 QString(QStringLiteral("CDC file and xap.xml not found")),
 								 QMessageBox::Close);
 			return;
 		}
 	}
+
+	this->status->SetCdcFilePath(this->cdcDialog->GetCdcFileName());
+	this->status->SetXapFilePath(this->cdcDialog->GetXapFileName());
 
 	try
 	{
@@ -185,7 +199,7 @@ void MainWindow::on_actionStart_triggered()
 	}
 	catch(const std::exception& ex)
 	{
-		QMessageBox::critical(this, "Xml Parsing failed!",
+		QMessageBox::critical(this, QStringLiteral("Xml Parsing failed!"),
 							 QString("XmlReader has found errors with your xap file.\n Error: %1 ")
 							  .arg(ex.what()),
 							 QMessageBox::Close);
@@ -249,7 +263,7 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	this->ui.statusbar->showMessage(this->networkInterface->GetDevDescription());
+	this->status->SetNetworkInterfaceName(this->networkInterface->GetDevDescription());
 
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
