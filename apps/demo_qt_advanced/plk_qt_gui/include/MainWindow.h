@@ -54,6 +54,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NodeStatusDock.h"
 #include "NodeUi.h"
 #include "DataSyncThread.h"
+#include "StatusBar.h"
 
 /**
  * \brief The MainWindow class inherits the QMainWindow and implements
@@ -132,6 +133,7 @@ private:
 	NodeStatusDock *cnStatus;                  ///< CN status list
 	ProcessImageParser *parser;                ///< ProcessImage xml Parser instance
 	DataSyncThread *dataSync;                  ///< ProcessImageDataSync Thread
+	StatusBar *status;
 };
 
 #endif // _MAIN_WINDOW_H_
