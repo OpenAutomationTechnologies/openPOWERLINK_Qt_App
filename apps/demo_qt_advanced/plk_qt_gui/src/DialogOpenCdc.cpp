@@ -61,7 +61,7 @@ DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
 void DialogOpenCdc::on_browseCDC_clicked()
 {
 	QString cdcPath = QFileDialog::getExistingDirectory(this, tr("Choose the path for the CDC and xap.xml"),
-						"",
+						this->ui.cdcPath->text(),
 						QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
 	qDebug(cdcPath.toStdString().c_str());
