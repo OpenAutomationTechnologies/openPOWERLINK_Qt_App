@@ -98,7 +98,6 @@ void ProcessImageVariables::UpdateOutputs()
 	}
 }
 
-
 /*******************************************************************************
 * Private functions
 *******************************************************************************/
@@ -108,7 +107,7 @@ void ProcessImageVariables::PrepareInputRows()
 	// TODO Loop through processImage In from the QtProcessImageParser and add the channel.
 	ChannelUi *channel = NULL;
 	for (std::map<std::string, Channel>::const_iterator it = this->inPi.cbegin();
-		 it!=this->inPi.cend(); ++it)
+		 it != this->inPi.cend(); ++it)
 	{
 		// qDebug(qPrintable(QString::fromStdString(it->first)));
 		channel = new ChannelUi(it->second);
@@ -121,7 +120,7 @@ void ProcessImageVariables::PrepareOutputRows()
 {
 	ChannelUi *channel = NULL;
 	for (std::map<std::string, Channel>::const_iterator it = this->outPi.cbegin();
-		 it!=this->outPi.cend(); ++it)
+		 it != this->outPi.cend(); ++it)
 	{
 		// qDebug(qPrintable(QString::fromStdString(it->first)));
 		channel = new ChannelUi(it->second);
