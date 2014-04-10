@@ -80,8 +80,15 @@ private:
 	QHBoxLayout *nodeLayout; ///< The layout for the node frame.
 	QLabel *name;            ///< A label to specify the name of the node.
 	QLabel *statusImage;     ///< A label to display the status of the node.
-	QPixmap statusPixmap;    ///< Pixmap to hold the image of the status.
 	const UINT nodeId;       ///< The node id of this node frame.
+
+	static const QString ledRed;
+	static const QString ledGreen;
+	static const QString ledBlue;
+	static const QString ledYellow;
+	static const QString ledBrown;
+	static const QString ledWhite;
+	static const QString ledGrey;
 };
 
 #endif // _NODE_UI_H_

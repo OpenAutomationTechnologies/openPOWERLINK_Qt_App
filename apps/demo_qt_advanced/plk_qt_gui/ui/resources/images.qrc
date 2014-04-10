@@ -9,5 +9,12 @@
         <file>images/exitblue.gif</file>
         <file>images/KalycitoLogo.png</file>
         <file>images/KalycitoIcon.png</file>
+        <file>images/yellow.png</file>
+        <file>images/blue.png</file>
+        <file>images/brown.png</file>
+        <file>images/green.png</file>
+        <file>images/grey.png</file>
+        <file>images/red.png</file>
+        <file>images/white.png</file>
     </qresource>
 </RCC>
