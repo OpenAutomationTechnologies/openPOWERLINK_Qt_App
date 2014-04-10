@@ -39,6 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QtDebug>
 #include "api/OplkQtApi.h"
 #include "api/OplkEventHandler.h"
+#include "api/DataSyncThread.h"
 
 /*******************************************************************************
 * Module global variables
@@ -106,7 +107,6 @@ void OplkQtApi::SetInitParam()
 		// If needed Throw std err or return kErrorInvalidInstanceParam
 	}
 
-	OplkQtApi::initParam.pfnCbSync = NULL;
 	OplkQtApi::initParam.pEventUserArg = NULL;
 //	OplkQtApi::initParam.hwParam.devNum = 0;
 //	OplkQtApi::initParam.syncResLatency = 0;
@@ -171,6 +171,10 @@ tOplkError OplkQtApi::StartStack()
 	oplkRet = oplk_execNmtCommand(kNmtEventSwReset);
 	if (oplkRet != kErrorOk)
 		qDebug("kNmtEventSwReset Ret: %d", oplkRet);
+
+#if !defined(CONFIG_KERNELSTACK_DIRECTLINK)
+	DataSyncThread::GetInstance().start();
+#endif
 
 	return oplkRet;
 }
@@ -411,7 +415,11 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 		return oplkRet;
 	}
 
-	// OplkQtApi::initParam.pfnCbSync = NULL;
+#if defined(CONFIG_KERNELSTACK_DIRECTLINK)
+	OplkQtApi::initParam.pfnCbSync = DataSyncThread::GetInstance().GetSyncCbFunc();
+#else
+	OplkQtApi::initParam.pfnCbSync = NULL;
+#endif
 
 	/* sets the ProcessImage pointer from the allocated memory to the ProcessImage::data */
 	in.SetProcessImageDataPtr((const BYTE*)oplk_getProcessImageIn());
