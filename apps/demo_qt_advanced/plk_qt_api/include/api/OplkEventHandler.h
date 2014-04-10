@@ -74,6 +74,8 @@ public:
 	 */
 	tOplkApiCbEvent GetEventCbFunc(void);
 
+	virtual void run();
+
 private:
 
 	friend class OplkQtApi;
