@@ -45,6 +45,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <oplk/debugstr.h>
 
+const QString NodeUi::ledRed = ":/new/images/red.png";
+const QString NodeUi::ledGreen = ":/new/images/green.png";
+const QString NodeUi::ledBlue = ":/new/images/blue.png";
+const QString NodeUi::ledYellow = ":/new/images/yellow.png";
+const QString NodeUi::ledBrown = ":/new/images/brown.png";
+const QString NodeUi::ledWhite = ":/new/images/white.png";
+const QString NodeUi::ledGrey = ":/new/images/grey.png";
+
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
@@ -53,36 +61,27 @@ NodeUi::NodeUi(const UINT nodeId, QWidget *parent) :
 	nodeId(nodeId),
 	nodeLayout(new QHBoxLayout(this)),
 	name(new QLabel()),
-	statusImage(new QLabel()),
-	statusPixmap(QPixmap(QSize(27, 27)))
+	statusImage(new QLabel())
 {
-	this->setMaximumSize(QSize(200, 45));
+//	this->setMaximumSize(QSize(200, 47));
 
 /// Setting node name
 	if (this->nodeId == 240)
 	{
-		this->name->setText(QString("MN-%1 ").arg(this->nodeId));
-		this->name->setMinimumWidth(75);
+		this->name->setText(QString("   MN-%1").arg(this->nodeId));
+		this->name->setMinimumWidth(20);
+		this->name->setMaximumWidth(80);
 		this->name->setFont(QFont("Arial", 11, QFont::Bold));
 	}
 	else
 	{
-		this->name->setText(QString("      CN-%1 ").arg(this->nodeId));
-		this->name->setMinimumWidth(100);
-		this->name->setFont(QFont("Arial", 10, QFont::Bold));
+		this->name->setText(QString("          CN-%1 ").arg(this->nodeId));
+		this->name->setMinimumWidth(110);
+		this->name->setFont(QFont("Arial", 11, QFont::Normal));
 	}
 	this->nodeLayout->addWidget(this->name);
 
-
-	this->statusPixmap.fill(Qt::transparent);
-
-	QPainter painter(&(this->statusPixmap));
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setPen(QPen(Qt::transparent));
-	painter.setBrush(QBrush(Qt::red));
-	painter.drawEllipse(0, 0, 25, 25);
-
-	this->statusImage->setPixmap(this->statusPixmap);
+	this->statusImage->setPixmap(QPixmap(NodeUi::ledRed));
 	this->nodeLayout->addWidget(this->statusImage);
 
 	this->setToolTip(this->name->text());
@@ -102,17 +101,13 @@ void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
 					.arg(debugstr_getNmtStateStr(nmtState)))
 					.trimmed());
 
-	QPainter painter(&(this->statusPixmap));
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setPen(QPen(Qt::transparent));
-
-	// can also use QBrush(const QGradient & gradient)
+	QPixmap image;
 	switch (nmtState)
 	{
 		case kNmtMsNotActive:
 		case kNmtCsNotActive:
 		{
-			painter.setBrush(QBrush(Qt::gray));
+			image = QPixmap(NodeUi::ledGrey);
 			break;
 		}
 		case kNmtMsPreOperational1:
@@ -120,32 +115,31 @@ void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
 		case kNmtCsPreOperational1:
 		case kNmtCsPreOperational2:
 		{
-			painter.setBrush(QBrush(Qt::yellow));
+			image = QPixmap(NodeUi::ledYellow);
 			break;
 		}
 		case kNmtGsOff:
 		case kNmtCsStopped:
 		{
-			painter.setBrush(QBrush(Qt::red));
+			image = QPixmap(NodeUi::ledRed);
 			break;
 		}
 		case kNmtMsReadyToOperate:
 		case kNmtCsReadyToOperate:
 		{
-			painter.setBrush(QColor(255, 111, 0));
-			//painter.setBrush(QBrush(Qt::magenta));
+			image = QPixmap(NodeUi::ledBrown);
 			break;
 		}
 		case kNmtMsOperational:
 		case kNmtCsOperational:
 		{
-			painter.setBrush(QBrush(Qt::green));
+			image = QPixmap(NodeUi::ledGreen);
 			break;
 		}
 		case kNmtMsBasicEthernet:
 		case kNmtCsBasicEthernet:
 		{
-			painter.setBrush(QBrush(Qt::blue));
+			image = QPixmap(NodeUi::ledBlue);
 			break;
 		}
 		case kNmtGsInitialising:
@@ -153,10 +147,9 @@ void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
 		case kNmtGsResetCommunication:
 		case kNmtGsResetConfiguration:
 		default:
-			painter.setBrush(QBrush(Qt::white));
+			image = QPixmap(NodeUi::ledWhite);
 			break;
 	}
-	painter.drawEllipse(0, 0, 25, 25);
-	this->statusImage->setPixmap(this->statusPixmap);
+	this->statusImage->setPixmap(image);
 	this->nodeLayout->update();
 }
