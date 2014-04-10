@@ -7,14 +7,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>641</width>
-    <height>175</height>
+    <width>183</width>
+    <height>200</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>93</width>
-    <height>175</height>
+    <width>175</width>
+    <height>200</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -23,20 +23,177 @@
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" name="clear">
-      <property name="maximumSize">
-       <size>
-        <width>75</width>
-        <height>16777215</height>
-       </size>
+     <widget class="QTabWidget" name="LoggingTab">
+      <property name="tabPosition">
+       <enum>QTabWidget::West</enum>
       </property>
-      <property name="text">
-       <string>Clear</string>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="stack">
+       <attribute name="title">
+        <string>Stack</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QFrame" name="frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="clearStack">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Clear</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="copyStack">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Copy</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="txtBxConsoleLog">
+          <property name="lineWrapMode">
+           <enum>QPlainTextEdit::NoWrap</enum>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sdoLogTab">
+       <attribute name="title">
+        <string>SDO</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QFrame" name="frame_2">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="clearSdo">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Clear</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="copySdo">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Copy</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="sdoLog">
+          <property name="lineWrapMode">
+           <enum>QPlainTextEdit::NoWrap</enum>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
-    </item>
-    <item>
-     <widget class="QPlainTextEdit" name="txtBxConsoleLog"/>
     </item>
    </layout>
   </widget>
@@ -44,18 +201,66 @@
  <resources/>
  <connections>
   <connection>
-   <sender>clear</sender>
+   <sender>clearStack</sender>
    <signal>clicked()</signal>
    <receiver>txtBxConsoleLog</receiver>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>46</x>
-     <y>41</y>
+     <x>50</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>320</x>
-     <y>112</y>
+     <x>325</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copyStack</sender>
+   <signal>clicked()</signal>
+   <receiver>txtBxConsoleLog</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>116</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copySdo</sender>
+   <signal>clicked()</signal>
+   <receiver>sdoLog</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>116</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearSdo</sender>
+   <signal>clicked()</signal>
+   <receiver>sdoLog</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>167</y>
     </hint>
    </hints>
   </connection>

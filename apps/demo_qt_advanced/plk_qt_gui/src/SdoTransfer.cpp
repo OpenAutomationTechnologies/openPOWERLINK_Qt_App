@@ -797,6 +797,6 @@ void SdoTransfer::UpdateLog(const QString& logMessage)
 	log.append(" - ");
 	log.append(logMessage);
 
-	// emit sdo log(formattedLog)
+	emit SignalSdoLog(log);
 	this->ui.sdoTransferLog->append(log);
 }

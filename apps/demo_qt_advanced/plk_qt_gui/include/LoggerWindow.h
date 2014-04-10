@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * \brief The LoggerWindow class inherits QDockWidget and updates the log
- * messages from the stack's event handler.
+ * messages from various parts of the application.
  */
 class LoggerWindow : public QDockWidget
 {
@@ -53,13 +53,23 @@ public:
 	explicit LoggerWindow(QWidget *parent = 0);
 
 	/**
-	 * \brief Handles the print log signals.
+	 * \brief Handles the log signals from the stack.
 	 *
-	 *  Receives the print log signals from the stack and appends to the log window.
+	 *  Receives the log messages from the stack and appends to the stack log.
 	 *
 	 * \param[in] str The log string to be appended to the logwindow.
 	 **/
-	Q_INVOKABLE void HandlePrintLog(const QString& str);
+	Q_INVOKABLE void HandleStackLog(const QString& str);
+
+public slots:
+	/**
+	 * \brief Handles the log messages from the SDO transfer.
+	 *
+	 * Receives the log messages from the stack and appends to the SDO log
+	 *
+	 * \param[in] log
+	 */
+	void HandleSdoLog(const QString& log);
 
 private:
 	Ui::LoggerWindow ui;  ///< Logger window ui instance.
