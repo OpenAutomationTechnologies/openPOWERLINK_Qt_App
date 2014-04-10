@@ -190,7 +190,7 @@ void SdoTransfer::on_executeTransfer_clicked()
 
 	/* Update the transfer status */
 	this->ui.transferStatus->setText("Transferring...");
-	
+
 	/* disable the user input objects */
 	this->ui.groupBoxSdoTransfer->setEnabled(false);
 	// Prepare the SDO transfer job
@@ -751,12 +751,42 @@ const QString SdoTransfer::GetAbortCodeString(const UINT32 abortCode) const
 	return abortStr;
 }
 
-void SdoTransfer::on_updateNodeListButton_clicked()
+//TODO change to AddToNodeList
+void SdoTransfer::UpdateNodeList(unsigned int nodeId)
 {
+	this->ui.nodeId->hidePopup();
+	//TODO move to constructor or ui
+	this->ui.nodeId->setDuplicatesEnabled(false);
+	this->ui.nodeId->setInsertPolicy(QComboBox::InsertAlphabetically);
+
+	QStringList list;
+	for (UINT it = 0; it < this->ui.nodeId->count(); ++it)
+	{
+		list << this->ui.nodeId->itemText(it);
+	}
+	list << QString("%1").arg(nodeId, 3, 10, QChar('0'));
+
+	list.sort();
+
 	this->ui.nodeId->clear();
-	QStringList nodeIdList;
-	this->GetConfiguredNodeIdList(nodeIdList);
-	this->ui.nodeId->insertItems(0, nodeIdList);
+	this->ui.nodeId->addItems(list);
+}
+
+void SdoTransfer::RemoveFromNodeList(unsigned int nodeId)
+{
+	this->ui.nodeId->hidePopup();
+	QString nodeIdToRemove = QString("%1").arg(nodeId, 3, 10, QChar('0'));
+	QStringList list;
+	for (UINT it = 0; it < this->ui.nodeId->count(); ++it)
+	{
+		if (this->ui.nodeId->itemText(it).compare(nodeIdToRemove) != 0)
+			list << this->ui.nodeId->itemText(it);
+	}
+
+	list.sort();
+
+	this->ui.nodeId->clear();
+	this->ui.nodeId->addItems(list);
 }
 
 void SdoTransfer::UpdateLog(const QString& logMessage)

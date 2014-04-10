@@ -90,6 +90,10 @@ private:
 	QList<NodeUi*> nodelists; ///< List for maintaining the Node frames.
 	// May be we can use QMap
 	// QMap<const UINT, NodeUi*> nodelist;
+
+signals:
+	void SignalNodeAvailable(unsigned int nodeId);
+	void SignalNodeNotActive(unsigned int nodeId);
 };
 
 #endif // _NODE_STATUS_DOCK_H_

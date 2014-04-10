@@ -58,6 +58,12 @@ public:
 
 	explicit SdoTransfer(QWidget *parent = 0);
 
+public slots:
+
+	void UpdateNodeList(unsigned int nodeId);
+
+	void RemoveFromNodeList(unsigned int nodeId);
+
 private slots:
 	/**
 	 * \brief Toggles the state of the value textbox based on the read/write.
@@ -81,11 +87,6 @@ private slots:
 	 */
 	void on_sdoResultValue_editingFinished();
 
-	/**
-	 * \brief Updates the nodeId dropdown with the list of configured node id's.
-	 */
-	void on_updateNodeListButton_clicked();
-
 private:
 	Ui::SdoTransfer ui;
 
@@ -104,9 +105,11 @@ private:
 	// receiver object should be a part of the class object.
 	// Because the receiver function needs the objects memory while for RemoteSDO Transfer.
 	//TODO static const
-	QMetaMethod receiverFunction;    ///< MetaMethod object for the receiver Function
+	QMetaMethod receiverFunction;  ///< MetaMethod object for the receiver Function
 
 	QMetaType::Type metaDataTypeIndex; ///< The metatype of the Datatype selected.
+
+	QStringList nodeIdList;        ///< Node id list.
 
 	/**
 	 * \return a dataType map
