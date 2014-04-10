@@ -90,6 +90,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->status),
 							this->status->metaObject()->method(index));
 	Q_ASSERT(ret != false);
+
+	ret = connect(this->cnStatus,
+				  SIGNAL(SignalNodeAvailable(unsigned int)),
+				  this->sdoTab,
+				  SLOT(UpdateNodeList(unsigned int)));
+	Q_ASSERT(ret != false);
+
+	ret = connect(this->cnStatus,
+				  SIGNAL(SignalNodeNotActive(unsigned int)),
+				  this->sdoTab,
+				  SLOT(RemoveFromNodeList(unsigned int)));
+	Q_ASSERT(ret != false);
 }
 
 MainWindow::~MainWindow()

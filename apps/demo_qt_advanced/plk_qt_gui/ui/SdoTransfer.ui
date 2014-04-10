@@ -211,13 +211,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="updateNodeListButton">
-        <property name="text">
-         <string>Update</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="nodeId">
         <property name="inputMethodHints">
@@ -225,6 +218,12 @@
         </property>
         <property name="editable">
          <bool>true</bool>
+        </property>
+        <property name="maxCount">
+         <number>255</number>
+        </property>
+        <property name="minimumContentsLength">
+         <number>4</number>
         </property>
        </widget>
       </item>

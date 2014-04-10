@@ -116,9 +116,15 @@ void NodeStatusDock::HandleMnStateChanged(tNmtState nmtState)
 			if ((*it)->GetNodeId() != kmnNodeId)
 			{
 				(*it)->hide();
+				emit SignalNodeNotActive((*it)->GetNodeId());
 			}
 		}
 	}
+
+	if (nmtState == kNmtMsOperational)
+		emit SignalNodeAvailable(kmnNodeId);
+	else
+		emit SignalNodeNotActive(kmnNodeId);
 }
 
 void NodeStatusDock::HandleNodeStateChanged(const int nodeId, tNmtState nmtState)
@@ -130,11 +136,16 @@ void NodeStatusDock::HandleNodeStateChanged(const int nodeId, tNmtState nmtState
 		{
 			this->nodelists.at(nodeId)->HandleNodeStateChanged(nmtState);
 			// Hide CN for Loss of PRes
-//			if (nmtState == kNmtCsNotActive)
-//			{
-//				this->nodelists.at(nodeId - 1)->hide();
-//			}
+			if (nmtState == kNmtCsNotActive)
+			{
+				this->nodelists.at(nodeId)->hide();
+			}
 		}
+
+		if (nmtState == kNmtCsOperational)
+			emit SignalNodeAvailable(nodeId);
+		else// (nmtState == KNmtCsNotActive)
+			emit SignalNodeNotActive(nodeId);
 	}
 }
 
