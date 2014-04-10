@@ -417,6 +417,12 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 	in.SetProcessImageDataPtr((const BYTE*)oplk_getProcessImageIn());
 	out.SetProcessImageDataPtr((const BYTE*)oplk_getProcessImageOut());
 
+	// TODO need to know the use of it. The application was working even before adding it.
+	oplkRet = oplk_setupProcessImage();
+	if (oplkRet != kErrorOk)
+		qDebug("oplk_setupProcessImage retCode %x", oplkRet);
+	//defaults to return.
+
 	return oplkRet;
 }
 
