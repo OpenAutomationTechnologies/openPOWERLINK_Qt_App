@@ -87,6 +87,9 @@ private slots:
 	 */
 	void on_sdoResultValue_editingFinished();
 
+signals:
+	void SignalSdoLog(const QString& logMessage);
+
 private:
 	Ui::SdoTransfer ui;
 

@@ -102,6 +102,12 @@ MainWindow::MainWindow(QWidget *parent) :
 				  this->sdoTab,
 				  SLOT(RemoveFromNodeList(unsigned int)));
 	Q_ASSERT(ret != false);
+
+	ret = connect(this->sdoTab,
+				  SIGNAL(SignalSdoLog(const QString&)),
+				  this->log,
+				  SLOT(HandleSdoLog(const QString&)));
+	Q_ASSERT(ret != false);
 }
 
 MainWindow::~MainWindow()

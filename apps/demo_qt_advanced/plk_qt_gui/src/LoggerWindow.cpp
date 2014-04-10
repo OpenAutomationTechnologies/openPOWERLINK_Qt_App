@@ -52,13 +52,19 @@ LoggerWindow::LoggerWindow(QWidget *parent) :
 	QDockWidget(parent)
 {
 	this->ui.setupUi(this);
-	OplkQtApi::RegisterEventLogger(*this, this->metaObject()->method(
-			this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
-				"HandlePrintLog(const QString&)").constData())));
-
+	bool ret = OplkQtApi::RegisterEventLogger(*this, this->metaObject()->method(
+				this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
+				"HandleStackLog(const QString&)").constData())));
+	Q_ASSERT(ret != false);
 }
 
-void LoggerWindow::HandlePrintLog(const QString& str)
+void LoggerWindow::HandleStackLog(const QString& str)
 {
 	this->ui.txtBxConsoleLog->appendPlainText(str);
+}
+
+void LoggerWindow::HandleSdoLog(const QString& log)
+{
+	this->ui.LoggingTab->setCurrentIndex(1);
+	this->ui.sdoLog->appendPlainText(log);
 }
