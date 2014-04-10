@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>574</width>
+    <width>226</width>
     <height>311</height>
    </rect>
   </property>
@@ -216,14 +216,11 @@
         <property name="inputMethodHints">
          <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhPreferNumbers</set>
         </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
         <property name="maxCount">
          <number>255</number>
         </property>
         <property name="minimumContentsLength">
-         <number>4</number>
+         <number>3</number>
         </property>
        </widget>
       </item>
@@ -242,20 +239,6 @@
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QDockWidget" name="dockWidget">
-     <property name="windowTitle">
-      <string>SDO Transfer Result log</string>
-     </property>
-     <widget class="QWidget" name="dockWidgetContents">
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QTextEdit" name="sdoTransferLog"/>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
   </layout>
