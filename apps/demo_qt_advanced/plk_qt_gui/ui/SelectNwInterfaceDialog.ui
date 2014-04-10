@@ -16,7 +16,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources/images.qrc">
-    <normaloff>:/new/images/network_interface.gif</normaloff>:/new/images/network_interface.gif</iconset>
+    <normaloff>:/new/images/networkInterface.png</normaloff>:/new/images/networkInterface.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
