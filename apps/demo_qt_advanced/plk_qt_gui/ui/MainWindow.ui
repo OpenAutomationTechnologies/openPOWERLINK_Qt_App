@@ -120,7 +120,7 @@
   <action name="actionOpen_CDC">
    <property name="icon">
     <iconset resource="resources/images.qrc">
-     <normaloff>:/new/images/cdc.gif</normaloff>:/new/images/cdc.gif</iconset>
+     <normaloff>:/new/images/cdc.png</normaloff>:/new/images/cdc.png</iconset>
    </property>
    <property name="text">
     <string>Open CDC</string>
@@ -129,7 +129,7 @@
   <action name="actionQuit">
    <property name="icon">
     <iconset resource="resources/images.qrc">
-     <normaloff>:/new/images/exitblue.gif</normaloff>:/new/images/exitblue.gif</iconset>
+     <normaloff>:/new/images/exit.png</normaloff>:/new/images/exit.png</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -144,7 +144,7 @@
   <action name="actionSelect_Interface">
    <property name="icon">
     <iconset resource="resources/images.qrc">
-     <normaloff>:/new/images/network_interface.gif</normaloff>:/new/images/network_interface.gif</iconset>
+     <normaloff>:/new/images/networkInterface.png</normaloff>:/new/images/networkInterface.png</iconset>
    </property>
    <property name="text">
     <string>Select Interface</string>
@@ -153,7 +153,7 @@
   <action name="actionStart">
    <property name="icon">
     <iconset resource="resources/images.qrc">
-     <normaloff>:/new/images/start.gif</normaloff>:/new/images/start.gif</iconset>
+     <normaloff>:/new/images/start.png</normaloff>:/new/images/start.png</iconset>
    </property>
    <property name="text">
     <string>Start</string>
@@ -162,7 +162,7 @@
   <action name="actionStop">
    <property name="icon">
     <iconset resource="resources/images.qrc">
-     <normaloff>:/new/images/stop.gif</normaloff>:/new/images/stop.gif</iconset>
+     <normaloff>:/new/images/stop.png</normaloff>:/new/images/stop.png</iconset>
    </property>
    <property name="text">
     <string>Stop</string>
