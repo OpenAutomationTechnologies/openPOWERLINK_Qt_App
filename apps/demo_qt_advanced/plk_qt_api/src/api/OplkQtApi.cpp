@@ -194,7 +194,9 @@ tOplkError OplkQtApi::StopStack()
 	}
 
 	OplkEventHandler::GetInstance().AwaitNmtGsOff();
-
+	
+	DataSyncThread::GetInstance().requestInterruption();
+	
 	// TODO Set ProcessImage::data to NULL;
 	oplkRet = oplk_freeProcessImage();
 	if (oplkRet != kErrorOk)
