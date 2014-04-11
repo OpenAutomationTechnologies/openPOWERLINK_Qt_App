@@ -265,6 +265,55 @@ public:
 	static bool UnregisterEventLogger(const QObject& receiver,
 					const QMetaMethod& receiverFunction);
 
+	/**
+	 * \brief RegisterProcessImageSync
+	 *
+	 * The user have to use this function to register for the input and output signals.
+	 * This signals decides when the user shall start refresh the GUI.
+	 *
+	 * \see UpdateProcessImageWaitSyncTime to set the refresh rate.
+	 *
+	 * \note The receiverFunction should have the same signature as
+	 *       DataSyncThread::SignalUpdate(Input/Output)Values();
+	 * \param[in] direction
+	 * \param[in] receiver          Object to handle the event.
+	 * \param[in] receiverFunction  Object-Function to handle the event.
+	 * \retval true   Registration successful.
+	 * \retval false  Registration not successful.
+	 */
+	static bool RegisterProcessImageSync(Direction::Direction direction,
+										 const QObject& receiver,
+										 const QMetaMethod& receiverFunction);
+
+	/**
+	 * \brief UnregisterProcessImageSync
+	 *
+	 * \note The receiverFunction should have the same signature as
+	 *       DataSyncThread::SignalUpdate(Input/Output)Values();
+	 * \param[in] direction
+	 * \param[in] receiver          Object to handle the event.
+	 * \param[in] receiverFunction  Object-Function to handle the event.
+	 * \retval true   Un-registration successful.
+	 * \retval false  Un-registration not successful.
+	 */
+	static bool UnregisterProcessImageSync(Direction::Direction direction,
+										 const QObject& receiver,
+										 const QMetaMethod& receiverFunction);
+
+	/**
+	 * \return The ProcessImage sync wait time in micro seconds.
+	 */
+	static ULONG GetProcessImageWaitSyncTime(void);
+
+	/**
+	 * \brief Updates the ProcessImage sync to wait for the give time in microseconds.
+	 *
+	 * \note It defaults to DataSyncThread::sleepMicroSeconds value
+	 *
+	 * \param[in] microSecs Processimage sync thread sleep time.
+	 */
+	static void UpdateProcessImageWaitSyncTime(const ULONG microSecs);
+
 private:
 	static tOplkApiInitParam initParam;
 	static bool cdcSet;

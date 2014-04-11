@@ -295,6 +295,54 @@ bool OplkQtApi::UnregisterEventLogger(const QObject& receiver,
 		receiverFunction);
 }
 
+bool OplkQtApi::RegisterProcessImageSync(Direction::Direction direction,
+										const QObject& receiver,
+										const QMetaMethod& receiverFunction)
+{
+	if (direction == Direction::PI_IN)
+	{
+		return QObject::connect(&DataSyncThread::GetInstance(),
+				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateInputValues),
+				&receiver,
+				receiverFunction,
+				(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
+	}
+	else if (direction == Direction::PI_OUT)
+	{
+		return QObject::connect(&DataSyncThread::GetInstance(),
+				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateOutputValues),
+				&receiver,
+				receiverFunction,
+				(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
+	}
+
+	// TODO Error exception
+	return false;
+}
+
+bool OplkQtApi::UnregisterProcessImageSync(Direction::Direction direction,
+											const QObject& receiver,
+											const QMetaMethod& receiverFunction)
+{
+	if (direction == Direction::PI_IN)
+	{
+		return QObject::disconnect(&DataSyncThread::GetInstance(),
+				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateInputValues),
+				&receiver,
+				receiverFunction);
+	}
+	else if (direction == Direction::PI_OUT)
+	{
+		return QObject::disconnect(&DataSyncThread::GetInstance(),
+				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateOutputValues),
+				&receiver,
+				receiverFunction);
+	}
+
+	// TODO Error exception
+	return false;
+}
+
 tOplkError OplkQtApi::ExecuteNmtCommand(const UINT nodeId,
 						tNmtCommand nmtCommand)
 {
@@ -452,4 +500,14 @@ tOplkError OplkQtApi::SetCycleTime(const ULONG cycleTime)
 {
 	return (oplk_writeLocalObject(0x1006, 0x00, (void*)&cycleTime, 4));
 	// If this is a demo CN. It has to do remote SDO write?.
+}
+
+ULONG OplkQtApi::GetProcessImageWaitSyncTime(void)
+{
+	return DataSyncThread::GetInstance().GetSleepMsecs();
+}
+
+void OplkQtApi::UpdateProcessImageWaitSyncTime(const ULONG microSecs)
+{
+	DataSyncThread::GetInstance().SetSleepMsecs(microSecs);
 }
