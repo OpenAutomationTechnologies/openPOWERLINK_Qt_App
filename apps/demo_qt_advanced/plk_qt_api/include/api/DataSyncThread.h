@@ -50,6 +50,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief The DataSyncThread class
  *
  * Describes the thread to transfer synchronous processimage data.
+ *
+ * \note This class is intended to _only_ be used by OplkQtApi
+ * \note The signals can be received by registering through the
+ * OplkQtApi::RegisterProcessImageSycn() functions
  */
 class DataSyncThread : public QThread
 {
@@ -63,9 +67,15 @@ public:
 	 */
 	tSyncCb GetSyncCbFunc();
 
+	/**
+	 * \return The time in microSeconds used to sleep the DataSyncThread.
+	 */
 	ULONG GetSleepMsecs(void);
 
-	void SetSleepMsecs(ULONG mSecs);
+	/**
+	 * \param[in] mSecs time in micro seconds to sleep the DataSyncThread.
+	 */
+	void SetSleepMsecs(const ULONG mSecs);
 
 signals:
 	/**

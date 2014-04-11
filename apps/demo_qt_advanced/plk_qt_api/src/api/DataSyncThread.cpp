@@ -71,8 +71,8 @@ DataSyncThread& DataSyncThread::GetInstance()
 	return instance;
 }
 
-DataSyncThread::DataSyncThread()// :
-	//sleepMicroSeconds(400)
+DataSyncThread::DataSyncThread() :
+	sleepMicroSeconds(400)
 {
 
 }
@@ -85,7 +85,7 @@ void DataSyncThread::run()
 		if (DataSyncThread::currentThread()->isInterruptionRequested())
 			return;
 
-		oplkRet = DataSyncThread::ProcessSync();
+		oplkRet = this->ProcessSync();
 		if (oplkRet != kErrorOk)
 		{
 			qDebug("Error ProcessSync. Err=0x%x", oplkRet);
@@ -123,4 +123,14 @@ tOplkError DataSyncThread::ProcessSync()
 	QThread::msleep(DataSyncThread::sleepMicroSeconds);
 
 	return oplkRet;
+}
+
+ULONG DataSyncThread::GetSleepMsecs(void)
+{
+	return this->sleepMicroSeconds;
+}
+
+void DataSyncThread::SetSleepMsecs(const ULONG mSecs)
+{
+	this->sleepMicroSeconds = mSecs;
 }
