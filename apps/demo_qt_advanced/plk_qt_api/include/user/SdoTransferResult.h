@@ -42,6 +42,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "common/QtApiGlobal.h"
 
+#include <string>
+#include <map>
+
 /**
  * \brief This class contains the result of the Remote node SDO Transfer.
  * \note The data will be available in the SdoTransferJob instance used for this particular SdoTransfer.
@@ -102,6 +105,13 @@ public:
 	 */
 	UINT GetTransferredBytes() const;
 
+	/**
+	* \param[in] abortCode SDO abort code.
+	* \return The SDO abort code error description specified in EPSG V1.1.0 spec.
+	*/
+	static const std::string GetAbortCodeDescription(const UINT32 abortCode);
+
+//TODO change to const
 private:
 	UINT nodeId;
 	UINT index;
@@ -110,6 +120,10 @@ private:
 	tSdoAccessType sdoAccessType;
 	tSdoComConState sdoComConState;
 	UINT32 abortCode;
+
+	static const std::map<const UINT32, std::string> abortCodeString;
+
+	static const std::map<const UINT32, std::string> CreateAbortCodeStringMap();
 };
 
 #endif // _SDOTRANSFERRESULT_H_
