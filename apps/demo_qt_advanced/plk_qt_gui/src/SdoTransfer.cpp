@@ -554,42 +554,6 @@ void SdoTransfer::on_sdoResultValue_editingFinished()
 	}
 }
 
-void SdoTransfer::GetConfiguredNodeIdList(QStringList &nodeIdList)
-{
-	//TODO This function shall be moved to the API library
-	DWORD nodeAssignment;
-	UINT size = sizeof (nodeAssignment);
-	// Can read upto subindex 00th
-	for (UINT subIndex = 1; subIndex < 240; ++subIndex)
-	{
-//		SdoTransferJob transferjob = SdoTransferJob(0xF0,
-//									0x1F81,
-//									subIndex,
-//									(void*)(&nodeAssignment),
-//									QMetaType::sizeOf(this->metaDataTypeIndex),
-//									kSdoTypeAsnd,
-//									kSdoAccessTypeRead);
-//		tOplkError oplkRet =  OplkQtApi::TransferObject(transferjob,
-//										*(this),
-//										this->receiverMetaObject);
-
-		/* TODO Implement new API in library for easy use.
-		 *  There is no need of preparing the receiver and reciever function here
-		 * */
-		tOplkError oplkRet = oplk_readLocalObject(0x1F81, subIndex,
-										(void*)(&nodeAssignment),
-										&size);
-		if (oplkRet != kErrorOk)
-		{
-			qDebug("Local Read Error: %s", debugstr_getRetValStr(oplkRet));
-		}
-
-		if (nodeAssignment != 0)
-			nodeIdList.push_back(QString::number(subIndex));
-	}
-	nodeIdList.push_back("240");
-}
-
 const QString SdoTransfer::GetAbortCodeString(const UINT32 abortCode) const
 {
 	/* TODO Move this to API of SDO transfer with std::map implementation

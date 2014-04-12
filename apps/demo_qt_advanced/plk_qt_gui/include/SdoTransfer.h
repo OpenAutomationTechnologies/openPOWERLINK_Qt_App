@@ -156,12 +156,6 @@ private:
 	const QString GetAbortCodeString(const UINT32 abortCode) const;
 
 	/**
-	 * \brief Returns the list of configured node-id list.
-	 * \param[out] nodeIdList
-	 */
-	void GetConfiguredNodeIdList(QStringList &nodeIdList);
-
-	/**
 	 * \brief Updates the log message to the SDO Transfer log with the date time.
 	 * \param[in] logMessage The message to be updated.
 	 */
