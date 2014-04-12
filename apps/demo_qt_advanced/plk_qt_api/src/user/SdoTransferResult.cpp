@@ -37,6 +37,45 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "user/SdoTransferResult.h"
+#include <sstream>
+
+const std::map<const UINT32, std::string> SdoTransferResult::CreateAbortCodeStringMap()
+{
+	std::map<const UINT32, std::string> abortCodeMap;
+	abortCodeMap[SDO_AC_TIME_OUT]                          = "SDO protocol timed out";
+	abortCodeMap[SDO_AC_UNKNOWN_COMMAND_SPECIFIER]         = "Client/server Command ID not valid or unknown";
+	abortCodeMap[SDO_AC_INVALID_BLOCK_SIZE]                = "Invalid block size";
+	abortCodeMap[SDO_AC_INVALID_SEQUENCE_NUMBER]           = "Invalid sequence number";
+	abortCodeMap[SDO_AC_OUT_OF_MEMORY]                     = "Out of memory";
+	abortCodeMap[SDO_AC_UNSUPPORTED_ACCESS]                = "Unsupported access to an object";
+	abortCodeMap[SDO_AC_READ_TO_WRITE_ONLY_OBJ]            = "Attempt to read a write-only object";
+	abortCodeMap[SDO_AC_WRITE_TO_READ_ONLY_OBJ]            = "Attempt to write a read-only object";
+	abortCodeMap[SDO_AC_OBJECT_NOT_EXIST]                  = "Object does not exist in the object dictionary";
+	abortCodeMap[SDO_AC_OBJECT_NOT_MAPPABLE]               = "Object cannot be mapped to the PDO";
+	abortCodeMap[SDO_AC_PDO_LENGTH_EXCEEDED]               = "The number and length of the objects to be mapped would exceed PDO length";
+	abortCodeMap[SDO_AC_GEN_PARAM_INCOMPATIBILITY]         = "General parameter incompatibility";
+	abortCodeMap[SDO_AC_INVALID_HEARTBEAT_DEC]             = "Invalid heartbeat declaration";
+	abortCodeMap[SDO_AC_GEN_INTERNAL_INCOMPATIBILITY]      = "General internal incompatibility in the device";
+	abortCodeMap[SDO_AC_ACCESS_FAILED_DUE_HW_ERROR]        = "Access failed due to an hardware error";
+	abortCodeMap[SDO_AC_DATA_TYPE_LENGTH_NOT_MATCH]        = "Data type does not match, length of service parameter does not match";
+	abortCodeMap[SDO_AC_DATA_TYPE_LENGTH_TOO_HIGH]         = "Data type does not match, length of service parameter too high";
+	abortCodeMap[SDO_AC_DATA_TYPE_LENGTH_TOO_LOW]          = "Data type does not match, length of service parameter too low";
+	abortCodeMap[SDO_AC_SUB_INDEX_NOT_EXIST]               = "Sub-index does not exist";
+	abortCodeMap[SDO_AC_VALUE_RANGE_EXCEEDED]              = "Value range of parameter exceeded (only for write access)";
+	abortCodeMap[SDO_AC_VALUE_RANGE_TOO_HIGH]              = "Value of parameter written too high";
+	abortCodeMap[SDO_AC_VALUE_RANGE_TOO_LOW]               = "Value of parameter written too low";
+	abortCodeMap[SDO_AC_MAX_VALUE_LESS_MIN_VALUE]          = "Maximum value is less than minimum value";
+	abortCodeMap[SDO_AC_GENERAL_ERROR]                     = "General error";
+	abortCodeMap[SDO_AC_DATA_NOT_TRANSF_OR_STORED]         = "Data cannot be transferred or stored to the application";
+	abortCodeMap[SDO_AC_DATA_NOT_TRANSF_DUE_LOCAL_CONTROL] = "Data cannot be transferred or stored to the application because of local control";
+	abortCodeMap[SDO_AC_DATA_NOT_TRANSF_DUE_DEVICE_STATE]  = "Data cannot be transferred or stored to the application because of the present device state";
+	abortCodeMap[SDO_AC_OBJECT_DICTIONARY_NOT_EXIST]       = "Object dictionary dynamic generation fails or no object dictionary is present (e.g. object dictionary is generated from file and generation fails because of a file error)";
+	abortCodeMap[SDO_AC_CONFIG_DATA_EMPTY]                 = "EDS, DCF or Concise DCF Data set empty";
+	return abortCodeMap;
+}
+
+const std::map<const UINT32, std::string> SdoTransferResult::abortCodeString = SdoTransferResult::CreateAbortCodeStringMap();
+
 
 SdoTransferResult::SdoTransferResult()
 {
@@ -94,4 +133,21 @@ UINT SdoTransferResult::GetSubIndex() const
 UINT SdoTransferResult::GetTransferredBytes() const
 {
 	return this->transferredBytes;
+}
+
+const std::string SdoTransferResult::GetAbortCodeDescription(const UINT32 abortCode)
+{
+	std::map<const UINT32, std::string>::const_iterator cIt =
+			SdoTransferResult::abortCodeString.find(abortCode);
+
+	if (cIt != SdoTransferResult::abortCodeString.end())
+	{
+		return cIt->second;
+	}
+	else
+	{
+		std::ostringstream oss;
+		oss << "Unknown error code detected. Error:0x" << std::hex << abortCode;
+		return oss.str();
+	}
 }
