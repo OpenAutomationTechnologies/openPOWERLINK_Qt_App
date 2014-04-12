@@ -50,8 +50,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "MainWindow.h"
 #include "AboutDialog.h"
-#include "DataSyncThread.h"
-
 
 /*******************************************************************************
 * Module global variables
@@ -74,7 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	piVar(NULL),
 	piMemory(NULL),
 	parser(NULL),
-	dataSync(NULL),
 	status(NULL)
 {
 	this->ui.setupUi(this);
@@ -132,11 +129,6 @@ MainWindow::~MainWindow()
 	if (!this->parser)
 	{
 		delete this->parser;
-	}
-
-	if (!this->dataSync)
-	{
-		delete this->dataSync;
 	}
 }
 
@@ -258,7 +250,6 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	this->dataSync = new DataSyncThread();
 	oplkRet = OplkQtApi::AllocateProcessImage(piIn, piOut);
 	if (oplkRet != kErrorOk)
 	{
@@ -300,27 +291,15 @@ void MainWindow::on_actionStart_triggered()
 
 	this->ui.tabWidget->addTab(this->sdoTab, "SDO Transfer");
 
-	// Start DataSync thread after starting stack.
-	this->dataSync->start();
-
 	this->piVar = new ProcessImageVariables(piIn, piOut);
 	this->ui.tabWidget->addTab(this->piVar, "ProcessImage Variables view");
 
-	connect(this->dataSync, SIGNAL(SignalUpdateInputValues()), this->piVar, SLOT(UpdateInputs()));
-	connect(this->dataSync, SIGNAL(SignalUpdateOutputValues()), this->piVar, SLOT(UpdateOutputs()));
-
 	this->piMemory = new ProcessImageMemory(piIn, piOut);
 	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
-
-	connect(this->dataSync, SIGNAL(SignalUpdateInputValues()), this->piMemory, SLOT(UpdateInputValue()));
-	connect(this->dataSync, SIGNAL(SignalUpdateOutputValues()), this->piMemory, SLOT(UpdateOutputValue()));
-
 }
 
 void MainWindow::on_actionStop_triggered()
 {
-	// exit datasync thread if it is running
-	// TODO delete thread.
 	tOplkError oplkRet = OplkQtApi::StopStack();
 	if (oplkRet != kErrorOk)
 	{

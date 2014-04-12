@@ -53,7 +53,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NmtCommandsDock.h"
 #include "NodeStatusDock.h"
 #include "NodeUi.h"
-#include "DataSyncThread.h"
 #include "StatusBar.h"
 
 /**
@@ -132,7 +131,6 @@ private:
 	NmtCommandsDock *nmtCmdWindow;             ///< NMT command
 	NodeStatusDock *cnStatus;                  ///< CN status list
 	ProcessImageParser *parser;                ///< ProcessImage xml Parser instance
-	DataSyncThread *dataSync;                  ///< ProcessImageDataSync Thread
 	StatusBar *status;
 };
 

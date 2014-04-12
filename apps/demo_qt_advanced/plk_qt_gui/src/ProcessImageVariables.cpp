@@ -39,6 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ProcessImageVariables.h"
+#include "api/OplkQtApi.h"
 
 /*******************************************************************************
 * Public functions
@@ -51,6 +52,29 @@ ProcessImageVariables::ProcessImageVariables(ProcessImageIn &in, ProcessImageOut
 	this->ui.setupUi(this);
 	this->PrepareInputRows();
 	this->PrepareOutputRows();
+
+//Register for ProcessImage variables input datas.
+	int index = this->metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+						"UpdateInputs()").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the Function name
+
+	bool ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_IN,
+										 *(this),
+										 this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
+
+//Register for ProcessImage variables output datas.
+	index = this->metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+						"UpdateOutputs()").constData());
+	Q_ASSERT(index != -1);
+
+	ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_OUT,
+										 *(this),
+										 this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
 }
 
 ProcessImageVariables::~ProcessImageVariables()
@@ -104,7 +128,6 @@ void ProcessImageVariables::UpdateOutputs()
 
 void ProcessImageVariables::PrepareInputRows()
 {
-	// TODO Loop through processImage In from the QtProcessImageParser and add the channel.
 	ChannelUi *channel = NULL;
 	for (std::map<std::string, Channel>::const_iterator it = this->inPi.cbegin();
 		 it != this->inPi.cend(); ++it)
