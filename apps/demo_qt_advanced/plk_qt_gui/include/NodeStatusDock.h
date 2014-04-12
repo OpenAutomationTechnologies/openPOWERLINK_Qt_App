@@ -57,12 +57,6 @@ public:
 	explicit NodeStatusDock(QWidget *parent = 0);
 
 	/**
-	 * \brief GetAvailableCnList
-	 * \return The currently available CN node's list.
-	 */
-	QStringList GetAvailableCnList();
-
-	/**
 	 * \brief   Handles the CN node state changed signals
 	 *
 	 * \param[in] nodeId    nodeId of the node which changes the state.
