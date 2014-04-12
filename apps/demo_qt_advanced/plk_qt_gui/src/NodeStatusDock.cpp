@@ -160,17 +160,3 @@ void NodeStatusDock::HandleNodeFound(const int nodeId)
 		}
 	}
 }
-
-QStringList NodeStatusDock::GetAvailableCnList()
-{
-	QStringList cnList;
-//TODO
-//	for (UINT i = 1; i <= kMaxCnNodes; ++i)
-//	{
-//		if ((this->nodelist[i]))
-//		{
-//			cnList << QString("0x%1").arg(i, 2, 16);
-//		}
-//	}
-	return cnList;
-}
