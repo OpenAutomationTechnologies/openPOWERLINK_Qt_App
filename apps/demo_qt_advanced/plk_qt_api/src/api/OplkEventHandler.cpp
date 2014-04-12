@@ -126,6 +126,10 @@ tOplkError OplkEventHandler::AppCbEvent(tOplkApiEventType eventType,
 			oplkRet = OplkEventHandler::GetInstance().ProcessCfmResultEvent(
 										&eventArg->cfmResult, userArg);
 			break;
+		case kOplkApiEventPdoChange:
+			oplkRet = OplkEventHandler::GetInstance().ProcessPdoChangeEvent(
+										&eventArg->pdoChange, userArg);
+			break;
 
 		// case kOplkApiEventRequestNmt:
 		case kOplkApiEventUserDef:
@@ -514,3 +518,42 @@ tOplkError OplkEventHandler::ProcessCfmResultEvent(
 	return kErrorOk;
 }
 
+tOplkError OplkEventHandler::ProcessPdoChangeEvent(tOplkApiEventPdoChange* pdoChange,
+												void* userArg)
+{
+	UINT64                      mappObject;
+	UINT varLen        = sizeof(mappObject);
+	tOplkError oplkRet = kErrorGeneralError;
+
+	UNUSED_PARAMETER(userArg);
+
+	OplkEventHandler::TriggerPrintLog(
+		QString("PDO change event: (%1PDO = 0x%2 to node 0x%3 with %4 objects %5)")
+				.arg(pdoChange->fTx ? "T" : "R")
+				.arg(pdoChange->mappParamIndex, 4, 16, QLatin1Char('0'))
+				.arg(pdoChange->nodeId, 2, 16, QLatin1Char('0'))
+				.arg(pdoChange->mappObjectCount)
+				.arg(pdoChange->fActivated ? "activated" : "deleted"));
+
+	for (UINT subIndex = 1; subIndex <= pdoChange->mappObjectCount; ++subIndex)
+	{
+		oplkRet = oplk_readLocalObject(pdoChange->mappParamIndex, subIndex, &mappObject, &varLen);
+		if (oplkRet != kErrorOk)
+		{
+			OplkEventHandler::TriggerPrintLog(
+						QString("  Reading 0x%1/%2 failed with 0x%3")
+						.arg(pdoChange->mappParamIndex, 4, 16, QLatin1Char('0'))
+						.arg(subIndex)
+						.arg(oplkRet, 4, 16, QLatin1Char('0')));
+			continue;
+		}
+
+		OplkEventHandler::TriggerPrintLog(
+					QString("  %1. mapped object 0x%2/%3")
+					.arg(subIndex)
+					.arg(mappObject & 0x00FFFFULL, 4, 16, QLatin1Char('0'))
+					.arg((mappObject & 0xFF0000ULL) >> 16, 4, 16, QLatin1Char('0')));
+	}
+
+	return kErrorOk;
+}
