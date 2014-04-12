@@ -280,8 +280,10 @@ void SdoTransfer::HandleSdoTransferFinished(const SdoTransferResult result)
 		|| (result.GetSdoComConState() != kSdoComTransferFinished))
 	{
 		QString abortmsg = QString("Abort code=0x%1(%2)")
-									.arg(QString::number(result.GetAbortCode(), 16))
-									.arg(this->GetAbortCodeString(result.GetAbortCode()));
+								.arg(QString::number(result.GetAbortCode(), 16))
+								.arg(QString::fromStdString(
+									SdoTransferResult::GetAbortCodeDescription(
+											 result.GetAbortCode())));
 		this->ui.transferStatus->setText(abortmsg);
 		this->UpdateLog(abortmsg);
 	}
@@ -552,166 +554,6 @@ void SdoTransfer::on_sdoResultValue_editingFinished()
 		this->ui.transferStatus->setText("Datatype-Value Mismatch");
 		this->ui.sdoResultValue->clear();
 	}
-}
-
-const QString SdoTransfer::GetAbortCodeString(const UINT32 abortCode) const
-{
-	/* TODO Move this to API of SDO transfer with std::map implementation
-	 * */
-	QString abortStr;
-	switch (abortCode)
-	{
-		case SDO_AC_TIME_OUT:
-		{
-			abortStr = "SDO protocol timed out";
-			break;
-		}
-		case SDO_AC_UNKNOWN_COMMAND_SPECIFIER:
-		{
-			abortStr = "Client/server Command ID not valid or unknown";
-			break;
-		}
-		case SDO_AC_INVALID_BLOCK_SIZE:
-		{
-			abortStr = "Invalid block size";
-			break;
-		}
-		case SDO_AC_INVALID_SEQUENCE_NUMBER:
-		{
-			abortStr = "Invalid sequence number";
-			break;
-		}
-		case SDO_AC_OUT_OF_MEMORY:
-		{
-			abortStr = "Out of memory";
-			break;
-		}
-		case SDO_AC_UNSUPPORTED_ACCESS:
-		{
-			abortStr = "Unsupported access to an object";
-			break;
-		}
-		case SDO_AC_READ_TO_WRITE_ONLY_OBJ:
-		{
-			abortStr = "Attempt to read a write-only object";
-			break;
-		}
-		case SDO_AC_WRITE_TO_READ_ONLY_OBJ:
-		{
-			abortStr = "Attempt to write a read-only object";
-			break;
-		}
-		case SDO_AC_OBJECT_NOT_EXIST:
-		{
-			abortStr = "Object does not exist in the object dictionary";
-			break;
-		}
-		case SDO_AC_OBJECT_NOT_MAPPABLE:
-		{
-			abortStr = "Object cannot be mapped to the PDO";
-			break;
-		}
-		case SDO_AC_PDO_LENGTH_EXCEEDED:
-		{
-			abortStr = "The number and length of the objects to be mapped would exceed PDO length";
-			break;
-		}
-		case SDO_AC_GEN_PARAM_INCOMPATIBILITY:
-		{
-			abortStr = "General parameter incompatibility";
-			break;
-		}
-		case SDO_AC_INVALID_HEARTBEAT_DEC:
-		{
-			abortStr = "Invalid heartbeat declaration";
-			break;
-		}
-		case SDO_AC_GEN_INTERNAL_INCOMPATIBILITY:
-		{
-			abortStr = "General internal incompatibility in the device";
-			break;
-		}
-		case SDO_AC_ACCESS_FAILED_DUE_HW_ERROR:
-		{
-			abortStr = "Access failed due to an hardware error";
-			break;
-		}
-		case SDO_AC_DATA_TYPE_LENGTH_NOT_MATCH:
-		{
-			abortStr = "Data type does not match, length of service parameter does not match";
-			break;
-		}
-		case SDO_AC_DATA_TYPE_LENGTH_TOO_HIGH:
-		{
-			abortStr = "Data type does not match, length of service parameter too high";
-			break;
-		}
-		case SDO_AC_DATA_TYPE_LENGTH_TOO_LOW:
-		{
-			abortStr = "Data type does not match, length of service parameter too low";
-			break;
-		}
-		case SDO_AC_SUB_INDEX_NOT_EXIST:
-		{
-			abortStr = "Sub-index does not exist";
-			break;
-		}
-		case SDO_AC_VALUE_RANGE_EXCEEDED:
-		{
-			abortStr = "Value range of parameter exceeded (only for write access)";
-			break;
-		}
-		case SDO_AC_VALUE_RANGE_TOO_HIGH:
-		{
-			abortStr = "Value of parameter written too high";
-			break;
-		}
-		case SDO_AC_VALUE_RANGE_TOO_LOW:
-		{
-			abortStr = "Value of parameter written too low";
-			break;
-		}
-		case SDO_AC_MAX_VALUE_LESS_MIN_VALUE:
-		{
-			abortStr = "Maximum value is less than minimum value";
-			break;
-		}
-		case SDO_AC_GENERAL_ERROR:
-		{
-			abortStr = "General error";
-			break;
-		}
-		case SDO_AC_DATA_NOT_TRANSF_OR_STORED:
-		{
-			abortStr = "Data cannot be transferred or stored to the application";
-			break;
-		}
-		case SDO_AC_DATA_NOT_TRANSF_DUE_LOCAL_CONTROL:
-		{
-			abortStr = "Data cannot be transferred or stored to the application because of local control";
-			break;
-		}
-		case SDO_AC_DATA_NOT_TRANSF_DUE_DEVICE_STATE:
-		{
-			abortStr = "Data cannot be transferred or stored to the application because of the present device state";
-			break;
-		}
-		case SDO_AC_OBJECT_DICTIONARY_NOT_EXIST:
-		{
-			abortStr = "Object dictionary dynamic generation fails or no object dictionary is present (e.g. object dictionary is generated from file and generation fails because of a file error)";
-			break;
-		}
-		case SDO_AC_CONFIG_DATA_EMPTY:
-		{
-			abortStr = "EDS, DCF or Concise DCF Data set empty";
-			break;
-		}
-		default:
-			abortStr = QString::number(abortCode, 16);
-			break;
-	}
-
-	return abortStr;
 }
 
 //TODO change to AddToNodeList

@@ -148,13 +148,6 @@ private:
 	 */
 	void SetMaskForValue();
 
-	// TODO Has to be moved to API library or stack
-	/**
-	 * \param[in] abortCode SDO abort code.
-	 * \return the corresponding string for the given SDO abort code.
-	 */
-	const QString GetAbortCodeString(const UINT32 abortCode) const;
-
 	/**
 	 * \brief Updates the log message to the SDO Transfer log with the date time.
 	 * \param[in] logMessage The message to be updated.
