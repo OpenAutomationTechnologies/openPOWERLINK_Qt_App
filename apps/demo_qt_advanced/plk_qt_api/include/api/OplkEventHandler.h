@@ -174,6 +174,16 @@ private:
 									 void* userArg);
 
 	/**
+	 * \brief[in] Process the PDO change events.
+	 *
+	 * \param[in] pdoChange Details of the PDO change event.
+	 * \param[in] userArg      User specific argument.
+	 * \return Returns a tOplkError error code.
+	 */
+	tOplkError ProcessPdoChangeEvent(tOplkApiEventPdoChange* pdoChange,
+									void* userArg);
+
+	/**
 	 * \brief   Triggers a signal OplkEventHandler::SignalLocalNodeStateChanged
 	 * when there is a change of the state of local node.
 	 *
