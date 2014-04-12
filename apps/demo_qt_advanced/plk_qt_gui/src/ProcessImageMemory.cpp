@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ProcessImageMemory.h"
-#include "oplk/oplk.h"
+#include "api/OplkQtApi.h"
 
 /*******************************************************************************
 * Public functions
@@ -71,6 +71,29 @@ ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out,
 	this->CreateVerticalHeaders();
 	this->CreateCells();
 	// this->ResizeColumnsToContents();
+
+//Register for ProcessImage memory input datas.
+	int index = this->metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+						"UpdateInputValue()").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the Function name
+
+	bool ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_IN,
+										 *(this),
+										 this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
+
+//Register for ProcessImage memory output datas.
+	index = this->metaObject()->indexOfMethod(
+						QMetaObject::normalizedSignature(
+						"UpdateOutputValue()").constData());
+	Q_ASSERT(index != -1);
+
+	ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_OUT,
+										 *(this),
+										 this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
 }
 
 ProcessImageMemory::~ProcessImageMemory()
