@@ -59,6 +59,12 @@ ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 		this->ui.force->hide();
 		this->ui.forceValue->hide();
 	}
+	else
+	{
+		//For Removing the Current value.
+		this->ui.currentValue->hide();
+	}
+
 	this->setToolTip(QString("Size = %1 bits \nByteOffset = 0x%2 \nBitOffset = 0x%3")
 					 .arg(this->channel.GetBitSize())
 					 .arg(this->channel.GetByteOffset(), 0, 16)
@@ -118,16 +124,15 @@ void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 		{
 			const QString forceValue = this->GetForceValue();
 			const qlonglong forc = forceValue.toLongLong(0, 16);
-			// qDebug("%u", forc);
+
 			in->SetRawValue(this->channel.GetName(),
 							(const void*) &forc,
 							this->channel.GetBitSize());
 		}
-
+/** Commented for hiding the Current value.
 		std::vector<BYTE> value = in->GetRawData(this->channel.GetBitSize(),
 												this->channel.GetByteOffset(),
 												this->channel.GetBitOffset());
-		// std::vector<BYTE> value = in->GetRawValue(this->channel.GetName());
 		QString string;
 		for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
 				it != value.rend(); ++it )
@@ -135,6 +140,7 @@ void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 			string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
 		}
 		this->SetCurrentValue(string);
+*/
 	}
 	catch(const std::exception& ex)
 	{
@@ -150,7 +156,6 @@ void ChannelUi::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 		std::vector<BYTE> value = out->GetRawData(this->channel.GetBitSize(),
 												this->channel.GetByteOffset(),
 												this->channel.GetBitOffset());
-		// std::vector<BYTE> value = out->GetRawValue(this->channel.GetName());
 		QString string;
 		for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
 				it != value.rend(); ++it )
@@ -164,12 +169,6 @@ void ChannelUi::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 		// TODO Discuss about exposing the error to the user.
 		qDebug("An Exception has occured: %s", ex.what());
 	}
-
-// TODO test.
-//	qulonglong val;
-//	out->GetRawValue(this->channel.GetName(), (void*) &val, this->channel.GetBitSize());
-//	qDebug("%u", val);
-//	this->SetCurrentValue(QString("0x%1").arg(val, 0, 10));
 }
 
 
