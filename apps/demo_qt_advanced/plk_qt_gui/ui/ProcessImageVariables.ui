@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>858</width>
-    <height>206</height>
+    <width>685</width>
+    <height>162</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,23 +23,8 @@
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QSplitter" name="splitter">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="midLineWidth">
-      <number>1</number>
-     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="opaqueResize">
-      <bool>true</bool>
-     </property>
-     <property name="handleWidth">
-      <number>15</number>
      </property>
      <widget class="QWidget" name="layoutWidget">
       <layout class="QGridLayout" name="gridLayout_input">
@@ -79,8 +64,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>500</width>
-            <height>104</height>
+            <width>356</width>
+            <height>60</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -137,35 +122,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="labelInputCurrentValue">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Current Value(HEX)</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="lineCurrentValue">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QCheckBox" name="inputForceAll">
            <property name="maximumSize">
             <size>
@@ -198,7 +154,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>110</width>
              <height>0</height>
             </size>
            </property>
@@ -267,8 +223,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>315</width>
-            <height>104</height>
+            <width>296</width>
+            <height>60</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
