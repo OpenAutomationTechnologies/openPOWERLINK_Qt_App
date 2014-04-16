@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css">
+            body { margin: 1; background-color: white; }
+            h1 { color: blue; }
+        </style>
+    </head>
+    <body>
+	<h1><img src="./ui/resources/images/powerlink_open_source.png" alt="openpowera" />openPOWERLINK - MN - QT - GUI</h1>
+
+	<p><strong>Version: </strong>1.1.0</p>
+
+	<p><strong>Source:</strong> <a href="https://github.com/Ramakrishnan45/openPOWERLINK_v2.0_QT.git">https://github.com/Ramakrishnan45/openPOWERLINK_v2.0_QT.git</a></p>
+
+	<h2>Package dependencies to compile</h2>
+	<h3>Compiler</h3>
+		<strong>Windows:</strong> Microsoft visual C++ 2010</br>
+		<strong>Linux:</strong> G++ v4.6.3</br>
+	<h3>Qt</h3>
+		<strong>Windows:</strong> Download and install Qt 5.2.1 for Windows</br>
+		<strong>Linux:</strong> Download and install Qt 5.2.1 for Linux</br>
+
+	<h2>Build source</h2>
+	<ol>
+		<li>Build the openPOWERLINK STACK libraries.</li>
+
+		<li>Build the plk_qt_api present in demo_qt_advanced directory</li>
+			<ol>
+			<li>open plk_qt_api.pro using qt-creator</li>
+			<li>Build the project</li>
+			<li>After the successful build PlkQtApi.dll will be generated in release/debug directory</li>
+			</ol>
+		<li>Build the plk_qt_gui present in the demo_qt_advanced directory</li>
+			<ol>
+			<li>open plk_qt_gui.pro using qt-creator</li>
+			<li>Build the project(ctrl+B).</li>
+			<li>After the successful build plk_qt_gui will be generated in release/debug directory</li>
+			<li>From qt-creator run the application(F5).</li>
+			</ol>
+	</ol>
+
+
+	<h2>List of dependencies Standalone execution of plk_qt_gui</h2>
+	<strong>Release:</strong>
+	<ol>
+		<li>plk_qt_gui.exe</li>
+		<li>PlkQtApi.dll present in release directory of plk_qt_api</li>
+		<li>oplkmn.dll present in stack/libs/</li>
+		<li>wpcap.dll</li>
+		<li>Qt5Core.dll</li>
+		<li>Qt5Gui.dll</li>
+		<li>Qt5Widgets.dll</li>
+		<li>Qt5Xml.dll</li>
+		<li>icuin51.dll</li>
+		<li>icuuc51.dll</li>
+		<li>libEGL.dll</li>
+		<li>libGLESv2.dll</li>
+		<li>platforms/qwindows.dll present in QT_DIR/platforms/</li>
+	</ol>
+
+	<strong>Debug:</strong>
+	<ol>
+		<li>plk_qt_gui.exe</li>
+		<li>PlkQtApi.dll present in debug directory of plk_qt_api</li>
+		<li>oplkmn_d.dll present in stack/libs/</li>
+		<li>wpcap.dll</li>
+		<li>Qt5Cored.dll</li>
+		<li>Qt5Guid.dll</li>
+		<li>Qt5Widgetsd.dll</li>
+		<li>Qt5Xmld.dll</li>
+		<li>icuin51d.dll</li>
+		<li>icuuc51d.dll</li>
+		<li>libEGLd.dll</li>
+		<li>libGLESv2d.dll</li>
+		<li>platforms/qwindowsd.dll present in QT_DIR/platforms/</li>
+	Microsoft visual C runtime libraries are also needed for debug version.
+		<li>msvcr100d.dll</li>
+		<li>msvcp100d.dll</li>
+	</ol>
+    </body>
+</html>
