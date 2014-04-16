@@ -189,7 +189,51 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="dataType"/>
+       <widget class="QComboBox" name="dataType">
+        <property name="currentIndex">
+         <number>5</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>SIGNED8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UNSIGNED8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SIGNED16</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UNSIGNED16</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SIGNED32</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UNSIGNED32</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SIGNED64</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UNSIGNED64</string>
+         </property>
+        </item>
+       </widget>
       </item>
       <item row="9" column="0" colspan="3">
        <widget class="QLabel" name="transferStatus">

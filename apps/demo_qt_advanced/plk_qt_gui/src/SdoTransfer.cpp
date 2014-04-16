@@ -91,22 +91,6 @@ SdoTransfer::SdoTransfer(QWidget *parent) :
 	sdoValueValidator(NULL)
 {
 	this->ui.setupUi(this);
-	this->ui.dataType->clear();
-
-	UINT index;
-	for (QMap<QString, QMetaType::Type>::const_iterator it = SdoTransfer::dataTypeMap.begin();
-			it != SdoTransfer::dataTypeMap.end(); ++it)
-	{
-		index = 0;
-		this->ui.dataType->insertItem(index, it.key());
-		// Setting the default dataType.
-		if ((QMetaType::Type)(it.value()) == QMetaType::UInt)
-		{
-			this->ui.dataType->setCurrentText(it.key());
-		}
-
-		++index;
-	}
 
 	this->ui.sdoVia->addItem(this->sdoViaASndStr);
 #ifndef _WIN32
