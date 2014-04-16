@@ -4,9 +4,6 @@
 
 \brief  Implements the Open CDC dialog and the actions involved in it.
 
-\todo
-		- Implement getting the file path for the xap.xml
-
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited
@@ -60,19 +57,49 @@ DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
 
 void DialogOpenCdc::on_browseCDC_clicked()
 {
-	QString cdcPath = QFileDialog::getExistingDirectory(this, tr("Choose the path for the CDC and xap.xml"),
-						this->ui.cdcPath->text(),
-						QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	this->ui.message->clear();
 
-	qDebug(cdcPath.toStdString().c_str());
-	this->cdcFile = cdcPath.toStdString();
-	cdcFile.append("/mnobd.cdc");
+	QString cdcPath = QFileDialog::getOpenFileName(this,
+								tr("Open File"),
+								this->ui.cdcPath->text(),
+								tr("Concise device configuration (*.cdc *.CDC);;All files (*)"));
+
+	QFileInfo cdcfile(cdcPath);
+
+	if (cdcfile.exists())
+	{
+		this->cdcFile = cdcPath.toStdString();
+
+		this->xapFile = cdcfile.path().toStdString();
+		this->xapFile.append("/xap.xml");
+		qDebug(cdcPath.toStdString().c_str());
+	}
 
 	this->ui.cdcPath->setText(QString::fromStdString(this->cdcFile));
+	this->ui.xapPath->setText(QString::fromStdString(this->xapFile));
+}
 
-	this->xapFile = cdcPath.toStdString();
-	xapFile.append("/xap.xml");
+void DialogOpenCdc::on_browseXap_clicked()
+{
+	this->ui.message->clear();
 
+	QString xapPath = QFileDialog::getOpenFileName(this,
+								tr("Open File"),
+								this->ui.xapPath->text(),
+								tr("XML application process variables (*.xml *.XML);;All files (*)"));
+
+	QFileInfo xapFile(xapPath);
+
+	if (xapFile.exists())
+	{
+		this->xapFile = xapPath.toStdString();
+
+		this->cdcFile = xapFile.path().toStdString();
+		this->cdcFile.append("/mnobd.cdc");
+		qDebug(xapPath.toStdString().c_str());
+	}
+
+	this->ui.cdcPath->setText(QString::fromStdString(this->cdcFile));
 	this->ui.xapPath->setText(QString::fromStdString(this->xapFile));
 }
 
@@ -94,15 +121,22 @@ const char* DialogOpenCdc::GetXapFileName() const
 
 void DialogOpenCdc::on_okButton_clicked()
 {
-	if (QFile::exists(QString::fromStdString(this->cdcFile))
-		&& QFile::exists(QString::fromStdString(this->xapFile)))
+	bool error = false;
+	this->ui.message->clear();
+	if (!QFile::exists(QString::fromStdString(this->cdcFile)))
 	{
+		error = true;
+		this->ui.message->setText("<font color='red'>CDC not found.</font>");
+	}
+
+	if (!QFile::exists(QString::fromStdString(this->xapFile)))
+	{
+		error = true;
+		this->ui.message->setText(this->ui.message->text() + "<font color='red'>Xap not found.</font>");
+	}
+
+	if (!error)
 		this->accept();
-	}
-	else
-	{
-		this->ui.message->setText("<font color='red'>CDC and/or xap is not found in the path specified</font>");
-	}
 }
 
 void DialogOpenCdc::on_cdcPath_editingFinished()
