@@ -70,6 +70,11 @@ private slots:
 	void on_browseCDC_clicked();
 
 	/**
+	 * \brief Allows the user to select the path of the Xap.xml.
+	 */
+	void on_browseXap_clicked();
+
+	/**
 	 * \brief Validates the availability of the CDC and xap.xml files.
 	 */
 	void on_okButton_clicked();
@@ -88,6 +93,7 @@ private slots:
 	 * \brief Closes the CDC dialog.
 	 */
 	void on_cancelButton_clicked();
+
 
 private:
 	Ui::DialogOpenCdc ui;
