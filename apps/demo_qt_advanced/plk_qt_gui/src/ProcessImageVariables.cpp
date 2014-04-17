@@ -53,6 +53,8 @@ ProcessImageVariables::ProcessImageVariables(ProcessImageIn &in, ProcessImageOut
 	this->PrepareInputRows();
 	this->PrepareOutputRows();
 
+	this->ui.refreshRate->setText(QString::number(OplkQtApi::GetProcessImageWaitSyncTime()));
+
 //Register for ProcessImage variables input datas.
 	int index = this->metaObject()->indexOfMethod(
 						QMetaObject::normalizedSignature(
