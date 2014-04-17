@@ -55,7 +55,7 @@ int SelectNwInterfaceDialog::FillList(void)
 	this->ui.listWidget->clear();
 
 	char        sErr_Msg[PCAP_ERRBUF_SIZE];
-	pcap_if_t * alldevs;
+	pcap_if_t *alldevs = NULL;
 	int         numIntf = 0;
 
 	/* Retrieve the device list on the local machine */
@@ -110,23 +110,27 @@ void SelectNwInterfaceDialog::on_listWidget_itemDoubleClicked(QListWidgetItem *i
 {
 	this->devName = item->data(Qt::UserRole).toString();
 	this->devDescription = item->text();
-	this->ui.buttonBox->accepted();
+	this->accept();
 }
 
-void SelectNwInterfaceDialog::on_buttonBox_accepted()
+void SelectNwInterfaceDialog::on_ok_clicked()
 {
-	// Only Single selection so taking 0;
-	//FIXME error while pressing ok without selecting any item. SelectedItems returns NULL
-	QListWidgetItem *item = this->ui.listWidget->selectedItems().at(0);
-	if (item)
+	QList<QListWidgetItem*> list = this->ui.listWidget->selectedItems();
+	if (list.count() > 0)
 	{
-		this->devName = item->data(Qt::UserRole).toString();
-		this->devDescription = item->text();
+		QListWidgetItem *item = list.at(0);
+		if (item)
+		{
+			this->devName = item->data(Qt::UserRole).toString();
+			this->devDescription = item->text();
+			this->accept();
+		}
 	}
 }
 
-void SelectNwInterfaceDialog::on_buttonBox_rejected()
+void SelectNwInterfaceDialog::on_cancel_clicked()
 {
 	this->devName = "";
 	this->devDescription = "";
+	this->reject();
 }

@@ -83,12 +83,12 @@ private slots:
 	/**
 	 * \brief Closes the dialog and and saves the selected item.
 	 */
-	void on_buttonBox_accepted();
+	void on_ok_clicked();
 
 	/**
 	 * \brief Cancels the item selection process.
 	 */
-	void on_buttonBox_rejected();
+	void on_cancel_clicked();
 
 private:
 	Ui::SelectNwInterfaceDialog ui; /// Select Network interface ui instance
