@@ -80,20 +80,13 @@ private slots:
 	void on_okButton_clicked();
 
 	/**
-	 * \brief Sets the CDC filename.
-	 */
-	void on_cdcPath_editingFinished();
-
-	/**
-	 * \brief Sets the xap filename.
-	 */
-	void on_xapPath_editingFinished();
-
-	/**
 	 * \brief Closes the CDC dialog.
 	 */
 	void on_cancelButton_clicked();
 
+	void on_cdcPath_textChanged(const QString &arg1);
+
+	void on_xapPath_textChanged(const QString &arg1);
 
 private:
 	Ui::DialogOpenCdc ui;
