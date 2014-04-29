@@ -140,6 +140,11 @@ void NodeStatusDock::HandleNodeStateChanged(const int nodeId, tNmtState nmtState
 			{
 				this->nodelists.at(nodeId)->hide();
 			}
+			else
+			{
+				// If this is not done CN will not show up even in OPERATIONAL
+				this->HandleNodeFound(nodeId);
+			}
 		}
 
 		if (nmtState == kNmtCsOperational)
