@@ -72,12 +72,6 @@ public:
 private slots:
 
 	/**
-	 * \brief Toggles the state of the window between fullscreen and normal mode.
-	 * \note Full screen can also be triggered by pressing F11 keyboard shortcut.
-	 */
-	void on_actionToggle_Full_Screen_triggered();
-
-	/**
 	 * \brief Triggers displaying of the open CDC dialog window.
 	 */
 	void on_actionOpen_CDC_triggered();
