@@ -136,14 +136,6 @@ MainWindow::~MainWindow()
 * Private functions
 *******************************************************************************/
 
-void MainWindow::on_actionToggle_Full_Screen_triggered()
-{
-	if (isFullScreen())
-		showNormal();
-	else
-		showFullScreen();
-}
-
 void MainWindow::on_actionOpen_CDC_triggered()
 {
 	this->cdcDialog->exec();
