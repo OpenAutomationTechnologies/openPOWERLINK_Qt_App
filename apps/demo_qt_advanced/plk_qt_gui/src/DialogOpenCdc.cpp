@@ -49,6 +49,7 @@ DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
 	xapFile("")
 {
 	this->ui.setupUi(this);
+	this->ui.okButton->setEnabled(false);
 }
 
 /*******************************************************************************
@@ -139,17 +140,50 @@ void DialogOpenCdc::on_okButton_clicked()
 		this->accept();
 }
 
-void DialogOpenCdc::on_cdcPath_editingFinished()
-{
-	this->cdcFile = this->ui.cdcPath->text().toStdString();
-}
-
-void DialogOpenCdc::on_xapPath_editingFinished()
-{
-	this->xapFile = this->ui.xapPath->text().toStdString();
-}
-
 void DialogOpenCdc::on_cancelButton_clicked()
 {
 	this->reject();
+}
+
+void DialogOpenCdc::on_cdcPath_textChanged(const QString &arg1)
+{
+	bool cdcExists = QFile::exists(arg1) && QFileInfo(arg1).isFile();
+	bool xapExists = QFile::exists(this->ui.xapPath->text())
+					 && QFileInfo(this->ui.xapPath->text()).isFile();
+	this->ui.okButton->setEnabled(cdcExists && xapExists);
+
+	if (cdcExists)
+		this->cdcFile = arg1.toStdString();
+
+	//TODO Change to CdcMessage and xapMessage
+	this->ui.message->clear();
+	if (!cdcExists)
+	{
+		this->ui.message->setText("<font color='red'>CDC not found.</font>");
+	}
+	else
+	{
+		this->ui.message->setText("<font color='green'>CDC found.</font>");
+	}
+}
+
+void DialogOpenCdc::on_xapPath_textChanged(const QString &arg1)
+{
+	bool cdcExists = QFile::exists(this->ui.cdcPath->text())
+					 && QFileInfo(this->ui.cdcPath->text()).isFile();
+	bool xapExists = QFile::exists(arg1) && QFileInfo(arg1).isFile();
+	this->ui.okButton->setEnabled(cdcExists && xapExists);
+
+	if (xapExists)
+		this->xapFile = arg1.toStdString();
+
+	this->ui.message->clear();
+	if (!xapExists)
+	{
+		this->ui.message->setText("<font color='red'>Xap not found.</font>");
+	}
+	else
+	{
+		this->ui.message->setText("<font color='green'>Xap found.</font>");
+	}
 }
