@@ -42,11 +42,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 StatusBar::StatusBar(QWidget *parent) :
 	QStatusBar(parent),
-	networkInterface(new QLabel("Network Interface")),
-	cdcFile(new QLabel("CDC File")),
-	xapFile(new QLabel("Xap File")),
-	nmtStatus(new QLabel("NMT Status")),
-	cycleTime(new QLabel("Cycle Time"))
+	networkInterface(new QLabel()),
+	cdcFile(new QLabel()),
+	xapFile(new QLabel()),
+	nmtStatus(new QLabel()),
+	cycleTime(new QLabel())
 {
 	this->networkInterface->setMinimumWidth(175);
 	this->cdcFile->setMinimumWidth(175);
@@ -62,6 +62,12 @@ StatusBar::StatusBar(QWidget *parent) :
 
 	this->nmtStatus->setMinimumWidth(100);
 	this->cycleTime->setMinimumWidth(100);
+
+	this->cdcFile->setToolTip("CDC file");
+	this->xapFile->setToolTip("Xap file");
+	this->networkInterface->setToolTip("Network interface name");
+	this->nmtStatus->setToolTip("The status of the POWERLINK stack");
+	this->cycleTime->setToolTip("The POWERLINK cycle time of the network");
 
 	this->addPermanentWidget(this->nmtStatus);
 	this->addPermanentWidget(this->cycleTime);
@@ -106,7 +112,7 @@ void StatusBar::UpdateCycleTime()
 	if (oplkRet != kErrorOk)
 		qDebug("Cycle time read error: %s", debugstr_getRetValStr(oplkRet));
 
-	this->cycleTime->setText(QString("CycleTime(us)=%1").arg(cycleTime));
+	this->cycleTime->setText(QString("Cycle time: =%1 us").arg(cycleTime));
 }
 
 void StatusBar::SetCdcFilePath(QString& cdc)
