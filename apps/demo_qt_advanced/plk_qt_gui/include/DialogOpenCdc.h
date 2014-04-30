@@ -84,14 +84,39 @@ private slots:
 	 */
 	void on_cancelButton_clicked();
 
-	void on_cdcPath_textChanged(const QString &arg1);
+	/**
+	 * \brief Validates the CDC path and updates error if any.
+	 * \param cdc[in] Changed CDC file.
+	 */
+	void on_cdcPath_textChanged(const QString &cdc);
 
-	void on_xapPath_textChanged(const QString &arg1);
+	/**
+	 * \brief Validates the XAP path and updates error if any.
+	 * \param xap[in] Changed Xap file.
+	 */
+	void on_xapPath_textChanged(const QString &xap);
+
+signals:
+	void SignalCdcChanged(QString& cdcFile);
+	void SignalXapChanged(QString& xapFile);
 
 private:
 	Ui::DialogOpenCdc ui;
 	std::string cdcFile;
 	std::string xapFile;
+
+	enum Configuration
+	{
+		CDC,
+		XAP_XML
+	};
+
+	/**
+	 * \brief Sets the error message with color based on the given exists status.
+	 * \param[in] cfg    Specifies the configuration file type.
+	 * \param[in] exists Specifies the existance status.
+	 */
+	void SetErrorMessage(Configuration cfg, bool exists);
 };
 
 #endif // _UI_DIALOG_OPEN_CDC_H_
