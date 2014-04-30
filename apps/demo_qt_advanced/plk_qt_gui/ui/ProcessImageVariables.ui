@@ -183,8 +183,11 @@
        </item>
        <item row="4" column="3">
         <widget class="QLabel" name="label">
+         <property name="toolTip">
+          <string>Refresh rate of the data on the screen</string>
+         </property>
          <property name="text">
-          <string>Refresh rate(ms):</string>
+          <string>Screen refresh rate:</string>
          </property>
         </widget>
        </item>
