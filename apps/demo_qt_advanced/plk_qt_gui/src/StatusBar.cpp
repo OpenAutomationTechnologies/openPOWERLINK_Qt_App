@@ -121,11 +121,11 @@ void StatusBar::SetXapFilePath(QString& xap)
 	this->xapFile->setText(this->GetShortPath(xap));
 }
 
-void StatusBar::SetNetworkInterfaceName(const QString name)
+void StatusBar::SetNetworkInterfaceName(const QString& name)
 {
 	const QString devName = name.simplified();
 	this->networkInterface->setToolTip(devName);
-	this->networkInterface->setText(devName.left(25));
+	this->networkInterface->setText(devName.left(30));
 }
 
 //can be moved to Utility

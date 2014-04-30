@@ -51,12 +51,6 @@ class StatusBar : public QStatusBar
 public:
 	explicit StatusBar(QWidget *parent = 0);
 
-	/**
-	 * \brief Sets the network interface name to the status bar.
-	 * \param[in] name The name of the network interface.
-	 */
-	void SetNetworkInterfaceName(QString name);
-
 public slots:
 	/**
 	 * \brief Updates the NMT status of the MN on the status bar.
@@ -75,6 +69,12 @@ public slots:
 	 * \param[in] xap Path to the Xap.xml file.
 	 */
 	void SetXapFilePath(QString& xap);
+
+	/**
+	 * \brief Sets the network interface name to the status bar.
+	 * \param[in] name The name of the network interface.
+	 */
+	void SetNetworkInterfaceName(const QString& name);
 
 private:
 	QLabel *networkInterface;

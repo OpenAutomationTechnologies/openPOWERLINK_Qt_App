@@ -76,7 +76,7 @@ public:
 private slots:
 	/**
 	 * \brief Marks the item for selection and exits the dialog.
-	 * \param item The selected item.
+	 * \param[in] item The selected item.
 	 */
 	void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
 
@@ -90,10 +90,20 @@ private slots:
 	 */
 	void on_cancel_clicked();
 
+	/**
+	 * \brief Updates the selected item.
+	 */
+	void on_listWidget_itemSelectionChanged();
+
+signals:
+	void SignalNetworkInterfaceChanged(const QString& devDescription);
+
 private:
 	Ui::SelectNwInterfaceDialog ui; /// Select Network interface ui instance
 	QString devName;                /// network device name
 	QString devDescription;         /// network device description
+
+	void SetDevDescritpion(const QString& name);
 };
 
 #endif // _SELECT_NW_INTERFACE_DIALOG_H_

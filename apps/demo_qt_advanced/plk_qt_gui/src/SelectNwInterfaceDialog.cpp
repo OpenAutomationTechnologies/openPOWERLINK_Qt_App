@@ -38,13 +38,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SelectNwInterfaceDialog.h"
 #include <pcap.h>
 
-
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
 SelectNwInterfaceDialog::SelectNwInterfaceDialog(QWidget *parent) :
 	QDialog(parent),
-	devName("")
+	devName(""),
+	devDescription("")
 {
 	this->ui.setupUi(this);
 }
@@ -53,6 +53,7 @@ int SelectNwInterfaceDialog::FillList(void)
 {
 	// Clear list before filling
 	this->ui.listWidget->clear();
+	this->ui.ok->setEnabled(false);
 
 	char        sErr_Msg[PCAP_ERRBUF_SIZE];
 	pcap_if_t *alldevs = NULL;
@@ -104,12 +105,12 @@ QString SelectNwInterfaceDialog::GetDevDescription(void) const
 }
 
 /*******************************************************************************
-* Private functions
+* Private Slots
 *******************************************************************************/
 void SelectNwInterfaceDialog::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
 	this->devName = item->data(Qt::UserRole).toString();
-	this->devDescription = item->text();
+	this->SetDevDescritpion(item->text());
 	this->accept();
 }
 
@@ -122,7 +123,7 @@ void SelectNwInterfaceDialog::on_ok_clicked()
 		if (item)
 		{
 			this->devName = item->data(Qt::UserRole).toString();
-			this->devDescription = item->text();
+			this->SetDevDescritpion(item->text());
 			this->accept();
 		}
 	}
@@ -130,7 +131,19 @@ void SelectNwInterfaceDialog::on_ok_clicked()
 
 void SelectNwInterfaceDialog::on_cancel_clicked()
 {
-	this->devName = "";
-	this->devDescription = "";
 	this->reject();
+}
+
+void SelectNwInterfaceDialog::on_listWidget_itemSelectionChanged()
+{
+	this->ui.ok->setEnabled(true);
+}
+
+/*******************************************************************************
+* Private Functions
+*******************************************************************************/
+void SelectNwInterfaceDialog::SetDevDescritpion(const QString& name)
+{
+	this->devDescription = name;
+	emit SignalNetworkInterfaceChanged(this->devDescription);
 }

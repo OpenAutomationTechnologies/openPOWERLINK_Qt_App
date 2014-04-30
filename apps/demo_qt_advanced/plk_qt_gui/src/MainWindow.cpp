@@ -118,6 +118,12 @@ MainWindow::MainWindow(QWidget *parent) :
 				  this->status,
 				  SLOT(SetXapFilePath(QString&)));
 	Q_ASSERT(ret != false);
+
+	ret = connect(this->networkInterface,
+				  SIGNAL(SignalNetworkInterfaceChanged(const QString&)),
+				  this->status,
+				  SLOT(SetNetworkInterfaceName(const QString&)));
+	Q_ASSERT(ret != false);
 }
 
 MainWindow::~MainWindow()
@@ -175,7 +181,7 @@ bool MainWindow::on_actionSelect_Interface_triggered()
 	{
 		return false;
 	}
-	// qDebug("Nw Name = %s ", qPrintable(this->nwInterfaceDialog->getDevName()));
+
 	return true;
 }
 
@@ -274,9 +280,8 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	this->status->SetNetworkInterfaceName(this->networkInterface->GetDevDescription());
-
 	this->ui.actionOpen_CDC->setEnabled(false);
+	this->ui.actionSelect_Interface->setEnabled(false);
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
 
@@ -315,6 +320,7 @@ void MainWindow::on_actionStop_triggered()
 	}
 
 	this->ui.actionOpen_CDC->setEnabled(true);
+	this->ui.actionSelect_Interface->setEnabled(true);
 	this->ui.actionStart->setEnabled(true);
 	this->ui.actionStop->setEnabled(false);
 
