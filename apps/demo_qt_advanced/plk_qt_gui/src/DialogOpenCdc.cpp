@@ -49,59 +49,6 @@ DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
 	xapFile("")
 {
 	this->ui.setupUi(this);
-	this->ui.okButton->setEnabled(false);
-}
-
-/*******************************************************************************
-* Private functions
-*******************************************************************************/
-
-void DialogOpenCdc::on_browseCDC_clicked()
-{
-	this->ui.message->clear();
-
-	QString cdcPath = QFileDialog::getOpenFileName(this,
-								tr("Open File"),
-								this->ui.cdcPath->text(),
-								tr("Concise device configuration (*.cdc *.CDC);;All files (*)"));
-
-	QFileInfo cdcfile(cdcPath);
-
-	if (cdcfile.exists())
-	{
-		this->cdcFile = cdcPath.toStdString();
-
-		this->xapFile = cdcfile.path().toStdString();
-		this->xapFile.append("/xap.xml");
-		qDebug(cdcPath.toStdString().c_str());
-	}
-
-	this->ui.cdcPath->setText(QString::fromStdString(this->cdcFile));
-	this->ui.xapPath->setText(QString::fromStdString(this->xapFile));
-}
-
-void DialogOpenCdc::on_browseXap_clicked()
-{
-	this->ui.message->clear();
-
-	QString xapPath = QFileDialog::getOpenFileName(this,
-								tr("Open File"),
-								this->ui.xapPath->text(),
-								tr("XML application process variables (*.xml *.XML);;All files (*)"));
-
-	QFileInfo xapFile(xapPath);
-
-	if (xapFile.exists())
-	{
-		this->xapFile = xapPath.toStdString();
-
-		this->cdcFile = xapFile.path().toStdString();
-		this->cdcFile.append("/mnobd.cdc");
-		qDebug(xapPath.toStdString().c_str());
-	}
-
-	this->ui.cdcPath->setText(QString::fromStdString(this->cdcFile));
-	this->ui.xapPath->setText(QString::fromStdString(this->xapFile));
 }
 
 const char* DialogOpenCdc::GetCdcFileName() const
@@ -120,70 +67,118 @@ const char* DialogOpenCdc::GetXapFileName() const
 		return NULL;
 }
 
+/*******************************************************************************
+* Private functions
+*******************************************************************************/
+
+void DialogOpenCdc::on_browseCDC_clicked()
+{
+	this->ui.xapError->clear();
+	QString cdc = QFileDialog::getOpenFileName(this,
+								tr("Open File"),
+								this->ui.cdcPath->text(),
+								tr("Concise device configuration (*.cdc *.CDC);;All files (*)"));
+	if (!cdc.isEmpty())
+	{
+		QFileInfo cdcfile(cdc);
+		QString xap = cdcfile.path();
+		xap.append("/xap.xml");
+		if (!QFileInfo::exists(xap))
+			this->SetErrorMessage(XAP_XML, false);
+
+		this->ui.cdcPath->setText(cdc);
+		this->ui.xapPath->setText(xap);
+	}
+}
+
+void DialogOpenCdc::on_browseXap_clicked()
+{
+	this->ui.xapError->clear();
+
+	QString xap = QFileDialog::getOpenFileName(this,
+								tr("Open File"),
+								this->ui.xapPath->text(),
+								tr("XML application process variables (*.xml *.XML);;All files (*)"));
+	if (!xap.isEmpty())
+	{
+		QFileInfo xapFile(xap);
+		QString cdc = xapFile.path();
+		cdc.append("/mnobd.cdc");
+		if (!QFileInfo::exists(cdc))
+			this->SetErrorMessage(CDC, false);
+
+		this->ui.cdcPath->setText(cdc);
+		this->ui.xapPath->setText(xap);
+	}
+}
+
 void DialogOpenCdc::on_okButton_clicked()
 {
-	bool error = false;
-	this->ui.message->clear();
-	if (!QFile::exists(QString::fromStdString(this->cdcFile)))
-	{
-		error = true;
-		this->ui.message->setText("<font color='red'>CDC not found.</font>");
-	}
+	bool cdcExists = QFileInfo::exists(this->ui.cdcPath->text());
+	bool xapExists = QFileInfo::exists(this->ui.xapPath->text());
 
-	if (!QFile::exists(QString::fromStdString(this->xapFile)))
-	{
-		error = true;
-		this->ui.message->setText(this->ui.message->text() + "<font color='red'>Xap not found.</font>");
-	}
+	if (!cdcExists)
+		this->SetErrorMessage(CDC, cdcExists);
 
-	if (!error)
+	if (!xapExists)
+		this->SetErrorMessage(XAP_XML, xapExists);
+
+	if (cdcExists && xapExists)
+	{
+		this->cdcFile = this->ui.cdcPath->text().toStdString();
+		this->xapFile = this->ui.xapPath->text().toStdString();
+
+		emit this->SignalCdcChanged(QString::fromStdString(this->cdcFile));
+		emit this->SignalXapChanged(QString::fromStdString(this->xapFile));
 		this->accept();
+	}
 }
 
 void DialogOpenCdc::on_cancelButton_clicked()
 {
+	this->ui.cdcPath->setText(QString::fromStdString(this->cdcFile));
+	this->ui.xapPath->setText(QString::fromStdString(this->xapFile));
 	this->reject();
 }
 
-void DialogOpenCdc::on_cdcPath_textChanged(const QString &arg1)
+void DialogOpenCdc::on_cdcPath_textChanged(const QString &cdc)
 {
-	bool cdcExists = QFile::exists(arg1) && QFileInfo(arg1).isFile();
-	bool xapExists = QFile::exists(this->ui.xapPath->text())
+	bool cdcExists = QFileInfo::exists(cdc) && QFileInfo(cdc).isFile();
+	bool xapExists = QFileInfo::exists(this->ui.xapPath->text())
 					 && QFileInfo(this->ui.xapPath->text()).isFile();
+
 	this->ui.okButton->setEnabled(cdcExists && xapExists);
 
-	if (cdcExists)
-		this->cdcFile = arg1.toStdString();
-
-	//TODO Change to CdcMessage and xapMessage
-	this->ui.message->clear();
-	if (!cdcExists)
-	{
-		this->ui.message->setText("<font color='red'>CDC not found.</font>");
-	}
-	else
-	{
-		this->ui.message->setText("<font color='green'>CDC found.</font>");
-	}
+	this->SetErrorMessage(CDC, cdcExists);
 }
 
-void DialogOpenCdc::on_xapPath_textChanged(const QString &arg1)
+void DialogOpenCdc::on_xapPath_textChanged(const QString &xap)
 {
-	bool cdcExists = QFile::exists(this->ui.cdcPath->text())
+	bool cdcExists = QFileInfo::exists(this->ui.cdcPath->text())
 					 && QFileInfo(this->ui.cdcPath->text()).isFile();
-	bool xapExists = QFile::exists(arg1) && QFileInfo(arg1).isFile();
+	bool xapExists = QFileInfo::exists(xap) && QFileInfo(xap).isFile();
+
 	this->ui.okButton->setEnabled(cdcExists && xapExists);
 
-	if (xapExists)
-		this->xapFile = arg1.toStdString();
+	this->SetErrorMessage(XAP_XML, xapExists);
+}
 
-	this->ui.message->clear();
-	if (!xapExists)
+void DialogOpenCdc::SetErrorMessage(Configuration cfg, bool exists)
+{
+	if (cfg == CDC)
 	{
-		this->ui.message->setText("<font color='red'>Xap not found.</font>");
+		this->ui.cdcError->clear();
+		if (exists)
+			this->ui.cdcError->setText("<font color='green'>CDC found.</font>");
+		else
+			this->ui.cdcError->setText("<font color='red'>CDC not found.</font>");
 	}
 	else
 	{
-		this->ui.message->setText("<font color='green'>Xap found.</font>");
+		this->ui.xapError->clear();
+		if (exists)
+			this->ui.xapError->setText("<font color='green'>Xap found.</font>");
+		else
+			this->ui.xapError->setText("<font color='red'>Xap not found.</font>");
 	}
 }

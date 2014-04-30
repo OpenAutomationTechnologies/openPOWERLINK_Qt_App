@@ -105,6 +105,19 @@ MainWindow::MainWindow(QWidget *parent) :
 				  this->log,
 				  SLOT(HandleSdoLog(const QString&)));
 	Q_ASSERT(ret != false);
+
+
+	ret = connect(this->cdcDialog,
+				  SIGNAL(SignalCdcChanged(QString&)),
+				  this->status,
+				  SLOT(SetCdcFilePath(QString&)));
+	Q_ASSERT(ret != false);
+
+	ret = connect(this->cdcDialog,
+				  SIGNAL(SignalXapChanged(QString&)),
+				  this->status,
+				  SLOT(SetXapFilePath(QString&)));
+	Q_ASSERT(ret != false);
 }
 
 MainWindow::~MainWindow()
@@ -180,9 +193,6 @@ void MainWindow::on_actionStart_triggered()
 			return;
 		}
 	}
-
-	this->status->SetCdcFilePath(this->cdcDialog->GetCdcFileName());
-	this->status->SetXapFilePath(this->cdcDialog->GetXapFileName());
 
 	try
 	{
@@ -266,6 +276,7 @@ void MainWindow::on_actionStart_triggered()
 
 	this->status->SetNetworkInterfaceName(this->networkInterface->GetDevDescription());
 
+	this->ui.actionOpen_CDC->setEnabled(false);
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
 
@@ -303,6 +314,7 @@ void MainWindow::on_actionStop_triggered()
 		return;
 	}
 
+	this->ui.actionOpen_CDC->setEnabled(true);
 	this->ui.actionStart->setEnabled(true);
 	this->ui.actionStop->setEnabled(false);
 

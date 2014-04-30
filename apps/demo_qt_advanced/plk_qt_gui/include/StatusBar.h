@@ -52,18 +52,6 @@ public:
 	explicit StatusBar(QWidget *parent = 0);
 
 	/**
-	 * \brief Sets the CDC file path to the status bar.
-	 * \param[in] cdc CDC file path.
-	 */
-	void SetCdcFilePath(const char* cdc);
-
-	/**
-	 * \brief Sets the XAP file path to the status bar.
-	 * \param[in] xap XAP file path.
-	 */
-	void SetXapFilePath(const char* xap);
-
-	/**
 	 * \brief Sets the network interface name to the status bar.
 	 * \param[in] name The name of the network interface.
 	 */
@@ -75,6 +63,18 @@ public slots:
 	 * \param[in] nmtState The state of the MN.
 	 */
 	void UpdateNmtStatus(tNmtState nmtState);
+
+	/**
+	 * \brief Sets the CDC file path to the status bar.
+	 * \param[in] cdc Path to the CDC file.
+	 */
+	void SetCdcFilePath(QString& cdc);
+
+	/**
+	 * \brief Sets the Xap file path to the status bar.
+	 * \param[in] xap Path to the Xap.xml file.
+	 */
+	void SetXapFilePath(QString& xap);
 
 private:
 	QLabel *networkInterface;

@@ -109,16 +109,16 @@ void StatusBar::UpdateCycleTime()
 	this->cycleTime->setText(QString("CycleTime(us)=%1").arg(cycleTime));
 }
 
-void StatusBar::SetCdcFilePath(const char* cdc)
+void StatusBar::SetCdcFilePath(QString& cdc)
 {
-	this->cdcFile->setToolTip(QString::fromUtf8(cdc));
-	this->cdcFile->setText(this->GetShortPath(QString::fromUtf8(cdc)));
+	this->cdcFile->setToolTip(cdc);
+	this->cdcFile->setText(this->GetShortPath(cdc));
 }
 
-void StatusBar::SetXapFilePath(const char* xap)
+void StatusBar::SetXapFilePath(QString& xap)
 {
-	this->xapFile->setToolTip(QString::fromUtf8(xap));
-	this->xapFile->setText(this->GetShortPath(QString::fromUtf8(xap)));
+	this->xapFile->setToolTip(xap);
+	this->xapFile->setText(this->GetShortPath(xap));
 }
 
 void StatusBar::SetNetworkInterfaceName(const QString name)
@@ -156,4 +156,3 @@ const QString StatusBar::GetShortPath(const QString& path) const
 	}
 	return shortPath;
 }
-
