@@ -56,28 +56,20 @@ NmtCommandsDock::NmtCommandsDock(QWidget *parent) :
 *******************************************************************************/
 void NmtCommandsDock::on_sendNmtBtn_clicked()
 {
-	//Send NMT command is not working for MN.
-	// TODO in API library.
 	const int nodeid = this->ui.nodeId->text().toInt();
 	qDebug("%d", nodeid);
+
 	tOplkError oplkRet = OplkQtApi::ExecuteNmtCommand(nodeid, this->nmtCommand);
 	if (oplkRet != kErrorOk)
 	{
 		QMessageBox::critical(this, "Execute NmtCommand failed",
-							 QString("Execute NmtCommand falied with error: %1 ")
+							 QString("NMT command falied with error: %1 ")
 							  .arg(debugstr_getRetValStr(oplkRet)),
 							 QMessageBox::Close);
 		qDebug("Execute NmtCommand %x", oplkRet);
 		return;
 	}
 }
-
-/**
- * This can also be done as
- * A function to get the NMT command by passing the CurrentIndex of the
- * NMT dropdown at the time of the send NMT button clicked.
- * signature: tNmtCommand GetNmtCommand(int currentIndex);
- */
 
 void NmtCommandsDock::on_nmtCommand_currentIndexChanged(int index)
 {
@@ -87,10 +79,6 @@ void NmtCommandsDock::on_nmtCommand_currentIndexChanged(int index)
 
 	switch (index)
 	{
-		//TODO fallthrough case 0 and default.
-		case 0:
-			this->nmtCommand = kNmtCmdInvalidService;
-			break;
 		case 1:
 			this->nmtCommand = kNmtCmdStartNode;
 			break;
@@ -115,6 +103,7 @@ void NmtCommandsDock::on_nmtCommand_currentIndexChanged(int index)
 		case 8:
 			this->nmtCommand = kNmtCmdSwReset;
 			break;
+		case 0:
 		default:
 			this->nmtCommand = kNmtCmdInvalidService;
 			break;
