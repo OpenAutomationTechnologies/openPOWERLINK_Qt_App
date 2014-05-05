@@ -123,11 +123,14 @@ void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 		if (this->ui.force->checkState() == Qt::Checked)
 		{
 			const QString forceValue = this->GetForceValue();
-			const qlonglong forc = forceValue.toLongLong(0, 16);
+			if (!forceValue.isEmpty())
+			{
+				const qlonglong forc = forceValue.toLongLong(0, 16);
 
-			in->SetRawValue(this->channel.GetName(),
-							(const void*) &forc,
-							this->channel.GetBitSize());
+				in->SetRawValue(this->channel.GetName(),
+								(const void*) &forc,
+								this->channel.GetBitSize());
+			}
 		}
 /** Commented for hiding the Current value.
 		std::vector<BYTE> value = in->GetRawData(this->channel.GetBitSize(),
