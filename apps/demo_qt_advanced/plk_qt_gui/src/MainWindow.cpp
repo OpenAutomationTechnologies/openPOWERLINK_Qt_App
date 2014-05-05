@@ -84,6 +84,26 @@ MainWindow::MainWindow(QWidget *parent) :
 	Q_ASSERT(index != -1);
 	// If asserted check for the Function name
 
+	this->sdoTab->setEnabled(false);
+	this->nmtCmdWindow->setEnabled(false);
+
+	this->addDockWidget(Qt::RightDockWidgetArea, this->nmtCmdWindow);
+	this->setCorner( Qt::TopLeftCorner, Qt::LeftDockWidgetArea );
+	this->setCorner( Qt::TopRightCorner, Qt::RightDockWidgetArea );
+	this->setCorner( Qt::BottomLeftCorner, Qt::LeftDockWidgetArea );
+	this->setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea );
+	this->nmtCmdWindow->show();
+
+
+	this->addDockWidget(Qt::RightDockWidgetArea, this->cnStatus);
+	this->cnStatus->show();
+
+	this->addDockWidget(Qt::BottomDockWidgetArea, this->log);
+	this->log->show();
+
+	this->ui.tabWidget->addTab(this->sdoTab, "SDO Transfer");
+
+
 	bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->status),
 							this->status->metaObject()->method(index));
 	Q_ASSERT(ret != false);
@@ -285,19 +305,8 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
 
-	this->addDockWidget(Qt::RightDockWidgetArea, this->nmtCmdWindow);
-	this->setCorner( Qt::TopLeftCorner, Qt::LeftDockWidgetArea );
-	this->setCorner( Qt::TopRightCorner, Qt::RightDockWidgetArea );
-	this->setCorner( Qt::BottomLeftCorner, Qt::LeftDockWidgetArea );
-	this->setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea );
-	this->nmtCmdWindow->show();
-	this->addDockWidget(Qt::RightDockWidgetArea, this->cnStatus);
-	this->cnStatus->show();
-
-	this->addDockWidget(Qt::BottomDockWidgetArea, this->log);
-	this->log->show();
-
-	this->ui.tabWidget->addTab(this->sdoTab, "SDO Transfer");
+	this->sdoTab->setEnabled(true);
+	this->nmtCmdWindow->setEnabled(true);
 
 	this->piVar = new ProcessImageVariables(piIn, piOut);
 	this->ui.tabWidget->addTab(this->piVar, "ProcessImage Variables view");
@@ -324,14 +333,8 @@ void MainWindow::on_actionStop_triggered()
 	this->ui.actionStart->setEnabled(true);
 	this->ui.actionStop->setEnabled(false);
 
-	this->removeDockWidget(this->cnStatus);
-	this->removeDockWidget(this->log);
-	this->removeDockWidget(this->nmtCmdWindow);
-	// MN Status is not hidden after the stack is once started and stopped.
-
-	this->ui.tabWidget->removeTab(1);
-	this->ui.tabWidget->removeTab(2);
-	this->ui.tabWidget->removeTab(3);
+	this->sdoTab->setEnabled(false);
+	this->nmtCmdWindow->setEnabled(false);
 
 	delete this->piVar;
 	delete this->piMemory;
