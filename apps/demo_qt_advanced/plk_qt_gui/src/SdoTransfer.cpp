@@ -6,7 +6,6 @@
 
 \todo
 		- Implement V-String and QString
-		- Validate signed values.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -41,6 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include <QMessageBox>
 #include <QDateTime>
+
+#include <limits.h>
 
 #include "SdoTransfer.h"
 #include "api/OplkQtApi.h"
@@ -169,6 +170,13 @@ void SdoTransfer::on_executeTransfer_clicked()
 								 QMessageBox::Close);
 			return;
 		}
+		if (!(this->IsValidValue()))
+		{
+			QMessageBox::warning(this, "SDO Transfer - Failed",
+								 "Enter a valid value: Data type value mismatch",
+								 QMessageBox::Close);
+			return;
+		}
 	}
 
 	/* Update the transfer status */
@@ -185,7 +193,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 									sdoProtocol,
 									sdoAccessType);
 
-	qDebug("Max: %d Min:%d", this->maxDataValue, this->minDataValue);
 	tOplkError oplkRet =  OplkQtApi::TransferObject(*(this->sdoTransferJob),
 										*(this),
 										this->receiverFunction);
@@ -201,9 +208,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 
 	if (sdoAccessType == kSdoAccessTypeWrite)
 	{
-//		logMessage.append(QString(" Value=%1(0x%2)")
-//				.arg(QString::number(this->ui.sdoResultValue->text().toULongLong(), 10))
-//				.arg(this->ui.sdoResultValue->text(), 0, 16));
 		logMessage.append(QString(" Value=%1")
 				.arg(this->ui.sdoResultValue->text()));
 	}
@@ -289,7 +293,72 @@ void SdoTransfer::on_dataType_currentIndexChanged(const QString &dataType)
 	this->ui.sdoResultValueHex->clear();
 	this->metaDataTypeIndex = SdoTransfer::dataTypeMap[dataType];
 	this->SetMaskForValue();
+	this->SetMinMax(this->metaDataTypeIndex);
 	this->ui.sdoResultValue->setValidator(this->sdoValueValidator);
+}
+
+void SdoTransfer::SetMinMax(QMetaType::Type datatype)
+{
+	switch (datatype)
+	{
+		case QMetaType::UInt:
+			qDebug("UInt");
+			this->minDataValue = 0;
+			this->maxDataValue = UINT_MAX;
+			break;
+		case QMetaType::ULong:
+			qDebug("ULong");
+			this->minDataValue = 0;
+			this->maxDataValue = ULONG_MAX;
+			break;
+		case QMetaType::ULongLong:
+			qDebug("ULongLong");
+			this->minDataValue = 0;
+			this->maxDataValue = ULLONG_MAX;
+			break;
+		case QMetaType::UShort:
+			qDebug("UShort");
+			this->minDataValue = 0;
+			this->maxDataValue = USHRT_MAX;
+			break;
+		case QMetaType::UChar:
+			qDebug("UChar");
+			this->minDataValue = 0;
+			this->maxDataValue = UCHAR_MAX;
+			break;
+		case QMetaType::Int:
+			qDebug("Int");
+			this->minDataValue = INT_MIN;
+			this->maxDataValue = INT_MAX;
+			break;
+		case QMetaType::Long:
+			qDebug("Long");
+			this->minDataValue = LONG_MIN;
+			this->maxDataValue = LONG_MAX;
+			break;
+		case QMetaType::LongLong:
+			qDebug("LongLong");
+			this->minDataValue = LLONG_MIN;
+			this->maxDataValue = LLONG_MAX;
+			break;
+		case QMetaType::Short:
+			qDebug("Short");
+			this->minDataValue = SHRT_MIN;
+			this->maxDataValue = SHRT_MAX;
+			break;
+		case QMetaType::SChar:
+			qDebug("SChar");
+			this->minDataValue = SCHAR_MIN;
+			this->maxDataValue = SCHAR_MAX;
+			break;
+		case QMetaType::QString:
+			break;
+		case QMetaType::QChar:
+			break;
+		default:
+			qDebug("Unhandled datatype from %s %d", __FUNCTION__, datatype);
+			break;
+	}
 }
 
 void SdoTransfer::SetMaskForValue()
@@ -310,9 +379,6 @@ void SdoTransfer::SetMaskForValue()
 		case QMetaType::UShort:
 		case QMetaType::UChar:
 		{
-			this->maxDataValue = maxUnsignedDataVal;
-			this->minDataValue = 0;
-
 			UINT decDataLen = 0;
 
 			do
@@ -338,8 +404,6 @@ void SdoTransfer::SetMaskForValue()
 		case QMetaType::SChar:
 		{
 			maxUnsignedDataVal = (quint64)(maxUnsignedDataVal / 2);
-			this->maxDataValue = maxUnsignedDataVal;
-			this->minDataValue = 0 -(maxUnsignedDataVal + 1);
 
 			UINT decDataLen = 0;
 
@@ -464,15 +528,14 @@ bool SdoTransfer::IsValidValue()
 		case QMetaType::UShort:
 		case QMetaType::UChar:
 		{
-			bool res;
+			bool res = true;
 			quint64 data = this->ui.sdoResultValue->text().toULongLong(&res, 0);
 			if (!res)
 			{
 				qDebug("Conversion failed ULONGLONG. MetaType %d", this->metaDataTypeIndex);
 			}
 
-			//check the data size
-			if ((data <= this->maxDataValue) || (!res))
+			if ((data <= this->maxDataValue) && (data >= 0) && (res))
 			{
 				result = true;
 			}
@@ -490,27 +553,34 @@ bool SdoTransfer::IsValidValue()
 		case QMetaType::Short:
 		case QMetaType::SChar:
 		{
-			bool res;
-			qint64 data = this->ui.sdoResultValue->text().toLongLong(&res, 0);
-			if (!res)
+			if (this->ui.sdoResultValue->text().compare("-") != 0)
 			{
-				qDebug("Conversion failed LONGLONG. MetaType %d", this->metaDataTypeIndex);
-			}
+				bool res;
+				qint64 data = this->ui.sdoResultValue->text().toLongLong(&res, 0);
 
-			//TODO if loop double check. failing
-			//check the data size
-			if (((this->maxDataValue - data) >= 0)
-					|| (data >= this->minDataValue)
-					|| (!res))
-			{
-				result = true;
+				if (!res)
+				{
+					qDebug("Conversion failed LONGLONG. MetaType %d", this->metaDataTypeIndex);
+				}
+
+				if (((this->maxDataValue - data) >= 0)
+					&& ((this->maxDataValue - data) <= this->maxDataValue)
+					&& (this->minDataValue <= data)
+					&& (res))
+				{
+					result = true;
+				}
+				else
+				{
+					data = 0;
+				}
+
+				this->sdoTransferData = QVariant(this->metaDataTypeIndex, (void*)&data);
 			}
 			else
 			{
-				data = 0;
+				result = true;
 			}
-
-			this->sdoTransferData = QVariant(this->metaDataTypeIndex, (void*)&data);
 			break;
 		}
 		case QMetaType::QString:
@@ -529,17 +599,21 @@ bool SdoTransfer::IsValidValue()
 	return result;
 }
 
-void SdoTransfer::on_sdoResultValue_editingFinished()
+void SdoTransfer::on_sdoResultValue_textEdited(const QString& newValue)
 {
-	qDebug("editing finishd");
-	if (!(this->IsValidValue()))
+	if (this->ui.write->isChecked())
 	{
-		qDebug("InvalidValue");
-		this->ui.transferStatus->setText("Datatype-Value Mismatch");
-		this->ui.sdoResultValue->clear();
+		if (!this->IsValidValue())
+		{
+            this->ui.sdoResultValue->backspace();
+            //this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: lightGray;}");
+		}
+        else
+        {
+            //this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: white;}");
+        }
 	}
 }
-
 //TODO change to AddToNodeList
 void SdoTransfer::UpdateNodeList(unsigned int nodeId)
 {
@@ -588,3 +662,4 @@ void SdoTransfer::UpdateLog(const QString& logMessage)
 
 	emit SignalSdoLog(log);
 }
+
