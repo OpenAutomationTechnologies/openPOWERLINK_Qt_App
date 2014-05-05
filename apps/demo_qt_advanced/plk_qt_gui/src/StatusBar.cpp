@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "StatusBar.h"
+#include "QtCore/QLocale"
 
 #include "api/OplkQtApi.h"
 #include "oplk/debugstr.h"
@@ -112,7 +113,9 @@ void StatusBar::UpdateCycleTime()
 	if (oplkRet != kErrorOk)
 		qDebug("Cycle time read error: %s", debugstr_getRetValStr(oplkRet));
 
-	this->cycleTime->setText(QString("Cycle time: =%1 us").arg(cycleTime));
+	this->cycleTime->setText(QString("Cycle time: %1 %2s")
+							 .arg(QLocale(QLocale::English).toString((qulonglong)cycleTime))
+							 .arg(QString::fromUtf8("\xc2\xb5")));
 }
 
 void StatusBar::SetCdcFilePath(QString& cdc)
