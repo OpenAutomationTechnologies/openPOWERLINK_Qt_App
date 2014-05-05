@@ -105,6 +105,8 @@ SdoTransfer::SdoTransfer(QWidget *parent) :
 	Q_ASSERT(sdoResultHandlerIndex != -1);
 	// If asserted check for the receiverFunction name
 	this->receiverFunction = this->metaObject()->method(sdoResultHandlerIndex);
+
+	this->on_dataType_currentIndexChanged(this->ui.dataType->currentText());
 }
 
 void SdoTransfer::on_read_toggled(bool selected)
