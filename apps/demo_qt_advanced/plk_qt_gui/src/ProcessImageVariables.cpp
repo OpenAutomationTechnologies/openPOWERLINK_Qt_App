@@ -39,6 +39,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ProcessImageVariables.h"
+
+#include <QtCore/QLocale>
+
 #include "api/OplkQtApi.h"
 
 /*******************************************************************************
@@ -53,7 +56,9 @@ ProcessImageVariables::ProcessImageVariables(ProcessImageIn &in, ProcessImageOut
 	this->PrepareInputRows();
 	this->PrepareOutputRows();
 
-	this->ui.refreshRate->setText(QString::number(OplkQtApi::GetProcessImageWaitSyncTime()));
+	this->ui.refreshRate->setText(QString(" %1 ms")
+								.arg(QLocale(QLocale::English).toString(
+							 (qulonglong)OplkQtApi::GetProcessImageWaitSyncTime())));
 
 //Register for ProcessImage variables input datas.
 	int index = this->metaObject()->indexOfMethod(
