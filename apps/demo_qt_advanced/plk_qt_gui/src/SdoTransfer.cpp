@@ -181,9 +181,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 		}
 	}
 
-	/* Update the transfer status */
-	this->ui.transferStatus->setText("Transferring...");
-
 	/* disable the user input objects */
 	this->ui.groupBoxSdoTransfer->setEnabled(false);
 	// Prepare the SDO transfer job
@@ -224,7 +221,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 	if (oplkRet == kErrorOk)
 	{
 		//Local OD access successful
-		this->ui.transferStatus->setText("Transfer completed");
 		this->UpdateLog(QString("SdoTransfer completed successfully"));
 
 		if (this->ui.read->isChecked())
@@ -235,7 +231,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 	else if (oplkRet == kErrorApiTaskDeferred)
 	{
 		//Remote OD access, shall be handled in the callback
-		this->ui.transferStatus->setText("Transfer Initiated");
 	}
 	else
 	{
@@ -243,7 +238,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 		QString errorMessage = QString("SDO transfer failed. Err=0x%1(%2)")
 									.arg(QString::number(oplkRet, 16))
 									.arg(debugstr_getRetValStr(oplkRet));
-		this->ui.transferStatus->setText(errorMessage);
 		this->UpdateLog(errorMessage);
 		this->ui.groupBoxSdoTransfer->setEnabled(true);
 	}
@@ -256,7 +250,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 
 void SdoTransfer::HandleSdoTransferFinished(const SdoTransferResult result)
 {
-	this->ui.transferStatus->setText("");
 	//update the SDO log
 	this->UpdateLog(QString("Transfer finished (Node=%1, Index=0x%2, Sub index=0x%3 Result=0x%4(%5))")
 			.arg(QString::number(result.GetNodeId(), 10))
@@ -274,12 +267,10 @@ void SdoTransfer::HandleSdoTransferFinished(const SdoTransferResult result)
 								.arg(QString::fromStdString(
 									SdoTransferResult::GetAbortCodeDescription(
 											 result.GetAbortCode())));
-		this->ui.transferStatus->setText(abortmsg);
 		this->UpdateLog(abortmsg);
 	}
 	else
 	{
-		this->ui.transferStatus->setText("Transfer Completed");
 		qDebug("Writedata %u", (*((quint64*)(&(this->sdoTransferData)))));
 
 		if (this->ui.read->isChecked())

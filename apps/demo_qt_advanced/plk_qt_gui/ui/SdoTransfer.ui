@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>226</width>
-    <height>311</height>
+    <height>289</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,54 +48,20 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="5" column="1">
-       <widget class="QGroupBox" name="groupBoxSdoType">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelSdoType">
+        <property name="text">
+         <string>Access type</string>
         </property>
-        <property name="checkable">
-         <bool>false</bool>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <property name="leftMargin">
-          <number>3</number>
-         </property>
-         <property name="topMargin">
-          <number>3</number>
-         </property>
-         <property name="rightMargin">
-          <number>3</number>
-         </property>
-         <property name="bottomMargin">
-          <number>3</number>
-         </property>
-         <item>
-          <widget class="QRadioButton" name="read">
-           <property name="text">
-            <string>Read</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="write">
-           <property name="text">
-            <string>Write</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="labelNodeId">
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelIndex">
         <property name="text">
-         <string>Node id</string>
+         <string>Index</string>
         </property>
        </widget>
       </item>
@@ -109,24 +75,12 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="subIndex">
-        <property name="prefix">
-         <string>0x</string>
-        </property>
-        <property name="maximum">
-         <number>255</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="displayIntegerBase">
-         <number>16</number>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelNodeId">
+        <property name="text">
+         <string>Node id</string>
         </property>
        </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QComboBox" name="sdoVia"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="labelDataType">
@@ -181,13 +135,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labelIndex">
-        <property name="text">
-         <string>Index</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1">
        <widget class="QComboBox" name="dataType">
         <property name="currentIndex">
@@ -235,26 +182,6 @@
         </item>
        </widget>
       </item>
-      <item row="9" column="0" colspan="3">
-       <widget class="QLabel" name="transferStatus">
-        <property name="text">
-         <string>Transfer Status</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="labelSdoType">
-        <property name="text">
-         <string>Access type</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="nodeId">
         <property name="inputMethodHints">
@@ -281,6 +208,69 @@
          <string>Value</string>
         </property>
        </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QGroupBox" name="groupBoxSdoType">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="read">
+           <property name="text">
+            <string>Read</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="write">
+           <property name="text">
+            <string>Write</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="subIndex">
+        <property name="prefix">
+         <string>0x</string>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>16</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="sdoVia"/>
       </item>
      </layout>
     </widget>
