@@ -97,14 +97,6 @@ private slots:
 	void on_outputCheckAll_stateChanged(int checkedState);
 
 	/**
-	 * \brief Updates the state of the all the channels force check box
-	 * for the input processimage table.
-	 *
-	 * \param checkedState The state of the check box.
-	 */
-	void on_inputForceAll_stateChanged(int checkedState);
-
-	/**
 	 * \brief Hides all the channels selected in the input processimage.
 	 */
 	void on_inputHideCheckedBtn_clicked();

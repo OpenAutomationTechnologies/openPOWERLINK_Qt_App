@@ -41,6 +41,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 #include "ui_ChannelUi.h"
+#include "LineEditUi.h"
+
 #include "user/processimage/Channel.h"
 #include "user/processimage/ProcessImageIn.h"
 #include "user/processimage/ProcessImageOut.h"
@@ -78,13 +80,6 @@ public:
 	Qt::CheckState GetSelectCheckBoxState() const;
 
 	/**
-	 * \brief Sets the state of the 'force check box' to the given state.
-	 *
-	 * \param[in] state The check box state.
-	 */
-	void UpdateForceCheckBox(Qt::CheckState state);
-
-	/**
 	 * \brief Updates the Input Channel's Current Value.
 	 *
 	 * Updates the current value and if any value is forced, it updates the
@@ -101,10 +96,32 @@ public:
 	 */
 	void UpdateOutputChannelCurrentValue(const ProcessImageOut *out);
 
+private slots:
+	/**
+	 * \brief Updates the value to the processimage whenever the
+	 * return key presesed inside the LineEditUi.
+	 */
+	void ValueReturnPressed();
+
+	/**
+	 * \brief Locks the current value from updating the processimage.
+	 */
+	void LockCurrentValue();
+
+	/**
+	 * \brief Unlocks the current value from updating the processimage.
+	 */
+	void UnlockCurrentValue();
+
 private:
 	Ui::ChannelFrame ui;   ///< ChannelFrame ui instance.
+	LineEditUi *value;     ///< Current value textbox.
 	// TODO change to ptr. TODO ptr in channelMap in api-lib
 	const Channel channel; ///< Processimage channel properties.
+
+	bool lockValueTexbox;  ///< Property to lock the textbox while forcing the value.
+
+	ProcessImageIn *input; ///< Input ProcessImage properties.
 
 	/**
 	 * \brief Sets the current value text box with the given string.
@@ -114,14 +131,10 @@ private:
 	void SetCurrentValue(QString setStr);
 
 	/**
-	 * \return the string present in the force value textbox.
+	 * \brief Sets the input mask for the current value textbox
+	 * based on the channel's properties.
 	 */
-	const QString GetForceValue() const;
-
-	/**
-	 * \return the state of the force check box.
-	 */
-	Qt::CheckState GetForceCheckBoxState() const;
+	void SetInputMask();
 };
 
 #endif // _UI_CHANNEL_H_

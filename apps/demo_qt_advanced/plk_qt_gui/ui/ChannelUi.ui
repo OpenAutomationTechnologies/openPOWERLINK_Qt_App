@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>321</width>
+    <width>56</width>
     <height>30</height>
    </rect>
   </property>
@@ -31,7 +31,7 @@
     <widget class="QCheckBox" name="check">
      <property name="minimumSize">
       <size>
-       <width>40</width>
+       <width>35</width>
        <height>0</height>
       </size>
      </property>
@@ -54,76 +54,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="currentValue">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>95</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>95</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="force">
-     <property name="minimumSize">
-      <size>
-       <width>40</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>45</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="forceValue">
-     <property name="minimumSize">
-      <size>
-       <width>95</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>95</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="inputMethodHints">
-      <set>Qt::ImhPreferNumbers</set>
-     </property>
-     <property name="inputMask">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="lineEdit"/>
    </item>
   </layout>
  </widget>

@@ -53,7 +53,8 @@ SOURCES += src/main.cpp \
 	src/ChannelUi.cpp \
 	src/NodeUi.cpp \
 	src/AboutDialog.cpp \
-	src/StatusBar.cpp
+	src/StatusBar.cpp \
+	src/LineEditUi.cpp
 
 HEADERS  += include/MainWindow.h \
 	include/SdoTransfer.h \
@@ -67,7 +68,8 @@ HEADERS  += include/MainWindow.h \
 	include/ChannelUi.h \
 	include/NodeUi.h \
 	include/AboutDialog.h \
-	include/StatusBar.h
+	include/StatusBar.h \
+	include/LineEditUi.h
 
 FORMS    += ui/MainWindow.ui \
 	ui/MainWindow.ui \
