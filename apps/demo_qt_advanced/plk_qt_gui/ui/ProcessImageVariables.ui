@@ -74,30 +74,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="inputForceAll">
-           <property name="maximumSize">
-            <size>
-             <width>53</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#198320;&quot;&gt;Check to &lt;/span&gt;&lt;span style=&quot; font-weight:600; color:#198320;&quot;&gt;force all the input values&lt;/span&gt;&lt;span style=&quot; color:#198320;&quot;&gt; of the ProcessImage variables.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>Force</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="lineForceAll">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelForceValue">
+          <widget class="QLabel" name="labelInputCurrentValue">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -117,7 +94,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Force Value(HEX)  </string>
+            <string>Current Value(HEX)  </string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

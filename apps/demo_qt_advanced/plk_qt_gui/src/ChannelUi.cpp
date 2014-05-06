@@ -4,9 +4,6 @@
 
 \brief  Implements the actions handled with the channel.
 
-\todo
-		- Handle signed values also
-
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited
@@ -48,57 +45,59 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 	QWidget(parent),
-	channel(channel)
+	channel(channel),
+	lockValueTexbox(false),
+	input(NULL),
+	value(new LineEditUi())
 {
 	ui.setupUi(this);
+
 	this->ui.channelName->setText(QString::fromStdString(this->channel.GetName()));
+
+	//Create current value textbox
+	value->setMinimumSize(QSize(95, 0));
+	value->setMaximumSize(QSize(100, 16777215));
+	value->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+	this->ui.horizontalLayout->addWidget(value);
+
+	bool ret = QObject::connect(this->value,
+								SIGNAL(SignalFocusIn()),
+								this,
+								SLOT(LockCurrentValue()));
+	Q_ASSERT(ret != false);
+
+	ret = QObject::connect(this->value,
+						   SIGNAL(SignalFocusOut()),
+						   this,
+						   SLOT(UnlockCurrentValue()));
+	Q_ASSERT(ret != false);
+
+	ret = QObject::connect(this->value,
+						   SIGNAL(returnPressed()),
+						   this,
+						   SLOT(ValueReturnPressed()));
+	Q_ASSERT(ret != false);
 
 	// Hide force check box and forcevalue text box for output PI
 	if (this->channel.GetDirection() == Direction::PI_OUT)
 	{
-		this->ui.force->hide();
-		this->ui.forceValue->hide();
-	}
-	else
-	{
-		//For Removing the Current value.
-		this->ui.currentValue->hide();
+		this->value->setEnabled(false);
 	}
 
 	this->setToolTip(QString("Size = %1 bits \nByteOffset = 0x%2 \nBitOffset = 0x%3")
 					 .arg(this->channel.GetBitSize())
 					 .arg(this->channel.GetByteOffset(), 0, 16)
 					 .arg(this->channel.GetBitOffset(), 0, 16));
-	if ((this->channel.GetBitSize() % 8) == 0)
-	{
-		QString inputMask;
-		for (UINT i = 0; i < (this->channel.GetBitSize() / 4); ++i)
-		{
-			inputMask.append("H");
-		}
-		this->ui.forceValue->setInputMask(inputMask);
-	}
-	else
-	{
-		this->ui.forceValue->setMaxLength(1);
-		if (this->channel.GetBitSize() == 1)
-		{
-			this->ui.forceValue->setInputMask("B");
-		}
-		else
-		{
-			this->ui.forceValue->setInputMask("H");
-		}
-	}
+	this->SetInputMask();
 }
 
 ChannelUi::~ChannelUi()
 {
 	delete this->ui.channelName;
 	delete this->ui.check;
-	delete this->ui.currentValue;
-	delete this->ui.force;
+	delete this->value;
 	delete this->ui.horizontalLayout;
+
 }
 
 void ChannelUi::UpdateSelectCheckBox(Qt::CheckState state)
@@ -111,39 +110,25 @@ Qt::CheckState ChannelUi::GetSelectCheckBoxState() const
 	return this->ui.check->checkState();
 }
 
-void ChannelUi::UpdateForceCheckBox(Qt::CheckState state)
-{
-	this->ui.force->setChecked(state);
-}
-
 void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 {
+	this->input = in;
+
 	try
 	{
-		if (this->ui.force->checkState() == Qt::Checked)
+		if (!this->lockValueTexbox)
 		{
-			const QString forceValue = this->GetForceValue();
-			if (!forceValue.isEmpty())
+			std::vector<BYTE> value = in->GetRawData(this->channel.GetBitSize(),
+													this->channel.GetByteOffset(),
+													this->channel.GetBitOffset());
+			QString string;
+			for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
+					it != value.rend(); ++it )
 			{
-				const qlonglong forc = forceValue.toLongLong(0, 16);
-
-				in->SetRawValue(this->channel.GetName(),
-								(const void*) &forc,
-								this->channel.GetBitSize());
+				string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
 			}
+			this->SetCurrentValue(string.toUpper());
 		}
-/** Commented for hiding the Current value.
-		std::vector<BYTE> value = in->GetRawData(this->channel.GetBitSize(),
-												this->channel.GetByteOffset(),
-												this->channel.GetBitOffset());
-		QString string;
-		for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
-				it != value.rend(); ++it )
-		{
-			string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
-		}
-		this->SetCurrentValue(string);
-*/
 	}
 	catch(const std::exception& ex)
 	{
@@ -174,22 +159,69 @@ void ChannelUi::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 	}
 }
 
+void ChannelUi::SetInputMask()
+{
+	if ((this->channel.GetBitSize() % 8) == 0)
+	{
+		QString inputMask;
+		for (UINT i = 0; i < (this->channel.GetBitSize() / 4); ++i)
+		{
+			inputMask.append("H");
+		}
+		this->value->setInputMask(inputMask);
+	}
+	else
+	{
+		if (this->channel.GetBitSize() == 1)
+		{
+			this->value->setInputMask("B");
+		}
+		else
+		{
+			this->value->setInputMask("H");
+		}
+	}
+}
+
+void ChannelUi::SetCurrentValue(QString str)
+{
+	this->value->setText(str.toUpper());
+}
 
 /*******************************************************************************
-* Private functions
+* Private SLOTS
 *******************************************************************************/
 
-void ChannelUi::SetCurrentValue(QString setStr)
+void ChannelUi::ValueReturnPressed()
 {
-	this->ui.currentValue->setText(setStr.toUpper());
+	try
+	{
+		const QString forceValue = this->value->text();
+		if (!forceValue.isEmpty())
+		{
+			const qlonglong forc = forceValue.toLongLong(0, 16);
+
+			this->input->SetRawValue(this->channel.GetName(),
+							(const void*) &forc,
+							this->channel.GetBitSize());
+			this->setStyleSheet("QLineEdit{background: white;}");
+		}
+	}
+	catch(const std::exception& ex)
+	{
+		// TODO Discuss about exposing the error to the user.
+		qDebug("An Exception has occured: %s", ex.what());
+	}
 }
 
-const QString ChannelUi::GetForceValue() const
+void ChannelUi::LockCurrentValue()
 {
-	return this->ui.forceValue->text();
+	this->lockValueTexbox = true;
+	this->setStyleSheet("QLineEdit{background: yellow;}");
 }
 
-Qt::CheckState ChannelUi::GetForceCheckBoxState() const
+void ChannelUi::UnlockCurrentValue()
 {
-	return this->ui.force->checkState();
+	this->lockValueTexbox = false;
+	this->setStyleSheet("QLineEdit{background: white;}");
 }

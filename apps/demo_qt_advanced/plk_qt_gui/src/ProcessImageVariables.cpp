@@ -189,21 +189,6 @@ void ProcessImageVariables::on_outputCheckAll_stateChanged(int checkedState)
 	}
 }
 
-void ProcessImageVariables::on_inputForceAll_stateChanged(int checkedState)
-{
-	if (checkedState != Qt::PartiallyChecked)
-	{
-		for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
-			 channel != this->inputChannels.end(); ++channel)
-		{
-			if (*channel)
-			{
-				(*channel)->UpdateForceCheckBox((Qt::CheckState) checkedState);
-			}
-		}
-	}
-}
-
 void ProcessImageVariables::on_inputHideCheckedBtn_clicked()
 {
 	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
