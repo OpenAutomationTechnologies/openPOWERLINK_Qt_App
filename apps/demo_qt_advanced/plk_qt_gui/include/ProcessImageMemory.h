@@ -45,11 +45,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * \brief The ProcessImageMemory class inherits the QFrame and describes the
+ * \brief The ProcessImageMemory class inherits the QWidget and describes the
  * logic to update the input and output processimage data in a memory view format
  * by using the QTableWidgets.
  */
-class ProcessImageMemory : public QFrame
+class ProcessImageMemory : public QWidget
 {
 	Q_OBJECT
 
