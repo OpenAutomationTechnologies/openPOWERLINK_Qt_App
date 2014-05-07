@@ -71,7 +71,7 @@ private slots:
 	 * \brief Checks for if any text in the console is selected or not
 	 * \param[in] txtSelected Checks if the text selected or not.
 	 */
-	void on_txtBxConsoleLog_copyAvailable(bool txtSelected);
+	void on_log_copyAvailable(bool txtSelected);
 
 private:
 	Ui::LoggerWindow ui;  ///< Logger window ui instance.
