@@ -56,9 +56,6 @@ ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out,
 {
 	this->ui.setupUi(this);
 
-	this->ui.refreshRate->setText(QString(" %1 ms")
-								.arg(QLocale(QLocale::English).toString(
-							 (qulonglong)OplkQtApi::GetProcessImageWaitSyncTime())));
 
 	const UINT inputRowCount = (in.GetSize() / this->ui.inputTable->columnCount()) + 1;
 	const UINT outputRowCount = (out.GetSize() / this->ui.outTable->columnCount()) + 1;
