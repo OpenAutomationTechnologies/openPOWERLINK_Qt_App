@@ -120,13 +120,6 @@ MainWindow::MainWindow(QWidget *parent) :
 				  SLOT(RemoveFromNodeList(unsigned int)));
 	Q_ASSERT(ret != false);
 
-	ret = connect(this->sdoTab,
-				  SIGNAL(SignalSdoLog(const QString&)),
-				  this->log,
-				  SLOT(HandleSdoLog(const QString&)));
-	Q_ASSERT(ret != false);
-
-
 	ret = connect(this->cdcDialog,
 				  SIGNAL(SignalCdcChanged(QString&)),
 				  this->status,

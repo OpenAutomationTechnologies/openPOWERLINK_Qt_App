@@ -61,16 +61,6 @@ public:
 	 **/
 	Q_INVOKABLE void HandleStackLog(const QString& str);
 
-public slots:
-	/**
-	 * \brief Handles the log messages from the SDO transfer.
-	 *
-	 * Receives the log messages from the stack and appends to the SDO log
-	 *
-	 * \param[in] log
-	 */
-	void HandleSdoLog(const QString& log);
-
 private slots:
 	/**
 	 * \brief Copies the contents of the log window.
