@@ -80,13 +80,13 @@ private slots:
 	 * \brief Sets the mask and validator depending on the selected datatype.
 	 * \param dataType The selected datatype.
 	 */
-    void on_dataType_currentIndexChanged(const QString& dataType);
+	void on_dataType_currentIndexChanged(const QString& dataType);
 
-    /**
-     * \brief Validates the SDO write value once it is entered.
-     * \param[in] newValue The new value entered by the user.
-     */
-    void on_sdoResultValue_textEdited(const QString& newValue);
+	/**
+	 * \brief Validates the SDO write value once it is entered.
+	 * \param[in] newValue The new value entered by the user.
+	 */
+	void on_sdoResultValue_textEdited(const QString& newValue);
 
 signals:
 	void SignalSdoLog(const QString& logMessage);
@@ -133,10 +133,11 @@ private:
 	 * \brief Checks for the value is a valid value or not.
 	 *
 	 * It also updates the datatype of the sdoTransferData.
+	 * \param[in] value The value to check.
 	 * \retval true  If the value is valid.
 	 * \retval false If the value is not-valid or if it doesn't falls within the selected range.
 	 */
-	bool IsValidValue();
+	bool IsValidValue(const QString& value);
 
 	/**
 	 * \brief Updates the SDO transfer value with the value in the SdoTransferData
@@ -149,10 +150,10 @@ private:
 	 */
 	void SetMaskForValue();
 
-    /**
-     * \brief Sets the minimum and maximum value for the datatype selected.
-     * \param[in] datatype The datatype
-     */
+	/**
+	 * \brief Sets the minimum and maximum value for the datatype selected.
+	 * \param[in] datatype The datatype
+	 */
 	void SetMinMax(QMetaType::Type datatype);
 
 	/**

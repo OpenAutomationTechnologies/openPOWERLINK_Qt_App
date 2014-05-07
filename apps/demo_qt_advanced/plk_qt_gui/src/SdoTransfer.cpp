@@ -115,9 +115,15 @@ void SdoTransfer::on_read_toggled(bool selected)
 	this->ui.sdoResultValueHex->clear();
 
 	if (!selected)
+	{
 		this->ui.sdoResultValueHex->hide();
+		this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: white;}");
+	}
 	else
+	{
 		this->ui.sdoResultValueHex->show();
+		this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: lightgrey;}");
+	}
 
 	this->ui.sdoResultValue->setDisabled(selected);
 }
@@ -172,7 +178,7 @@ void SdoTransfer::on_executeTransfer_clicked()
 								 QMessageBox::Close);
 			return;
 		}
-		if (!(this->IsValidValue()))
+		if (!(this->IsValidValue(this->ui.sdoResultValue->text())))
 		{
 			QMessageBox::warning(this, "SDO Transfer - Failed",
 								 "Enter a valid value: Data type value mismatch",
@@ -510,7 +516,7 @@ void SdoTransfer::UpdateSdoTransferReturnValue()
 	}
 }
 
-bool SdoTransfer::IsValidValue()
+bool SdoTransfer::IsValidValue(const QString& value)
 {
 	bool result = false;
 	switch (this->metaDataTypeIndex)
@@ -521,8 +527,13 @@ bool SdoTransfer::IsValidValue()
 		case QMetaType::UShort:
 		case QMetaType::UChar:
 		{
+			if (value.compare("0x") == 0)
+			{
+				return true;
+			}
+
 			bool res = true;
-			quint64 data = this->ui.sdoResultValue->text().toULongLong(&res, 0);
+			quint64 data = value.toULongLong(&res, 0);
 			if (!res)
 			{
 				qDebug("Conversion failed ULONGLONG. MetaType %d", this->metaDataTypeIndex);
@@ -546,34 +557,35 @@ bool SdoTransfer::IsValidValue()
 		case QMetaType::Short:
 		case QMetaType::SChar:
 		{
-			if (this->ui.sdoResultValue->text().compare("-") != 0)
+			if ((value.compare("-") == 0) || (value.compare("0x") == 0))
 			{
-				bool res;
-				qint64 data = this->ui.sdoResultValue->text().toLongLong(&res, 0);
-
-				if (!res)
-				{
-					qDebug("Conversion failed LONGLONG. MetaType %d", this->metaDataTypeIndex);
-				}
-
-				if (((this->maxDataValue - data) >= 0)
-					&& ((this->maxDataValue - data) <= this->maxDataValue)
-					&& (this->minDataValue <= data)
-					&& (res))
-				{
-					result = true;
-				}
-				else
-				{
-					data = 0;
-				}
-
-				this->sdoTransferData = QVariant(this->metaDataTypeIndex, (void*)&data);
+				qDebug("Allowed prefixes %s", qPrintable(value));
+				return true;
 			}
-			else
+
+			bool res;
+			qint64 data = value.toLongLong(&res, 0);
+
+			if (!res)
+			{
+				qDebug("Conversion failed LONGLONG. MetaType %d %s",
+					   this->metaDataTypeIndex,
+					   qPrintable(value));
+			}
+
+			// Not working if (data <= this->maxDataValue)
+			if (((qint64)(this->maxDataValue - data) >= 0)
+				&& (data >= this->minDataValue)
+				&& (res))
 			{
 				result = true;
 			}
+			else
+			{
+				data = 0;
+			}
+
+			this->sdoTransferData = QVariant(this->metaDataTypeIndex, (void*)&data);
 			break;
 		}
 		case QMetaType::QString:
@@ -596,15 +608,14 @@ void SdoTransfer::on_sdoResultValue_textEdited(const QString& newValue)
 {
 	if (this->ui.write->isChecked())
 	{
-		if (!this->IsValidValue())
+		if (!(newValue.isEmpty()) && !(this->IsValidValue(newValue)))
 		{
-            this->ui.sdoResultValue->backspace();
-            //this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: lightGray;}");
+			this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: red;}");
 		}
-        else
-        {
-            //this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: white;}");
-        }
+		else
+		{
+			this->ui.sdoResultValue->setStyleSheet("QLineEdit{background: white;}");
+		}
 	}
 }
 //TODO change to AddToNodeList
