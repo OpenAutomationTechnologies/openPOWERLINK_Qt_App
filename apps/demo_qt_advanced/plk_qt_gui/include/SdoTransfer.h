@@ -50,7 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \brief The SdoTransfer class prepares the ui frame and describes the
  * actions involved in it.
  */
-class SdoTransfer : public QFrame
+class SdoTransfer : public QWidget
 {
 	Q_OBJECT
 

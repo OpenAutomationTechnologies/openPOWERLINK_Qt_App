@@ -81,7 +81,7 @@ const QMap<QString, QMetaType::Type> SdoTransfer::dataTypeMap = SdoTransfer::Cre
 * Private functions
 *******************************************************************************/
 SdoTransfer::SdoTransfer(QWidget *parent) :
-	QFrame(parent),
+	QWidget(parent),
 	sdoViaUdpStr("UDP"),
 	sdoViaASndStr("ASnd"),
 	sdoTransferJob(NULL),
