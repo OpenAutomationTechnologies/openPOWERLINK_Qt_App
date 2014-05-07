@@ -80,14 +80,18 @@ void DialogOpenCdc::on_browseCDC_clicked()
 								tr("Concise device configuration (*.cdc *.CDC);;All files (*)"));
 	if (!cdc.isEmpty())
 	{
-		QFileInfo cdcfile(cdc);
-		QString xap = cdcfile.path();
-		xap.append("/xap.xml");
-		if (!QFileInfo::exists(xap))
-			this->SetErrorMessage(XAP_XML, false);
-
 		this->ui.cdcPath->setText(cdc);
-		this->ui.xapPath->setText(xap);
+		// Try to set the xap path from the same location of CDC
+		// Only if the path is empty
+		if (this->ui.xapPath->text().isEmpty())
+		{
+			QFileInfo cdcfile(cdc);
+			QString xap = cdcfile.path();
+			xap.append("/xap.xml");
+			if (!QFileInfo::exists(xap))
+				this->SetErrorMessage(XAP_XML, false);
+			this->ui.xapPath->setText(xap);
+		}
 	}
 }
 
@@ -101,14 +105,20 @@ void DialogOpenCdc::on_browseXap_clicked()
 								tr("XML application process variables (*.xml *.XML);;All files (*)"));
 	if (!xap.isEmpty())
 	{
-		QFileInfo xapFile(xap);
-		QString cdc = xapFile.path();
-		cdc.append("/mnobd.cdc");
-		if (!QFileInfo::exists(cdc))
-			this->SetErrorMessage(CDC, false);
-
-		this->ui.cdcPath->setText(cdc);
 		this->ui.xapPath->setText(xap);
+
+		// Try to set the CDC path from the same location of Xap
+		// Only if the path is empty
+		if (this->ui.cdcPath->text().isEmpty())
+		{
+			QFileInfo xapFile(xap);
+			QString cdc = xapFile.path();
+			cdc.append("/mnobd.cdc");
+			if (!QFileInfo::exists(cdc))
+				this->SetErrorMessage(CDC, false);
+
+			this->ui.cdcPath->setText(cdc);
+		}
 	}
 }
 
@@ -128,8 +138,8 @@ void DialogOpenCdc::on_okButton_clicked()
 		this->cdcFile = this->ui.cdcPath->text().toStdString();
 		this->xapFile = this->ui.xapPath->text().toStdString();
 
-		emit this->SignalCdcChanged(QString::fromStdString(this->cdcFile));
-		emit this->SignalXapChanged(QString::fromStdString(this->xapFile));
+		emit this->SignalCdcChanged(this->cdcFile);
+		emit this->SignalXapChanged(this->xapFile);
 		this->accept();
 	}
 }
