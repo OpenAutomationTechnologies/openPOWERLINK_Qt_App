@@ -43,13 +43,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "api/OplkQtApi.h"
 
-
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
 
 LoggerWindow::LoggerWindow(QWidget *parent) :
-	QDockWidget(parent)
+	QDockWidget(parent),
+	copyAvailable(false)
 {
 	this->ui.setupUi(this);
 	bool ret = OplkQtApi::RegisterEventLogger(*this, this->metaObject()->method(
@@ -67,4 +67,16 @@ void LoggerWindow::HandleSdoLog(const QString& log)
 {
 	this->ui.LoggingTab->setCurrentIndex(1);
 	this->ui.sdoLog->appendPlainText(log);
+}
+
+void LoggerWindow::on_copyStack_clicked()
+{
+	if (!this->copyAvailable)
+		this->ui.txtBxConsoleLog->selectAll();
+	this->ui.txtBxConsoleLog->copy();
+}
+
+void LoggerWindow::on_txtBxConsoleLog_copyAvailable(bool txtSelected)
+{
+	this->copyAvailable = txtSelected;
 }

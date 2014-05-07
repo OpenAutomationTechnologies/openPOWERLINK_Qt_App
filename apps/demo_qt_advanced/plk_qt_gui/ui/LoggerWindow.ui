@@ -13,7 +13,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>175</width>
+    <width>183</width>
     <height>200</height>
    </size>
   </property>
@@ -208,22 +208,6 @@
    <hints>
     <hint type="sourcelabel">
      <x>50</x>
-     <y>76</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>325</x>
-     <y>167</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>copyStack</sender>
-   <signal>clicked()</signal>
-   <receiver>txtBxConsoleLog</receiver>
-   <slot>copy()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>116</x>
      <y>76</y>
     </hint>
     <hint type="destinationlabel">
