@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
+    <width>632</width>
     <height>162</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
      </property>
      <widget class="QWidget" name="layoutWidget">
       <layout class="QGridLayout" name="gridLayout_input">
-       <item row="2" column="0" colspan="5">
+       <item row="1" column="0" colspan="3">
         <layout class="QHBoxLayout" name="hbox_layout_in_1">
          <property name="spacing">
           <number>5</number>
@@ -103,7 +103,7 @@
          </item>
         </layout>
        </item>
-       <item row="4" column="0">
+       <item row="3" column="0">
         <widget class="QPushButton" name="inputHideCheckedBtn">
          <property name="maximumSize">
           <size>
@@ -116,14 +116,55 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="4">
-        <widget class="QLabel" name="refreshRate">
+       <item row="3" column="1">
+        <widget class="QPushButton" name="inputShowAllBtn">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="text">
-          <string/>
+          <string>Show All</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="5">
+       <item row="3" column="2">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0" colspan="3">
+        <widget class="QScrollArea" name="scrollArea_2">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>303</width>
+            <height>60</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <layout class="QVBoxLayout" name="inputProcessImage"/>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="3">
         <widget class="QLabel" name="inputHeadingLabel">
          <property name="maximumSize">
           <size>
@@ -144,64 +185,6 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QPushButton" name="inputShowAllBtn">
-         <property name="maximumSize">
-          <size>
-           <width>70</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Show All</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="3">
-        <widget class="QLabel" name="label">
-         <property name="toolTip">
-          <string>Refresh rate of the data on the screen</string>
-         </property>
-         <property name="text">
-          <string>Screen refresh rate:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="5">
-        <widget class="QScrollArea" name="scrollArea_2">
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents_3">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>366</width>
-            <height>60</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <layout class="QVBoxLayout" name="inputProcessImage"/>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -365,6 +348,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>inputCheckAll</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>inputHideCheckedBtn</tabstop>
+  <tabstop>inputShowAllBtn</tabstop>
+  <tabstop>outputCheckAll</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>outHideCheckedBtn</tabstop>
+  <tabstop>outShowAllBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
