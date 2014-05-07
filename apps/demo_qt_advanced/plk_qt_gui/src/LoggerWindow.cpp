@@ -60,17 +60,17 @@ LoggerWindow::LoggerWindow(QWidget *parent) :
 
 void LoggerWindow::HandleStackLog(const QString& str)
 {
-	this->ui.txtBxConsoleLog->appendPlainText(str);
+	this->ui.log->appendPlainText(str);
 }
 
 void LoggerWindow::on_copyStack_clicked()
 {
 	if (!this->copyAvailable)
-		this->ui.txtBxConsoleLog->selectAll();
-	this->ui.txtBxConsoleLog->copy();
+		this->ui.log->selectAll();
+	this->ui.log->copy();
 }
 
-void LoggerWindow::on_txtBxConsoleLog_copyAvailable(bool txtSelected)
+void LoggerWindow::on_log_copyAvailable(bool txtSelected)
 {
 	this->copyAvailable = txtSelected;
 }
