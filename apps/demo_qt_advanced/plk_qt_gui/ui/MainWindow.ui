@@ -150,7 +150,7 @@
      <normaloff>:/new/images/stop.png</normaloff>:/new/images/stop.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Stop</string>
+    <string>S&amp;top</string>
    </property>
    <property name="toolTip">
     <string>Stops the POWERLINK stack</string>
@@ -176,7 +176,7 @@
     <string>Help documentation</string>
    </property>
    <property name="shortcut">
-    <string>Alt+H, F1</string>
+    <string>F1</string>
    </property>
   </action>
  </widget>
