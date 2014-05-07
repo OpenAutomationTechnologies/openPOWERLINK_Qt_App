@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Public functions
 *******************************************************************************/
 ProcessImageVariables::ProcessImageVariables(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent) :
-	QFrame(parent),
+	QWidget(parent),
 	inPi(in),
 	outPi(out)
 {

@@ -2,7 +2,7 @@
 <ui version="4.0">
  <author>Ramakrishnan Periyakaruppan</author>
  <class>ProcessImageVariables</class>
- <widget class="QFrame" name="ProcessImageVariables">
+ <widget class="QWidget" name="ProcessImageVariables">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,13 +14,7 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <property name="frameShape">
-   <enum>QFrame::StyledPanel</enum>
-  </property>
-  <property name="frameShadow">
-   <enum>QFrame::Raised</enum>
-  </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="_2">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -152,8 +146,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>303</width>
-            <height>60</height>
+            <width>304</width>
+            <height>62</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -213,8 +207,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>296</width>
-            <height>60</height>
+            <width>297</width>
+            <height>62</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
