@@ -2,7 +2,7 @@
 <ui version="4.0">
  <author>Ramakrishnan Periyakaruppan</author>
  <class>SdoTransfer</class>
- <widget class="QFrame" name="SdoTransfer">
+ <widget class="QWidget" name="SdoTransfer">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,12 +13,6 @@
   </property>
   <property name="windowTitle">
    <string>Frame</string>
-  </property>
-  <property name="frameShape">
-   <enum>QFrame::StyledPanel</enum>
-  </property>
-  <property name="frameShadow">
-   <enum>QFrame::Raised</enum>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
