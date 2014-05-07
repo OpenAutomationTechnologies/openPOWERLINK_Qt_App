@@ -89,7 +89,8 @@ SdoTransfer::SdoTransfer(QWidget *parent) :
 	maxDataValue(0),
 	minDataValue(0),
 	metaDataTypeIndex(QMetaType::UnknownType),
-	sdoValueValidator(NULL)
+	sdoValueValidator(NULL),
+	copyAvailable(false)
 {
 	this->ui.setupUi(this);
 
@@ -664,6 +665,17 @@ void SdoTransfer::UpdateLog(const QString& logMessage)
 	log.append(" - ");
 	log.append(logMessage);
 
-	emit SignalSdoLog(log);
+	this->ui.log->appendPlainText(log);
 }
 
+void SdoTransfer::on_copyLog_clicked()
+{
+	if (!this->copyAvailable)
+		this->ui.log->selectAll();
+	this->ui.log->copy();
+}
+
+void SdoTransfer::on_log_copyAvailable(bool txtSelected)
+{
+	this->copyAvailable = txtSelected;
+}

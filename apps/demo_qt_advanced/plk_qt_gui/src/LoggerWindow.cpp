@@ -63,12 +63,6 @@ void LoggerWindow::HandleStackLog(const QString& str)
 	this->ui.txtBxConsoleLog->appendPlainText(str);
 }
 
-void LoggerWindow::HandleSdoLog(const QString& log)
-{
-	this->ui.LoggingTab->setCurrentIndex(1);
-	this->ui.sdoLog->appendPlainText(log);
-}
-
 void LoggerWindow::on_copyStack_clicked()
 {
 	if (!this->copyAvailable)

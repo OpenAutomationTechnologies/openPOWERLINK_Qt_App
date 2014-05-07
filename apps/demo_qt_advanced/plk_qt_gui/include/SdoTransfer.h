@@ -88,8 +88,16 @@ private slots:
 	 */
 	void on_sdoResultValue_textEdited(const QString& newValue);
 
-signals:
-	void SignalSdoLog(const QString& logMessage);
+	/**
+	 * \brief Copies the contents of the log window.
+	 */
+	void on_copyLog_clicked();
+
+	/**
+	 * \brief Checks for if any text in the console is selected or not
+	 * \param[in] txtSelected Checks if the text selected or not.
+	 */
+	void on_log_copyAvailable(bool txtSelected);
 
 private:
 	Ui::SdoTransfer ui;
@@ -114,6 +122,8 @@ private:
 	QMetaType::Type metaDataTypeIndex; ///< The metatype of the Datatype selected.
 
 	QStringList nodeIdList;        ///< Node id list.
+
+	bool copyAvailable;            ///< Used to check if any of the log contents selected or not.
 
 	/**
 	 * \return a dataType map
