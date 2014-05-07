@@ -71,8 +71,21 @@ public slots:
 	 */
 	void HandleSdoLog(const QString& log);
 
+private slots:
+	/**
+	 * \brief Copies the contents of the log window.
+	 */
+	void on_copyStack_clicked();
+
+	/**
+	 * \brief Checks for if any text in the console is selected or not
+	 * \param[in] txtSelected Checks if the text selected or not.
+	 */
+	void on_txtBxConsoleLog_copyAvailable(bool txtSelected);
+
 private:
 	Ui::LoggerWindow ui;  ///< Logger window ui instance.
+	bool copyAvailable;   ///< Used to check if any of the log contents selected or not.
 };
 
 #endif // _LOGGER_WINDOW_H_
