@@ -2,7 +2,7 @@
 <ui version="4.0">
  <author>Ramakrishnan Periyakaruppan</author>
  <class>ProcessImageMemory</class>
- <widget class="QFrame" name="ProcessImageMemory">
+ <widget class="QWidget" name="ProcessImageMemory">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,13 +14,7 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <property name="frameShape">
-   <enum>QFrame::StyledPanel</enum>
-  </property>
-  <property name="frameShadow">
-   <enum>QFrame::Raised</enum>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="vertical">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
