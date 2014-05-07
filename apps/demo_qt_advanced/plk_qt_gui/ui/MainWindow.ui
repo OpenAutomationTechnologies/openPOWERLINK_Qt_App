@@ -29,25 +29,8 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>-1</number>
       </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Welcome to openPOWERLINK</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="styleSheet">
-           <string notr="true">image: url(:/new/images/powerlink_open_source.png);</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
