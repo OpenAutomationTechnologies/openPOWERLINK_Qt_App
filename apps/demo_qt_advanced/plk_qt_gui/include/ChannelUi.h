@@ -120,6 +120,7 @@ private:
 	const Channel channel; ///< Processimage channel properties.
 
 	bool lockValueTexbox;  ///< Property to lock the textbox while forcing the value.
+	QString valueBeforeLock;
 
 	ProcessImageIn *input; ///< Input ProcessImage properties.
 
@@ -138,4 +139,3 @@ private:
 };
 
 #endif // _UI_CHANNEL_H_
-
