@@ -47,10 +47,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * \brief The ProcessImageVariables class inherits the QFrame and describes the
+ * \brief The ProcessImageVariables class inherits the QWidget and describes the
  * logic to update the input and output processimage data from the oplk stack.
  */
-class ProcessImageVariables : public QFrame
+class ProcessImageVariables : public QWidget
 {
 	Q_OBJECT
 
