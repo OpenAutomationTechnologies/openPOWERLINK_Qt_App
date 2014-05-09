@@ -99,6 +99,11 @@ private slots:
 	 */
 	void on_log_copyAvailable(bool txtSelected);
 
+	/**
+	 * \brief Clears the log.
+	 */
+	void on_clearLog_clicked();
+
 private:
 	Ui::SdoTransfer ui;
 
