@@ -266,53 +266,53 @@ public:
 					const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief RegisterProcessImageSync
+	 * \brief RegisterSyncEventHandler
 	 *
-	 * The user have to use this function to register for the input and output signals.
-	 * This signals decides when the user shall start refresh the GUI.
+	 * The user would have to use this function to register for the input
+	 * and output signals.
 	 *
-	 * \see UpdateProcessImageWaitSyncTime to set the refresh rate.
-	 *
-	 * \note The receiverFunction should have the same signature as
-	 *       DataSyncThread::SignalUpdate(Input/Output)Values();
-	 * \param[in] direction
+	 * \param[in] direction         The direction of the processimage.
 	 * \param[in] receiver          Object to handle the event.
-	 * \param[in] receiverFunction  Object-Function to handle the event.
+	 * \param[in] receiverFunction  Member function to handle the event.
 	 * \retval true   Registration successful.
 	 * \retval false  Registration not successful.
+	 *
+	 * \see DataSyncThread::SignalUpdateInputValues()
+	 * \see DataSyncThread::SignalUpdatedOutputValues()
 	 */
-	static bool RegisterProcessImageSync(Direction::Direction direction,
+	static bool RegisterSyncEventHandler(Direction::Direction direction,
 										 const QObject& receiver,
 										 const QMetaMethod& receiverFunction);
 
 	/**
-	 * \brief UnregisterProcessImageSync
+	 * \brief UnregisterSyncEventHandler
 	 *
-	 * \note The receiverFunction should have the same signature as
-	 *       DataSyncThread::SignalUpdate(Input/Output)Values();
-	 * \param[in] direction
+	 * \param[in] direction         The direction of the processimage.
 	 * \param[in] receiver          Object to handle the event.
-	 * \param[in] receiverFunction  Object-Function to handle the event.
+	 * \param[in] receiverFunction  Member function to handle the event.
 	 * \retval true   Un-registration successful.
 	 * \retval false  Un-registration not successful.
+	 *
+	 * \see DataSyncThread::SignalUpdateInputValues()
+	 * \see DataSyncThread::SignalUpdatedOutputValues()
 	 */
-	static bool UnregisterProcessImageSync(Direction::Direction direction,
+	static bool UnregisterSyncEventHandler(Direction::Direction direction,
 										 const QObject& receiver,
 										 const QMetaMethod& receiverFunction);
 
 	/**
 	 * \return The ProcessImage sync wait time in micro seconds.
 	 */
-	static ULONG GetProcessImageWaitSyncTime(void);
+	static ULONG GetSyncWaitTime();
 
 	/**
-	 * \brief Updates the ProcessImage sync to wait for the give time in microseconds.
+	 * \brief Sets the ProcessImage sync to wait for the give time in microseconds.
 	 *
 	 * \note It defaults to DataSyncThread::sleepMicroSeconds value
 	 *
-	 * \param[in] microSecs Processimage sync thread sleep time.
+	 * \param[in] sleepTime Processimage sync thread sleep time in micro seconds.
 	 */
-	static void UpdateProcessImageWaitSyncTime(const ULONG microSecs);
+	static void SetSyncWaitTime(const ULONG sleepTime);
 
 private:
 	static tOplkApiInitParam initParam;
