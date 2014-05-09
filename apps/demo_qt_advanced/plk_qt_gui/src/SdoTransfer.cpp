@@ -679,3 +679,9 @@ void SdoTransfer::on_log_copyAvailable(bool txtSelected)
 {
 	this->copyAvailable = txtSelected;
 }
+
+void SdoTransfer::on_clearLog_clicked()
+{
+	this->ui.log->clear();
+	this->ui.log->setPlainText("");
+}

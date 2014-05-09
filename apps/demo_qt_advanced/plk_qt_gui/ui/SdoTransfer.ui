@@ -337,21 +337,5 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>clearLog</sender>
-   <signal>clicked()</signal>
-   <receiver>log</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>345</x>
-     <y>249</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>357</x>
-     <y>120</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
 </ui>
