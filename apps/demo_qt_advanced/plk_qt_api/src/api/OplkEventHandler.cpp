@@ -168,11 +168,6 @@ void OplkEventHandler::TriggerNodeStateChanged(const int nodeId,
 void OplkEventHandler::TriggerSdoTransferFinished(const tSdoComFinished& result,
 							const ReceiverContext* receiverContext)
 {
-	if(receiverContext)
-	{
-		qDebug("NULL Receiver Context");
-	}
-
 	SdoTransferResult sdoTransferResult = SdoTransferResult(result.nodeId,
 											result.targetIndex,
 											result.targetSubIndex,
@@ -183,32 +178,36 @@ void OplkEventHandler::TriggerSdoTransferFinished(const tSdoComFinished& result,
 
 	emit OplkEventHandler::SignalSdoTransferFinished(sdoTransferResult);
 
-	oplk_freeSdoChannel(result.sdoComConHdl);
-	qDebug("freed SdoChannel");
-
-	bool disconnect = false;
-	disconnect = QObject::disconnect(&OplkEventHandler::GetInstance(),
-						QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
-						receiverContext->GetReceiver(),
-						*(receiverContext->GetReceiverFunction()));
-	if (!disconnect)
+	tOplkError oplkRet = oplk_freeSdoChannel(result.sdoComConHdl);
+	if (oplkRet != kErrorOk)
 	{
-		qDebug("Disconnect failed ! RetVal %d", disconnect);
-		/* This should not happen concerning the implementation of
-		 * OplkQtApi::TransferObject implementation
-		 * TODO report error.
-		 */
+		// TODO throw? freeSdoChannel err.
+		qDebug("free SDO channel fail. Err: 0x%x", oplkRet);
+	}
+
+	if(receiverContext)
+	{
+		bool disconnected = QObject::disconnect(&OplkEventHandler::GetInstance(),
+							QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
+							receiverContext->GetReceiver(),
+							*(receiverContext->GetReceiverFunction()));
+		if (!disconnected)
+		{
+			qDebug("Disconnect failed ! RetVal %d", disconnected);
+			/* This should not happen concerning the implementation of OplkQtApi::TransferObject
+			 * TODO report error.
+			 */
+		}
+		else
+		{
+			qDebug("Disconnected Success");
+		}
+		delete receiverContext;
 	}
 	else
 	{
-		qDebug("Disconnected Success");
+		qDebug("NULL Receiver Context. Not disconnected");
 	}
-
-	delete receiverContext;
-
-	/*
-	 * TODO(RaM): Delete the handle if success
-	 * */
 }
 
 void OplkEventHandler::TriggerPrintLog(QString logStr)
@@ -241,7 +240,7 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 			// also shut down stack
 			oplkRet = kErrorShutdown;
 
-			oplk_freeProcessImage(); //jba do we need it here?
+//			oplk_freeProcessImage(); //jba do we need it here?
 
 			OplkEventHandler::TriggerPrintLog(
 				QString("NMTStateChangeEvent(0x%1) originating event = 0x%2 (%3)")
