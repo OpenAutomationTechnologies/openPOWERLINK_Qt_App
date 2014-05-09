@@ -314,6 +314,36 @@ public:
 	 */
 	static void SetSyncWaitTime(const ULONG sleepTime);
 
+	/**
+	 * \brief RegisterSyncWaitTimeChangedEventHandler
+	 *
+	 * Registers for the change events of the sync wait time.
+	 *
+	 * \param[in] receiver          Object to handle the event.
+	 * \param[in] receiverFunction  Member function to handle the event.
+	 * \retval true   Registration successful.
+	 * \retval false  Registration not successful.
+	 *
+	 * \see DataSyncThread::SignalSyncWaitTimeChanged(ulong)
+	 */
+	static bool RegisterSyncWaitTimeChangedEventHandler(const QObject& receiver,
+										const QMetaMethod& receiverFunction);
+
+	/**
+	 * \brief UnregisterSyncWaitTimeChangedEventHandler
+	 *
+	 * Un registers form the sync wait time changed event handler.
+	 *
+	 * \param[in] receiver          Object to handle the event.
+	 * \param[in] receiverFunction  Member function to handle the event.
+	 * \retval true   Un-registration successful.
+	 * \retval false  Un-registration not successful.
+	 *
+	 * \see DataSyncThread::SignalSyncWaitTimeChanged(ulong)
+	 */
+	static bool UnregisterSyncWaitTimeChangedEventHandler(const QObject& receiver,
+										const QMetaMethod& receiverFunction);
+
 private:
 	static tOplkApiInitParam initParam;
 	static bool cdcSet;
