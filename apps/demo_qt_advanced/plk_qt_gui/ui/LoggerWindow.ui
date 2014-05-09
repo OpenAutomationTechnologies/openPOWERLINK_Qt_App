@@ -77,22 +77,5 @@
   <tabstop>copyStack</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>clearStack</sender>
-   <signal>clicked()</signal>
-   <receiver>log</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>73</x>
-     <y>109</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>81</x>
-     <y>60</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

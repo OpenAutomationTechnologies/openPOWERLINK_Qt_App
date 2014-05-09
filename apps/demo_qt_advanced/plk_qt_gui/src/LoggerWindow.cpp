@@ -74,3 +74,9 @@ void LoggerWindow::on_log_copyAvailable(bool txtSelected)
 {
 	this->copyAvailable = txtSelected;
 }
+
+void LoggerWindow::on_clearStack_clicked()
+{
+	this->ui.log->clear();
+	this->ui.log->setPlainText("");
+}

@@ -73,6 +73,11 @@ private slots:
 	 */
 	void on_log_copyAvailable(bool txtSelected);
 
+	/**
+	 * \brief Clears the log.
+	 */
+	void on_clearStack_clicked();
+
 private:
 	Ui::LoggerWindow ui;  ///< Logger window ui instance.
 	bool copyAvailable;   ///< Used to check if any of the log contents selected or not.
