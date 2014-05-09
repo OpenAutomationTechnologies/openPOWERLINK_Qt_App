@@ -47,7 +47,8 @@ StatusBar::StatusBar(QWidget *parent) :
 	cdcFile(new QLabel()),
 	xapFile(new QLabel()),
 	nmtStatus(new QLabel()),
-	cycleTime(new QLabel())
+	cycleTime(new QLabel()),
+	refreshRate(new QLabel())
 {
 	this->networkInterface->setMinimumWidth(175);
 	this->cdcFile->setMinimumWidth(175);
@@ -63,16 +64,30 @@ StatusBar::StatusBar(QWidget *parent) :
 
 	this->nmtStatus->setMinimumWidth(100);
 	this->cycleTime->setMinimumWidth(100);
+	this->refreshRate->setMinimumWidth(100);
 
 	this->cdcFile->setToolTip("CDC file");
 	this->xapFile->setToolTip("Xap file");
 	this->networkInterface->setToolTip("Network interface name");
 	this->nmtStatus->setToolTip("The status of the POWERLINK stack");
 	this->cycleTime->setToolTip("The POWERLINK cycle time of the network");
+	this->refreshRate->setToolTip("Screen refresh rate");
 
 	this->addPermanentWidget(this->nmtStatus);
 	this->addPermanentWidget(this->cycleTime);
-	this->addPermanentWidget(new QLabel("   "));
+	this->addPermanentWidget(this->refreshRate);
+
+	int index = this->metaObject()->indexOfSlot(
+					QMetaObject::normalizedSignature(
+					"HandleSyncWaitTimeChanged(ulong)").constData());
+	Q_ASSERT(index != -1);
+	// If asserted check for the Function name
+
+	bool ret = OplkQtApi::RegisterSyncWaitTimeChangedEventHandler(*(this),
+							this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
+	// For the first time it is not receiving synctime.
+	this->HandleSyncWaitTimeChanged(OplkQtApi::GetSyncWaitTime());
 }
 
 void StatusBar::UpdateNmtStatus(tNmtState nmtState)
@@ -116,6 +131,12 @@ void StatusBar::UpdateCycleTime()
 	this->cycleTime->setText(QString("Cycle time: %1 %2s")
 							 .arg(QLocale(QLocale::English).toString((qulonglong)cycleTime))
 							 .arg(QString::fromUtf8("\xc2\xb5")));
+}
+
+void StatusBar::HandleSyncWaitTimeChanged(ulong sleepTime)
+{
+	this->refreshRate->setText(QString(" Screen refresh rate: %1 ms ")
+				.arg(QLocale(QLocale::English).toString((qulonglong)sleepTime)));
 }
 
 void StatusBar::SetCdcFilePath(QString& cdc)

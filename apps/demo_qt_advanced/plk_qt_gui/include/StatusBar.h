@@ -76,12 +76,19 @@ public slots:
 	 */
 	void SetNetworkInterfaceName(const QString& name);
 
+	/**
+	 * \brief HandleSyncWaitTimeChanged
+	 * \param[in] sleepTime
+	 */
+	void HandleSyncWaitTimeChanged(ulong sleepTime);
+
 private:
 	QLabel *networkInterface;
 	QLabel *cdcFile;
 	QLabel *xapFile;
 	QLabel *nmtStatus;
 	QLabel *cycleTime;
+	QLabel *refreshRate;
 
 	/**
 	 * \brief Reads and updates the cycle time on the status bar.
