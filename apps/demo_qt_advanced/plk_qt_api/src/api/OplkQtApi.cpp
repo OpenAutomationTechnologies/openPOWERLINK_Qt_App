@@ -358,7 +358,6 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 						const QObject& receiver,
 						const QMetaMethod& receiverFunction)
 {
-	tSdoComConHdl *sdoComConHdl = new tSdoComConHdl;
 	ReceiverContext *receiverContext = NULL;
 
 	/* qRegisterMetaType<T>() is only required for sending the object
@@ -391,6 +390,7 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 		qDebug("Local OD access, not connecting signal.");
 	}
 
+	tSdoComConHdl *sdoComConHdl = new tSdoComConHdl;
 	tOplkError oplkRet = kErrorGeneralError;
 	UINT dataSize =  sdoTransferJob.GetDataSize();
 	switch (sdoTransferJob.GetSdoAccessType())
@@ -433,15 +433,13 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 
 		// Delete the receiver context.
 		if (!receiverContext)
-			delete[] receiverContext;
+			delete receiverContext;
 
-		bool disconnected = false;
 		qDebug("Remote OD access, disconnecting signal.");
-		disconnected = QObject::disconnect(&OplkEventHandler::GetInstance(),
+		bool disconnected = QObject::disconnect(&OplkEventHandler::GetInstance(),
 					QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
 					&receiver,
-					receiverFunction
-		);
+					receiverFunction);
 
 		if (!disconnected)
 		{
