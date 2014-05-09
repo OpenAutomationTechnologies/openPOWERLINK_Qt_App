@@ -67,15 +67,16 @@ public:
 	~ProcessImageMemory();
 
 public slots:
+
 	/**
 	 * \brief Updates the processimage input table value from and/or to the stack.
 	 */
-	void UpdateInputValue();
+	void UpdateFromInputValues();
 
 	/**
 	 * \brief Update the processimage output table value from the stack.
 	 */
-	void UpdateOutputValue();
+	void UpdateFromOutputValues();
 
 private slots:
 	/**

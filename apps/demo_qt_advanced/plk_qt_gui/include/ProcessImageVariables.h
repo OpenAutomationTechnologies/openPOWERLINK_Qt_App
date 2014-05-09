@@ -69,15 +69,16 @@ public:
 	~ProcessImageVariables();
 
 public slots:
+
 	/**
 	 * \brief Updates the processimage input channels value from and/or to the stack.
 	 */
-	void UpdateInputs();
+	void UpdateFromInputValues();
 
 	/**
 	 * \brief Update the processimage output channels value from the stack.
 	 */
-	void UpdateOutputs();
+	void UpdateFromOutputValues();
 
 private slots:
 	/**
