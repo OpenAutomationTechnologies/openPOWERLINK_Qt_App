@@ -517,3 +517,21 @@ void OplkQtApi::SetSyncWaitTime(const ULONG sleepTime)
 	DataSyncThread::GetInstance().SetSleepTime(sleepTime);
 }
 
+bool OplkQtApi::RegisterSyncWaitTimeChangedEventHandler(const QObject &receiver,
+											const QMetaMethod &receiverFunction)
+{
+	return QObject::connect(&DataSyncThread::GetInstance(),
+			QMetaMethod::fromSignal(&DataSyncThread::SignalSyncWaitTimeChanged),
+			&receiver,
+			receiverFunction,
+			(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
+}
+
+bool OplkQtApi::UnregisterSyncWaitTimeChangedEventHandler(const QObject &receiver,
+											const QMetaMethod &receiverFunction)
+{
+	return QObject::disconnect(&DataSyncThread::GetInstance(),
+			QMetaMethod::fromSignal(&DataSyncThread::SignalSyncWaitTimeChanged),
+			&receiver,
+			receiverFunction);
+}

@@ -138,4 +138,5 @@ ULONG DataSyncThread::GetSleepTime() const
 void DataSyncThread::SetSleepTime(const ULONG sleepTime)
 {
 	this->sleepMicroSeconds = sleepTime;
+	emit SignalSyncWaitTimeChanged((ulong)this->sleepMicroSeconds);
 }

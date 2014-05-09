@@ -80,6 +80,13 @@ signals:
 	 */
 	void SignalUpdatedOutputValues();
 
+	/**
+	 * \brief Signal notifies that the wait time has been changed.
+	 * \param[in] waitTime Time in micro seconds.
+	 */
+	void SignalSyncWaitTimeChanged(ulong waitTime);
+	// Use only ulong QT does not connect with ULONG or unsigned long or unsigned long it.
+
 protected:
 	/**
 	 * \brief The reimplemented function of run.
