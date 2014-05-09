@@ -43,10 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "api/DataSyncThread.h"
 #include <oplk/oplk.h>
 
-tOplkError DataSyncThread::AppCbSync(void)
-{
-	return DataSyncThread::GetInstance().ProcessSync();
-}
+
 
 /*******************************************************************************
 * Public functions
@@ -56,27 +53,9 @@ DataSyncThread::~DataSyncThread()
 
 }
 
-tSyncCb DataSyncThread::GetSyncCbFunc()
-{
-	return AppCbSync;
-}
-
 /*******************************************************************************
-* Private functions
+* Protected functions
 *******************************************************************************/
-DataSyncThread& DataSyncThread::GetInstance()
-{
-	// Local static object - Not thread safe
-	static DataSyncThread instance;
-	return instance;
-}
-
-DataSyncThread::DataSyncThread() :
-	sleepMicroSeconds(400)
-{
-
-}
-
 void DataSyncThread::run()
 {
 	tOplkError oplkRet = kErrorGeneralError;
@@ -85,7 +64,7 @@ void DataSyncThread::run()
 		if (DataSyncThread::currentThread()->isInterruptionRequested())
 			return;
 
-		oplkRet = this->ProcessSync();
+		oplkRet = this->ProcessSyncEvent();
 		if (oplkRet != kErrorOk)
 		{
 			qDebug("Error ProcessSync. Err=0x%x", oplkRet);
@@ -94,7 +73,32 @@ void DataSyncThread::run()
 	}
 }
 
-tOplkError DataSyncThread::ProcessSync()
+/*******************************************************************************
+* Private functions
+*******************************************************************************/
+DataSyncThread::DataSyncThread() :
+	sleepMicroSeconds(400)
+{
+}
+
+DataSyncThread& DataSyncThread::GetInstance()
+{
+	// Local static object - Not thread safe
+	static DataSyncThread instance;
+	return instance;
+}
+
+tOplkError DataSyncThread::AppCbSync(void)
+{
+	return DataSyncThread::GetInstance().ProcessSyncEvent();
+}
+
+tSyncCb DataSyncThread::GetCbSync() const
+{
+	return AppCbSync;
+}
+
+tOplkError DataSyncThread::ProcessSyncEvent()
 {
 	tOplkError oplkRet = kErrorGeneralError;
 
@@ -112,7 +116,10 @@ tOplkError DataSyncThread::ProcessSync()
 		return oplkRet;
 	}
 
-	emit SignalUpdateOutputValues();
+	emit SignalUpdatedOutputValues();
+
+	QThread::msleep(DataSyncThread::sleepMicroSeconds);
+
 	emit SignalUpdateInputValues();
 
 	oplkRet = oplk_exchangeProcessImageIn();
@@ -120,17 +127,15 @@ tOplkError DataSyncThread::ProcessSync()
 		qDebug("Error exchangeProcessImageOut. Err=0x%x", oplkRet);
 	//Default return
 
-	QThread::msleep(DataSyncThread::sleepMicroSeconds);
-
 	return oplkRet;
 }
 
-ULONG DataSyncThread::GetSleepMsecs(void)
+ULONG DataSyncThread::GetSleepTime() const
 {
 	return this->sleepMicroSeconds;
 }
 
-void DataSyncThread::SetSleepMsecs(const ULONG mSecs)
+void DataSyncThread::SetSleepTime(const ULONG sleepTime)
 {
-	this->sleepMicroSeconds = mSecs;
+	this->sleepMicroSeconds = sleepTime;
 }

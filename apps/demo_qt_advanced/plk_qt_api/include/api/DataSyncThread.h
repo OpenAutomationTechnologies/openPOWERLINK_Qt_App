@@ -53,7 +53,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * \note This class is intended to _only_ be used by OplkQtApi
  * \note The signals can be received by registering through the
- * OplkQtApi::RegisterProcessImageSycn() functions
+ * OplkQtApi::RegisterSyncEventHandler() functions
  */
 class DataSyncThread : public QThread
 {
@@ -62,31 +62,29 @@ class DataSyncThread : public QThread
 public:
 	virtual ~DataSyncThread();
 
-	/**
-	 * \return The address of the synchronous data callback function.
-	 */
-	tSyncCb GetSyncCbFunc();
-
-	/**
-	 * \return The time in microSeconds used to sleep the DataSyncThread.
-	 */
-	ULONG GetSleepMsecs(void);
-
-	/**
-	 * \param[in] mSecs time in micro seconds to sleep the DataSyncThread.
-	 */
-	void SetSleepMsecs(const ULONG mSecs);
-
 signals:
+
 	/**
-	 * \brief A signal to UpdateInputValues
+	 * \brief Signals that the input processimage is about to be updated.
+	 *
+	 * Receivers of this signal are being notified that values in the
+	 * input processimage will be transferred to the openPOWERLINK stack.
 	 */
 	void SignalUpdateInputValues();
 
 	/**
-	 * \brief A signal to UpdateOutputValues
+	 * \brief Signals that the outupt processimage has been updated.
+	 *
+	 * Receivers of this signal are being notified that values in the
+	 * output processimage have been updated by the openPOWERLINK stack.
 	 */
-	void SignalUpdateOutputValues();
+	void SignalUpdatedOutputValues();
+
+protected:
+	/**
+	 * \brief The reimplemented function of run.
+	 */
+	virtual void run();
 
 private:
 
@@ -99,26 +97,37 @@ private:
 	DataSyncThread& operator=(const DataSyncThread& syncThread);
 
 	/**
-	 * \return Returns the instance of the class
+	 * \return The instance of the class
 	 */
 	static DataSyncThread& GetInstance();
-
-	/**
-	 * \brief The reimplemented function of run.
-	 */
-	virtual void run();
-
-	/**
-	 * \brief Process the processimage data transfer.
-	 * \return a tOplkError error code.
-	 */
-	tOplkError ProcessSync();
 
 	/**
 	 * \brief AppCbSync
 	 * \return a tOplkError error code.
 	 */
 	static tOplkError AppCbSync(void);
+
+	/**
+	 * \return The pointer to the callback function AppCbSync().
+	 */
+	tSyncCb GetCbSync() const;
+
+	/**
+	 * \brief Process the processimage data transfer.
+	 * \return a tOplkError error code.
+	 */
+	tOplkError ProcessSyncEvent();
+
+
+	/**
+	 * \return Sleep time in micro seconds.
+	 */
+	ULONG GetSleepTime() const;
+
+	/**
+	 * \param[in] Sleep time time in micro seconds.
+	 */
+	void SetSleepTime(const ULONG sleepTime);
 };
 
 #endif // _DATA_SYNC_THREAD_H_

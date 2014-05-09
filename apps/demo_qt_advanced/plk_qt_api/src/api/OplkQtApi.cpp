@@ -297,7 +297,7 @@ bool OplkQtApi::UnregisterEventLogger(const QObject& receiver,
 		receiverFunction);
 }
 
-bool OplkQtApi::RegisterProcessImageSync(Direction::Direction direction,
+bool OplkQtApi::RegisterSyncEventHandler(Direction::Direction direction,
 										const QObject& receiver,
 										const QMetaMethod& receiverFunction)
 {
@@ -312,17 +312,16 @@ bool OplkQtApi::RegisterProcessImageSync(Direction::Direction direction,
 	else if (direction == Direction::PI_OUT)
 	{
 		return QObject::connect(&DataSyncThread::GetInstance(),
-				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateOutputValues),
+				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdatedOutputValues),
 				&receiver,
 				receiverFunction,
 				(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
 	}
-
 	// TODO Error exception
 	return false;
 }
 
-bool OplkQtApi::UnregisterProcessImageSync(Direction::Direction direction,
+bool OplkQtApi::UnregisterSyncEventHandler(Direction::Direction direction,
 											const QObject& receiver,
 											const QMetaMethod& receiverFunction)
 {
@@ -336,11 +335,10 @@ bool OplkQtApi::UnregisterProcessImageSync(Direction::Direction direction,
 	else if (direction == Direction::PI_OUT)
 	{
 		return QObject::disconnect(&DataSyncThread::GetInstance(),
-				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateOutputValues),
+				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdatedOutputValues),
 				&receiver,
 				receiverFunction);
 	}
-
 	// TODO Error exception
 	return false;
 }
@@ -509,12 +507,13 @@ tOplkError OplkQtApi::SetCycleTime(const ULONG cycleTime)
 	// If this is a demo CN. It has to do remote SDO write?.
 }
 
-ULONG OplkQtApi::GetProcessImageWaitSyncTime(void)
+ULONG OplkQtApi::GetSyncWaitTime()
 {
-	return DataSyncThread::GetInstance().GetSleepMsecs();
+	return DataSyncThread::GetInstance().GetSleepTime();
 }
 
-void OplkQtApi::UpdateProcessImageWaitSyncTime(const ULONG microSecs)
+void OplkQtApi::SetSyncWaitTime(const ULONG sleepTime)
 {
-	DataSyncThread::GetInstance().SetSleepMsecs(microSecs);
+	DataSyncThread::GetInstance().SetSleepTime(sleepTime);
 }
+
