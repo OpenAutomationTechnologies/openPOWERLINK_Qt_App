@@ -56,26 +56,25 @@ ProcessImageVariables::ProcessImageVariables(ProcessImageIn &in, ProcessImageOut
 	this->PrepareInputRows();
 	this->PrepareOutputRows();
 
-
-//Register for ProcessImage variables input datas.
 	int index = this->metaObject()->indexOfMethod(
 						QMetaObject::normalizedSignature(
-						"UpdateInputs()").constData());
+						"UpdateFromInputValues()").constData());
 	Q_ASSERT(index != -1);
 	// If asserted check for the Function name
 
-	bool ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_IN,
+	//Register for ProcessImage variables input datas.
+	bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_IN,
 										 *(this),
 										 this->metaObject()->method(index));
 	Q_ASSERT(ret != false);
 
-//Register for ProcessImage variables output datas.
 	index = this->metaObject()->indexOfMethod(
 						QMetaObject::normalizedSignature(
-						"UpdateOutputs()").constData());
+						"UpdateFromOutputValues()").constData());
 	Q_ASSERT(index != -1);
 
-	ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_OUT,
+	//Register for ProcessImage variables output datas.
+	ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_OUT,
 										 *(this),
 										 this->metaObject()->method(index));
 	Q_ASSERT(ret != false);
@@ -102,7 +101,7 @@ ProcessImageVariables::~ProcessImageVariables()
 	}
 }
 
-void ProcessImageVariables::UpdateInputs()
+void ProcessImageVariables::UpdateFromInputValues()
 {
 	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
 		 channel != this->inputChannels.end(); ++channel)
@@ -114,7 +113,7 @@ void ProcessImageVariables::UpdateInputs()
 	}
 }
 
-void ProcessImageVariables::UpdateOutputs()
+void ProcessImageVariables::UpdateFromOutputValues()
 {
 	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
 		 channel != this->outputChannels.end(); ++channel)

@@ -79,11 +79,11 @@ ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out,
 //Register for ProcessImage memory input datas.
 	int index = this->metaObject()->indexOfMethod(
 						QMetaObject::normalizedSignature(
-						"UpdateInputValue()").constData());
+						"UpdateFromInputValues()").constData());
 	Q_ASSERT(index != -1);
 	// If asserted check for the Function name
 
-	bool ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_IN,
+	bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_IN,
 										 *(this),
 										 this->metaObject()->method(index));
 	Q_ASSERT(ret != false);
@@ -91,10 +91,10 @@ ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out,
 //Register for ProcessImage memory output datas.
 	index = this->metaObject()->indexOfMethod(
 						QMetaObject::normalizedSignature(
-						"UpdateOutputValue()").constData());
+						"UpdateFromOutputValues()").constData());
 	Q_ASSERT(index != -1);
 
-	ret = OplkQtApi::RegisterProcessImageSync(Direction::PI_OUT,
+	ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_OUT,
 										 *(this),
 										 this->metaObject()->method(index));
 	Q_ASSERT(ret != false);
@@ -222,7 +222,7 @@ void ProcessImageMemory::ResizeColumnsToContents()
 	this->ui.outTable->resizeColumnsToContents();
 }
 
-void ProcessImageMemory::UpdateInputValue()
+void ProcessImageMemory::UpdateFromInputValues()
 {
 	try
 	{
@@ -257,7 +257,7 @@ void ProcessImageMemory::UpdateInputValue()
 	}
 }
 
-void ProcessImageMemory::UpdateOutputValue()
+void ProcessImageMemory::UpdateFromOutputValues()
 {
 	try
 	{
