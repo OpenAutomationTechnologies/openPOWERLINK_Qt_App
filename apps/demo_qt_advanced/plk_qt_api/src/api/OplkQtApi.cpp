@@ -48,8 +48,8 @@ static const ULONG kIpAddress = 0xc0a864F0;   ///< MN by default (192.168.100.24
 static const ULONG kSubnetMask = 0xFFFFFF00;  ///< 255.255.255.0
 static const std::string kHostName = "openPOWERLINK Stack"; ///< max 32 chars
 static const ULONG kCycleLen = 5000;  ///< Cycle Length (0x1006: NMT_CycleLen_U32) in [us]
-static const BYTE abMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  ///<Default MAC Address
-static const std::string defaultCDCFilename = CONFIG_OBD_DEF_CONCISEDCF_FILENAME;  ///< Default CDC file name
+static const BYTE abkMacAddr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};  ///<Default MAC Address
+static const std::string kDefaultCdcFilename = CONFIG_OBD_DEF_CONCISEDCF_FILENAME;  ///< Default CDC file name
 
 
 /*******************************************************************************
@@ -96,7 +96,7 @@ void OplkQtApi::SetInitParam()
 	OplkQtApi::initParam.fSyncOnPrcNode = FALSE;
 
 	// write 00:00:00:00:00:00 to MAC address, so that the driver uses the real hardware address
-	OPLK_MEMCPY(OplkQtApi::initParam.aMacAddress, abMacAddr, sizeof(OplkQtApi::initParam.aMacAddress));
+	OPLK_MEMCPY(OplkQtApi::initParam.aMacAddress, abkMacAddr, sizeof(OplkQtApi::initParam.aMacAddress));
 
 	// set callback functions
 	OplkQtApi::initParam.pfnCbEvent = OplkEventHandler::GetInstance().GetEventCbFunc();
@@ -147,7 +147,7 @@ tOplkError OplkQtApi::StartStack()
 	if (!OplkQtApi::cdcSet)
 	{
 		qDebug("No custom CDC set, setting default CDC path");
-		oplkRet = oplk_setCdcFilename((char*) defaultCDCFilename.c_str());
+		oplkRet = oplk_setCdcFilename((char*) kDefaultCdcFilename.c_str());
 		if (oplkRet != kErrorOk)
 		{
 			qDebug("Set default CDC File. Ret: %d", oplkRet);
