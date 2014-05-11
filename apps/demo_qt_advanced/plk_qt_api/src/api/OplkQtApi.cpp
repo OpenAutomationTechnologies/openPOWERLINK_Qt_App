@@ -492,9 +492,9 @@ tOplkError OplkQtApi::SetCdc(const BYTE* cdcBuffer, const UINT size)
 	return oplkRet;
 }
 
-tOplkError OplkQtApi::SetCdc(const char* cdcFileName)
+tOplkError OplkQtApi::SetCdc(const std::string& cdcFileName)
 {
-	tOplkError oplkRet = oplk_setCdcFilename((char*) cdcFileName);
+	tOplkError oplkRet = oplk_setCdcFilename((char*) cdcFileName.c_str());
 	OplkQtApi::cdcSet = (oplkRet == kErrorOk);
 	return oplkRet;
 }

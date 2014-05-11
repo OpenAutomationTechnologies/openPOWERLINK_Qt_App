@@ -129,7 +129,7 @@ public:
 	 * \brief   Sets the pointer to the CDC buffer.
 	 *
 	 * \note This function always has precedence over the
-	 *       OplkQtApi::SetCdc(const char* cdcFileName), if none of these two
+	 *       OplkQtApi::SetCdc(const std:string& cdcFileName), if none of these two
 	 *       functions are called, the API will look for "mnobd.cdc" in the
 	 *       working directory.
 	 * \param[in] cdcBuffer  Buffer to the CDC contents.
@@ -148,7 +148,7 @@ public:
 	 * \param cdcFileName  File name of the CDC
 	 * \return Returns a tOplkError error code.
 	 */
-	static tOplkError SetCdc(const char* cdcFileName);
+	static tOplkError SetCdc(const std::string& cdcFileName);
 
 	/**
 	 * \brief   Sets the Cycle time in micro seconds.
