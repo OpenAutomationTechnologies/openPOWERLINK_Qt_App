@@ -108,6 +108,14 @@ MainWindow::MainWindow(QWidget *parent) :
 							this->status->metaObject()->method(index));
 	Q_ASSERT(ret != false);
 
+	index = this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
+						"HandleCriticalError(const QString&)").constData());
+	Q_ASSERT(index != -1);
+
+	ret = OplkQtApi::RegisterCriticalErrorEventHandler(*(this),
+							this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
+
 	ret = connect(this->cnStatus,
 				  SIGNAL(SignalNodeAvailable(unsigned int)),
 				  this->sdoTab,
@@ -351,4 +359,13 @@ void MainWindow::on_actionHelp_triggered()
 						QString("Make sure you have any default web browser.\n If not manually go to the link %1").arg(helpUrl),
 							 QMessageBox::Close);
 	}
+}
+
+void MainWindow::HandleCriticalError(const QString& errorMessage)
+{
+	this->on_actionStop_triggered();
+	QMessageBox::warning(this, "Critical Error!",
+						QString("Critical error has occured in the openPOWERLINK stack.\nError: %1")
+								.arg(errorMessage),
+						QMessageBox::Close);
 }
