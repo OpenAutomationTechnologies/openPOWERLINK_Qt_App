@@ -533,3 +533,22 @@ bool OplkQtApi::UnregisterSyncWaitTimeChangedEventHandler(const QObject &receive
 			&receiver,
 			receiverFunction);
 }
+
+bool OplkQtApi::RegisterCriticalErrorEventHandler(const QObject &receiver,
+										const QMetaMethod &receiverFunction)
+{
+	return QObject::connect(&OplkEventHandler::GetInstance(),
+			QMetaMethod::fromSignal(&OplkEventHandler::SignalCriticalError),
+			&receiver,
+			receiverFunction,
+			(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
+}
+
+bool OplkQtApi::UnregisterCriticalErrorEventHandler(const QObject &receiver,
+										const QMetaMethod &receiverFunction)
+{
+	return QObject::disconnect(&OplkEventHandler::GetInstance(),
+			QMetaMethod::fromSignal(&OplkEventHandler::SignalCriticalError),
+			&receiver,
+			receiverFunction);
+}
