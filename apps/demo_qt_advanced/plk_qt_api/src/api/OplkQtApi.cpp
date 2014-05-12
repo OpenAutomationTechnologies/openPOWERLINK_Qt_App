@@ -346,12 +346,8 @@ bool OplkQtApi::UnregisterSyncEventHandler(Direction::Direction direction,
 tOplkError OplkQtApi::ExecuteNmtCommand(const UINT nodeId,
 						tNmtCommand nmtCommand)
 {
-	//TODO Exception for unsupported commands.
-
-	if (nodeId == OplkQtApi::initParam.nodeId)
-		return oplk_writeLocalObject(0x1F9E, 0x00, &nmtCommand, sizeof(UINT8));
-	else
-		return oplk_execRemoteNmtCommand(nodeId, nmtCommand);
+	// TODO function name should be renamed.
+	return oplk_execRemoteNmtCommand(nodeId, nmtCommand);
 }
 
 tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
