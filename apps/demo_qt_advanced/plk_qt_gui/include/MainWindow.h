@@ -114,6 +114,12 @@ private slots:
 	 */
 	void on_actionHelp_triggered();
 
+	/**
+	 * \brief Handles the critical error events from the stack.
+	 * \param[in] errorMessage Detailed information about the error.
+	 */
+	void HandleCriticalError(const QString& errorMessage);
+
 private:
 	Ui::MainWindow ui;                         ///< MainWindow UI instance
 	SdoTransfer *sdoTab;                       ///< SDO ui
