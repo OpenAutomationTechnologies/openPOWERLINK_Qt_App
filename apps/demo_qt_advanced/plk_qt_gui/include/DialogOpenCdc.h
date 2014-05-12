@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 #include "ui_DialogOpenCdc.h"
-#include <string>
+#include <QString>
 
 /**
  * \brief The DialogOpenCdc class inherits the QDialog to read the CDC and
@@ -56,12 +56,12 @@ public:
 	/**
 	 * \return The CDC's full path with name mnobd.cdc
 	 */
-	const char* GetCdcFileName() const;
+	const QString& GetCdcFileName() const;
 
 	/**
 	 * \return The xap xml's full path with name xap.xml
 	 */
-	const char* GetXapFileName() const;
+	const QString& GetXapFileName() const;
 
 private slots:
 	/**
@@ -102,8 +102,9 @@ signals:
 
 private:
 	Ui::DialogOpenCdc ui;
-	std::string cdcFile;
-	std::string xapFile;
+
+	QString cdcFile;
+	QString xapFile;
 
 	enum Configuration
 	{
