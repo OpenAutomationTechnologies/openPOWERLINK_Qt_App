@@ -202,7 +202,8 @@ void MainWindow::on_actionStart_triggered()
 {
 	// No need to save the return value of the addTab
 
-	if (!(this->cdcDialog->GetCdcFileName()) || !(this->cdcDialog->GetXapFileName()))
+	if ((this->cdcDialog->GetCdcFileName().isEmpty())
+		|| (this->cdcDialog->GetXapFileName().isEmpty()))
 	{
 		if (this->cdcDialog->exec() == QDialog::Rejected)
 		{
@@ -217,14 +218,14 @@ void MainWindow::on_actionStart_triggered()
 	{
 		this->parser = ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
 
-		if (!(this->cdcDialog->GetXapFileName()))
+		if (this->cdcDialog->GetXapFileName().isEmpty())
 		{
 			QMessageBox::critical(this, "File not found",
 								 QString("xap.xml not found"),
 								 QMessageBox::Close);
 			return;
 		}
-		std::ifstream ifsXap(this->cdcDialog->GetXapFileName());
+		std::ifstream ifsXap(this->cdcDialog->GetXapFileName().toStdString().c_str());
 		std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
 		this->parser->Parse(xapData.c_str());
 	}
@@ -241,7 +242,7 @@ void MainWindow::on_actionStart_triggered()
 	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN));
 	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT));
 	//TODO Start powerlink and only if success enable the stop button.
-	if (this->networkInterface->GetDevName() == "")
+	if (this->networkInterface->GetDevName().isEmpty())
 	{
 		if (!this->on_actionSelect_Interface_triggered())
 		{
@@ -261,7 +262,8 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	oplkRet = OplkQtApi::SetCdc(this->cdcDialog->GetCdcFileName());
+	std::string cdc = this->cdcDialog->GetCdcFileName().toStdString();
+	oplkRet = OplkQtApi::SetCdc(cdc);
 	if (oplkRet != kErrorOk)
 	{
 		QMessageBox::critical(this, "SetCDC failed",
