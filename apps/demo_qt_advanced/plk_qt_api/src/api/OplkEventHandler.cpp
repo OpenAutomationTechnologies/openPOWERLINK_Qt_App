@@ -97,9 +97,13 @@ tOplkError OplkEventHandler::AppCbEvent(tOplkApiEventType eventType,
 			break;
 
 		case kOplkApiEventCriticalError:
-		case kOplkApiEventWarning:
-			oplkRet = OplkEventHandler::GetInstance().ProcessErrorWarningEvent(
+			oplkRet = OplkEventHandler::GetInstance().ProcessCriticalErrorEvent(
 										&eventArg->internalError, userArg);
+			break;
+
+		case kOplkApiEventWarning:
+			oplkRet = OplkEventHandler::GetInstance().ProcessWarningEvent(
+									&eventArg->internalError, userArg);
 			break;
 
 		case kOplkApiEventHistoryEntry:
@@ -221,6 +225,11 @@ void OplkEventHandler::TriggerPrintLog(QString logStr)
 	emit OplkEventHandler::SignalPrintLog(str);
 }
 
+void OplkEventHandler::TriggerCriticalError(const QString errorMessage)
+{
+	emit this->SignalCriticalError(errorMessage);
+}
+
 tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 								tEventNmtStateChange* nmtStateChange,
 								void* userArg)
@@ -290,43 +299,70 @@ tOplkError OplkEventHandler::ProcessNmtStateChangeEvent(
 	return oplkRet;
 }
 
-tOplkError OplkEventHandler::ProcessErrorWarningEvent(
+tOplkError OplkEventHandler::ProcessCriticalErrorEvent(
 								tEventError* internalError,
 								void* userArg)
 {
-
 	UNUSED_PARAMETER(userArg);
 
-	OplkEventHandler::TriggerPrintLog(
-		QString("Err/Warn: Source = %1 (0x%2) EplError = %3 (0x%4)")
-		.arg(debugstr_getEventSourceStr(internalError->eventSource))
-		.arg(internalError->eventSource, 2, 16, QLatin1Char('0'))
-		.arg(debugstr_getRetValStr(internalError->oplkError))
-		.arg(internalError->oplkError, 3, 16, QLatin1Char('0')));
+	QString error = QString("Error source = %1 (0x%2) oplkError = %3 (0x%4)")
+			.arg(debugstr_getEventSourceStr(internalError->eventSource))
+			.arg(internalError->eventSource, 2, 16, QLatin1Char('0'))
+			.arg(debugstr_getRetValStr(internalError->oplkError))
+			.arg(internalError->oplkError, 3, 16, QLatin1Char('0'));
+
+	OplkEventHandler::TriggerPrintLog(error);
 
 	switch (internalError->eventSource)
 	{
 		case kEventSourceEventk:
 		case kEventSourceEventu:
 		{
-			// error occurred within event processing
-			// either in kernel or in user part
-			OplkEventHandler::TriggerPrintLog(QString(" OrgSource = %1 %2")
+			// error occurred within event processing either in kernel or in user part
+			this->TriggerCriticalError(QString("%1, OrgSource: %2(0x%3)")
+									   .arg(error)
+									   .arg(debugstr_getEventSourceStr(internalError->errorArg.eventSource))
+									   .arg(internalError->errorArg.eventSource, 2, 16, QLatin1Char('0')));
+			OplkEventHandler::TriggerPrintLog(QString(" OrgSource = %1(0x%2)")
 				.arg(debugstr_getEventSourceStr(internalError->errorArg.eventSource))
 				.arg(internalError->errorArg.eventSource, 2, 16, QLatin1Char('0')));
 			break;
 		}
 		case kEventSourceDllk:
 			// error occurred within the data link layer (e.g. interrupt processing)
-			// the ULONG argument contains the DLL state and the NMT event
+			// the uintArg argument contains the DLL state and the NMT event
+			this->TriggerCriticalError(QString("%1, value: %2")
+									   .arg(error)
+									   .arg(internalError->errorArg.uintArg, 0, 16));
+
 			OplkEventHandler::TriggerPrintLog(QString(" val = %1")
 				.arg(internalError->errorArg.uintArg, 0, 16));
 			break;
+
+	// other errors are considered as warnings and are ignored as per stack 2.0
 
 		default:
 			qDebug("%s  Default case", __FUNCTION__);
 			break;
 	}
+	return kErrorOk;
+}
+
+tOplkError OplkEventHandler::ProcessWarningEvent(tEventError* internalError,
+									void* userArg)
+{
+
+	UNUSED_PARAMETER(userArg);
+
+	OplkEventHandler::TriggerPrintLog(
+		QString("Warning: source = %1 (0x%2) oplkError = %3 (0x%4)")
+		.arg(debugstr_getEventSourceStr(internalError->eventSource))
+		.arg(internalError->eventSource, 2, 16, QLatin1Char('0'))
+		.arg(debugstr_getRetValStr(internalError->oplkError))
+		.arg(internalError->oplkError, 3, 16, QLatin1Char('0')));
+
+	// TODO: process internal structure of tEventError to provide appropriate warning messages.
+
 	return kErrorOk;
 }
 

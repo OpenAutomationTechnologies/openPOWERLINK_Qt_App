@@ -344,6 +344,32 @@ public:
 	static bool UnregisterSyncWaitTimeChangedEventHandler(const QObject& receiver,
 										const QMetaMethod& receiverFunction);
 
+	/**
+	 * \brief Registers for the critical error events from the stack.
+	 *
+	 * \param[in] receiver          Object to handle the event.
+	 * \param[in] receiverFunction  Member function to handle the event.
+	 * \retval true   Registration successful.
+	 * \retval false  Registration not successful.
+	 *
+	 * \see OplkEventHandler::SignalCriticalError(const QString&)
+	 */
+	static bool RegisterCriticalErrorEventHandler(const QObject& receiver,
+										const QMetaMethod& receiverFunction);
+
+	/**
+	 * \brief Unregisters from receiving the critical error events from the stack.
+	 *
+	 * \param[in] receiver          Object to handle the event.
+	 * \param[in] receiverFunction  Member function to handle the event.
+	 * \retval true   Registration successful.
+	 * \retval false  Registration not successful.
+	 *
+	 * \see OplkEventHandler::SignalCriticalError(const QString&)
+	 */
+	static bool UnregisterCriticalErrorEventHandler(const QObject& receiver,
+										const QMetaMethod& receiverFunction);
+
 private:
 	static tOplkApiInitParam initParam;
 	static bool cdcSet;
