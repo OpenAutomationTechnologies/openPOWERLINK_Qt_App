@@ -35,15 +35,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _DIRECTION_H_
 #define _DIRECTION_H_
 
-/**
- * \brief Direction of the ProcessImage.
- * refer Enum - Direction
- */
 namespace Direction
 {
 	/**
-	 * List of directions available for a ProcessImage.
-	 *
+	 * \brief Direction of the ProcessImage.
 	 */
 	enum Direction
 	{
@@ -52,5 +47,6 @@ namespace Direction
 		PI_OUT
 	}; // Direction
 
-} // Direction
+} // namespace Direction
+
 #endif // _DIRECTION_H_

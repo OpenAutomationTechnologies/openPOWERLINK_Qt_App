@@ -37,10 +37,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace ProcessImageParserType
 {
-
 	/**
-	 * The type of the parser used for reading the ProcessImage
-	 *
+	 * \brief The type of the parser used for reading the ProcessImage
 	 */
 	enum ProcessImageParserType
 	{
