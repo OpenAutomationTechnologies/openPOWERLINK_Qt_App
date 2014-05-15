@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   XmlParserError.h
 
-\brief  Describes errorcodes for the xml parsers.
+\brief  Describes error codes for the xml parsers.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -40,8 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace XmlParserError
 {
 	/**
-	 * List of errors available for an XML parser.
-	 *
+	 * \brief Describes errorcodes for the xml parsers.
 	 */
 	enum XmlParserError
 	{
@@ -59,6 +58,7 @@ namespace XmlParserError
 	 * \return Returns the error string based on the errorCode.
 	 */
 	std::string GetXmlParserErrorString(XmlParserError errorCode);
-}
+
+} // namespace XmlParserError
 
 #endif // _XMLPARSERERROR_H_
