@@ -48,18 +48,17 @@ namespace XmlParserError
 		UNDEFINED = 0,
 		NOT_WELL_FORMED,
 		PREMATURE_END_OF_DOCUMENT,
-		UN_EXPECTED_ELEMENT,
-		UN_EXPECTED_ATTRIBUTE,
+		UNEXPECTED_ELEMENT,
+		UNEXPECTED_ATTRIBUTE,
 		ATTRIBUTE_NOT_FOUND,
 		INVALID_ATTRIBUTE_VALUE
 	};
 
+	/**
+	 * \param errorCode
+	 * \return Returns the error string based on the errorCode.
+	 */
+	std::string GetXmlParserErrorString(XmlParserError errorCode);
 }
-
-/**
- * \param errorCode
- * \return Returns the error string based on the errorCode.
- */
-std::string GetXmlParserErrorString(XmlParserError::XmlParserError errorCode);
 
 #endif // _XMLPARSERERROR_H_
