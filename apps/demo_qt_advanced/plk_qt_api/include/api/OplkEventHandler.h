@@ -72,7 +72,7 @@ public:
 	/**
 	 * \return Returns the address of event callback function
 	 */
-	tOplkApiCbEvent GetEventCbFunc(void);
+	tOplkApiCbEvent GetAppEventCbFunc(void);
 
 	virtual void run();
 

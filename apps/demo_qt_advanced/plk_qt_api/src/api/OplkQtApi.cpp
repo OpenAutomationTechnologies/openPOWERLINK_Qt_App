@@ -99,7 +99,7 @@ void OplkQtApi::SetInitParam()
 	OPLK_MEMCPY(OplkQtApi::initParam.aMacAddress, abkMacAddr, sizeof(OplkQtApi::initParam.aMacAddress));
 
 	// set callback functions
-	OplkQtApi::initParam.pfnCbEvent = OplkEventHandler::GetInstance().GetEventCbFunc();
+	OplkQtApi::initParam.pfnCbEvent = OplkEventHandler::GetInstance().GetAppEventCbFunc();
 	if (OplkQtApi::initParam.pfnCbEvent == NULL)
 	{
 		qDebug("Null Call back");

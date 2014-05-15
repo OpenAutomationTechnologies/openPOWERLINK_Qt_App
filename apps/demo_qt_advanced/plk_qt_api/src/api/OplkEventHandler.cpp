@@ -56,7 +56,7 @@ void OplkEventHandler::AwaitNmtGsOff()
 	OplkEventHandler::mutex.unlock();
 }
 
-tOplkApiCbEvent OplkEventHandler::GetEventCbFunc(void)
+tOplkApiCbEvent OplkEventHandler::GetAppEventCbFunc(void)
 {
 	return AppCbEvent;
 }
