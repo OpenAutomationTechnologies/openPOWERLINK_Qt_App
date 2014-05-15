@@ -121,17 +121,17 @@ private slots:
 	void HandleCriticalError(const QString& errorMessage);
 
 private:
-	Ui::MainWindow ui;                         ///< MainWindow UI instance
-	SdoTransfer *sdoTab;                       ///< SDO ui
-	LoggerWindow *log;                         ///< Logging window
-	ProcessImageVariables *piVar;              ///< Pi variable view
-	ProcessImageMemory *piMemory;              ///< Pi memory view
-	DialogOpenCdc *cdcDialog;                  ///< CDC dialog window
-	SelectNwInterfaceDialog *networkInterface; ///< Network select interface dialog
-	NmtCommandsDock *nmtCmdWindow;             ///< NMT command
-	NodeStatusDock *cnStatus;                  ///< CN status list
-	ProcessImageParser *parser;                ///< ProcessImage xml Parser instance
-	StatusBar *status;
+	Ui::MainWindow ui;                        ///< MainWindow UI instance
+	SdoTransfer sdo;                          ///< SDO ui
+	LoggerWindow log;                         ///< Logging window
+	ProcessImageVariables *piVar;             ///< Pi variable view
+	ProcessImageMemory *piMemory;             ///< Pi memory view
+	DialogOpenCdc cdcDialog;                  ///< CDC dialog window
+	SelectNwInterfaceDialog networkInterface; ///< Network select interface dialog
+	NmtCommandsDock nmtCmd;                   ///< NMT command
+	NodeStatusDock nodeStatus;                ///< CN status list
+	ProcessImageParser *parser;               ///< ProcessImage xml Parser instance
+	StatusBar status;                         ///< Status bar
 };
 
 #endif // _MAIN_WINDOW_H_
