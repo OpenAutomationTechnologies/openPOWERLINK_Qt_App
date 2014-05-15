@@ -40,33 +40,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
+namespace XmlParserError
+{
 
-std::string GetXmlParserErrorString(XmlParserError::XmlParserError errorCode)
+std::string GetXmlParserErrorString(XmlParserError errorCode)
 {
 	std::string errorString;
 	switch (errorCode)
 	{
-		case XmlParserError::NOT_WELL_FORMED:
+		case NOT_WELL_FORMED:
 			errorString = "Document not well formed. Check the xml tags.";
 			break;
-		case XmlParserError::PREMATURE_END_OF_DOCUMENT:
+		case PREMATURE_END_OF_DOCUMENT:
 			errorString = "Document has nothing to parse";
 			break;
-		case XmlParserError::UN_EXPECTED_ELEMENT:
+		case UNEXPECTED_ELEMENT:
 			errorString = "Un-expected element encountered";
 			break;
-		case XmlParserError::UN_EXPECTED_ATTRIBUTE:
+		case UNEXPECTED_ATTRIBUTE:
 			errorString = "Un-expected attribute encountered";
 			break;
-		case XmlParserError::ATTRIBUTE_NOT_FOUND:
+		case ATTRIBUTE_NOT_FOUND:
 			errorString = "Attribute not found";
 			break;
-		case XmlParserError::INVALID_ATTRIBUTE_VALUE:
+		case INVALID_ATTRIBUTE_VALUE:
 			errorString = "Invalid value for the attribute";
 			break;
-		case XmlParserError::UNDEFINED:
+		case UNDEFINED:
 		default:
 			errorString = "Undefined error";
 	}
 	return errorString;
 }
+
+} // namespace XmlParserError

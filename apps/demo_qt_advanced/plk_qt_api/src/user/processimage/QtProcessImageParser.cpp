@@ -70,8 +70,8 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 			}
 			else
 			{
-				XmlParserException ex(GetXmlParserErrorString(XmlParserError::UN_EXPECTED_ELEMENT),
-									XmlParserError::UN_EXPECTED_ELEMENT,
+				XmlParserException ex(GetXmlParserErrorString(XmlParserError::UNEXPECTED_ELEMENT),
+									XmlParserError::UNEXPECTED_ELEMENT,
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 				throw ex;
@@ -105,10 +105,11 @@ void QtProcessImageParser::ParseProcessImage()
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
-			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UN_EXPECTED_ELEMENT),
-								XmlParserError::UN_EXPECTED_ELEMENT,
-								this->xml.lineNumber(),
-								this->xml.columnNumber());
+			throw XmlParserException(XmlParserError::GetXmlParserErrorString(
+										XmlParserError::UNEXPECTED_ELEMENT),
+										XmlParserError::UNEXPECTED_ELEMENT,
+										this->xml.lineNumber(),
+										this->xml.columnNumber());
 		}
 	}
 
@@ -129,10 +130,11 @@ void QtProcessImageParser::ParseProcessImage()
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
-			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UN_EXPECTED_ELEMENT),
-								XmlParserError::UN_EXPECTED_ELEMENT,
-								this->xml.lineNumber(),
-								this->xml.columnNumber());
+			throw XmlParserException(XmlParserError::GetXmlParserErrorString(
+										XmlParserError::UNEXPECTED_ELEMENT),
+										XmlParserError::UNEXPECTED_ELEMENT,
+										this->xml.lineNumber(),
+										this->xml.columnNumber());
 		}
 	}
 	else
@@ -162,10 +164,11 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
-			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UN_EXPECTED_ELEMENT),
-								XmlParserError::UN_EXPECTED_ELEMENT,
-								this->xml.lineNumber(),
-								this->xml.columnNumber());
+			throw XmlParserException(XmlParserError::GetXmlParserErrorString(
+										XmlParserError::UNEXPECTED_ELEMENT),
+										XmlParserError::UNEXPECTED_ELEMENT,
+										this->xml.lineNumber(),
+										this->xml.columnNumber());
 		}
 
 		if (!(this->xml.readNextStartElement()))
@@ -187,10 +190,11 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 											this->xml.lineNumber(),
 											this->xml.columnNumber());
 					}
-					throw XmlParserException(GetXmlParserErrorString(XmlParserError::UN_EXPECTED_ELEMENT),
-										XmlParserError::UN_EXPECTED_ELEMENT,
-										this->xml.lineNumber(),
-										this->xml.columnNumber());
+					throw XmlParserException(XmlParserError::GetXmlParserErrorString(
+											XmlParserError::UNEXPECTED_ELEMENT),
+											XmlParserError::UNEXPECTED_ELEMENT,
+											this->xml.lineNumber(),
+											this->xml.columnNumber());
 				}
 			}
 			else
@@ -211,8 +215,8 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
-			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UN_EXPECTED_ELEMENT),
-								XmlParserError::UN_EXPECTED_ELEMENT,
+			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UNEXPECTED_ELEMENT),
+								XmlParserError::UNEXPECTED_ELEMENT,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
 		}
@@ -235,8 +239,8 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
-			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UN_EXPECTED_ELEMENT),
-								XmlParserError::UN_EXPECTED_ELEMENT,
+			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UNEXPECTED_ELEMENT),
+								XmlParserError::UNEXPECTED_ELEMENT,
 								this->xml.lineNumber(),
 								this->xml.columnNumber());
 		}
