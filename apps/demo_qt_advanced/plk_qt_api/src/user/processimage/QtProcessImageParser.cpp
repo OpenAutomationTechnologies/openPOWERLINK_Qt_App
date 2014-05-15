@@ -363,7 +363,7 @@ void QtProcessImageParser::ParseChannelAttributes(Direction::Direction direction
 		std::string iecDataTypeStr;
 		iecDataTypeStr = attributes.value(QString::fromStdString(
 							ProcessImageParser::channel_attribute_dataType)).toString().toStdString();
-		dataType = GetIECDatatype(iecDataTypeStr);
+		dataType = IECDataType::GetIECDatatype(iecDataTypeStr);
 		// TODO check for invalid value.
 	}
 	else
