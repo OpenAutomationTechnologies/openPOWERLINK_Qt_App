@@ -39,14 +39,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include <string>
 
-/**
- * \brief IECDataType of the Channels.
- * refer Enum - IECDataType
- */
 namespace IECDataType
 {
 	/**
-	 * List of datatypes derived from the IEC standards.
+	 * \brief IECDataType of the Channels.
 	 */
 	enum IECDataType
 	{
@@ -70,6 +66,7 @@ namespace IECDataType
 		IEC_STRING,     ///< Variable length single byte character string
 		IEC_WSTRING     ///< Variable length double byte character string
 	};
+
 	/**
 	 * \brief   Convert string value to the equivalent IECDataType.
 	 * \param[in]  iecDataTypeStr  The string with IEC datatype.
