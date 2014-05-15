@@ -70,14 +70,13 @@ namespace IECDataType
 		IEC_STRING,     ///< Variable length single byte character string
 		IEC_WSTRING     ///< Variable length double byte character string
 	};
+	/**
+	 * \brief   Convert string value to the equivalent IECDataType.
+	 * \param[in]  iecDataTypeStr  The string with IEC datatype.
+	 * \return The matching IECDataType.
+	 */
+	IECDataType GetIECDatatype(const std::string& iecDataTypeStr);
 
 } // namespace IECDataType
-
-/**
- * \brief   Convert string value to the equivalent IECDataType.
- * \param[in]  iecDataTypeStr  The string with IEC datatype.
- * \return The matching IECDataType.
- */
-IECDataType::IECDataType GetIECDatatype(const std::string& iecDataTypeStr);
 
 #endif // _IECDATATYPE_H_
