@@ -115,7 +115,7 @@ private slots:
 
 private:
 	Ui::ChannelFrame ui;   ///< ChannelFrame ui instance.
-	LineEditUi *value;     ///< Current value textbox.
+	LineEditUi value;     ///< Current value textbox.
 	// TODO change to ptr. TODO ptr in channelMap in api-lib
 	const Channel channel; ///< Processimage channel properties.
 
