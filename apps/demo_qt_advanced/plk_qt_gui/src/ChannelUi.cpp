@@ -48,7 +48,7 @@ ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 	channel(channel),
 	lockValueTexbox(false),
 	input(NULL),
-	value(new LineEditUi()),
+	value(LineEditUi()),
 	valueBeforeLock("")
 {
 	ui.setupUi(this);
@@ -56,24 +56,24 @@ ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 	this->ui.channelName->setText(QString::fromStdString(this->channel.GetName()));
 
 	//Create current value textbox
-	value->setMinimumSize(QSize(95, 0));
-	value->setMaximumSize(QSize(100, 16777215));
-	value->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-	this->ui.horizontalLayout->addWidget(value);
+	this->value.setMinimumSize(QSize(95, 0));
+	this->value.setMaximumSize(QSize(100, 16777215));
+	this->value.setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+	this->ui.horizontalLayout->addWidget(&(this->value));
 
-	bool ret = QObject::connect(this->value,
+	bool ret = QObject::connect(&(this->value),
 								SIGNAL(SignalFocusIn()),
 								this,
 								SLOT(LockCurrentValue()));
 	Q_ASSERT(ret != false);
 
-	ret = QObject::connect(this->value,
+	ret = QObject::connect(&(this->value),
 						   SIGNAL(SignalFocusOut()),
 						   this,
 						   SLOT(UnlockCurrentValue()));
 	Q_ASSERT(ret != false);
 
-	ret = QObject::connect(this->value,
+	ret = QObject::connect(&(this->value),
 						   SIGNAL(returnPressed()),
 						   this,
 						   SLOT(ValueReturnPressed()));
@@ -82,7 +82,7 @@ ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 	// Hide force check box and forcevalue text box for output PI
 	if (this->channel.GetDirection() == Direction::PI_OUT)
 	{
-		this->value->setEnabled(false);
+		this->value.setEnabled(false);
 	}
 
 	this->setToolTip(QString("Size = %1 bits \nByteOffset = 0x%2 \nBitOffset = 0x%3")
@@ -94,10 +94,6 @@ ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 
 ChannelUi::~ChannelUi()
 {
-	delete this->ui.channelName;
-	delete this->ui.check;
-	delete this->value;
-	delete this->ui.horizontalLayout;
 }
 
 void ChannelUi::UpdateSelectCheckBox(Qt::CheckState state)
@@ -168,24 +164,24 @@ void ChannelUi::SetInputMask()
 		{
 			inputMask.append("H");
 		}
-		this->value->setInputMask(inputMask);
+		this->value.setInputMask(inputMask);
 	}
 	else
 	{
 		if (this->channel.GetBitSize() == 1)
 		{
-			this->value->setInputMask("B");
+			this->value.setInputMask("B");
 		}
 		else
 		{
-			this->value->setInputMask("H");
+			this->value.setInputMask("H");
 		}
 	}
 }
 
 void ChannelUi::SetCurrentValue(QString str)
 {
-	this->value->setText(str.toUpper());
+	this->value.setText(str.toUpper());
 }
 
 /*******************************************************************************
@@ -196,7 +192,7 @@ void ChannelUi::ValueReturnPressed()
 {
 	try
 	{
-		const QString forceValue = this->value->text();
+		const QString forceValue = this->value.text();
 		if (!forceValue.isEmpty()
 			&& (forceValue.compare(this->valueBeforeLock, Qt::CaseInsensitive) != 0))
 		{
@@ -217,7 +213,7 @@ void ChannelUi::ValueReturnPressed()
 
 void ChannelUi::LockCurrentValue()
 {
-	this->valueBeforeLock = this->value->text();
+	this->valueBeforeLock = this->value.text();
 	this->lockValueTexbox = true;
 	this->setStyleSheet("QLineEdit{background: yellow;}");
 }
@@ -226,7 +222,7 @@ void ChannelUi::UnlockCurrentValue()
 {
 	try
 	{
-		const QString forceValue = this->value->text();
+		const QString forceValue = this->value.text();
 		if (!forceValue.isEmpty()
 			&& (forceValue.compare(this->valueBeforeLock, Qt::CaseInsensitive) != 0))
 		{
