@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	networkInterface(SelectNwInterfaceDialog()),
 	nmtCmd(NmtCommandsDock()),
 	nodeStatus(NodeStatusDock()),
-	piVar(NULL),
+	piVar(ProcessImageVariables()),
 	piMemory(NULL),
 	parser(NULL),
 	status(StatusBar())
@@ -85,6 +85,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->sdo.setEnabled(false);
 	this->nmtCmd.setEnabled(false);
+	this->piVar.setEnabled(false);
+
+	this->ui.tabWidget->addTab(&(this->piVar), "ProcessImage Variables view");
+
+	bool ret = connect(this, SIGNAL(SignalStackStopped()),
+				&(this->piVar), SLOT(ResetView()));
+	Q_ASSERT(ret != false);
 
 	this->addDockWidget(Qt::RightDockWidgetArea, &(this->nmtCmd));
 	this->setCorner( Qt::TopLeftCorner, Qt::LeftDockWidgetArea );
@@ -103,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui.tabWidget->addTab(&(this->sdo), "SDO Transfer");
 
 
-	bool ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(this->status,
+	ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(this->status,
 							this->status.metaObject()->method(index));
 	Q_ASSERT(ret != false);
 
@@ -148,6 +155,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+	delete this->piMemory;
+	delete this->parser;
 }
 
 /*******************************************************************************
@@ -227,6 +236,10 @@ void MainWindow::on_actionStart_triggered()
 
 	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN));
 	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT));
+
+	this->piVar.SetProcessImageIn(&piIn);
+	this->piVar.SetProcessImageOut(&piOut);
+
 	//TODO Start powerlink and only if success enable the stop button.
 	if (this->networkInterface.GetDevName().isEmpty())
 	{
@@ -285,12 +298,10 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.actionSelect_Interface->setEnabled(false);
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
+	this->piVar.setEnabled(true);
 
 	this->sdo.setEnabled(true);
 	this->nmtCmd.setEnabled(true);
-
-	this->piVar = new ProcessImageVariables(piIn, piOut);
-	this->ui.tabWidget->addTab(this->piVar, "ProcessImage Variables view");
 
 	this->piMemory = new ProcessImageMemory(piIn, piOut);
 	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
@@ -298,6 +309,7 @@ void MainWindow::on_actionStart_triggered()
 
 void MainWindow::on_actionStop_triggered()
 {
+	emit SignalStackStopped();
 	tOplkError oplkRet = OplkQtApi::StopStack();
 	if (oplkRet != kErrorOk)
 	{
@@ -306,6 +318,8 @@ void MainWindow::on_actionStop_triggered()
 							  .arg(debugstr_getRetValStr(oplkRet)),
 							 QMessageBox::Close);
 		qDebug("StopStack retCode %x", oplkRet);
+
+		// Test this usecase for return;
 		return;
 	}
 
@@ -316,8 +330,8 @@ void MainWindow::on_actionStop_triggered()
 
 	this->sdo.setEnabled(false);
 	this->nmtCmd.setEnabled(false);
+	this->piVar.setEnabled(false);
 
-	delete this->piVar;
 	delete this->piMemory;
 	delete this->parser;
 }

@@ -60,15 +60,29 @@ public:
 	 * variables row based on the number of channels present in the
 	 * ProcessImageIn and ProcessImageOut.
 	 *
-	 * \param[in] in   The input ProcessImage instance.
-	 * \param[in] out  The output ProcessImage instance.
 	 * \param[in] parent
 	 */
-	explicit ProcessImageVariables(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent = 0);
+	explicit ProcessImageVariables(QWidget *parent = 0);
 
 	~ProcessImageVariables();
 
 public slots:
+
+	/**
+	 * \brief Sets the input processimage instance thereby
+	 * prepares the input variables view.
+	 *
+	 * \param inPi Input processimage instance.
+	 */
+	void SetProcessImageIn(ProcessImageIn *inPi);
+
+	/**
+	 * \brief Sets the output processimage instance thereby
+	 * prepares the output variables view.
+	 *
+	 * \param outPi
+	 */
+	void SetProcessImageOut(ProcessImageOut *outPi);
 
 	/**
 	 * \brief Updates the processimage input channels value from and/or to the stack.
@@ -79,6 +93,11 @@ public slots:
 	 * \brief Update the processimage output channels value from the stack.
 	 */
 	void UpdateFromOutputValues();
+
+	/**
+	 * \brief Removes the channel widgets.
+	 */
+	void ResetView();
 
 private slots:
 	/**
@@ -123,8 +142,11 @@ private:
 	QList<ChannelUi*> inputChannels;   ///< Input channel ui instance list.
 	QList<ChannelUi*> outputChannels;  ///< Output channel ui instance list.
 
-	ProcessImageIn &inPi;              ///< Input processimage instance.
-	const ProcessImageOut &outPi;      ///< Output processimage instance.
+	ProcessImageIn *inPi;              ///< Input processimage instance.
+	const ProcessImageOut *outPi;      ///< Output processimage instance.
+
+	int processImageInputSlotIndex;
+	int processImageOutputSlotIndex;
 
 	/**
 	 * \brief Generates the rows of ui channels by parsing the input

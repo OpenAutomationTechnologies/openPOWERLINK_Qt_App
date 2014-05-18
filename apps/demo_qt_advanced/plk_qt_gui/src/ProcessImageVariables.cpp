@@ -47,37 +47,63 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-ProcessImageVariables::ProcessImageVariables(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent) :
+ProcessImageVariables::ProcessImageVariables(QWidget *parent) :
 	QWidget(parent),
-	inPi(in),
-	outPi(out)
+	inPi(NULL),
+	outPi(NULL),
+	processImageInputSlotIndex(this->metaObject()->indexOfMethod(
+								QMetaObject::normalizedSignature(
+								"UpdateFromInputValues()").constData())),
+	processImageOutputSlotIndex(this->metaObject()->indexOfMethod(
+								QMetaObject::normalizedSignature(
+								"UpdateFromOutputValues()").constData()))
 {
 	this->ui.setupUi(this);
-	this->PrepareInputRows();
-	this->PrepareOutputRows();
+	Q_ASSERT(processImageInputSlotIndex != -1);
+	Q_ASSERT(processImageOutputSlotIndex != -1);
+}
 
-	int index = this->metaObject()->indexOfMethod(
-						QMetaObject::normalizedSignature(
-						"UpdateFromInputValues()").constData());
-	Q_ASSERT(index != -1);
-	// If asserted check for the Function name
-
-	//Register for ProcessImage variables input datas.
-	bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_IN,
+void ProcessImageVariables::ResetView()
+{
+	//Unregister for ProcessImage variables input datas.
+	bool ret = OplkQtApi::UnregisterSyncEventHandler(Direction::PI_IN,
 										 *(this),
-										 this->metaObject()->method(index));
+										 this->metaObject()->method(this->processImageInputSlotIndex));
 	Q_ASSERT(ret != false);
 
-	index = this->metaObject()->indexOfMethod(
-						QMetaObject::normalizedSignature(
-						"UpdateFromOutputValues()").constData());
-	Q_ASSERT(index != -1);
-
-	//Register for ProcessImage variables output datas.
-	ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_OUT,
+	//Unregister for ProcessImage variables output datas.
+	ret = OplkQtApi::UnregisterSyncEventHandler(Direction::PI_OUT,
 										 *(this),
-										 this->metaObject()->method(index));
+										 this->metaObject()->method(this->processImageOutputSlotIndex));
 	Q_ASSERT(ret != false);
+
+// clear ui once stack has stopped.
+	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+		 channel != this->inputChannels.end(); ++channel)
+	{
+		if (*channel)
+		{
+			this->ui.inputProcessImage->removeWidget(*channel);
+			delete (*channel);
+		}
+	}
+
+	this->inputChannels.clear();
+
+	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+			 channel != this->outputChannels.end(); ++channel)
+	{
+		if (*channel)
+		{
+			this->ui.outputProcessImage->removeWidget(*channel);
+			delete (*channel);
+		}
+	}
+
+	this->outputChannels.clear();
+
+	this->ui.inputProcessImage->update();
+	this->ui.outputProcessImage->update();
 }
 
 ProcessImageVariables::~ProcessImageVariables()
@@ -90,6 +116,7 @@ ProcessImageVariables::~ProcessImageVariables()
 			delete (*channel);
 		}
 	}
+	this->inputChannels.clear();
 
 	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
 		 channel != this->outputChannels.end(); ++channel)
@@ -98,6 +125,36 @@ ProcessImageVariables::~ProcessImageVariables()
 		{
 			delete (*channel);
 		}
+	}
+	this->outputChannels.clear();
+}
+
+void ProcessImageVariables::SetProcessImageIn(ProcessImageIn *inPi)
+{
+	this->inPi = inPi;
+	if (inPi)
+	{
+		this->PrepareInputRows();
+
+		//Register for ProcessImage variables input datas.
+		bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_IN,
+											 *(this),
+											 this->metaObject()->method(this->processImageInputSlotIndex));
+		Q_ASSERT(ret != false);
+	}
+}
+
+void ProcessImageVariables::SetProcessImageOut(ProcessImageOut *outPi)
+{
+	this->outPi = outPi;
+	if (outPi)
+	{
+		this->PrepareOutputRows();
+		//Register for ProcessImage variables output datas.
+		bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_OUT,
+											 *(this),
+											 this->metaObject()->method(this->processImageOutputSlotIndex));
+		Q_ASSERT(ret != false);
 	}
 }
 
@@ -108,7 +165,7 @@ void ProcessImageVariables::UpdateFromInputValues()
 	{
 		if (*channel)
 		{
-			(*channel)->UpdateInputChannelCurrentValue(&(this->inPi));
+			(*channel)->UpdateInputChannelCurrentValue(this->inPi);
 		}
 	}
 }
@@ -120,7 +177,7 @@ void ProcessImageVariables::UpdateFromOutputValues()
 	{
 		if (*channel)
 		{
-			(*channel)->UpdateOutputChannelCurrentValue(&(this->outPi));
+			(*channel)->UpdateOutputChannelCurrentValue(this->outPi);
 		}
 	}
 }
@@ -132,27 +189,31 @@ void ProcessImageVariables::UpdateFromOutputValues()
 void ProcessImageVariables::PrepareInputRows()
 {
 	ChannelUi *channel = NULL;
-	for (std::map<std::string, Channel>::const_iterator it = this->inPi.cbegin();
-		 it != this->inPi.cend(); ++it)
+	for (std::map<std::string, Channel>::const_iterator it = this->inPi->cbegin();
+		 it != this->inPi->cend(); ++it)
 	{
 		// qDebug(qPrintable(QString::fromStdString(it->first)));
 		channel = new ChannelUi(it->second);
 		this->inputChannels.push_back(channel);
 		this->ui.inputProcessImage->addWidget(channel);
 	}
+
+	this->on_inputCheckAll_stateChanged(this->ui.inputCheckAll->checkState());
 }
 
 void ProcessImageVariables::PrepareOutputRows()
 {
 	ChannelUi *channel = NULL;
-	for (std::map<std::string, Channel>::const_iterator it = this->outPi.cbegin();
-		 it != this->outPi.cend(); ++it)
+	for (std::map<std::string, Channel>::const_iterator it = this->outPi->cbegin();
+		 it != this->outPi->cend(); ++it)
 	{
 		// qDebug(qPrintable(QString::fromStdString(it->first)));
 		channel = new ChannelUi(it->second);
 		this->outputChannels.push_back(channel);
 		this->ui.outputProcessImage->addWidget(channel);
 	}
+
+	this->on_outputCheckAll_stateChanged(this->ui.outputCheckAll->checkState());
 }
 
 void ProcessImageVariables::on_inputCheckAll_stateChanged(int checkedState)
