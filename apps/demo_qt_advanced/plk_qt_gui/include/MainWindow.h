@@ -131,7 +131,7 @@ private:
 	SdoTransfer sdo;                          ///< SDO ui
 	LoggerWindow log;                         ///< Logging window
 	ProcessImageVariables piVar;              ///< Processimage variables view
-	ProcessImageMemory *piMemory;             ///< Pi memory view
+	ProcessImageMemory piMemory;              ///< Processimage memory view
 	DialogOpenCdc cdcDialog;                  ///< CDC dialog window
 	SelectNwInterfaceDialog networkInterface; ///< Network select interface dialog
 	NmtCommandsDock nmtCmd;                   ///< NMT command

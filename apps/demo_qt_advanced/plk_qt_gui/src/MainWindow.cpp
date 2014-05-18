@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	nmtCmd(NmtCommandsDock()),
 	nodeStatus(NodeStatusDock()),
 	piVar(ProcessImageVariables()),
-	piMemory(NULL),
+	piMemory(ProcessImageMemory()),
 	parser(NULL),
 	status(StatusBar())
 {
@@ -86,11 +86,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->sdo.setEnabled(false);
 	this->nmtCmd.setEnabled(false);
 	this->piVar.setEnabled(false);
+	this->piMemory.setEnabled(false);
 
 	this->ui.tabWidget->addTab(&(this->piVar), "ProcessImage Variables view");
 
 	bool ret = connect(this, SIGNAL(SignalStackStopped()),
 				&(this->piVar), SLOT(ResetView()));
+	Q_ASSERT(ret != false);
+
+	this->ui.tabWidget->addTab(&(this->piMemory), "ProcessImage Memory view");
+
+	ret = connect(this, SIGNAL(SignalStackStopped()),
+				&(this->piMemory), SLOT(ResetView()));
 	Q_ASSERT(ret != false);
 
 	this->addDockWidget(Qt::RightDockWidgetArea, &(this->nmtCmd));
@@ -155,7 +162,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-	delete this->piMemory;
 	delete this->parser;
 }
 
@@ -282,7 +288,8 @@ void MainWindow::on_actionStart_triggered()
 
 	// After successful allocation of processimage prepare the user interface.
 	this->piVar.SetProcessImage(&piIn, &piOut);
-
+	this->piMemory.SetProcessImage(&piIn, &piOut);
+	
 	oplkRet = OplkQtApi::StartStack();
 	if (oplkRet != kErrorOk)
 	{
@@ -299,12 +306,10 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
 	this->piVar.setEnabled(true);
+	this->piMemory.setEnabled(true);
 
 	this->sdo.setEnabled(true);
 	this->nmtCmd.setEnabled(true);
-
-	this->piMemory = new ProcessImageMemory(piIn, piOut);
-	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
 }
 
 void MainWindow::on_actionStop_triggered()
@@ -331,8 +336,8 @@ void MainWindow::on_actionStop_triggered()
 	this->sdo.setEnabled(false);
 	this->nmtCmd.setEnabled(false);
 	this->piVar.setEnabled(false);
+	this->piMemory.setEnabled(false);
 
-	delete this->piMemory;
 	delete this->parser;
 }
 
