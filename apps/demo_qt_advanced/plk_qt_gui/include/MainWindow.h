@@ -69,6 +69,12 @@ public:
 
 	~MainWindow();
 
+signals:
+	/**
+	 * \brief Signals once the stop stack has been triggered.
+	 */
+	void SignalStackStopped();
+
 private slots:
 
 	/**
@@ -124,7 +130,7 @@ private:
 	Ui::MainWindow ui;                        ///< MainWindow UI instance
 	SdoTransfer sdo;                          ///< SDO ui
 	LoggerWindow log;                         ///< Logging window
-	ProcessImageVariables *piVar;             ///< Pi variable view
+	ProcessImageVariables piVar;              ///< Processimage variables view
 	ProcessImageMemory *piMemory;             ///< Pi memory view
 	DialogOpenCdc cdcDialog;                  ///< CDC dialog window
 	SelectNwInterfaceDialog networkInterface; ///< Network select interface dialog
