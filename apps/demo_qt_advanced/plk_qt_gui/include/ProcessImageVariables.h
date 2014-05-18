@@ -69,20 +69,13 @@ public:
 public slots:
 
 	/**
-	 * \brief Sets the input processimage instance thereby
-	 * prepares the input variables view.
+	 * \brief Sets the input and output processimage instance thereby
+	 * prepares the input and output variables view.
 	 *
 	 * \param inPi Input processimage instance.
+	 * \param outPi Output processimage instance.
 	 */
-	void SetProcessImageIn(ProcessImageIn *inPi);
-
-	/**
-	 * \brief Sets the output processimage instance thereby
-	 * prepares the output variables view.
-	 *
-	 * \param outPi
-	 */
-	void SetProcessImageOut(ProcessImageOut *outPi);
+	void SetProcessImage(ProcessImageIn *inPi, const ProcessImageOut *outPi);
 
 	/**
 	 * \brief Updates the processimage input channels value from and/or to the stack.
@@ -145,8 +138,8 @@ private:
 	ProcessImageIn *inPi;              ///< Input processimage instance.
 	const ProcessImageOut *outPi;      ///< Output processimage instance.
 
-	int processImageInputSlotIndex;
-	int processImageOutputSlotIndex;
+	const int processImageInputSlotIndex;
+	const int processImageOutputSlotIndex;
 
 	/**
 	 * \brief Generates the rows of ui channels by parsing the input

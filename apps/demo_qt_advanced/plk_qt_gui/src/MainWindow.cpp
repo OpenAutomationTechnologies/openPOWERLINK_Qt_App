@@ -237,9 +237,6 @@ void MainWindow::on_actionStart_triggered()
 	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN));
 	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT));
 
-	this->piVar.SetProcessImageIn(&piIn);
-	this->piVar.SetProcessImageOut(&piOut);
-
 	//TODO Start powerlink and only if success enable the stop button.
 	if (this->networkInterface.GetDevName().isEmpty())
 	{
@@ -282,6 +279,9 @@ void MainWindow::on_actionStart_triggered()
 		qDebug("AllocateProcessImage retCode %x", oplkRet);
 		return;
 	}
+
+	// After successful allocation of processimage prepare the user interface.
+	this->piVar.SetProcessImage(&piIn, &piOut);
 
 	oplkRet = OplkQtApi::StartStack();
 	if (oplkRet != kErrorOk)

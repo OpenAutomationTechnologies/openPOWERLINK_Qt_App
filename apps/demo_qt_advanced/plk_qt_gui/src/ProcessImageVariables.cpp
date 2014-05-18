@@ -129,7 +129,7 @@ ProcessImageVariables::~ProcessImageVariables()
 	this->outputChannels.clear();
 }
 
-void ProcessImageVariables::SetProcessImageIn(ProcessImageIn *inPi)
+void ProcessImageVariables::SetProcessImage(ProcessImageIn *inPi, const ProcessImageOut *outPi)
 {
 	this->inPi = inPi;
 	if (inPi)
@@ -142,10 +142,7 @@ void ProcessImageVariables::SetProcessImageIn(ProcessImageIn *inPi)
 											 this->metaObject()->method(this->processImageInputSlotIndex));
 		Q_ASSERT(ret != false);
 	}
-}
 
-void ProcessImageVariables::SetProcessImageOut(ProcessImageOut *outPi)
-{
 	this->outPi = outPi;
 	if (outPi)
 	{
