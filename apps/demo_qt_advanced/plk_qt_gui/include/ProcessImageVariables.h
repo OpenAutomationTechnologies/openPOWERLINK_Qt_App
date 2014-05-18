@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ui_ProcessImageVariables.h"
-#include "ChannelUi.h"
+#include "ChannelWidget.h"
 #include <QList>
 
 #include "user/processimage/ProcessImageIn.h"
@@ -132,8 +132,8 @@ private slots:
 private:
 	Ui::ProcessImageVariables ui;      ///< processimage variables ui instance.
 
-	QList<ChannelUi*> inputChannels;   ///< Input channel ui instance list.
-	QList<ChannelUi*> outputChannels;  ///< Output channel ui instance list.
+	QList<ChannelWidget*> inputChannels;   ///< Input channel ui instance list.
+	QList<ChannelWidget*> outputChannels;  ///< Output channel ui instance list.
 
 	ProcessImageIn *inPi;              ///< Input processimage instance.
 	const ProcessImageOut *outPi;      ///< Output processimage instance.

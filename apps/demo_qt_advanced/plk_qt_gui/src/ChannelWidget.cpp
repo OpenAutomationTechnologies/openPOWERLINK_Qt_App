@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   ChannelUi.cpp
+\file   ChannelWidget.cpp
 
 \brief  Implements the actions handled with the channel.
 
@@ -35,7 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "ChannelUi.h"
+#include "ChannelWidget.h"
 #include <QDebug>
 
 
@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Public functions
 *******************************************************************************/
 
-ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
+ChannelWidget::ChannelWidget(const Channel &channel, QWidget *parent) :
 	QWidget(parent),
 	channel(channel),
 	lockValueTexbox(false),
@@ -92,21 +92,21 @@ ChannelUi::ChannelUi(const Channel &channel, QWidget *parent) :
 	this->SetInputMask();
 }
 
-ChannelUi::~ChannelUi()
+ChannelWidget::~ChannelWidget()
 {
 }
 
-void ChannelUi::UpdateSelectCheckBox(Qt::CheckState state)
+void ChannelWidget::UpdateSelectCheckBox(Qt::CheckState state)
 {
 	this->ui.check->setChecked(state);
 }
 
-Qt::CheckState ChannelUi::GetSelectCheckBoxState() const
+Qt::CheckState ChannelWidget::GetSelectCheckBoxState() const
 {
 	return this->ui.check->checkState();
 }
 
-void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
+void ChannelWidget::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 {
 	this->input = in;
 	if (in)
@@ -135,7 +135,7 @@ void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 	}
 }
 
-void ChannelUi::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
+void ChannelWidget::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 {
 	if (out)
 	{
@@ -161,7 +161,7 @@ void ChannelUi::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 	}
 }
 
-void ChannelUi::SetInputMask()
+void ChannelWidget::SetInputMask()
 {
 	if ((this->channel.GetBitSize() % 8) == 0)
 	{
@@ -185,7 +185,7 @@ void ChannelUi::SetInputMask()
 	}
 }
 
-void ChannelUi::SetCurrentValue(QString str)
+void ChannelWidget::SetCurrentValue(QString str)
 {
 	this->value.setText(str.toUpper());
 }
@@ -194,7 +194,7 @@ void ChannelUi::SetCurrentValue(QString str)
 * Private SLOTS
 *******************************************************************************/
 
-void ChannelUi::ValueReturnPressed()
+void ChannelWidget::ValueReturnPressed()
 {
 	if (this->input)
 	{
@@ -220,14 +220,14 @@ void ChannelUi::ValueReturnPressed()
 	}
 }
 
-void ChannelUi::LockCurrentValue()
+void ChannelWidget::LockCurrentValue()
 {
 	this->valueBeforeLock = this->value.text();
 	this->lockValueTexbox = true;
 	this->setStyleSheet("QLineEdit{background: yellow;}");
 }
 
-void ChannelUi::UnlockCurrentValue()
+void ChannelWidget::UnlockCurrentValue()
 {
 	if (this->input)
 	{
