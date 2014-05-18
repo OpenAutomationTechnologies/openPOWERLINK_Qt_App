@@ -58,15 +58,22 @@ public:
 	 * \brief Constructs the ProcessImageMemory instance and prepares the
 	 * Table based on the size of the ProcessImageIn and ProcessImageOut.
 	 *
-	 * \param[in] in      The input ProcessImage instance.
-	 * \param[in] out     The output ProcessImage instance.
 	 * \param[in] parent
 	 */
-	explicit ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent = 0);
+	explicit ProcessImageMemory(QWidget *parent = 0);
 
 	~ProcessImageMemory();
 
 public slots:
+
+	/**
+	 * \brief Sets the input and output processimage instance thereby
+	 * prepares the input and output variables view.
+	 *
+	 * \param inPi Input processimage instance.
+	 * \param outPi Output processimage instance.
+	 */
+	void SetProcessImage(ProcessImageIn *inPi, const ProcessImageOut *outPi);
 
 	/**
 	 * \brief Updates the processimage input table value from and/or to the stack.
@@ -77,6 +84,12 @@ public slots:
 	 * \brief Update the processimage output table value from the stack.
 	 */
 	void UpdateFromOutputValues();
+
+	/**
+	 * \brief Resets the contents of the input and output table and invalidates
+	 * the processimage pointer.
+	 */
+	void ResetView();
 
 private slots:
 	/**
@@ -91,26 +104,44 @@ private slots:
 private:
 	Ui::ProcessImageMemory ui;     ///< ProcessImage memory view Ui instance.
 
-	ProcessImageIn &inPi;          ///< Input processimage instance.
-	const ProcessImageOut &outPi;  ///< Output processimage instance.
+	ProcessImageIn *inPi;          ///< Input processimage instance.
+	const ProcessImageOut *outPi;  ///< Output processimage instance.
+
+	const int processImageInputSlotIndex;
+	const int processImageOutputSlotIndex;
 
 	/**
 	 * \brief Creates the vertical headers for the input and output
 	 * processimage table.
+	 *
+	 * \param[in] direction Direction of the processimage table.
 	 */
-	void CreateVerticalHeaders();
+	void CreateVerticalHeaders(Direction::Direction direction);
 
 	/**
 	 * \brief Creates the cells needed dynamically depending on the size of the
 	 * input and output processimage.
+	 *
+	 * \param[in] direction Direction of the processimage table.
 	 */
-	void CreateCells();
+	void CreateCells(Direction::Direction direction);
 
 	/**
 	 * \brief Resize the input and output processimage table's columns
 	 *  to contents width.
 	 */
 	void ResizeColumnsToContents();
+
+	/**
+	 * \brief Checks for the valid cell or is just a padded cell.
+	 *
+	 * \param[in] row Id of the row.
+	 * \param[in] col Id of the column.
+	 * \param[in] direction Direction of the processimage table.
+	 * \retval true  If the cell is valid.
+	 * \retval false If the cell is not valied.
+	 */
+	bool IsValidCell(UINT row, UINT col, Direction::Direction direction);
 };
 
 #endif // _PROCESSIMAGE_MEMORY_H_

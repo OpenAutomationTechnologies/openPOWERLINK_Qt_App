@@ -7,7 +7,6 @@ from the oplk stack using the Qt 5.2 QTableWidgets.
 
 \todo
 		- Input validation for InputProcessImage cells while editing.
-		- Block inputting padded cells.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -49,169 +48,166 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-ProcessImageMemory::ProcessImageMemory(ProcessImageIn &in, ProcessImageOut &out, QWidget *parent) :
+ProcessImageMemory::ProcessImageMemory(QWidget *parent) :
 	QWidget(parent),
-	inPi(in),
-	outPi(out)
+	inPi(NULL),
+	outPi(NULL),
+	processImageInputSlotIndex(this->metaObject()->indexOfMethod(
+								QMetaObject::normalizedSignature(
+								"UpdateFromInputValues()").constData())),
+	processImageOutputSlotIndex(this->metaObject()->indexOfMethod(
+								QMetaObject::normalizedSignature(
+								"UpdateFromOutputValues()").constData()))
 {
 	this->ui.setupUi(this);
-
-
-	const UINT inputRowCount = (in.GetSize() / this->ui.inputTable->columnCount()) + 1;
-	const UINT outputRowCount = (out.GetSize() / this->ui.outTable->columnCount()) + 1;
-	this->ui.inputTable->setRowCount(inputRowCount);
-	this->ui.outTable->setRowCount(outputRowCount);
-
-	qDebug("Input: %d", in.GetSize());
-	qDebug("Input: Row Count %d", this->ui.inputTable->rowCount());
-	qDebug("Input: Col Count %d", this->ui.inputTable->columnCount());
-
-	qDebug("Output: %d", out.GetSize());
-	qDebug("Output: Row Count %d", this->ui.outTable->rowCount());
-	qDebug("Output: Col Count %d", this->ui.outTable->columnCount());
-	this->ui.inputTable->verticalHeader()->setVisible(true);
-	this->ui.outTable->verticalHeader()->setVisible(true);
-
-	this->CreateVerticalHeaders();
-	this->CreateCells();
-	// this->ResizeColumnsToContents();
-
-//Register for ProcessImage memory input datas.
-	int index = this->metaObject()->indexOfMethod(
-						QMetaObject::normalizedSignature(
-						"UpdateFromInputValues()").constData());
-	Q_ASSERT(index != -1);
-	// If asserted check for the Function name
-
-	bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_IN,
-										 *(this),
-										 this->metaObject()->method(index));
-	Q_ASSERT(ret != false);
-
-//Register for ProcessImage memory output datas.
-	index = this->metaObject()->indexOfMethod(
-						QMetaObject::normalizedSignature(
-						"UpdateFromOutputValues()").constData());
-	Q_ASSERT(index != -1);
-
-	ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_OUT,
-										 *(this),
-										 this->metaObject()->method(index));
-	Q_ASSERT(ret != false);
+	Q_ASSERT(processImageInputSlotIndex != -1);
+	Q_ASSERT(processImageOutputSlotIndex != -1);
 }
 
 ProcessImageMemory::~ProcessImageMemory()
 {
-	QTableWidgetItem *item = NULL;
-	for (UINT row = 0; row < this->ui.inputTable->rowCount(); ++row)
+}
+
+void ProcessImageMemory::ResetView()
+{
+	if (this->inPi)
 	{
-		for (UINT col = 0; col < this->ui.inputTable->columnCount(); ++col)
-		{
-			item = this->ui.inputTable->item(row, col);
-			if (item != NULL)
-			{
-				delete item;
-			}
-		}
+		bool ret = OplkQtApi::UnregisterSyncEventHandler(Direction::PI_IN,
+										 *(this),
+										 this->metaObject()->method(this->processImageInputSlotIndex));
+		Q_ASSERT(ret != false);
 	}
 
-	for (UINT row = 0; row < this->ui.outTable->rowCount(); ++row)
+	if (this->outPi)
 	{
-		for (UINT col = 0; col < this->ui.outTable->columnCount(); ++col)
-		{
-			item = this->ui.outTable->item(row, col);
-			if (item != NULL)
-			{
-				delete item;
-			}
-		}
+		bool ret = OplkQtApi::UnregisterSyncEventHandler(Direction::PI_OUT,
+										 *(this),
+										 this->metaObject()->method(this->processImageOutputSlotIndex));
+		Q_ASSERT(ret != false);
 	}
 
-	for (UINT row = 0; row < this->ui.inputTable->rowCount(); ++row)
+	this->inPi = NULL;
+	this->outPi = NULL;
+
+	while (this->ui.inputTable->rowCount() > 0)
 	{
-		item = this->ui.inputTable->verticalHeaderItem(row);
-		if (item != NULL)
-		{
-			delete item;
-		}
+		this->ui.inputTable->removeRow(0);
 	}
 
-	for (UINT col = 0; col < this->ui.inputTable->columnCount(); ++col)
+	while (this->ui.outTable->rowCount() > 0)
 	{
-		item = this->ui.inputTable->horizontalHeaderItem(col);
-		if (item != NULL)
-		{
-			delete item;
-		}
+		this->ui.outTable->removeRow(0);
 	}
 
-	for (UINT row = 0; row < this->ui.outTable->rowCount(); ++row)
+	this->ui.inputTable->update();
+	this->ui.outTable->update();
+}
+
+void ProcessImageMemory::SetProcessImage(ProcessImageIn *inPi, const ProcessImageOut *outPi)
+{
+	if (inPi)
 	{
-		item = this->ui.outTable->verticalHeaderItem(row);
-		if (item != NULL)
-		{
-			delete item;
-		}
+		this->inPi = inPi;
+
+		const UINT inputRowCount = (this->inPi->GetSize() / this->ui.inputTable->columnCount()) + 1;
+		this->ui.inputTable->setRowCount(inputRowCount);
+		this->ui.inputTable->verticalHeader()->setVisible(true);
+		this->CreateVerticalHeaders(Direction::PI_IN);
+		this->CreateCells(Direction::PI_IN);
+		bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_IN,
+											 *(this),
+											 this->metaObject()->method(this->processImageInputSlotIndex));
+		Q_ASSERT(ret != false);
+		this->ui.inputTable->update();
 	}
 
-	for (UINT col = 0; col < this->ui.outTable->columnCount(); ++col)
+	if (outPi)
 	{
-		item = this->ui.outTable->horizontalHeaderItem(col);
-		if (item != NULL)
-		{
-			delete item;
-		}
+		this->outPi = outPi;
+
+		const UINT outputRowCount = (this->outPi->GetSize() / this->ui.outTable->columnCount()) + 1;
+		this->ui.outTable->setRowCount(outputRowCount);
+		this->ui.outTable->verticalHeader()->setVisible(true);
+		this->CreateVerticalHeaders(Direction::PI_OUT);
+		this->CreateCells(Direction::PI_OUT);
+		bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_OUT,
+											 *(this),
+											 this->metaObject()->method(this->processImageOutputSlotIndex));
+		Q_ASSERT(ret != false);
+		this->ui.outTable->update();
 	}
 }
 
 /*******************************************************************************
 * Private functions
 *******************************************************************************/
-void ProcessImageMemory::CreateVerticalHeaders()
+void ProcessImageMemory::CreateVerticalHeaders(Direction::Direction direction)
 {
-	QTableWidgetItem *item = NULL;
-	for (UINT i = 0; i < ((this->inPi.GetSize() / this->ui.inputTable->columnCount()) + 1);
-		 ++i)
+	if (direction == Direction::PI_IN)
 	{
-		item = new QTableWidgetItem();
-		item->setText((QString("%1")
-					   .arg(i * this->ui.inputTable->columnCount(), 0, 16))
-					  .rightJustified(4, '0'));
-		this->ui.inputTable->setVerticalHeaderItem(i, item);
-	}
-
-	for (UINT i = 0; i < ((this->outPi.GetSize() / this->ui.outTable->columnCount()) + 1);
-		 ++i)
-	{
-		item = new QTableWidgetItem();
-		item->setFont(QFont("Courier", 9));
-		item->setText((QString("%1")
-					   .arg(i * this->ui.outTable->columnCount(), 0, 16))
-					  .rightJustified(4, '0'));
-		this->ui.outTable->setVerticalHeaderItem(i, item);
-	}
-}
-
-void ProcessImageMemory::CreateCells()
-{
-	QTableWidgetItem *item = NULL;
-	for (UINT row = 0; row < this->ui.inputTable->rowCount(); ++row)
-	{
-		for (UINT col = 0; col <this->ui.inputTable->columnCount(); ++col)
+		QTableWidgetItem *item = NULL;
+		for (UINT i = 0; i < ((this->inPi->GetSize() / this->ui.inputTable->columnCount()) + 1);
+			 ++i)
 		{
 			item = new QTableWidgetItem();
-			item->setFont(QFont("Courier", 9));
-			this->ui.inputTable->setItem(row, col, item);
+			item->setText((QString("%1")
+						   .arg(i * this->ui.inputTable->columnCount(), 0, 16))
+						   .rightJustified(4, '0'));
+			this->ui.inputTable->setVerticalHeaderItem(i, item);
 		}
 	}
 
-	for (UINT row = 0; row < this->ui.outTable->rowCount(); ++row)
+	if (direction == Direction::PI_OUT)
 	{
-		for (UINT col = 0; col <this->ui.outTable->columnCount(); ++col)
+		QTableWidgetItem *item = NULL;
+		for (UINT i = 0; i < ((this->outPi->GetSize() / this->ui.outTable->columnCount()) + 1);
+			 ++i)
 		{
 			item = new QTableWidgetItem();
 			item->setFont(QFont("Courier", 9));
-			this->ui.outTable->setItem(row, col, item);
+			item->setText((QString("%1")
+						   .arg(i * this->ui.outTable->columnCount(), 0, 16))
+						   .rightJustified(4, '0'));
+			this->ui.outTable->setVerticalHeaderItem(i, item);
+		}
+	}
+}
+
+void ProcessImageMemory::CreateCells(Direction::Direction direction)
+{
+	if (direction == Direction::PI_IN)
+	{
+		QTableWidgetItem *item = NULL;
+		for (UINT row = 0; row < this->ui.inputTable->rowCount(); ++row)
+		{
+			for (UINT col = 0; col < this->ui.inputTable->columnCount(); ++col)
+			{
+				item = new QTableWidgetItem();
+				item->setFont(QFont("Courier", 9));
+				this->ui.inputTable->setItem(row, col, item);
+
+				// Block editing of extra cells.
+				if (!IsValidCell(row, col, Direction::PI_IN))
+					item->setFlags(Qt::NoItemFlags);
+			}
+		}
+	}
+
+	if (direction == Direction::PI_OUT)
+	{
+		QTableWidgetItem *item = NULL;
+		for (UINT row = 0; row < this->ui.outTable->rowCount(); ++row)
+		{
+			for (UINT col = 0; col < this->ui.outTable->columnCount(); ++col)
+			{
+				item = new QTableWidgetItem();
+				item->setFont(QFont("Courier", 9));
+				this->ui.outTable->setItem(row, col, item);
+
+				// Block editing of extra cells.
+				if (!IsValidCell(row, col, Direction::PI_OUT))
+					item->setFlags(Qt::NoItemFlags);
+			}
 		}
 	}
 }
@@ -224,92 +220,136 @@ void ProcessImageMemory::ResizeColumnsToContents()
 
 void ProcessImageMemory::UpdateFromInputValues()
 {
-	try
+	if (this->inPi)
 	{
-		std::vector<BYTE> value = this->inPi.GetRawData((this->inPi.GetSize() * 8), 0);
-		UINT row = 0;
-		UINT col = 0;
-		QTableWidgetItem *cell = NULL;
-
-		for (std::vector<BYTE>::const_iterator it = value.begin();
-				it != value.end(); ++it)
+		try
 		{
-			cell = this->ui.inputTable->item(row, col);
-			if (cell)
-				cell->setText((QString("%1").arg(*it, 0, 16).rightJustified(2, '0'))
-							  .toUpper());
+			std::vector<BYTE> value = this->inPi->GetRawData((this->inPi->GetSize() * 8), 0);
+			UINT row = 0;
+			UINT col = 0;
+			QTableWidgetItem *cell = NULL;
 
-			if ((col + 1) == this->ui.inputTable->columnCount())
+			for (std::vector<BYTE>::const_iterator it = value.begin();
+					it != value.end(); ++it)
 			{
-				++row;
-				col = 0;
-			}
-			else
-			{
-				++col;
+				cell = this->ui.inputTable->item(row, col);
+				if (cell)
+					cell->setText((QString("%1").arg(*it, 0, 16).rightJustified(2, '0'))
+								  .toUpper());
+
+				if ((col + 1) == this->ui.inputTable->columnCount())
+				{
+					++row;
+					col = 0;
+				}
+				else
+				{
+					++col;
+				}
 			}
 		}
-	}
-	catch(const std::exception& ex)
-	{
-		// TODO Discuss about exposing the error to the user.
-		qDebug("An Exception has occured: %s", ex.what());
+		catch(const std::exception& ex)
+		{
+			// TODO Discuss about exposing the error to the user.
+			qDebug("An Exception has occured: %s", ex.what());
+		}
 	}
 }
 
 void ProcessImageMemory::UpdateFromOutputValues()
 {
-	try
+	if (this->outPi)
 	{
-		std::vector<BYTE> value = this->outPi.GetRawData((this->outPi.GetSize() * 8), 0);
-
-		UINT row = 0;
-		UINT col = 0;
-		QTableWidgetItem *cell = NULL;
-
-		for (std::vector<BYTE>::const_iterator it = value.begin();
-				it != value.end(); ++it)
+		try
 		{
-			cell = this->ui.outTable->item(row, col);
-			if (cell)
-				cell->setText((QString("%1").arg(*it, 0, 16).rightJustified(2, '0'))
-							  .toUpper());
+			std::vector<BYTE> value = this->outPi->GetRawData((this->outPi->GetSize() * 8), 0);
 
-			if ((col + 1) == this->ui.outTable->columnCount())
+			UINT row = 0;
+			UINT col = 0;
+			QTableWidgetItem *cell = NULL;
+
+			for (std::vector<BYTE>::const_iterator it = value.begin();
+					it != value.end(); ++it)
 			{
-				++row;
-				col = 0;
-			}
-			else
-			{
-				++col;
+				cell = this->ui.outTable->item(row, col);
+				if (cell)
+					cell->setText((QString("%1").arg(*it, 0, 16).rightJustified(2, '0'))
+								  .toUpper());
+
+				if ((col + 1) == this->ui.outTable->columnCount())
+				{
+					++row;
+					col = 0;
+				}
+				else
+				{
+					++col;
+				}
 			}
 		}
-	}
-	catch(const std::exception& ex)
-	{
-		// TODO Discuss about exposing the error to the user.
-		qDebug("An Exception has occured: %s", ex.what());
+		catch(const std::exception& ex)
+		{
+			// TODO Discuss about exposing the error to the user.
+			qDebug("An Exception has occured: %s", ex.what());
+		}
 	}
 }
 
 void ProcessImageMemory::on_inputTable_itemChanged(QTableWidgetItem *cell)
 {
-	try
+	if (this->inPi)
 	{
-		UINT row = cell->row();
-		UINT col = cell->column();
+		try
+		{
+			UINT row = cell->row();
+			UINT col = cell->column();
 
-		bool ok = false;
-		UINT horiz = this->ui.inputTable->horizontalHeaderItem(col)->text().toUInt(&ok, 16);
-		UINT vertic = this->ui.inputTable->verticalHeaderItem(row)->text().toUInt(&ok, 16);
+			// Avoid setting to extra cells.
+			if (!IsValidCell(row, col, Direction::PI_IN))
+				return;
 
-		std::vector<BYTE> value;
-		value.push_back((BYTE) cell->text().toUInt(&ok, 16));
-		this->inPi.SetRawData(value, (horiz + vertic));
+			bool ok = false;
+			UINT horiz = this->ui.inputTable->horizontalHeaderItem(col)->text().toUInt(&ok, 16);
+			UINT vertic = this->ui.inputTable->verticalHeaderItem(row)->text().toUInt(&ok, 16);
+
+			std::vector<BYTE> value;
+			value.push_back((BYTE) cell->text().toUInt(&ok, 16));
+			this->inPi->SetRawData(value, (horiz + vertic));
+		}
+		catch(const std::exception& ex)
+		{
+			qDebug("on_inputTable_itemChanged: An Exception has occured: %s", ex.what());
+		}
 	}
-	catch(const std::exception& ex)
+}
+
+bool ProcessImageMemory::IsValidCell(UINT row, UINT col, Direction::Direction direction)
+{
+	bool valid = true;
+	if (direction == Direction::PI_IN)
 	{
-		qDebug("An Exception has occured: %s", ex.what());
+		if (!this->inPi)
+			valid = false;
+
+		if ((row == (this->ui.inputTable->rowCount() - 1))
+			&& (col >= (this->ui.inputTable->columnCount()
+				- (this->inPi->GetSize() % this->ui.inputTable->columnCount()))))
+			valid = false;
 	}
+	else if (direction == Direction::PI_OUT)
+	{
+		if (!this->outPi)
+			valid = false;
+
+		if ((row == (this->ui.outTable->rowCount() - 1))
+			&& (col >= (this->ui.outTable->columnCount()
+				- (this->outPi->GetSize() % this->ui.outTable->columnCount()))))
+			valid = false;
+	}
+	else
+	{
+		valid = false;
+	}
+
+	return valid;
 }
