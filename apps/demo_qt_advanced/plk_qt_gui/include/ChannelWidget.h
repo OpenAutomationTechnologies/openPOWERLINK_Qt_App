@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   ChannelUi.h
+\file   ChannelWidget.h
 
 \brief  Provides an user-interface instance of an individual channel in
 		the ProcessImage.
@@ -33,14 +33,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _UI_CHANNEL_H_
-#define _UI_CHANNEL_H_
+#ifndef _UI_CHANNEL_Widget_H_
+#define _UI_CHANNEL_Widget_H_
 
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
 
-#include "ui_ChannelUi.h"
+#include "ui_ChannelWidget.h"
 #include "LineEditUi.h"
 
 #include "user/processimage/Channel.h"
@@ -48,24 +48,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "user/processimage/ProcessImageOut.h"
 
 /**
- * \brief The ChannelUi class constructs the single frame for the each channels
+ * \brief The ChannelWidget class constructs the single frame for the each channels
  *  present in the processimage
  */
-class ChannelUi : public QWidget
+class ChannelWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
 	/**
-	 * \brief Constructs the ChannelUi instance and holds the properties of
+	 * \brief Constructs the ChannelWidget instance and holds the properties of
 	 * the channel in it.
 	 *
 	 * \param[in] channel  The Channel instance for which the UI frame is generated.
 	 * \param[in] parent
 	 */
-	explicit ChannelUi(const Channel &channel, QWidget *parent = 0);
+	explicit ChannelWidget(const Channel &channel, QWidget *parent = 0);
 
-	~ChannelUi();
+	~ChannelWidget();
 
 	/**
 	 * \brief Sets the state of the 'select check box' to the given state.
@@ -114,7 +114,7 @@ private slots:
 	void UnlockCurrentValue();
 
 private:
-	Ui::ChannelFrame ui;   ///< ChannelFrame ui instance.
+	Ui::ChannelWidget ui;   ///< ChannelFrame ui instance.
 	LineEditUi value;     ///< Current value textbox.
 	// TODO change to ptr. TODO ptr in channelMap in api-lib
 	const Channel channel; ///< Processimage channel properties.
@@ -138,4 +138,4 @@ private:
 	void SetInputMask();
 };
 
-#endif // _UI_CHANNEL_H_
+#endif // _UI_CHANNEL_Widget_H_

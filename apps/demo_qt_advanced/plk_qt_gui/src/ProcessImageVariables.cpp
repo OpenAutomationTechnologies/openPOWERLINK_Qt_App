@@ -78,7 +78,7 @@ void ProcessImageVariables::ResetView()
 	Q_ASSERT(ret != false);
 
 // clear ui once stack has stopped.
-	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->inputChannels.begin();
 		 channel != this->inputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -90,7 +90,7 @@ void ProcessImageVariables::ResetView()
 
 	this->inputChannels.clear();
 
-	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->outputChannels.begin();
 			 channel != this->outputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -108,7 +108,7 @@ void ProcessImageVariables::ResetView()
 
 ProcessImageVariables::~ProcessImageVariables()
 {
-	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->inputChannels.begin();
 		 channel != this->inputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -118,7 +118,7 @@ ProcessImageVariables::~ProcessImageVariables()
 	}
 	this->inputChannels.clear();
 
-	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->outputChannels.begin();
 		 channel != this->outputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -157,7 +157,7 @@ void ProcessImageVariables::SetProcessImage(ProcessImageIn *inPi, const ProcessI
 
 void ProcessImageVariables::UpdateFromInputValues()
 {
-	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->inputChannels.begin();
 		 channel != this->inputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -169,7 +169,7 @@ void ProcessImageVariables::UpdateFromInputValues()
 
 void ProcessImageVariables::UpdateFromOutputValues()
 {
-	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->outputChannels.begin();
 		 channel != this->outputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -185,12 +185,12 @@ void ProcessImageVariables::UpdateFromOutputValues()
 
 void ProcessImageVariables::PrepareInputRows()
 {
-	ChannelUi *channel = NULL;
+	ChannelWidget *channel = NULL;
 	for (std::map<std::string, Channel>::const_iterator it = this->inPi->cbegin();
 		 it != this->inPi->cend(); ++it)
 	{
 		// qDebug(qPrintable(QString::fromStdString(it->first)));
-		channel = new ChannelUi(it->second);
+		channel = new ChannelWidget(it->second);
 		this->inputChannels.push_back(channel);
 		this->ui.inputProcessImage->addWidget(channel);
 	}
@@ -200,12 +200,12 @@ void ProcessImageVariables::PrepareInputRows()
 
 void ProcessImageVariables::PrepareOutputRows()
 {
-	ChannelUi *channel = NULL;
+	ChannelWidget *channel = NULL;
 	for (std::map<std::string, Channel>::const_iterator it = this->outPi->cbegin();
 		 it != this->outPi->cend(); ++it)
 	{
 		// qDebug(qPrintable(QString::fromStdString(it->first)));
-		channel = new ChannelUi(it->second);
+		channel = new ChannelWidget(it->second);
 		this->outputChannels.push_back(channel);
 		this->ui.outputProcessImage->addWidget(channel);
 	}
@@ -217,7 +217,7 @@ void ProcessImageVariables::on_inputCheckAll_stateChanged(int checkedState)
 {
 	if (checkedState != Qt::PartiallyChecked)
 	{
-		for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+		for (QList<ChannelWidget*>::iterator channel = this->inputChannels.begin();
 			 channel != this->inputChannels.end(); ++channel)
 		{
 			if (*channel)
@@ -232,7 +232,7 @@ void ProcessImageVariables::on_outputCheckAll_stateChanged(int checkedState)
 {
 	if (checkedState != Qt::PartiallyChecked)
 	{
-		for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+		for (QList<ChannelWidget*>::iterator channel = this->outputChannels.begin();
 			 channel != this->outputChannels.end(); ++channel)
 		{
 			if (*channel)
@@ -245,7 +245,7 @@ void ProcessImageVariables::on_outputCheckAll_stateChanged(int checkedState)
 
 void ProcessImageVariables::on_inputHideCheckedBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->inputChannels.begin();
 		 channel != this->inputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -260,7 +260,7 @@ void ProcessImageVariables::on_inputHideCheckedBtn_clicked()
 
 void ProcessImageVariables::on_inputShowAllBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator channel = this->inputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->inputChannels.begin();
 		 channel != this->inputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -272,7 +272,7 @@ void ProcessImageVariables::on_inputShowAllBtn_clicked()
 
 void ProcessImageVariables::on_outHideCheckedBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->outputChannels.begin();
 		 channel != this->outputChannels.end(); ++channel)
 	{
 		if (*channel)
@@ -287,7 +287,7 @@ void ProcessImageVariables::on_outHideCheckedBtn_clicked()
 
 void ProcessImageVariables::on_outShowAllBtn_clicked()
 {
-	for (QList<ChannelUi*>::iterator channel = this->outputChannels.begin();
+	for (QList<ChannelWidget*>::iterator channel = this->outputChannels.begin();
 		 channel != this->outputChannels.end(); ++channel)
 	{
 		if (*channel)
