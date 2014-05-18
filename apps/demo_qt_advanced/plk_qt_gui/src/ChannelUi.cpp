@@ -109,49 +109,55 @@ Qt::CheckState ChannelUi::GetSelectCheckBoxState() const
 void ChannelUi::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 {
 	this->input = in;
-
-	try
+	if (in)
 	{
-		if (!this->lockValueTexbox)
+		try
 		{
-			std::vector<BYTE> value = in->GetRawData(this->channel.GetBitSize(),
+			if (!this->lockValueTexbox)
+			{
+				std::vector<BYTE> value = in->GetRawData(this->channel.GetBitSize(),
 													this->channel.GetByteOffset(),
 													this->channel.GetBitOffset());
-			QString string;
-			for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
+				QString string;
+				for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
 					it != value.rend(); ++it )
-			{
-				string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
+				{
+					string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
+				}
+				this->SetCurrentValue(string.toUpper());
 			}
-			this->SetCurrentValue(string.toUpper());
 		}
-	}
-	catch(const std::exception& ex)
-	{
-		// TODO Discuss about exposing the error to the user.
-		qDebug("An Exception has occured: %s", ex.what());
+		catch(const std::exception& ex)
+		{
+			// TODO Discuss about exposing the error to the user.
+			qDebug("An Exception has occured: %s", ex.what());
+		}
 	}
 }
 
 void ChannelUi::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 {
-	try
+	if (out)
 	{
-		std::vector<BYTE> value = out->GetRawData(this->channel.GetBitSize(),
+		try
+		{
+
+			std::vector<BYTE> value = out->GetRawData(this->channel.GetBitSize(),
 												this->channel.GetByteOffset(),
 												this->channel.GetBitOffset());
-		QString string;
-		for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
+			QString string;
+			for (std::vector<BYTE>::reverse_iterator it = value.rbegin();
 				it != value.rend(); ++it )
-		{
-			string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
+			{
+				string.append(QString("%1").arg(*it, 0, 16)).rightJustified(2, '0');
+			}
+			this->SetCurrentValue(string);
 		}
-		this->SetCurrentValue(string);
-	}
-	catch(const std::exception& ex)
-	{
-		// TODO Discuss about exposing the error to the user.
-		qDebug("An Exception has occured: %s", ex.what());
+		catch(const std::exception& ex)
+		{
+			// TODO Discuss about exposing the error to the user.
+			qDebug("An Exception has occured: %s", ex.what());
+		}
 	}
 }
 
@@ -190,24 +196,27 @@ void ChannelUi::SetCurrentValue(QString str)
 
 void ChannelUi::ValueReturnPressed()
 {
-	try
+	if (this->input)
 	{
-		const QString forceValue = this->value.text();
-		if (!forceValue.isEmpty()
-			&& (forceValue.compare(this->valueBeforeLock, Qt::CaseInsensitive) != 0))
+		try
 		{
-			const qlonglong forc = forceValue.toLongLong(0, 16);
+			const QString forceValue = this->value.text();
+			if (!forceValue.isEmpty()
+				&& (forceValue.compare(this->valueBeforeLock, Qt::CaseInsensitive) != 0))
+			{
+				const qlonglong forc = forceValue.toLongLong(0, 16);
 
-			this->input->SetRawValue(this->channel.GetName(),
-							(const void*) &forc,
-							this->channel.GetBitSize());
-			this->setStyleSheet("QLineEdit{background: white;}");
+				this->input->SetRawValue(this->channel.GetName(),
+								(const void*) &forc,
+								this->channel.GetBitSize());
+				this->setStyleSheet("QLineEdit{background: white;}");
+			}
 		}
-	}
-	catch(const std::exception& ex)
-	{
-		// TODO Discuss about exposing the error to the user.
-		qDebug("An Exception has occured: %s", ex.what());
+		catch(const std::exception& ex)
+		{
+			// TODO Discuss about exposing the error to the user.
+			qDebug("An Exception has occured: %s", ex.what());
+		}
 	}
 }
 
@@ -220,23 +229,26 @@ void ChannelUi::LockCurrentValue()
 
 void ChannelUi::UnlockCurrentValue()
 {
-	try
+	if (this->input)
 	{
-		const QString forceValue = this->value.text();
-		if (!forceValue.isEmpty()
-			&& (forceValue.compare(this->valueBeforeLock, Qt::CaseInsensitive) != 0))
+		try
 		{
-			const qlonglong forc = forceValue.toLongLong(0, 16);
+			const QString forceValue = this->value.text();
+			if (!forceValue.isEmpty()
+				&& (forceValue.compare(this->valueBeforeLock, Qt::CaseInsensitive) != 0))
+			{
+				const qlonglong forc = forceValue.toLongLong(0, 16);
 
-			this->input->SetRawValue(this->channel.GetName(),
-							(const void*) &forc,
-							this->channel.GetBitSize());
+				this->input->SetRawValue(this->channel.GetName(),
+								(const void*) &forc,
+								this->channel.GetBitSize());
+			}
 		}
-	}
-	catch(const std::exception& ex)
-	{
-		// TODO Discuss about exposing the error to the user.
-		qDebug("An Exception has occured: %s", ex.what());
+		catch(const std::exception& ex)
+		{
+			// TODO Discuss about exposing the error to the user.
+			qDebug("An Exception has occured: %s", ex.what());
+		}
 	}
 
 	this->lockValueTexbox = false;
