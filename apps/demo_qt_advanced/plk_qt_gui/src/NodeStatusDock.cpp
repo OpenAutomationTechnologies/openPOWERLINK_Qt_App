@@ -55,20 +55,20 @@ NodeStatusDock::NodeStatusDock(QWidget *parent) :
 	// this->ui.verticalLayout->setDirection(QBoxLayout::Down);
 	this->ui.verticalLayout->setAlignment(Qt::AlignTop);
 
-	NodeUi *nodeUi = NULL;
+	NodeWidget *node = NULL;
 	for (UINT i = 0; i < kMaxNodes; ++i)
 	{
 		if (i == 0)
 		{
-			nodeUi = new NodeUi(kmnNodeId);
+			node = new NodeWidget(kmnNodeId);
 		}
 		else
 		{
-			nodeUi = new NodeUi(i);
-			nodeUi->hide();
+			node = new NodeWidget(i);
+			node->hide();
 		}
-		this->nodelists.push_back(nodeUi);
-		this->ui.verticalLayout->addWidget(nodeUi);
+		this->nodelists.push_back(node);
+		this->ui.verticalLayout->addWidget(node);
 	}
 
 	int index = this->metaObject()->indexOfMethod(
@@ -110,7 +110,7 @@ void NodeStatusDock::HandleMnStateChanged(tNmtState nmtState)
 	// Change all CN states for Stack shutdown / MN dead.
 	if ((nmtState == kNmtMsBasicEthernet) || (nmtState < kNmtMsOperational))
 	{
-		for (QList<NodeUi*>::iterator it = this->nodelists.begin();
+		for (QList<NodeWidget*>::iterator it = this->nodelists.begin();
 			 it != this->nodelists.end(); ++it)
 		{
 			if ((*it)->GetNodeId() != kmnNodeId)

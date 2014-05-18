@@ -52,7 +52,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SelectNwInterfaceDialog.h"
 #include "NmtCommandsDock.h"
 #include "NodeStatusDock.h"
-#include "NodeUi.h"
 #include "StatusBar.h"
 
 /**
