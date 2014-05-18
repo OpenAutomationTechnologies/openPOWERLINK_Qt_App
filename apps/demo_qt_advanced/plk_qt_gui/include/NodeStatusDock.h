@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ui_NodeStatusDock.h"
 
-#include "NodeUi.h"
+#include "NodeWidget.h"
 
 /**
  * \brief The NodeStatusDock class inherits QDockWidget and handles the node
@@ -81,9 +81,9 @@ public:
 private:
 	Ui::NodeStatusDock ui;  ///< Node status dock ui instance.
 
-	QList<NodeUi*> nodelists; ///< List for maintaining the Node frames.
+	QList<NodeWidget*> nodelists; ///< List for maintaining the Node frames.
 	// May be we can use QMap
-	// QMap<const UINT, NodeUi*> nodelist;
+	// QMap<const UINT, NodeWidget*> nodelist;
 
 signals:
 	void SignalNodeAvailable(unsigned int nodeId);

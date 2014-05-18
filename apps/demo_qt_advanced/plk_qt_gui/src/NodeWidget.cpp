@@ -1,8 +1,8 @@
 /**
 ********************************************************************************
-\file   NodeUi.cpp
+\file   NodeWidget.cpp
 
-\brief  Implements the NodeUi frame.
+\brief  Implements the NodeWidget frame.
 
 \todo
 		- It can have a progressbar to display the CFM download status.
@@ -38,26 +38,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "NodeUi.h"
+#include "NodeWidget.h"
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
 
 #include <oplk/debugstr.h>
 
-const QString NodeUi::ledRed = ":/new/images/red.png";
-const QString NodeUi::ledGreen = ":/new/images/green.png";
-const QString NodeUi::ledBlue = ":/new/images/blue.png";
-const QString NodeUi::ledYellow = ":/new/images/yellow.png";
-const QString NodeUi::ledBrown = ":/new/images/brown.png";
-const QString NodeUi::ledWhite = ":/new/images/white.png";
-const QString NodeUi::ledGrey = ":/new/images/grey.png";
+const QString NodeWidget::ledRed = ":/new/images/red.png";
+const QString NodeWidget::ledGreen = ":/new/images/green.png";
+const QString NodeWidget::ledBlue = ":/new/images/blue.png";
+const QString NodeWidget::ledYellow = ":/new/images/yellow.png";
+const QString NodeWidget::ledBrown = ":/new/images/brown.png";
+const QString NodeWidget::ledWhite = ":/new/images/white.png";
+const QString NodeWidget::ledGrey = ":/new/images/grey.png";
 
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-NodeUi::NodeUi(const UINT nodeId, QWidget *parent) :
-	QFrame(parent),
+NodeWidget::NodeWidget(const UINT nodeId, QWidget *parent) :
+	QWidget(parent),
 	nodeId(nodeId),
 	nodeLayout(new QHBoxLayout(this)),
 	name(new QLabel()),
@@ -81,7 +81,7 @@ NodeUi::NodeUi(const UINT nodeId, QWidget *parent) :
 	}
 	this->nodeLayout->addWidget(this->name);
 
-	this->statusImage->setPixmap(QPixmap(NodeUi::ledRed));
+	this->statusImage->setPixmap(QPixmap(NodeWidget::ledRed));
 	this->nodeLayout->addWidget(this->statusImage);
 
 	this->setToolTip(this->name->text());
@@ -89,12 +89,12 @@ NodeUi::NodeUi(const UINT nodeId, QWidget *parent) :
 	this->nodeLayout->update();
 }
 
-const UINT NodeUi::GetNodeId() const
+const UINT NodeWidget::GetNodeId() const
 {
 	return this->nodeId;
 }
 
-void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
+void NodeWidget::HandleNodeStateChanged(tNmtState nmtState)
 {
 	this->setToolTip((QString("%1 : %2")
 					.arg(this->name->text())
@@ -107,7 +107,7 @@ void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
 		case kNmtMsNotActive:
 		case kNmtCsNotActive:
 		{
-			image = QPixmap(NodeUi::ledGrey);
+			image = QPixmap(NodeWidget::ledGrey);
 			break;
 		}
 		case kNmtMsPreOperational1:
@@ -115,31 +115,31 @@ void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
 		case kNmtCsPreOperational1:
 		case kNmtCsPreOperational2:
 		{
-			image = QPixmap(NodeUi::ledYellow);
+			image = QPixmap(NodeWidget::ledYellow);
 			break;
 		}
 		case kNmtGsOff:
 		case kNmtCsStopped:
 		{
-			image = QPixmap(NodeUi::ledRed);
+			image = QPixmap(NodeWidget::ledRed);
 			break;
 		}
 		case kNmtMsReadyToOperate:
 		case kNmtCsReadyToOperate:
 		{
-			image = QPixmap(NodeUi::ledBrown);
+			image = QPixmap(NodeWidget::ledBrown);
 			break;
 		}
 		case kNmtMsOperational:
 		case kNmtCsOperational:
 		{
-			image = QPixmap(NodeUi::ledGreen);
+			image = QPixmap(NodeWidget::ledGreen);
 			break;
 		}
 		case kNmtMsBasicEthernet:
 		case kNmtCsBasicEthernet:
 		{
-			image = QPixmap(NodeUi::ledBlue);
+			image = QPixmap(NodeWidget::ledBlue);
 			break;
 		}
 		case kNmtGsInitialising:
@@ -147,7 +147,7 @@ void NodeUi::HandleNodeStateChanged(tNmtState nmtState)
 		case kNmtGsResetCommunication:
 		case kNmtGsResetConfiguration:
 		default:
-			image = QPixmap(NodeUi::ledWhite);
+			image = QPixmap(NodeWidget::ledWhite);
 			break;
 	}
 	this->statusImage->setPixmap(image);

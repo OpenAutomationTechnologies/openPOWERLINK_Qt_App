@@ -50,11 +50,11 @@ SOURCES += src/main.cpp \
 	src/NmtCommandsDock.cpp \
 	src/NodeStatusDock.cpp \
 	src/LoggerWindow.cpp \
-	src/NodeUi.cpp \
 	src/AboutDialog.cpp \
 	src/StatusBar.cpp \
 	src/LineEditUi.cpp \
-	src/ChannelWidget.cpp
+	src/ChannelWidget.cpp \
+	src/NodeWidget.cpp
 
 HEADERS  += include/MainWindow.h \
 	include/SdoTransfer.h \
@@ -65,11 +65,11 @@ HEADERS  += include/MainWindow.h \
 	include/NmtCommandsDock.h \
 	include/NodeStatusDock.h \
 	include/LoggerWindow.h \
-	include/NodeUi.h \
 	include/AboutDialog.h \
 	include/StatusBar.h \
 	include/LineEditUi.h \
-	include/ChannelWidget.h
+	include/ChannelWidget.h \
+	include/NodeWidget.h
 
 FORMS    += ui/MainWindow.ui \
 	ui/MainWindow.ui \

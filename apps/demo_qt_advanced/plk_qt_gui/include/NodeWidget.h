@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   NodeUi.h
+\file   NodeWidget.h
 
 \brief  Inherits the QFrame and handles the status of the individual node.
 
@@ -32,22 +32,22 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _NODE_UI_H_
-#define _NODE_UI_H_
+#ifndef _NODE_WIDGET_H_
+#define _NODE_WIDGET_H_
 
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
 #include <QHBoxLayout>
-#include <QFrame>
+#include <QWidget>
 #include <QLabel>
 
 #include <oplk/nmt.h>
 
 /**
- * \brief The NodeUi class inherits the QFrame and updates the status of the node.
+ * \brief The NodeWidget class inherits the QWidget and updates the status of the node.
  */
-class NodeUi : public QFrame
+class NodeWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -57,7 +57,7 @@ public:
 	 * \param[in] nodeId node id for which the frame has been created.
 	 * \param[in] parent
 	 */
-	explicit NodeUi(const UINT nodeId, QWidget *parent = 0);
+	explicit NodeWidget(const UINT nodeId, QWidget *parent = 0);
 
 	/**
 	 * \brief  Handles the state changes of the corresponding node.
@@ -91,4 +91,4 @@ private:
 	static const QString ledGrey;
 };
 
-#endif // _NODE_UI_H_
+#endif // _NODE_WIDGET_H_
