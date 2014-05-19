@@ -277,8 +277,8 @@ public:
 	 * \retval true   Registration successful.
 	 * \retval false  Registration not successful.
 	 *
-	 * \see DataSyncThread::SignalUpdateInputValues()
-	 * \see DataSyncThread::SignalUpdatedOutputValues()
+	 * \see OplkSyncEventHandler::SignalUpdateInputValues()
+	 * \see OplkSyncEventHandler::SignalUpdatedOutputValues()
 	 */
 	static bool RegisterSyncEventHandler(Direction::Direction direction,
 										 const QObject& receiver,
@@ -293,8 +293,8 @@ public:
 	 * \retval true   Un-registration successful.
 	 * \retval false  Un-registration not successful.
 	 *
-	 * \see DataSyncThread::SignalUpdateInputValues()
-	 * \see DataSyncThread::SignalUpdatedOutputValues()
+	 * \see OplkSyncEventHandler::SignalUpdateInputValues()
+	 * \see OplkSyncEventHandler::SignalUpdatedOutputValues()
 	 */
 	static bool UnregisterSyncEventHandler(Direction::Direction direction,
 										 const QObject& receiver,
@@ -308,7 +308,7 @@ public:
 	/**
 	 * \brief Sets the ProcessImage sync to wait for the give time in microseconds.
 	 *
-	 * \note It defaults to DataSyncThread::sleepMicroSeconds value
+	 * \note It defaults to OplkSyncEventHandler::sleepMicroSeconds value
 	 *
 	 * \param[in] sleepTime Processimage sync thread sleep time in micro seconds.
 	 */
@@ -324,7 +324,7 @@ public:
 	 * \retval true   Registration successful.
 	 * \retval false  Registration not successful.
 	 *
-	 * \see DataSyncThread::SignalSyncWaitTimeChanged(ulong)
+	 * \see OplkSyncEventHandler::SignalSyncWaitTimeChanged(ulong)
 	 */
 	static bool RegisterSyncWaitTimeChangedEventHandler(const QObject& receiver,
 										const QMetaMethod& receiverFunction);
@@ -339,7 +339,7 @@ public:
 	 * \retval true   Un-registration successful.
 	 * \retval false  Un-registration not successful.
 	 *
-	 * \see DataSyncThread::SignalSyncWaitTimeChanged(ulong)
+	 * \see OplkSyncEventHandler::SignalSyncWaitTimeChanged(ulong)
 	 */
 	static bool UnregisterSyncWaitTimeChangedEventHandler(const QObject& receiver,
 										const QMetaMethod& receiverFunction);

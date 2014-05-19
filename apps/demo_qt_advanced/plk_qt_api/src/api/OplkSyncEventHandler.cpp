@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   DataSyncThread.cpp
+\file   OplkSyncEventHandler.cpp
 
 \brief  Implements the transfer of processimage data in a thread by
 		using Qt 5.2 threads.
@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "api/DataSyncThread.h"
+#include "api/OplkSyncEventHandler.h"
 #include <oplk/oplk.h>
 
 
@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-DataSyncThread::~DataSyncThread()
+OplkSyncEventHandler::~OplkSyncEventHandler()
 {
 
 }
@@ -56,12 +56,12 @@ DataSyncThread::~DataSyncThread()
 /*******************************************************************************
 * Protected functions
 *******************************************************************************/
-void DataSyncThread::run()
+void OplkSyncEventHandler::run()
 {
 	tOplkError oplkRet = kErrorGeneralError;
 	for (;;)
 	{
-		if (DataSyncThread::currentThread()->isInterruptionRequested())
+		if (OplkSyncEventHandler::currentThread()->isInterruptionRequested())
 			return;
 
 		oplkRet = this->ProcessSyncEvent();
@@ -76,29 +76,29 @@ void DataSyncThread::run()
 /*******************************************************************************
 * Private functions
 *******************************************************************************/
-DataSyncThread::DataSyncThread() :
+OplkSyncEventHandler::OplkSyncEventHandler() :
 	sleepMicroSeconds(400)
 {
 }
 
-DataSyncThread& DataSyncThread::GetInstance()
+OplkSyncEventHandler& OplkSyncEventHandler::GetInstance()
 {
 	// Local static object - Not thread safe
-	static DataSyncThread instance;
+	static OplkSyncEventHandler instance;
 	return instance;
 }
 
-tOplkError DataSyncThread::AppCbSync(void)
+tOplkError OplkSyncEventHandler::AppCbSync(void)
 {
-	return DataSyncThread::GetInstance().ProcessSyncEvent();
+	return OplkSyncEventHandler::GetInstance().ProcessSyncEvent();
 }
 
-tSyncCb DataSyncThread::GetCbSync() const
+tSyncCb OplkSyncEventHandler::GetCbSync() const
 {
 	return AppCbSync;
 }
 
-tOplkError DataSyncThread::ProcessSyncEvent()
+tOplkError OplkSyncEventHandler::ProcessSyncEvent()
 {
 	tOplkError oplkRet = kErrorGeneralError;
 
@@ -118,7 +118,7 @@ tOplkError DataSyncThread::ProcessSyncEvent()
 
 	emit SignalUpdatedOutputValues();
 
-	QThread::msleep(DataSyncThread::sleepMicroSeconds);
+	QThread::msleep(OplkSyncEventHandler::sleepMicroSeconds);
 
 	emit SignalUpdateInputValues();
 
@@ -130,12 +130,12 @@ tOplkError DataSyncThread::ProcessSyncEvent()
 	return oplkRet;
 }
 
-ULONG DataSyncThread::GetSleepTime() const
+ULONG OplkSyncEventHandler::GetSleepTime() const
 {
 	return this->sleepMicroSeconds;
 }
 
-void DataSyncThread::SetSleepTime(const ULONG sleepTime)
+void OplkSyncEventHandler::SetSleepTime(const ULONG sleepTime)
 {
 	this->sleepMicroSeconds = sleepTime;
 	emit SignalSyncWaitTimeChanged((ulong)this->sleepMicroSeconds);
