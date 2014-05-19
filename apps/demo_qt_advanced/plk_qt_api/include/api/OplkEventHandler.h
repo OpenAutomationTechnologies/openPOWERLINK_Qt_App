@@ -62,18 +62,7 @@ class OplkEventHandler : public QThread
 {
 	Q_OBJECT
 
-public:
-
-	/**
-	 * \brief   Waits until the NMT state NMT_GS_OFF is reached
-	 */
-	void AwaitNmtGsOff();
-
-	/**
-	 * \return Returns the address of event callback function
-	 */
-	tOplkApiCbEvent GetAppEventCbFunc(void);
-
+protected:
 	virtual void run();
 
 private:
@@ -103,6 +92,16 @@ private:
 	static tOplkError AppCbEvent(tOplkApiEventType eventType,
 								 tOplkApiEventArg* eventArg,
 								 void* userArg);
+
+	/**
+	 * \return Returns the address of event callback function
+	 */
+	tOplkApiCbEvent GetAppEventCbFunc(void);
+
+	/**
+	 * \brief   Waits until the NMT state NMT_GS_OFF is reached
+	 */
+	void AwaitNmtGsOff();
 
 	/**
 	 * \brief   Process the NMT state change events of the local node.
