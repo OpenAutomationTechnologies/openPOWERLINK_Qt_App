@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QtDebug>
 #include "api/OplkQtApi.h"
 #include "api/OplkEventHandler.h"
-#include "api/DataSyncThread.h"
+#include "api/OplkSyncEventHandler.h"
 
 /*******************************************************************************
 * Module global variables
@@ -173,7 +173,7 @@ tOplkError OplkQtApi::StartStack()
 		qDebug("kNmtEventSwReset Ret: %d", oplkRet);
 
 #if !defined(CONFIG_KERNELSTACK_DIRECTLINK)
-	DataSyncThread::GetInstance().start();
+	OplkSyncEventHandler::GetInstance().start();
 #endif
 
 	return oplkRet;
@@ -195,7 +195,7 @@ tOplkError OplkQtApi::StopStack()
 
 	OplkEventHandler::GetInstance().AwaitNmtGsOff();
 
-	DataSyncThread::GetInstance().requestInterruption();
+	OplkSyncEventHandler::GetInstance().requestInterruption();
 
 	// TODO Set ProcessImage::data to NULL;
 	oplkRet = oplk_freeProcessImage();
@@ -303,16 +303,16 @@ bool OplkQtApi::RegisterSyncEventHandler(Direction::Direction direction,
 {
 	if (direction == Direction::PI_IN)
 	{
-		return QObject::connect(&DataSyncThread::GetInstance(),
-				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateInputValues),
+		return QObject::connect(&OplkSyncEventHandler::GetInstance(),
+				QMetaMethod::fromSignal(&OplkSyncEventHandler::SignalUpdateInputValues),
 				&receiver,
 				receiverFunction,
 				(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
 	}
 	else if (direction == Direction::PI_OUT)
 	{
-		return QObject::connect(&DataSyncThread::GetInstance(),
-				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdatedOutputValues),
+		return QObject::connect(&OplkSyncEventHandler::GetInstance(),
+				QMetaMethod::fromSignal(&OplkSyncEventHandler::SignalUpdatedOutputValues),
 				&receiver,
 				receiverFunction,
 				(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
@@ -327,15 +327,15 @@ bool OplkQtApi::UnregisterSyncEventHandler(Direction::Direction direction,
 {
 	if (direction == Direction::PI_IN)
 	{
-		return QObject::disconnect(&DataSyncThread::GetInstance(),
-				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdateInputValues),
+		return QObject::disconnect(&OplkSyncEventHandler::GetInstance(),
+				QMetaMethod::fromSignal(&OplkSyncEventHandler::SignalUpdateInputValues),
 				&receiver,
 				receiverFunction);
 	}
 	else if (direction == Direction::PI_OUT)
 	{
-		return QObject::disconnect(&DataSyncThread::GetInstance(),
-				QMetaMethod::fromSignal(&DataSyncThread::SignalUpdatedOutputValues),
+		return QObject::disconnect(&OplkSyncEventHandler::GetInstance(),
+				QMetaMethod::fromSignal(&OplkSyncEventHandler::SignalUpdatedOutputValues),
 				&receiver,
 				receiverFunction);
 	}
@@ -463,7 +463,7 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 	}
 
 #if defined(CONFIG_KERNELSTACK_DIRECTLINK)
-	OplkQtApi::initParam.pfnCbSync = DataSyncThread::GetInstance().GetSyncCbFunc();
+	OplkQtApi::initParam.pfnCbSync = OplkSyncEventHandler::GetInstance().GetSyncCbFunc();
 #else
 	OplkQtApi::initParam.pfnCbSync = NULL;
 #endif
@@ -503,19 +503,19 @@ tOplkError OplkQtApi::SetCycleTime(const ULONG cycleTime)
 
 ULONG OplkQtApi::GetSyncWaitTime()
 {
-	return DataSyncThread::GetInstance().GetSleepTime();
+	return OplkSyncEventHandler::GetInstance().GetSleepTime();
 }
 
 void OplkQtApi::SetSyncWaitTime(const ULONG sleepTime)
 {
-	DataSyncThread::GetInstance().SetSleepTime(sleepTime);
+	OplkSyncEventHandler::GetInstance().SetSleepTime(sleepTime);
 }
 
 bool OplkQtApi::RegisterSyncWaitTimeChangedEventHandler(const QObject &receiver,
 											const QMetaMethod &receiverFunction)
 {
-	return QObject::connect(&DataSyncThread::GetInstance(),
-			QMetaMethod::fromSignal(&DataSyncThread::SignalSyncWaitTimeChanged),
+	return QObject::connect(&OplkSyncEventHandler::GetInstance(),
+			QMetaMethod::fromSignal(&OplkSyncEventHandler::SignalSyncWaitTimeChanged),
 			&receiver,
 			receiverFunction,
 			(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
@@ -524,8 +524,8 @@ bool OplkQtApi::RegisterSyncWaitTimeChangedEventHandler(const QObject &receiver,
 bool OplkQtApi::UnregisterSyncWaitTimeChangedEventHandler(const QObject &receiver,
 											const QMetaMethod &receiverFunction)
 {
-	return QObject::disconnect(&DataSyncThread::GetInstance(),
-			QMetaMethod::fromSignal(&DataSyncThread::SignalSyncWaitTimeChanged),
+	return QObject::disconnect(&OplkSyncEventHandler::GetInstance(),
+			QMetaMethod::fromSignal(&OplkSyncEventHandler::SignalSyncWaitTimeChanged),
 			&receiver,
 			receiverFunction);
 }

@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   DataSyncThread.h
+\file   OplkSyncEventHandler.h
 
 \brief  Describes the transfer of processimage data in a thread by using
 		Qt 5.2 threads.
@@ -33,8 +33,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _DATA_SYNC_THREAD_H_
-#define _DATA_SYNC_THREAD_H_
+#ifndef _OPLK_SYNC_EVENT_HANDLER_H_
+#define _OPLK_SYNC_EVENT_HANDLER_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -47,7 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "api/OplkQtApi.h"
 
 /**
- * \brief The DataSyncThread class
+ * \brief The OplkSyncEventHandler class
  *
  * Describes the thread to transfer synchronous processimage data.
  *
@@ -55,12 +55,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * \note The signals can be received by registering through the
  * OplkQtApi::RegisterSyncEventHandler() functions
  */
-class DataSyncThread : public QThread
+class OplkSyncEventHandler : public QThread
 {
 	Q_OBJECT
 
 public:
-	virtual ~DataSyncThread();
+	virtual ~OplkSyncEventHandler();
 
 signals:
 
@@ -99,14 +99,14 @@ private:
 
 	ULONG sleepMicroSeconds;
 
-	DataSyncThread();
-	DataSyncThread(const DataSyncThread& syncThread);
-	DataSyncThread& operator=(const DataSyncThread& syncThread);
+	OplkSyncEventHandler();
+	OplkSyncEventHandler(const OplkSyncEventHandler& syncThread);
+	OplkSyncEventHandler& operator=(const OplkSyncEventHandler& syncThread);
 
 	/**
 	 * \return The instance of the class
 	 */
-	static DataSyncThread& GetInstance();
+	static OplkSyncEventHandler& GetInstance();
 
 	/**
 	 * \brief AppCbSync
@@ -137,5 +137,5 @@ private:
 	void SetSleepTime(const ULONG sleepTime);
 };
 
-#endif // _DATA_SYNC_THREAD_H_
+#endif // _OPLK_SYNC_EVENT_HANDLER_H_
 
