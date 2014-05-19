@@ -61,7 +61,7 @@ void OplkSyncEventHandler::run()
 	tOplkError oplkRet = kErrorGeneralError;
 	for (;;)
 	{
-		if (OplkSyncEventHandler::currentThread()->isInterruptionRequested())
+		if (this->currentThread()->isInterruptionRequested())
 			return;
 
 		oplkRet = this->ProcessSyncEvent();
@@ -118,7 +118,7 @@ tOplkError OplkSyncEventHandler::ProcessSyncEvent()
 
 	emit SignalUpdatedOutputValues();
 
-	QThread::msleep(OplkSyncEventHandler::sleepMicroSeconds);
+	QThread::msleep(this->sleepMicroSeconds);
 
 	emit SignalUpdateInputValues();
 
