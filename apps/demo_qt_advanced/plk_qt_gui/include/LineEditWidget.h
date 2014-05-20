@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef LineEditWidget_H
-#define LineEditWidget_H
+#ifndef _LINEEDIT_WIDGET_H_
+#define _LINEEDIT_WIDGET_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -46,34 +46,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 class LineEditWidget : public QLineEdit
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit LineEditWidget(QWidget* parent = 0);
+	explicit LineEditWidget(QWidget* parent = 0);
 
 signals:
-    /**
-     * \brief Signal to announce that the LineEdit got the focus.
-     */
-    void SignalFocusIn();
+	/**
+	 * \brief Signal to announce that the LineEdit got the focus.
+	 */
+	void SignalFocusIn();
 
-    /**
-     * \brief Signal to announce that the Lined is out of focus.
-     */
-    void SignalFocusOut();
+	/**
+	 * \brief Signal to announce that the Lined is out of focus.
+	 */
+	void SignalFocusOut();
 
 protected:
-    /**
-     * \brief Re-Implemented from QLineEdit::focusInEvent()
-     * \param[in] event The generated event on LineEdit focus out.
-     */
-    virtual void focusInEvent(QFocusEvent* event);
+	/**
+	 * \brief Re-Implemented from QLineEdit::focusInEvent()
+	 * \param[in] event The generated event on LineEdit focus out.
+	 */
+	virtual void focusInEvent(QFocusEvent* event);
 
-    /**
-     * \brief Re-Implemented from QLineEdit::focusOutEvent()
-     * \param[in] event The generated event on LineEdit focus out.
-     */
-    virtual void focusOutEvent(QFocusEvent* event);
+	/**
+	 * \brief Re-Implemented from QLineEdit::focusOutEvent()
+	 * \param[in] event The generated event on LineEdit focus out.
+	 */
+	virtual void focusOutEvent(QFocusEvent* event);
 };
 
-#endif // _LineEditWidget_H_
+#endif // _LINEEDIT_WIDGET_H_
