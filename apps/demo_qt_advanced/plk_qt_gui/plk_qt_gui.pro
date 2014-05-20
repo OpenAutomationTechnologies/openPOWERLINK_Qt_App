@@ -52,7 +52,7 @@ SOURCES += src/main.cpp \
 	src/LoggerWindow.cpp \
 	src/AboutDialog.cpp \
 	src/StatusBar.cpp \
-	src/LineEditUi.cpp \
+	src/LineEditWidget.cpp \
 	src/ChannelWidget.cpp \
 	src/NodeWidget.cpp
 
@@ -67,7 +67,7 @@ HEADERS  += include/MainWindow.h \
 	include/LoggerWindow.h \
 	include/AboutDialog.h \
 	include/StatusBar.h \
-	include/LineEditUi.h \
+	include/LineEditWidget.h \
 	include/ChannelWidget.h \
 	include/NodeWidget.h
 
