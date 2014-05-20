@@ -77,7 +77,7 @@ void OplkSyncEventHandler::run()
 * Private functions
 *******************************************************************************/
 OplkSyncEventHandler::OplkSyncEventHandler() :
-	sleepMicroSeconds(400)
+	sleepTime(400)
 {
 }
 
@@ -118,7 +118,7 @@ tOplkError OplkSyncEventHandler::ProcessSyncEvent()
 
 	emit SignalUpdatedOutputValues();
 
-	QThread::msleep(this->sleepMicroSeconds);
+	QThread::msleep(this->sleepTime);
 
 	emit SignalUpdateInputValues();
 
@@ -132,11 +132,11 @@ tOplkError OplkSyncEventHandler::ProcessSyncEvent()
 
 ULONG OplkSyncEventHandler::GetSleepTime() const
 {
-	return this->sleepMicroSeconds;
+	return this->sleepTime;
 }
 
 void OplkSyncEventHandler::SetSleepTime(const ULONG sleepTime)
 {
-	this->sleepMicroSeconds = sleepTime;
-	emit SignalSyncWaitTimeChanged((ulong)this->sleepMicroSeconds);
+	this->sleepTime = sleepTime;
+	emit SignalSyncWaitTimeChanged((ulong)this->sleepTime);
 }

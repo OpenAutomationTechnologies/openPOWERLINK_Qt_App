@@ -97,7 +97,7 @@ private:
 
 	friend class OplkQtApi;
 
-	ULONG sleepMicroSeconds;
+	ULONG sleepTime; ///< Thread sleep time in micro seconds.
 
 	OplkSyncEventHandler();
 	OplkSyncEventHandler(const OplkSyncEventHandler& syncThread);
