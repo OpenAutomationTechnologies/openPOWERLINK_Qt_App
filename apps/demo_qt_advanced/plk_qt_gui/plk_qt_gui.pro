@@ -45,7 +45,6 @@ SOURCES += src/main.cpp \
 	src/SdoTransfer.cpp \
 	src/ProcessImageVariables.cpp \
 	src/ProcessImageMemory.cpp \
-	src/DialogOpenCdc.cpp \
 	src/SelectNwInterfaceDialog.cpp \
 	src/NmtCommandsDock.cpp \
 	src/NodeStatusDock.cpp \
@@ -54,13 +53,13 @@ SOURCES += src/main.cpp \
 	src/StatusBar.cpp \
 	src/LineEditWidget.cpp \
 	src/ChannelWidget.cpp \
-	src/NodeWidget.cpp
+	src/NodeWidget.cpp \
+    src/ImportConfigurationDialog.cpp
 
 HEADERS  += include/MainWindow.h \
 	include/SdoTransfer.h \
 	include/ProcessImageVariables.h \
 	include/ProcessImageMemory.h \
-	include/DialogOpenCdc.h \
 	include/SelectNwInterfaceDialog.h \
 	include/NmtCommandsDock.h \
 	include/NodeStatusDock.h \
@@ -69,20 +68,21 @@ HEADERS  += include/MainWindow.h \
 	include/StatusBar.h \
 	include/LineEditWidget.h \
 	include/ChannelWidget.h \
-	include/NodeWidget.h
+	include/NodeWidget.h \
+    include/ImportConfigurationDialog.h
 
 FORMS    += ui/MainWindow.ui \
 	ui/MainWindow.ui \
 	ui/SdoTransfer.ui \
 	ui/ProcessImageVariables.ui \
 	ui/ProcessImageMemory.ui \
-	ui/DialogOpenCdc.ui \
 	ui/SelectNwInterfaceDialog.ui \
 	ui/NmtCommandsDock.ui \
 	ui/NodeStatusDock.ui \
 	ui/LoggerWindow.ui \
 	ui/AboutDialog.ui \
-	ui/ChannelWidget.ui
+	ui/ChannelWidget.ui \
+    ui/ImportConfigurationDialog.ui
 
 RESOURCES += \
 	ui/resources/images.qrc

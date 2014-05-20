@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "LoggerWindow.h"
 #include "ProcessImageVariables.h"
 #include "ProcessImageMemory.h"
-#include "DialogOpenCdc.h"
+#include "ImportConfigurationDialog.h"
 #include "SelectNwInterfaceDialog.h"
 #include "NmtCommandsDock.h"
 #include "NodeStatusDock.h"
@@ -131,7 +131,7 @@ private:
 	LoggerWindow *log;                         ///< Logging window
 	ProcessImageVariables *piVar;              ///< Processimage variables view
 	ProcessImageMemory *piMemory;              ///< Processimage memory view
-	DialogOpenCdc *cdcDialog;                  ///< CDC dialog window
+	ImportConfigurationDialog *cdcDialog;                  ///< CDC dialog window
 	SelectNwInterfaceDialog *networkInterface; ///< Network select interface dialog
 	NmtCommandsDock *nmtCmd;                   ///< NMT command
 	NodeStatusDock *nodeStatus;                ///< CN status list

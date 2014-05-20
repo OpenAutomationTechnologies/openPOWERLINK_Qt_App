@@ -1,8 +1,8 @@
 /**
 ********************************************************************************
-\file   DialogOpenCdc.h
+\file   ImportConfigurationDialog.h
 
-\brief  Refer DialogOpenCdc class
+\brief  Refer ImportConfigurationDialog class
 
 \author Ramakrishnan Periyakaruppan
 
@@ -32,26 +32,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _UI_DIALOG_OPEN_CDC_H_
-#define _UI_DIALOG_OPEN_CDC_H_
+#ifndef _IMPORT_CONFIGURATION_DIALOG_H_
+#define _IMPORT_CONFIGURATION_DIALOG_H_
 
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
 
-#include "ui_DialogOpenCdc.h"
+#include "ui_ImportConfigurationDialog.h"
 #include <QString>
 
 /**
- * \brief The DialogOpenCdc class inherits the QDialog to read the CDC and
+ * \brief The ImportConfigurationDialog class inherits the QDialog to read the CDC and
  * xap.xml path from the user.
  */
-class DialogOpenCdc : public QDialog
+class ImportConfigurationDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit DialogOpenCdc(QWidget *parent = 0);
+	explicit ImportConfigurationDialog(QWidget *parent = 0);
 
 	/**
 	 * \return The CDC's full path with name mnobd.cdc
@@ -101,7 +101,7 @@ signals:
 	void SignalXapChanged(QString& xapFile);
 
 private:
-	Ui::DialogOpenCdc ui;
+	Ui::ImportConfigurationDialog ui;
 
 	QString cdcFile;
 	QString xapFile;
@@ -120,4 +120,4 @@ private:
 	void SetErrorMessage(Configuration cfg, bool exists);
 };
 
-#endif // _UI_DIALOG_OPEN_CDC_H_
+#endif // _IMPORT_CONFIGURATION_DIALOG_H_

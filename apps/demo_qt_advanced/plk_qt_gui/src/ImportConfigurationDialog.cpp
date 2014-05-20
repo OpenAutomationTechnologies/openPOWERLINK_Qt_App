@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   DialogOpenCdc.cpp
+\file   ImportConfigurationDialog.cpp
 
 \brief  Implements the Open CDC dialog and the actions involved in it.
 
@@ -35,7 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "DialogOpenCdc.h"
+#include "ImportConfigurationDialog.h"
 #include <QFileDialog>
 #include <QFile>
 
@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * Public functions
 *******************************************************************************/
 
-DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
+ImportConfigurationDialog::ImportConfigurationDialog(QWidget *parent) :
 	QDialog(parent),
 	cdcFile(""),
 	xapFile("")
@@ -51,12 +51,12 @@ DialogOpenCdc::DialogOpenCdc(QWidget *parent) :
 	this->ui.setupUi(this);
 }
 
-const QString& DialogOpenCdc::GetCdcFileName() const
+const QString& ImportConfigurationDialog::GetCdcFileName() const
 {
 	return this->cdcFile;
 }
 
-const QString& DialogOpenCdc::GetXapFileName() const
+const QString& ImportConfigurationDialog::GetXapFileName() const
 {
 	return this->xapFile;
 }
@@ -65,7 +65,7 @@ const QString& DialogOpenCdc::GetXapFileName() const
 * Private functions
 *******************************************************************************/
 
-void DialogOpenCdc::on_browseCDC_clicked()
+void ImportConfigurationDialog::on_browseCDC_clicked()
 {
 	this->ui.xapError->clear();
 	QString cdc = QFileDialog::getOpenFileName(this,
@@ -89,7 +89,7 @@ void DialogOpenCdc::on_browseCDC_clicked()
 	}
 }
 
-void DialogOpenCdc::on_browseXap_clicked()
+void ImportConfigurationDialog::on_browseXap_clicked()
 {
 	this->ui.xapError->clear();
 
@@ -116,7 +116,7 @@ void DialogOpenCdc::on_browseXap_clicked()
 	}
 }
 
-void DialogOpenCdc::on_okButton_clicked()
+void ImportConfigurationDialog::on_okButton_clicked()
 {
 	bool cdcExists = QFileInfo::exists(this->ui.cdcPath->text());
 	bool xapExists = QFileInfo::exists(this->ui.xapPath->text());
@@ -138,14 +138,14 @@ void DialogOpenCdc::on_okButton_clicked()
 	}
 }
 
-void DialogOpenCdc::on_cancelButton_clicked()
+void ImportConfigurationDialog::on_cancelButton_clicked()
 {
 	this->ui.cdcPath->setText(this->cdcFile);
 	this->ui.xapPath->setText(this->xapFile);
 	this->reject();
 }
 
-void DialogOpenCdc::on_cdcPath_textChanged(const QString &cdc)
+void ImportConfigurationDialog::on_cdcPath_textChanged(const QString &cdc)
 {
 	bool cdcExists = QFileInfo::exists(cdc) && QFileInfo(cdc).isFile();
 	bool xapExists = QFileInfo::exists(this->ui.xapPath->text())
@@ -156,7 +156,7 @@ void DialogOpenCdc::on_cdcPath_textChanged(const QString &cdc)
 	this->SetErrorMessage(CDC, cdcExists);
 }
 
-void DialogOpenCdc::on_xapPath_textChanged(const QString &xap)
+void ImportConfigurationDialog::on_xapPath_textChanged(const QString &xap)
 {
 	bool cdcExists = QFileInfo::exists(this->ui.cdcPath->text())
 					 && QFileInfo(this->ui.cdcPath->text()).isFile();
@@ -167,7 +167,7 @@ void DialogOpenCdc::on_xapPath_textChanged(const QString &xap)
 	this->SetErrorMessage(XAP_XML, xapExists);
 }
 
-void DialogOpenCdc::SetErrorMessage(Configuration cfg, bool exists)
+void ImportConfigurationDialog::SetErrorMessage(Configuration cfg, bool exists)
 {
 	if (cfg == CDC)
 	{
