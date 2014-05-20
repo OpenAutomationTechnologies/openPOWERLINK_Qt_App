@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	sdo(new SdoTransfer()),
 	log(new LoggerWindow()),
-	cdcDialog(new DialogOpenCdc()),
+	cdcDialog(new ImportConfigurationDialog()),
 	networkInterface(new SelectNwInterfaceDialog()),
 	nmtCmd(new NmtCommandsDock()),
 	nodeStatus(new NodeStatusDock()),
