@@ -33,8 +33,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _UI_CHANNEL_Widget_H_
-#define _UI_CHANNEL_Widget_H_
+#ifndef _CHANNEL_WIDGET_H_
+#define _CHANNEL_WIDGET_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -138,4 +138,4 @@ private:
 	void SetInputMask();
 };
 
-#endif // _UI_CHANNEL_Widget_H_
+#endif // _CHANNEL_WIDGET_H_
