@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _SELECT_NW_INTERFACE_DIALOG_H_
-#define _SELECT_NW_INTERFACE_DIALOG_H_
+#ifndef _NETWORK_INTERFACE_DIALOG_H_
+#define _NETWORK_INTERFACE_DIALOG_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -106,4 +106,4 @@ private:
 	void SetDevDescritpion(const QString& name);
 };
 
-#endif // _SELECT_NW_INTERFACE_DIALOG_H_
+#endif // _NETWORK_INTERFACE_DIALOG_H_
