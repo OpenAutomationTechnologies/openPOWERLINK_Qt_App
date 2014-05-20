@@ -36,7 +36,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "NetworkInterfaceDialog.h"
-#include <pcap.h>
+
+#ifdef CONFIG_USE_PCAP
+	#if (TARGET_SYSTEM == _WIN32_)
+		#define _WINSOCKAPI_
+	#endif  // (TARGET_SYSTEM == _WIN32_)
+	#include <pcap.h>
+#else // CONFIG_USE_PCAP
+	#include <oplk/powerlink-module.h>
+#endif // CONFIG_USE_PCAP
 
 /*******************************************************************************
 * Public functions
@@ -55,9 +63,11 @@ int NetworkInterfaceDialog::FillList(void)
 	this->ui.listWidget->clear();
 	this->ui.ok->setEnabled(false);
 
+	INT numberOfInterfaces = 0;
+
+#ifdef CONFIG_USE_PCAP
 	char        sErr_Msg[PCAP_ERRBUF_SIZE];
 	pcap_if_t *alldevs = NULL;
-	int         numIntf = 0;
 
 	/* Retrieve the device list on the local machine */
 	if (pcap_findalldevs(&alldevs, sErr_Msg) == -1)
@@ -80,15 +90,28 @@ int NetworkInterfaceDialog::FillList(void)
 		this->ui.listWidget->addItem(devDesc);
 
 		QVariant data(QString(seldev->name));
-		QListWidgetItem *newItem = this->ui.listWidget->item(numIntf);
+		QListWidgetItem *newItem = this->ui.listWidget->item(numberOfInterfaces);
 		newItem->setData(Qt::UserRole, data);
 		newItem->setText(devDesc);
 
-		++numIntf;
+		++numberOfInterfaces;
 	}
 	pcap_freealldevs(alldevs);
 
-	if (numIntf > 0)
+#else // CONFIG_USE_PCAP
+	QString devDesc(PLK_DEV_NAME);
+
+	this->ui.listWidget->addItem(devDesc);
+
+	QVariant data(devDesc);
+	QListWidgetItem *newItem = this->ui.listWidget->item(numberOfInterfaces);
+	newItem->setData(Qt::UserRole, data);
+	newItem->setText(devDesc);
+
+	++numberOfInterfaces;
+#endif // CONFIG_USE_PCAP
+
+	if (numberOfInterfaces > 0)
 		return 0;
 	else
 		return -1;

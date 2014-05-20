@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = plk_qt_gui
 TEMPLATE = app
 
+DEFINES += CONFIG_USE_PCAP
+
 ################################TargetInstallPath#######################################
 CONFIG(release, debug|release) {
 	DESTDIR = ../plk_qt_gui/release
@@ -53,8 +55,8 @@ SOURCES += src/main.cpp \
 	src/LineEditWidget.cpp \
 	src/ChannelWidget.cpp \
 	src/NodeWidget.cpp \
-    src/ImportConfigurationDialog.cpp \
-    src/NetworkInterfaceDialog.cpp
+	src/ImportConfigurationDialog.cpp \
+	src/NetworkInterfaceDialog.cpp
 
 HEADERS  += include/MainWindow.h \
 	include/SdoTransfer.h \
@@ -68,8 +70,8 @@ HEADERS  += include/MainWindow.h \
 	include/LineEditWidget.h \
 	include/ChannelWidget.h \
 	include/NodeWidget.h \
-    include/ImportConfigurationDialog.h \
-    include/NetworkInterfaceDialog.h
+	include/ImportConfigurationDialog.h \
+	include/NetworkInterfaceDialog.h
 
 FORMS    += ui/MainWindow.ui \
 	ui/MainWindow.ui \
@@ -81,8 +83,8 @@ FORMS    += ui/MainWindow.ui \
 	ui/LoggerWindow.ui \
 	ui/AboutDialog.ui \
 	ui/ChannelWidget.ui \
-    ui/ImportConfigurationDialog.ui \
-    ui/NetworkInterfaceDialog.ui
+	ui/ImportConfigurationDialog.ui \
+	ui/NetworkInterfaceDialog.ui
 
 RESOURCES += \
 	ui/resources/images.qrc
