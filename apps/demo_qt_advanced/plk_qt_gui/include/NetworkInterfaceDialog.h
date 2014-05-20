@@ -1,8 +1,8 @@
 /**
 ********************************************************************************
-\file   SelectNwInterfaceDialog.h
+\file   NetworkInterfaceDialog.h
 
-\brief  Refer SelectNwInterfaceDialog class
+\brief  Refer NetworkInterfaceDialog class
 
 \author Ramakrishnan Periyakaruppan
 
@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "ui_SelectNwInterfaceDialog.h"
+#include "ui_NetworkInterfaceDialog.h"
 
 /**
  * \brief The network interface select dialog class
@@ -46,13 +46,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Describes the logic to query the network interface available in any
  * system using the PCAP interface.
  */
-class SelectNwInterfaceDialog : public QDialog
+class NetworkInterfaceDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
 
-	explicit SelectNwInterfaceDialog(QWidget *parent = 0);
+	explicit NetworkInterfaceDialog(QWidget *parent = 0);
 
 	/**
 	 * \return The selected network device name
@@ -99,7 +99,7 @@ signals:
 	void SignalNetworkInterfaceChanged(const QString& devDescription);
 
 private:
-	Ui::SelectNwInterfaceDialog ui; /// Select Network interface ui instance
+	Ui::NetworkInterfaceDialog ui; /// Select Network interface ui instance
 	QString devName;                /// network device name
 	QString devDescription;         /// network device description
 
