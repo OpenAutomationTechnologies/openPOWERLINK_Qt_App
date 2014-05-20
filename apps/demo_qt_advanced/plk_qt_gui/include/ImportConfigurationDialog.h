@@ -86,13 +86,13 @@ private slots:
 
 	/**
 	 * \brief Validates the CDC path and updates error if any.
-	 * \param cdc[in] Changed CDC file.
+	 * \param[in] cdc Changed CDC file.
 	 */
 	void on_cdcPath_textChanged(const QString &cdc);
 
 	/**
 	 * \brief Validates the XAP path and updates error if any.
-	 * \param xap[in] Changed Xap file.
+	 * \param[in] xap Changed Xap file.
 	 */
 	void on_xapPath_textChanged(const QString &xap);
 
@@ -115,7 +115,7 @@ private:
 	/**
 	 * \brief Sets the error message with color based on the given exists status.
 	 * \param[in] cfg    Specifies the configuration file type.
-	 * \param[in] exists Specifies the existance status.
+	 * \param[in] exists Specifies the existence status.
 	 */
 	void SetErrorMessage(Configuration cfg, bool exists);
 };
