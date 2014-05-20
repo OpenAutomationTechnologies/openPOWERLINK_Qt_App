@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 #include "ui_ChannelWidget.h"
-#include "LineEditUi.h"
+#include "LineEditWidget.h"
 
 #include "user/processimage/Channel.h"
 #include "user/processimage/ProcessImageIn.h"
@@ -99,7 +99,7 @@ public:
 private slots:
 	/**
 	 * \brief Updates the value to the processimage whenever the
-	 * return key presesed inside the LineEditUi.
+	 * return key presesed inside the LineEditWidget.
 	 */
 	void ValueReturnPressed();
 
@@ -115,7 +115,7 @@ private slots:
 
 private:
 	Ui::ChannelWidget ui;   ///< ChannelFrame ui instance.
-	LineEditUi *value;     ///< Current value textbox.
+	LineEditWidget *value;     ///< Current value textbox.
 	// TODO change to ptr. TODO ptr in channelMap in api-lib
 	const Channel channel; ///< Processimage channel properties.
 

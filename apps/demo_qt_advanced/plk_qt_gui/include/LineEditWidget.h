@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   LineEditUi.h
+\file   LineEditWidget.h
 
 \brief  Provides an user-interface instance of an LineEdit by inheriting Qt 5.2 LineEdit.
 
@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef LINEEDITUI_H
-#define LINEEDITUI_H
+#ifndef LineEditWidget_H
+#define LineEditWidget_H
 
 /*******************************************************************************
 * INCLUDES
@@ -44,12 +44,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
  * \brief Re-Implemented from QLineEdit to provide some additional functionalities.
  */
-class LineEditUi : public QLineEdit
+class LineEditWidget : public QLineEdit
 {
     Q_OBJECT
 
 public:
-    explicit LineEditUi(QWidget* parent = 0);
+    explicit LineEditWidget(QWidget* parent = 0);
 
 signals:
     /**
@@ -76,4 +76,4 @@ protected:
     virtual void focusOutEvent(QFocusEvent* event);
 };
 
-#endif // _LINEEDITUI_H_
+#endif // _LineEditWidget_H_

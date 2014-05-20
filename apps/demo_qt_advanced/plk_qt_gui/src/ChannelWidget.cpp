@@ -48,7 +48,7 @@ ChannelWidget::ChannelWidget(const Channel &channel, QWidget *parent) :
 	channel(channel),
 	lockValueTexbox(false),
 	input(NULL),
-	value(new LineEditUi()),
+	value(new LineEditWidget()),
 	valueBeforeLock("")
 {
 	ui.setupUi(this);
