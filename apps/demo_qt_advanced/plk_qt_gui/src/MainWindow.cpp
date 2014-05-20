@@ -63,62 +63,62 @@ const UINT localNodeId = 240; /// Local node id is set to MN nodeid. This applic
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	sdo(SdoTransfer()),
-	log(LoggerWindow()),
-	cdcDialog(DialogOpenCdc()),
-	networkInterface(SelectNwInterfaceDialog()),
-	nmtCmd(NmtCommandsDock()),
-	nodeStatus(NodeStatusDock()),
-	piVar(ProcessImageVariables()),
-	piMemory(ProcessImageMemory()),
+	sdo(new SdoTransfer()),
+	log(new LoggerWindow()),
+	cdcDialog(new DialogOpenCdc()),
+	networkInterface(new SelectNwInterfaceDialog()),
+	nmtCmd(new NmtCommandsDock()),
+	nodeStatus(new NodeStatusDock()),
+	piVar(new ProcessImageVariables()),
+	piMemory(new ProcessImageMemory()),
 	parser(NULL),
-	status(StatusBar())
+	status(new StatusBar())
 {
 	this->ui.setupUi(this);
-	this->setStatusBar(&(this->status));
+	this->setStatusBar(this->status);
 	this->ui.actionStop->setDisabled(true);
-	int index = this->status.metaObject()->indexOfMethod(
+	int index = this->status->metaObject()->indexOfMethod(
 						QMetaObject::normalizedSignature(
 						"UpdateNmtStatus(tNmtState)").constData());
 	Q_ASSERT(index != -1);
 	// If asserted check for the Function name
 
-	this->sdo.setEnabled(false);
-	this->nmtCmd.setEnabled(false);
-	this->piVar.setEnabled(false);
-	this->piMemory.setEnabled(false);
+	this->sdo->setEnabled(false);
+	this->nmtCmd->setEnabled(false);
+	this->piVar->setEnabled(false);
+	this->piMemory->setEnabled(false);
 
-	this->ui.tabWidget->addTab(&(this->piVar), "ProcessImage Variables view");
+	this->ui.tabWidget->addTab(this->piVar, "ProcessImage Variables view");
 
 	bool ret = connect(this, SIGNAL(SignalStackStopped()),
-				&(this->piVar), SLOT(ResetView()));
+				this->piVar, SLOT(ResetView()));
 	Q_ASSERT(ret != false);
 
-	this->ui.tabWidget->addTab(&(this->piMemory), "ProcessImage Memory view");
+	this->ui.tabWidget->addTab(this->piMemory, "ProcessImage Memory view");
 
 	ret = connect(this, SIGNAL(SignalStackStopped()),
-				&(this->piMemory), SLOT(ResetView()));
+				this->piMemory, SLOT(ResetView()));
 	Q_ASSERT(ret != false);
 
-	this->addDockWidget(Qt::RightDockWidgetArea, &(this->nmtCmd));
+	this->addDockWidget(Qt::RightDockWidgetArea, this->nmtCmd);
 	this->setCorner( Qt::TopLeftCorner, Qt::LeftDockWidgetArea );
 	this->setCorner( Qt::TopRightCorner, Qt::RightDockWidgetArea );
 	this->setCorner( Qt::BottomLeftCorner, Qt::LeftDockWidgetArea );
 	this->setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea );
-	this->nmtCmd.show();
+	this->nmtCmd->show();
 
 
-	this->addDockWidget(Qt::RightDockWidgetArea, &(this->nodeStatus));
-	this->nodeStatus.show();
+	this->addDockWidget(Qt::RightDockWidgetArea, this->nodeStatus);
+	this->nodeStatus->show();
 
-	this->addDockWidget(Qt::BottomDockWidgetArea, &(this->log));
-	this->log.show();
+	this->addDockWidget(Qt::BottomDockWidgetArea, this->log);
+	this->log->show();
 
-	this->ui.tabWidget->addTab(&(this->sdo), "SDO Transfer");
+	this->ui.tabWidget->addTab(this->sdo, "SDO Transfer");
 
 
-	ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(this->status,
-							this->status.metaObject()->method(index));
+	ret = OplkQtApi::RegisterLocalNodeStateChangedEventHandler(*(this->status),
+							this->status->metaObject()->method(index));
 	Q_ASSERT(ret != false);
 
 	index = this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
@@ -129,40 +129,49 @@ MainWindow::MainWindow(QWidget *parent) :
 							this->metaObject()->method(index));
 	Q_ASSERT(ret != false);
 
-	ret = connect(&(this->nodeStatus),
+	ret = connect(this->nodeStatus,
 				  SIGNAL(SignalNodeAvailable(unsigned int)),
-				  &(this->sdo),
+				  this->sdo,
 				  SLOT(UpdateNodeList(unsigned int)));
 	Q_ASSERT(ret != false);
 
-	ret = connect(&(this->nodeStatus),
+	ret = connect(this->nodeStatus,
 				  SIGNAL(SignalNodeNotActive(unsigned int)),
-				  &(this->sdo),
+				  this->sdo,
 				  SLOT(RemoveFromNodeList(unsigned int)));
 	Q_ASSERT(ret != false);
 
-	ret = connect(&(this->cdcDialog),
+	ret = connect(this->cdcDialog,
 				  SIGNAL(SignalCdcChanged(QString&)),
-				  &(this->status),
+				  this->status,
 				  SLOT(SetCdcFilePath(QString&)));
 	Q_ASSERT(ret != false);
 
-	ret = connect(&(this->cdcDialog),
+	ret = connect(this->cdcDialog,
 				  SIGNAL(SignalXapChanged(QString&)),
-				  &(this->status),
+				  this->status,
 				  SLOT(SetXapFilePath(QString&)));
 	Q_ASSERT(ret != false);
 
-	ret = connect(&(this->networkInterface),
+	ret = connect(this->networkInterface,
 				  SIGNAL(SignalNetworkInterfaceChanged(const QString&)),
-				  &(this->status),
+				  this->status,
 				  SLOT(SetNetworkInterfaceName(const QString&)));
 	Q_ASSERT(ret != false);
 }
 
 MainWindow::~MainWindow()
 {
+	delete this->sdo;
+	delete this->log;
+	delete this->piVar;
+	delete this->piMemory;
+	delete this->cdcDialog;
+	delete this->networkInterface;
+	delete this->nmtCmd;
+	delete this->nodeStatus;
 	delete this->parser;
+	delete this->status;
 }
 
 /*******************************************************************************
@@ -171,7 +180,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_CDC_triggered()
 {
-	this->cdcDialog.exec();
+	this->cdcDialog->exec();
 }
 
 void MainWindow::on_actionQuit_triggered()
@@ -182,7 +191,7 @@ void MainWindow::on_actionQuit_triggered()
 
 bool MainWindow::on_actionSelect_Interface_triggered()
 {
-	if (this->networkInterface.FillList() < 0)
+	if (this->networkInterface->FillList() < 0)
 	{
 		QMessageBox::warning(this, "PCAP not working!",
 							 "No PCAP interfaces found!\n"
@@ -191,7 +200,7 @@ bool MainWindow::on_actionSelect_Interface_triggered()
 		return false;
 	}
 
-	if (this->networkInterface.exec() == QDialog::Rejected)
+	if (this->networkInterface->exec() == QDialog::Rejected)
 	{
 		return false;
 	}
@@ -203,10 +212,10 @@ void MainWindow::on_actionStart_triggered()
 {
 	// No need to save the return value of the addTab
 
-	if ((this->cdcDialog.GetCdcFileName().isEmpty())
-		|| (this->cdcDialog.GetXapFileName().isEmpty()))
+	if ((this->cdcDialog->GetCdcFileName().isEmpty())
+		|| (this->cdcDialog->GetXapFileName().isEmpty()))
 	{
-		if (this->cdcDialog.exec() == QDialog::Rejected)
+		if (this->cdcDialog->exec() == QDialog::Rejected)
 		{
 			QMessageBox::critical(this, QStringLiteral("CDC, Xap.xml not found"),
 								 QString(QStringLiteral("CDC file and xap.xml not found")),
@@ -219,14 +228,14 @@ void MainWindow::on_actionStart_triggered()
 	{
 		this->parser = ProcessImageParser::NewInstance(ProcessImageParserType::QT_XML_PARSER);
 
-		if (this->cdcDialog.GetXapFileName().isEmpty())
+		if (this->cdcDialog->GetXapFileName().isEmpty())
 		{
 			QMessageBox::critical(this, "File not found",
 								 QString("xap.xml not found"),
 								 QMessageBox::Close);
 			return;
 		}
-		std::ifstream ifsXap(this->cdcDialog.GetXapFileName().toStdString().c_str());
+		std::ifstream ifsXap(this->cdcDialog->GetXapFileName().toStdString().c_str());
 		std::string xapData((std::istreambuf_iterator<char>(ifsXap)), std::istreambuf_iterator<char>());
 		this->parser->Parse(xapData.c_str());
 	}
@@ -244,7 +253,7 @@ void MainWindow::on_actionStart_triggered()
 	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT));
 
 	//TODO Start powerlink and only if success enable the stop button.
-	if (this->networkInterface.GetDevName().isEmpty())
+	if (this->networkInterface->GetDevName().isEmpty())
 	{
 		if (!this->on_actionSelect_Interface_triggered())
 		{
@@ -253,7 +262,7 @@ void MainWindow::on_actionStart_triggered()
 	}
 
 	tOplkError oplkRet = kErrorGeneralError;
-	oplkRet = OplkQtApi::InitStack(localNodeId, this->networkInterface.GetDevName().toStdString());
+	oplkRet = OplkQtApi::InitStack(localNodeId, this->networkInterface->GetDevName().toStdString());
 	if (oplkRet != kErrorOk)
 	{
 		QMessageBox::critical(this, "Init Powerlink failed",
@@ -264,7 +273,7 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	std::string cdc = this->cdcDialog.GetCdcFileName().toStdString();
+	std::string cdc = this->cdcDialog->GetCdcFileName().toStdString();
 	oplkRet = OplkQtApi::SetCdc(cdc);
 	if (oplkRet != kErrorOk)
 	{
@@ -287,9 +296,9 @@ void MainWindow::on_actionStart_triggered()
 	}
 
 	// After successful allocation of processimage prepare the user interface.
-	this->piVar.SetProcessImage(&piIn, &piOut);
-	this->piMemory.SetProcessImage(&piIn, &piOut);
-	
+	this->piVar->SetProcessImage(&piIn, &piOut);
+	this->piMemory->SetProcessImage(&piIn, &piOut);
+
 	oplkRet = OplkQtApi::StartStack();
 	if (oplkRet != kErrorOk)
 	{
@@ -305,11 +314,11 @@ void MainWindow::on_actionStart_triggered()
 	this->ui.actionSelect_Interface->setEnabled(false);
 	this->ui.actionStop->setEnabled(true);
 	this->ui.actionStart->setEnabled(false);
-	this->piVar.setEnabled(true);
-	this->piMemory.setEnabled(true);
+	this->piVar->setEnabled(true);
+	this->piMemory->setEnabled(true);
 
-	this->sdo.setEnabled(true);
-	this->nmtCmd.setEnabled(true);
+	this->sdo->setEnabled(true);
+	this->nmtCmd->setEnabled(true);
 }
 
 void MainWindow::on_actionStop_triggered()
@@ -333,10 +342,10 @@ void MainWindow::on_actionStop_triggered()
 	this->ui.actionStart->setEnabled(true);
 	this->ui.actionStop->setEnabled(false);
 
-	this->sdo.setEnabled(false);
-	this->nmtCmd.setEnabled(false);
-	this->piVar.setEnabled(false);
-	this->piMemory.setEnabled(false);
+	this->sdo->setEnabled(false);
+	this->nmtCmd->setEnabled(false);
+	this->piVar->setEnabled(false);
+	this->piMemory->setEnabled(false);
 
 	delete this->parser;
 }

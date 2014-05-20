@@ -127,16 +127,16 @@ private slots:
 
 private:
 	Ui::MainWindow ui;                        ///< MainWindow UI instance
-	SdoTransfer sdo;                          ///< SDO ui
-	LoggerWindow log;                         ///< Logging window
-	ProcessImageVariables piVar;              ///< Processimage variables view
-	ProcessImageMemory piMemory;              ///< Processimage memory view
-	DialogOpenCdc cdcDialog;                  ///< CDC dialog window
-	SelectNwInterfaceDialog networkInterface; ///< Network select interface dialog
-	NmtCommandsDock nmtCmd;                   ///< NMT command
-	NodeStatusDock nodeStatus;                ///< CN status list
+	SdoTransfer *sdo;                          ///< SDO ui
+	LoggerWindow *log;                         ///< Logging window
+	ProcessImageVariables *piVar;              ///< Processimage variables view
+	ProcessImageMemory *piMemory;              ///< Processimage memory view
+	DialogOpenCdc *cdcDialog;                  ///< CDC dialog window
+	SelectNwInterfaceDialog *networkInterface; ///< Network select interface dialog
+	NmtCommandsDock *nmtCmd;                   ///< NMT command
+	NodeStatusDock *nodeStatus;                ///< CN status list
 	ProcessImageParser *parser;               ///< ProcessImage xml Parser instance
-	StatusBar status;                         ///< Status bar
+	StatusBar *status;                         ///< Status bar
 };
 
 #endif // _MAIN_WINDOW_H_
