@@ -54,7 +54,7 @@ namespace XmlParserError
 	};
 
 	/**
-	 * \param errorCode
+	 * \param[in] errorCode Error code
 	 * \return Returns the error string based on the errorCode.
 	 */
 	std::string GetXmlParserErrorString(XmlParserError errorCode);

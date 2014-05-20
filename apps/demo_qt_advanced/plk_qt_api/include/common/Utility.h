@@ -39,8 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * \brief   Compares two strings case insensitively.
- * \param str1  Input string to compare with.
- * \param str2  Input string to compare to.
+ * \param[in] str1  Input string to compare with.
+ * \param[in] str2  Input string to compare to.
  * \retval true  If both are equal
  * \retval false If both are not equal
  */
