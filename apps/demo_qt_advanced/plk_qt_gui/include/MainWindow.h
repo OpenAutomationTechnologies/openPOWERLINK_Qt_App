@@ -49,7 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ProcessImageVariables.h"
 #include "ProcessImageMemory.h"
 #include "ImportConfigurationDialog.h"
-#include "SelectNwInterfaceDialog.h"
+#include "NetworkInterfaceDialog.h"
 #include "NmtCommandsDock.h"
 #include "NodeStatusDock.h"
 #include "StatusBar.h"
@@ -132,7 +132,7 @@ private:
 	ProcessImageVariables *piVar;              ///< Processimage variables view
 	ProcessImageMemory *piMemory;              ///< Processimage memory view
 	ImportConfigurationDialog *cdcDialog;                  ///< CDC dialog window
-	SelectNwInterfaceDialog *networkInterface; ///< Network select interface dialog
+	NetworkInterfaceDialog *networkInterface; ///< Network select interface dialog
 	NmtCommandsDock *nmtCmd;                   ///< NMT command
 	NodeStatusDock *nodeStatus;                ///< CN status list
 	ProcessImageParser *parser;               ///< ProcessImage xml Parser instance

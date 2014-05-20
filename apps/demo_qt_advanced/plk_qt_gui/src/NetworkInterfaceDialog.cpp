@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-\file   SelectNwInterfaceDialog.cpp
+\file   NetworkInterfaceDialog.cpp
 
 \brief  Implements the network selection dialog using the PCAP interface.
 
@@ -35,13 +35,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include "SelectNwInterfaceDialog.h"
+#include "NetworkInterfaceDialog.h"
 #include <pcap.h>
 
 /*******************************************************************************
 * Public functions
 *******************************************************************************/
-SelectNwInterfaceDialog::SelectNwInterfaceDialog(QWidget *parent) :
+NetworkInterfaceDialog::NetworkInterfaceDialog(QWidget *parent) :
 	QDialog(parent),
 	devName(""),
 	devDescription("")
@@ -49,7 +49,7 @@ SelectNwInterfaceDialog::SelectNwInterfaceDialog(QWidget *parent) :
 	this->ui.setupUi(this);
 }
 
-int SelectNwInterfaceDialog::FillList(void)
+int NetworkInterfaceDialog::FillList(void)
 {
 	// Clear list before filling
 	this->ui.listWidget->clear();
@@ -94,12 +94,12 @@ int SelectNwInterfaceDialog::FillList(void)
 		return -1;
 }
 
-QString SelectNwInterfaceDialog::GetDevName(void) const
+QString NetworkInterfaceDialog::GetDevName(void) const
 {
 	return this->devName;
 }
 
-QString SelectNwInterfaceDialog::GetDevDescription(void) const
+QString NetworkInterfaceDialog::GetDevDescription(void) const
 {
 	return this->devDescription;
 }
@@ -107,14 +107,14 @@ QString SelectNwInterfaceDialog::GetDevDescription(void) const
 /*******************************************************************************
 * Private Slots
 *******************************************************************************/
-void SelectNwInterfaceDialog::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+void NetworkInterfaceDialog::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
 	this->devName = item->data(Qt::UserRole).toString();
 	this->SetDevDescritpion(item->text());
 	this->accept();
 }
 
-void SelectNwInterfaceDialog::on_ok_clicked()
+void NetworkInterfaceDialog::on_ok_clicked()
 {
 	QList<QListWidgetItem*> list = this->ui.listWidget->selectedItems();
 	if (list.count() > 0)
@@ -129,12 +129,12 @@ void SelectNwInterfaceDialog::on_ok_clicked()
 	}
 }
 
-void SelectNwInterfaceDialog::on_cancel_clicked()
+void NetworkInterfaceDialog::on_cancel_clicked()
 {
 	this->reject();
 }
 
-void SelectNwInterfaceDialog::on_listWidget_itemSelectionChanged()
+void NetworkInterfaceDialog::on_listWidget_itemSelectionChanged()
 {
 	this->ui.ok->setEnabled(true);
 }
@@ -142,7 +142,7 @@ void SelectNwInterfaceDialog::on_listWidget_itemSelectionChanged()
 /*******************************************************************************
 * Private Functions
 *******************************************************************************/
-void SelectNwInterfaceDialog::SetDevDescritpion(const QString& name)
+void NetworkInterfaceDialog::SetDevDescritpion(const QString& name)
 {
 	this->devDescription = name;
 	emit SignalNetworkInterfaceChanged(this->devDescription);

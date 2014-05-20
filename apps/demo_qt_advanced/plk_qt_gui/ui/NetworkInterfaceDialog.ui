@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Ramakrishnan Periyakaruppan</author>
- <class>SelectNwInterfaceDialog</class>
- <widget class="QDialog" name="SelectNwInterfaceDialog">
+ <class>NetworkInterfaceDialog</class>
+ <widget class="QDialog" name="NetworkInterfaceDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
