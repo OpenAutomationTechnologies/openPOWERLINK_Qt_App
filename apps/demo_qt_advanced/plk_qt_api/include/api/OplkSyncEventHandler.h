@@ -125,14 +125,13 @@ private:
 	 */
 	tOplkError ProcessSyncEvent();
 
-
 	/**
 	 * \return Sleep time in micro seconds.
 	 */
 	ULONG GetSleepTime() const;
 
 	/**
-	 * \param[in] Sleep time time in micro seconds.
+	 * \param[in] sleepTime Time in micro seconds.
 	 */
 	void SetSleepTime(const ULONG sleepTime);
 };
