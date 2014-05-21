@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _PROCESSIMAGEPARSERTYPE_H_
-#define _PROCESSIMAGEPARSERTYPE_H_
+#ifndef _PROCESSIMAGE_PARSER_TYPE_H_
+#define _PROCESSIMAGE_PARSER_TYPE_H_
 
 namespace ProcessImageParserType
 {
@@ -48,4 +48,4 @@ namespace ProcessImageParserType
 
 } // namespace ProcessImageParserType
 
-#endif // _PROCESSIMAGEPARSERTYPE_H_
+#endif // _PROCESSIMAGE_PARSER_TYPE_H_

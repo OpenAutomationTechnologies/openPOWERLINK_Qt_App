@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _RECEIVERCONTEXT_H_
-#define _RECEIVERCONTEXT_H_
+#ifndef _RECEIVER_CONTEXT_H_
+#define _RECEIVER_CONTEXT_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -74,4 +74,4 @@ private:
 	const QMetaMethod* receiverFunction;
 };
 
-#endif // _RECEIVERCONTEXT_H_
+#endif // _RECEIVER_CONTEXT_H_

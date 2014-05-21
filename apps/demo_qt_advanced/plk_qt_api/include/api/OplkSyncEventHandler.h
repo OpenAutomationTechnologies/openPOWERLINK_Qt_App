@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 
-#include <QThread>
+#include <Qtcore/QThread>
 #include <oplk/errordefs.h>
 #include <oplk/event.h>
 

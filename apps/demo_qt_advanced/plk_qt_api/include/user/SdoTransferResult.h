@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _SDOTRANSFERRESULT_H_
-#define _SDOTRANSFERRESULT_H_
+#ifndef _SDO_TRANSFER_RESULT_H_
+#define _SDO_TRANSFER_RESULT_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -126,4 +126,4 @@ private:
 	static const std::map<const UINT32, std::string> CreateAbortCodeStringMap();
 };
 
-#endif // _SDOTRANSFERRESULT_H_
+#endif // _SDO_TRANSFER_RESULT_H_

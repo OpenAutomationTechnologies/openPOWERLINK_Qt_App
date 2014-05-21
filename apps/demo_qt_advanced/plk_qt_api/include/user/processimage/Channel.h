@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifdef __unix__
 #include <oplk/basictypes.h>
 #else
-#include "Windows.h"
+#include <Windows.h>
 #endif
 
 #include "common/QtApiGlobal.h"

@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 //#include <QObject>
-#include <QMetaMethod>
+#include <Qtcore/QMetaMethod>
 
 #include <string>
 

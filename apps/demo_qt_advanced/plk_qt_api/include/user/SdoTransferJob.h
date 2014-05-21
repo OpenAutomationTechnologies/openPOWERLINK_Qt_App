@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _SDOTRANSFERJOB_H_
-#define _SDOTRANSFERJOB_H_
+#ifndef _SDO_TRANSFER_JOB_H_
+#define _SDO_TRANSFER_JOB_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -112,4 +112,4 @@ private:
 	tSdoAccessType sdoAccessType;
 };
 
-#endif // _SDOTRANSFERJOB_H_
+#endif // _SDO_TRANSFER_JOB_H_
