@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "LoggerWindow.h"
+#include <Qtcore/QDateTime>
 
 #include "api/OplkQtApi.h"
 
@@ -52,10 +53,15 @@ LoggerWindow::LoggerWindow(QWidget *parent) :
 	copyAvailable(false)
 {
 	this->ui.setupUi(this);
+
 	bool ret = OplkQtApi::RegisterEventLogger(*this, this->metaObject()->method(
 				this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
 				"HandleStackLog(const QString&)").constData())));
 	Q_ASSERT(ret != false);
+
+	QString initialText = QDateTime::currentDateTime().toString("yyyy/MM/dd-hh:mm:ss.zzz")
+							+ " - The application has been started. ";
+	this->ui.log->appendPlainText(initialText);
 }
 
 void LoggerWindow::HandleStackLog(const QString& str)
