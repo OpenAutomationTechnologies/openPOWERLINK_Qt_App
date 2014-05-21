@@ -12,7 +12,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About Kalycito</string>
+   <string>About</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources/images.qrc">
