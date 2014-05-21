@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>492</width>
-    <height>289</height>
+    <width>422</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,40 +35,7 @@
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="5" column="0">
-       <widget class="QLabel" name="labelSdoType">
-        <property name="text">
-         <string>Access type</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labelIndex">
-        <property name="text">
-         <string>Index</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QLineEdit" name="sdoResultValue">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="inputMethodHints">
-         <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
-        </property>
-       </widget>
-      </item>
+     <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="labelNodeId">
         <property name="text">
@@ -76,30 +43,23 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="labelDataType">
-        <property name="text">
-         <string>Data type</string>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="nodeId">
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhPreferNumbers</set>
+        </property>
+        <property name="maxCount">
+         <number>255</number>
+        </property>
+        <property name="minimumContentsLength">
+         <number>3</number>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
-       <widget class="QPushButton" name="executeTransfer">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelIndex">
         <property name="text">
-         <string>Execute</string>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="labelProtocol">
-        <property name="text">
-         <string>SDO via</string>
+         <string>Index</string>
         </property>
        </widget>
       </item>
@@ -126,6 +86,29 @@
        <widget class="QLabel" name="labelSubIndex">
         <property name="text">
          <string>Sub index</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="subIndex">
+        <property name="prefix">
+         <string>0x</string>
+        </property>
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>16</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelDataType">
+        <property name="text">
+         <string>Data type</string>
         </property>
        </widget>
       </item>
@@ -176,30 +159,23 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="nodeId">
-        <property name="inputMethodHints">
-         <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhPreferNumbers</set>
-        </property>
-        <property name="maxCount">
-         <number>255</number>
-        </property>
-        <property name="minimumContentsLength">
-         <number>3</number>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="1">
-       <widget class="QLineEdit" name="sdoResultValueHex">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0" rowspan="2">
-       <widget class="QLabel" name="labelValue">
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelProtocol">
         <property name="text">
-         <string>Value</string>
+         <string>SDO via</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="sdoVia"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelSdoType">
+        <property name="text">
+         <string>Access type</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -253,24 +229,48 @@
         </layout>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="subIndex">
-        <property name="prefix">
-         <string>0x</string>
+      <item row="6" column="0">
+       <widget class="QLabel" name="labelValue">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>100</height>
+         </size>
         </property>
-        <property name="maximum">
-         <number>255</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="displayIntegerBase">
-         <number>16</number>
+        <property name="text">
+         <string>Value</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QComboBox" name="sdoVia"/>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="sdoResultValue">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="sdoResultValueHex">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QPushButton" name="executeTransfer">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Execute</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -278,12 +278,21 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QPlainTextEdit" name="log"/>
       </item>
       <item>
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
@@ -334,12 +343,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>150</x>
-     <y>206</y>
+     <x>140</x>
+     <y>202</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>234</y>
+     <x>140</x>
+     <y>256</y>
     </hint>
    </hints>
   </connection>
