@@ -66,7 +66,7 @@ public:
 
 	//TODO bool or return number of items in list.
 	/**
-	 * \brief Fills the listwidget with the list of available network interface
+	 * \brief Fills the list widget with the list of available network interface
 	 * descriptions.
 	 * \retval -1 if no list found.(fail)
 	 * \retval 0  if list has valid entries.(success)

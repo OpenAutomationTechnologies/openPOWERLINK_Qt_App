@@ -185,7 +185,7 @@ void MainWindow::on_actionOpen_CDC_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-	// TODO discuss. Oplk Stop?
+	// TODO discuss. OPlk Stop?
 	this->close();
 }
 
@@ -245,14 +245,14 @@ void MainWindow::on_actionStart_triggered()
 							 QString("XmlReader has found errors with your xap file.\n Error: %1 ")
 							  .arg(ex.what()),
 							 QMessageBox::Close);
-		qDebug("An Exception has occured: %s", ex.what());
+		qDebug("An Exception has occurred: %s", ex.what());
 		return;
 	}
 
 	ProcessImageIn& piIn = static_cast<ProcessImageIn&>(this->parser->GetProcessImage(Direction::PI_IN));
 	ProcessImageOut& piOut = static_cast<ProcessImageOut&>(this->parser->GetProcessImage(Direction::PI_OUT));
 
-	//TODO Start powerlink and only if success enable the stop button.
+	//TODO Start POWERLINK and only if success enable the stop button.
 	if (this->networkInterface->GetDevName().isEmpty())
 	{
 		if (!this->on_actionSelect_Interface_triggered())
@@ -265,8 +265,8 @@ void MainWindow::on_actionStart_triggered()
 	oplkRet = OplkQtApi::InitStack(localNodeId, this->networkInterface->GetDevName().toStdString());
 	if (oplkRet != kErrorOk)
 	{
-		QMessageBox::critical(this, "Init Powerlink failed",
-							 QString("Init Powerlink with error: %1 ")
+		QMessageBox::critical(this, "POWERLINK init failed",
+							 QString("POWERLINK init falied with error: %1 ")
 							  .arg(debugstr_getRetValStr(oplkRet)),
 							 QMessageBox::Close);
 		qDebug("InitStack retCode %x", oplkRet);
@@ -302,8 +302,8 @@ void MainWindow::on_actionStart_triggered()
 	oplkRet = OplkQtApi::StartStack();
 	if (oplkRet != kErrorOk)
 	{
-		QMessageBox::critical(this, "Start Powerlink failed",
-							 QString("Start Powerlink failed with error: %1 ")
+		QMessageBox::critical(this, "Start POWERLINK failed",
+							 QString("Start POWERLINK failed with error: %1 ")
 							  .arg(debugstr_getRetValStr(oplkRet)),
 							 QMessageBox::Close);
 		qDebug("StartStack retCode %x", oplkRet);
@@ -327,8 +327,8 @@ void MainWindow::on_actionStop_triggered()
 	tOplkError oplkRet = OplkQtApi::StopStack();
 	if (oplkRet != kErrorOk)
 	{
-		QMessageBox::critical(this, "Stop Powerlink failed",
-							 QString("Stop Powerlink failed with error: %1 ")
+		QMessageBox::critical(this, "Stop POWERLINK failed",
+							 QString("Stop POWERLINK failed with error: %1 ")
 							  .arg(debugstr_getRetValStr(oplkRet)),
 							 QMessageBox::Close);
 		qDebug("StopStack retCode %x", oplkRet);
@@ -371,7 +371,7 @@ void MainWindow::HandleCriticalError(const QString& errorMessage)
 {
 	this->on_actionStop_triggered();
 	QMessageBox::warning(this, "Critical Error!",
-						QString("Critical error has occured in the openPOWERLINK stack.\nError: %1")
+						QString("Critical error has occurred in the openPOWERLINK stack.\nError: %1")
 								.arg(errorMessage),
 						QMessageBox::Close);
 }

@@ -131,7 +131,7 @@ void ChannelWidget::UpdateInputChannelCurrentValue(ProcessImageIn *in)
 		catch(const std::exception& ex)
 		{
 			// TODO Discuss about exposing the error to the user.
-			qDebug("An Exception has occured: %s", ex.what());
+			qDebug("An Exception has occurred: %s", ex.what());
 		}
 	}
 }
@@ -157,7 +157,7 @@ void ChannelWidget::UpdateOutputChannelCurrentValue(const ProcessImageOut *out)
 		catch(const std::exception& ex)
 		{
 			// TODO Discuss about exposing the error to the user.
-			qDebug("An Exception has occured: %s", ex.what());
+			qDebug("An Exception has occurred: %s", ex.what());
 		}
 	}
 }
@@ -216,7 +216,7 @@ void ChannelWidget::ValueReturnPressed()
 		catch(const std::exception& ex)
 		{
 			// TODO Discuss about exposing the error to the user.
-			qDebug("An Exception has occured: %s", ex.what());
+			qDebug("An Exception has occurred: %s", ex.what());
 		}
 	}
 }
@@ -248,7 +248,7 @@ void ChannelWidget::UnlockCurrentValue()
 		catch(const std::exception& ex)
 		{
 			// TODO Discuss about exposing the error to the user.
-			qDebug("An Exception has occured: %s", ex.what());
+			qDebug("An Exception has occurred: %s", ex.what());
 		}
 	}
 

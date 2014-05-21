@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   MainWindow.h
 
-\brief  Contains the actions and methods for the mainwindow GUI layout by
+\brief  Contains the actions and methods for the main window GUI layout by
 		using the Qt 5.2 QMainWindow.
 
 \author Ramakrishnan Periyakaruppan
@@ -95,17 +95,17 @@ private slots:
 	bool on_actionSelect_Interface_triggered();
 
 	/**
-	 * \brief Triggers start of the oplk stack.
+	 * \brief Triggers start of the OPlk stack.
 	 *
-	 * Imports the xap.xml, displays the necessary GUI and starts the oplk stack.
+	 * Imports the xap.xml, displays the necessary GUI and starts the OPlk stack.
 	 */
 	void on_actionStart_triggered();
 
 	/**
-	 * \brief Triggers stop of the oplk stack.
+	 * \brief Triggers stop of the OPlk stack.
 	 *
-	 * Clean-up all the memory allocated by the stack and removes the gui
-	 * elements and stops the oplk stack.
+	 * Clean-up all the memory allocated by the stack and removes the GUI
+	 * elements and stops the OPlk stack.
 	 */
 	void on_actionStop_triggered();
 
@@ -126,16 +126,16 @@ private slots:
 	void HandleCriticalError(const QString& errorMessage);
 
 private:
-	Ui::MainWindow ui;                        ///< MainWindow UI instance
-	SdoTransfer *sdo;                          ///< SDO ui
+	Ui::MainWindow ui;                         ///< MainWindow UI instance
+	SdoTransfer *sdo;                          ///< SDO user interface
 	LoggerWindow *log;                         ///< Logging window
 	ProcessImageVariables *piVar;              ///< Processimage variables view
 	ProcessImageMemory *piMemory;              ///< Processimage memory view
-	ImportConfigurationDialog *cdcDialog;                  ///< CDC dialog window
-	NetworkInterfaceDialog *networkInterface; ///< Network select interface dialog
+	ImportConfigurationDialog *cdcDialog;      ///< CDC dialog window
+	NetworkInterfaceDialog *networkInterface;  ///< Network select interface dialog
 	NmtCommandsDock *nmtCmd;                   ///< NMT command
 	NodeStatusDock *nodeStatus;                ///< CN status list
-	ProcessImageParser *parser;               ///< ProcessImage xml Parser instance
+	ProcessImageParser *parser;                ///< ProcessImage xml Parser instance
 	StatusBar *status;                         ///< Status bar
 };
 

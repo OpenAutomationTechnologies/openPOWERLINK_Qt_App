@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * \brief The ProcessImageVariables class inherits the QWidget and describes the
- * logic to update the input and output processimage data from the oplk stack.
+ * logic to update the input and output processimage data from the OPlk stack.
  */
 class ProcessImageVariables : public QWidget
 {
