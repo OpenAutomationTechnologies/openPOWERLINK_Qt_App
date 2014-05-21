@@ -40,11 +40,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ui_SdoTransfer.h"
-#include "user/SdoTransferResult.h"
-#include "user/SdoTransferJob.h"
 
-#include <QMetaMethod>
-#include <QMap>
+#include <QtCore/QMap>
+#include <QtCore/QMetaMethod>
+
+#include "user/SdoTransferResult.h"
+class SdoTransferJob;
 
 /**
  * \brief The SdoTransfer class prepares the ui frame and describes the

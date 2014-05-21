@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include "ui_ProcessImageVariables.h"
 #include "ChannelWidget.h"
-#include <QList>
+#include <QtCore/QList>
 
 #include "user/processimage/ProcessImageIn.h"
 #include "user/processimage/ProcessImageOut.h"

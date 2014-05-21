@@ -44,15 +44,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ui_MainWindow.h"
 
-#include "SdoTransfer.h"
-#include "LoggerWindow.h"
-#include "ProcessImageVariables.h"
-#include "ProcessImageMemory.h"
-#include "ImportConfigurationDialog.h"
-#include "NetworkInterfaceDialog.h"
-#include "NmtCommandsDock.h"
-#include "NodeStatusDock.h"
-#include "StatusBar.h"
+class SdoTransfer;
+class LoggerWindow;
+class ProcessImageVariables;
+class ProcessImageMemory;
+class ImportConfigurationDialog;
+class NetworkInterfaceDialog;
+class NmtCommandsDock;
+class NodeStatusDock;
+class StatusBar;
 
 /**
  * \brief The MainWindow class inherits the QMainWindow and implements

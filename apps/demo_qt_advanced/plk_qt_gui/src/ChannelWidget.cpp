@@ -35,9 +35,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
+#include <Qtcore/QDebug>
 #include "ChannelWidget.h"
-#include <QDebug>
-
+#include "LineEditWidget.h"
+#include "user/processimage/ProcessImageIn.h"
+#include "user/processimage/ProcessImageOut.h"
 
 /*******************************************************************************
 * Public functions

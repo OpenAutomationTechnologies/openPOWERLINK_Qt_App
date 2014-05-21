@@ -36,8 +36,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ImportConfigurationDialog.h"
-#include <QFileDialog>
-#include <QFile>
+#include <QtWidgets/QFileDialog>
+#include <QtCore/QFile>
 
 /*******************************************************************************
 * Public functions

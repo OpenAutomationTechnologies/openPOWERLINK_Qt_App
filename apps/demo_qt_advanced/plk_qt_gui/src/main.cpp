@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "MainWindow.h"
-#include <QApplication>
+#include <QtWidgets/QApplication>
 
 #ifdef __unix__
 #include <common/target.h>
