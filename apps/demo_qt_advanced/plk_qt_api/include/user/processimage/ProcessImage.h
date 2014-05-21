@@ -172,7 +172,7 @@ public:
 	/**
 	 * \brief Returns the raw value of the ProcessImage variable.
 	 *        The returned datatype depends on the datatype of the channel
-	 *
+	 * TODO implementation
 	 * \param[in] channelName The Channel name
 	 * \return T  The templated return value. Depends on the datatype of the Channel.
 	 */

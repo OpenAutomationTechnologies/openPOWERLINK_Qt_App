@@ -49,9 +49,9 @@ class ReceiverContext
 {
 public:
 	/**
-	 * \brief   Intializer constructor
+	 * \brief   Initializer constructor
 	 *
-	 * Intializes the reciever context object with receiver and receiver function.
+	 * Initializes the receiver context object with receiver and receiver function.
 	 *
 	 * \param[in] receiver          Receiver class object.
 	 * \param[in] receiverFunction  Receiver function pointer.

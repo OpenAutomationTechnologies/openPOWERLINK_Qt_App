@@ -87,7 +87,6 @@ private:
 	 * \param[in] eventType  Type of the event
 	 * \param[in] eventArg   Pointer to union which describes the event in detail
 	 * \param[in] userArg    User specific argument
-	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError AppCbEvent(tOplkApiEventType eventType,
 								 tOplkApiEventArg* eventArg,
@@ -108,7 +107,6 @@ private:
 	 *
 	 * \param[in] nmtStateChange  Details of the NMT state changes
 	 * \param[in] userArg         User specific argument
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessNmtStateChangeEvent(tEventNmtStateChange* nmtStateChange,
 										  void* userArg);
@@ -118,7 +116,6 @@ private:
 	 *
 	 * \param[in] internalError  Details of the critical error events.
 	 * \param[in] userArg        User specific argument.
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessCriticalErrorEvent(tEventError* internalError,
 										 void* userArg);
@@ -128,7 +125,6 @@ private:
 	 *
 	 * \param[in] internalError  Details of the warning events.
 	 * \param[in] userArg        User specific argument.
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessWarningEvent(tEventError* internalError, void* userArg);
 
@@ -137,7 +133,6 @@ private:
 	 *
 	 * \param[in] historyEntry  Details of the history events
 	 * \param[in] userArg       User specific argument
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessHistoryEvent(tErrHistoryEntry* historyEntry,
 								   void* userArg);
@@ -147,17 +142,16 @@ private:
 	 *
 	 * \param[in] nodeEvent  Details of the node events.
 	 * \param[in] userArg    User specific argument.
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessNodeEvent(tOplkApiEventNode* nodeEvent, void* userArg);
 
 	/**
 	 * \brief   Process the events generated during the SDO transfer
 	 *
-	 * \note The sdoEvent->pUserArg will contain the data sent in the userArg in the SDO calling function.
 	 * \param[in] sdoEvent  Details of the SDO events occurred.
 	 * \param[in] userArg   User specific argument
-	 * \return Returns a tOplkError error code.
+	 *
+	 * \note The sdoEvent->pUserArg will contain the data sent in the userArg in the SDO calling function.
 	 */
 	tOplkError ProcessSdoEvent(tSdoComFinished* sdoEvent, void* userArg);
 
@@ -166,7 +160,6 @@ private:
 	 *
 	 * \param[in] cfmProgress  Details of the CFM progress events.
 	 * \param[in] userArg      User specific argument.
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessCfmProgressEvent(tCfmEventCnProgress* cfmProgress,
 									   void* userArg);
@@ -176,7 +169,6 @@ private:
 	 *
 	 * \param[in] cfmResult  Result of the CFM event occurred.
 	 * \param[in] userArg    User specific argument.
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessCfmResultEvent(tOplkApiEventCfmResult* cfmResult,
 									 void* userArg);
@@ -186,7 +178,6 @@ private:
 	 *
 	 * \param[in] pdoChange Details of the PDO change event.
 	 * \param[in] userArg      User specific argument.
-	 * \return Returns a tOplkError error code.
 	 */
 	tOplkError ProcessPdoChangeEvent(tOplkApiEventPdoChange* pdoChange,
 									void* userArg);
@@ -218,7 +209,7 @@ private:
 
 	/**
 	 * \brief   Triggers a signal OplkEventHandler::SignalPrintLog with the
-	 *  log message for all the events occured.
+	 *  log message for all the events occurred.
 	 *
 	 * \param[in] logStr  Formatted log message.
 	 */
@@ -238,7 +229,7 @@ private:
 	 * \brief Triggers a signal OplkEventHandler::SignalCriticalError to the
 	 * application
 	 *
-	 * \param[in] errorMessage Detailed message about the error occured.
+	 * \param[in] errorMessage Detailed message about the error occurred.
 	 */
 	void TriggerCriticalError(const QString errorMessage);
 
@@ -266,7 +257,7 @@ signals:
 	void SignalNodeStateChanged(const int nodeId, tNmtState nmtState);
 
 	/**
-	 * \brief   This signal is emmited whenever there is an event occured in the stack.
+	 * \brief   This signal is emitted whenever there is an event occurred in the stack.
 	 *
 	 * \param[in] logStr  Detailed message about the event.
 	 */
@@ -280,7 +271,7 @@ signals:
 	void SignalSdoTransferFinished(const SdoTransferResult result);
 
 	/**
-	 * \brief This signal is emmited when there is a critical error in the stack occurred.
+	 * \brief This signal is emitted when there is a critical error in the stack occurred.
 	 *
 	 * \param[in] errorMessage Detailed information about the error.
 	 */
