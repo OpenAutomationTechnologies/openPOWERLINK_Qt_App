@@ -33,15 +33,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _OPLK_EVENTHANDLER_H_
-#define _OPLK_EVENTHANDLER_H_
+#ifndef _OPLK_EVENT_HANDLER_H_
+#define _OPLK_EVENT_HANDLER_H_
 
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <QThread>
-#include <QWaitCondition>
-#include <QMutex>
+#include <Qtcore/QThread>
+#include <Qtcore/QWaitCondition>
+#include <Qtcore/QMutex>
 
 #include <oplk/oplk.h>
 #include <oplk/nmt.h>
@@ -279,4 +279,4 @@ signals:
 
 };
 
-#endif // _OPLK_EVENTHANDLER_H_
+#endif // _OPLK_EVENT_HANDLER_H_

@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _PROCESSIMAGEPARSER_H_
-#define _PROCESSIMAGEPARSER_H_
+#ifndef _PROCESSIMAGE_PARSER_H_
+#define _PROCESSIMAGE_PARSER_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -129,4 +129,4 @@ private:
 
 };
 
-#endif // _PROCESSIMAGEPARSER_H_
+#endif // _PROCESSIMAGE_PARSER_H_

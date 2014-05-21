@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _IECDATATYPE_H_
-#define _IECDATATYPE_H_
+#ifndef _IEC_DATATYPE_H_
+#define _IEC_DATATYPE_H_
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
@@ -76,4 +76,4 @@ namespace IECDataType
 
 } // namespace IECDataType
 
-#endif // _IECDATATYPE_H_
+#endif // _IEC_DATATYPE_H_

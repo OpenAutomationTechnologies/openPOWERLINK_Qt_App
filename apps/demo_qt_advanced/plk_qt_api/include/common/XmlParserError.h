@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _XMLPARSERERROR_H_
-#define _XMLPARSERERROR_H_
+#ifndef _XML_PARSER_ERROR_H_
+#define _XML_PARSER_ERROR_H_
 
 #include <string>
 
@@ -61,4 +61,4 @@ namespace XmlParserError
 
 } // namespace XmlParserError
 
-#endif // _XMLPARSERERROR_H_
+#endif // _XML_PARSER_ERROR_H_

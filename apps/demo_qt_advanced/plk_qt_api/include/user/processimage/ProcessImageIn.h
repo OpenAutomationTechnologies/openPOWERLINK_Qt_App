@@ -32,8 +32,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-#ifndef _PROCESSIMAGEIN_H_
-#define _PROCESSIMAGEIN_H_
+#ifndef _PROCESSIMAGE_IN_H_
+#define _PROCESSIMAGE_IN_H_
 
 /*******************************************************************************
 * INCLUDES
@@ -88,7 +88,7 @@ public:
 
 	/**
 	 * \brief   Sets the value for the given byte and bit offsets.
-	 * 
+	 *
 	 * The value is expected in 'Little Endian'
 	 *
 	 * \param[in] value       The value to be assigned at the given offset.
@@ -115,4 +115,4 @@ private:
 	bool virtual AddChannelInternal(const Channel& channel);
 };
 
-#endif // _PROCESSIMAGEIN_H_
+#endif // _PROCESSIMAGE_IN_H_
