@@ -50,6 +50,9 @@
         <height>16777215</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>Clears the log</string>
+      </property>
       <property name="text">
        <string>Clear</string>
       </property>
@@ -62,6 +65,9 @@
         <width>50</width>
         <height>16777215</height>
        </size>
+      </property>
+      <property name="toolTip">
+       <string>Copies the selected contents of the log</string>
       </property>
       <property name="text">
        <string>Copy</string>

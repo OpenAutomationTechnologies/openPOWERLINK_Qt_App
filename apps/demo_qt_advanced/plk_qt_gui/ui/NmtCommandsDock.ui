@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>292</width>
-    <height>139</height>
+    <height>133</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -111,6 +111,9 @@
         <width>0</width>
         <height>23</height>
        </size>
+      </property>
+      <property name="toolTip">
+       <string>Sends the NMT command to the stack</string>
       </property>
       <property name="text">
        <string>Send</string>

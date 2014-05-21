@@ -105,7 +105,7 @@
     <string>&amp;Open CDC...</string>
    </property>
    <property name="toolTip">
-    <string>Choose the CDC and xap.xml</string>
+    <string>Imports the CDC and XAP</string>
    </property>
   </action>
   <action name="actionQuit">

@@ -55,7 +55,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="labelXapPath">
         <property name="text">
-         <string>Xap.xml File</string>
+         <string>XAP File</string>
         </property>
        </widget>
       </item>

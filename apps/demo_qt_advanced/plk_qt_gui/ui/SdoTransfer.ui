@@ -299,6 +299,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="clearLog">
+           <property name="toolTip">
+            <string>Clears the SDO tranfer log messages</string>
+           </property>
            <property name="text">
             <string>Clear</string>
            </property>
@@ -306,6 +309,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="copyLog">
+           <property name="toolTip">
+            <string>Copies the selected contents to the clipboard</string>
+           </property>
            <property name="text">
             <string>Copy</string>
            </property>
