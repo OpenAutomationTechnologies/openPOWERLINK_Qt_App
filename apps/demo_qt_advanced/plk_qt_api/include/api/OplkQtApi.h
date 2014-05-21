@@ -293,7 +293,7 @@ public:
 	static ULONG GetSyncWaitTime();
 
 	/**
-	 * \brief Sets the ProcessImage sync to wait for the give time in microseconds.
+	 * \brief Sets the ProcessImage sync to wait for the given time in microseconds.
 	 *
 	 * \param[in] sleepTime Processimage sync thread sleep time in micro seconds.
 	 *
