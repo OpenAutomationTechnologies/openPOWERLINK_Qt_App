@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   OplkEventHandler.h
 
-\brief  Design of a event handler that uses QThread to
+\brief  Design of an event handler that uses QThread to
 		communicate openPOWERLINK asynchronous callback events via QT signals
 
 \author Ramakrishnan Periyakaruppan
