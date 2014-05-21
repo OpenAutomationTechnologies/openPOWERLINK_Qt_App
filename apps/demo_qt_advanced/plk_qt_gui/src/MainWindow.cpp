@@ -167,6 +167,8 @@ MainWindow::MainWindow(QWidget *parent) :
 				  this->status,
 				  SLOT(SetNetworkInterfaceName(const QString&)));
 	Q_ASSERT(ret != false);
+
+	this->showMaximized();
 }
 
 MainWindow::~MainWindow()
