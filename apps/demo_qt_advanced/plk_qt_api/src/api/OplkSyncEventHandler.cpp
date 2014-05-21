@@ -7,7 +7,6 @@
 
 \todo
 		- Implement mutex and wait condition before the thread terminates it.
-		- Export the refresh-rate as a settings
 
 \author Ramakrishnan Periyakaruppan
 

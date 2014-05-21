@@ -136,6 +136,7 @@ const std::vector<Channel> ProcessImage::GetChannelsByOffset(const UINT byteOffs
 		}
 //		std::cout << cIt->first << " => " << cIt->second.GetByteOffset() << '\n';
 	}
+
 	return channelCollection;
 }
 
@@ -158,6 +159,7 @@ const std::vector<Channel> ProcessImage::GetChannelsByNodeId(const UINT nodeId) 
 			channelCollection.push_back(cIt->second);
 		}
 	}
+
 	return channelCollection;
 }
 
@@ -273,6 +275,7 @@ std::vector<BYTE> ProcessImage::GetRawData(const UINT bitSize,
 //		msg << "Check the allocation of memory for the output ProcessImage";
 //		throw std::bad_alloc(msg.str().c_str());
 	}
+
 	return rawData;
 }
 

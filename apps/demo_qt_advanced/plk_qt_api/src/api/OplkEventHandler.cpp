@@ -344,6 +344,7 @@ tOplkError OplkEventHandler::ProcessCriticalErrorEvent(
 			qDebug("%s  Default case", __FUNCTION__);
 			break;
 	}
+
 	return kErrorOk;
 }
 
@@ -425,6 +426,7 @@ tOplkError OplkEventHandler::ProcessNodeEvent(tOplkApiEventNode* nodeEvent,
 			qDebug("%s  Default case", __FUNCTION__);
 			break;
 	}
+
 	return kErrorOk;
 }
 
@@ -459,6 +461,7 @@ tOplkError OplkEventHandler::ProcessSdoEvent(tSdoComFinished* sdoEvent,
 			qDebug("%s  Default case", __FUNCTION__);
 			break;
 	}
+
 	return oplkRet;
 }
 
@@ -532,6 +535,7 @@ tOplkError OplkEventHandler::ProcessCfmResultEvent(
 						.arg(cfmResult->nodeCommand, 4, 16, QLatin1Char('0')));
 			break;
 	}
+
 	return kErrorOk;
 }
 
