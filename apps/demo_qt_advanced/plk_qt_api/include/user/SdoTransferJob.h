@@ -44,8 +44,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * \brief This class is used to pass the inputs parameters for the SDO Transfer.
- * \note Refer OplkQtApi::TransferObject
  *
+ * \see OplkQtApi::TransferObject
  */
 class PLKQTAPI_EXPORT SdoTransferJob
 {

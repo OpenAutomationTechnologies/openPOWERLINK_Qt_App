@@ -188,7 +188,7 @@ void OplkEventHandler::TriggerSdoTransferFinished(const tSdoComFinished& result,
 		qDebug("free SDO channel fail. Err: 0x%x", oplkRet);
 	}
 
-	if(receiverContext)
+	if (receiverContext)
 	{
 		bool disconnected = QObject::disconnect(&OplkEventHandler::GetInstance(),
 							QMetaMethod::fromSignal(&OplkEventHandler::SignalSdoTransferFinished),
@@ -479,7 +479,7 @@ tOplkError OplkEventHandler::ProcessCfmProgressEvent(
 	if ((cfmProgress->sdoAbortCode != 0) || (cfmProgress->error != kErrorOk))
 	{
 		 this->TriggerPrintLog(QString("	-> SDO Abort=0x%1, Error=0x%2)")
-			.arg((ULONG) cfmProgress->sdoAbortCode, 0, 16 , QLatin1Char('0'))
+			.arg((ULONG) cfmProgress->sdoAbortCode, 0, 16, QLatin1Char('0'))
 			.arg(cfmProgress->error, 0, 16, QLatin1Char('0')));
 	}
 

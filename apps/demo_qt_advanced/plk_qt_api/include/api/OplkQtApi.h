@@ -72,20 +72,17 @@ public:
 	 *
 	 * \param[in] nodeId            Id assigned to the node (ie. The local stack-instance; referred as local node-id)
 	 * \param[in] networkInterface  Network interface.
-	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError InitStack(const UINT nodeId,
 								const std::string& networkInterface);
 
 	/**
 	 * \brief   Start openPOWERLINK-Stack.
-	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError StartStack();
 
 	/**
 	 * \brief   Stop openPOWERLINK-Stack.
-	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError StopStack();
 
@@ -94,7 +91,6 @@ public:
 	 *
 	 * \param[in] nodeId      Node id to send the NMT command.
 	 * \param[in] nmtCommand  The command to be sent.
-	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError ExecuteNmtCommand(const UINT nodeId,
 										tNmtCommand nmtCommand);
@@ -109,7 +105,6 @@ public:
 	 * \param[in] sdoTransferJob    SDO transfer input parameters.
 	 * \param[in] receiver          Receiver object.
 	 * \param[in] receiverFunction  Receiver function where the result is received.
-	 * \return Returns a tOplkError error code.
 	 *
 	 * \see OplkEventHandler::SignalSdoTransferFinished(const SdoTransferResult);
 	 */
@@ -122,7 +117,6 @@ public:
 	 *          data pointer
 	 * \param[in,out] in   The instance of the ProcessImageIn
 	 * \param[in,out] out  The instance of the ProcessImageOut
-	 * \return Returns a tOplkError error code.
 	 */
 	static tOplkError AllocateProcessImage(ProcessImageIn& in,
 										   ProcessImageOut& out);
@@ -132,7 +126,6 @@ public:
 	 *
 	 * \param[in] cdcBuffer  Buffer to the CDC contents.
 	 * \param[in] size       Size of the buffer in bytes.
-	 * \return Returns a tOplkError error code.
 	 *
 	 * \note This function always has precedence over the
 	 *       OplkQtApi::SetCdc(const std:string&), if none of these two
@@ -143,10 +136,7 @@ public:
 
 	/**
 	 * \brief    Set path to CDC file.
-	 *
 	 * \param[in] cdcFileName  File name of the CDC
-	 * \return Returns a tOplkError error code.
-	 *
 	 * \note The function OplkQtApi::SetCdc(const BYTE*, const UINT) always has
 	 *       precedence over this function. If none of these two functions are
 	 *       called, the stack is set to look for "mnobd.cdc" in the working directory.
@@ -154,11 +144,8 @@ public:
 	static tOplkError SetCdc(const std::string& cdcFileName);
 
 	/**
-	 * \brief   Sets the Cycle time in micro seconds.
-	 * \param[in] cycleTime  The requested cycle time.
-	 * \return Returns a tOplkError error code.
-	 *
-	 * \note The user has execute an NMT command 'kNmtCmdSwReset' to activate the new cycle time.
+	 * \param[in] cycleTime  POWERLINK cycle time in microseconds.
+	 * \note The cycleTime will be active after an NmtSwReset to the local node.
 	 */
 	static tOplkError SetCycleTime(const ULONG cycleTime);
 

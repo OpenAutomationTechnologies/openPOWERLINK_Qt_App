@@ -75,7 +75,7 @@ void OplkQtApi::SetInitParam()
 	OplkQtApi::initParam.isochrRxMaxPayload = 256;     // const
 	OplkQtApi::initParam.presMaxLatency = 50000;       // const; only required for IdentRes
 	OplkQtApi::initParam.preqActPayloadLimit = 36;     // required for initialisation (+28 bytes)
-	OplkQtApi::initParam.presActPayloadLimit = 36;     // required for initialisation of Pres frame (+28 bytes)
+	OplkQtApi::initParam.presActPayloadLimit = 36;     // required for initialisation of PRes frame (+28 bytes)
 	OplkQtApi::initParam.asndMaxLatency = 150000;      // const; only required for IdentRes
 	OplkQtApi::initParam.multiplCylceCnt = 0;          // required for error detection
 	OplkQtApi::initParam.asyncMtu = 1500;              // required to set up max frame size

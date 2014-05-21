@@ -73,7 +73,7 @@ signals:
 	void SignalUpdateInputValues();
 
 	/**
-	 * \brief Signals that the outupt processimage has been updated.
+	 * \brief Signals that the output processimage has been updated.
 	 *
 	 * Receivers of this signal are being notified that values in the
 	 * output processimage have been updated by the openPOWERLINK stack.
