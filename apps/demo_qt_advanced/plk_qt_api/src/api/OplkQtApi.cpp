@@ -429,8 +429,8 @@ tOplkError OplkQtApi::TransferObject(const SdoTransferJob& sdoTransferJob,
 		// Non-Local OD access: error case
 
 		// Delete the receiver context.
-		if (!receiverContext)
-			delete receiverContext;
+		delete receiverContext;
+		delete sdoComConHdl;
 
 		qDebug("Remote OD access, disconnecting signal.");
 		bool disconnected = QObject::disconnect(&OplkEventHandler::GetInstance(),
