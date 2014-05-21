@@ -3,7 +3,7 @@
 \file   ProcessImageMemory.cpp
 
 \brief  Implements the memory view of the input and output processimage data
-from the oplk stack using the Qt 5.2 QTableWidgets.
+from the OPlk stack using the Qt 5.2 QTableWidgets.
 
 \todo
 		- Input validation for InputProcessImage cells while editing.
@@ -251,7 +251,7 @@ void ProcessImageMemory::UpdateFromInputValues()
 		catch(const std::exception& ex)
 		{
 			// TODO Discuss about exposing the error to the user.
-			qDebug("An Exception has occured: %s", ex.what());
+			qDebug("An Exception has occurred: %s", ex.what());
 		}
 	}
 }
@@ -290,7 +290,7 @@ void ProcessImageMemory::UpdateFromOutputValues()
 		catch(const std::exception& ex)
 		{
 			// TODO Discuss about exposing the error to the user.
-			qDebug("An Exception has occured: %s", ex.what());
+			qDebug("An Exception has occurred: %s", ex.what());
 		}
 	}
 }
@@ -318,7 +318,7 @@ void ProcessImageMemory::on_inputTable_itemChanged(QTableWidgetItem *cell)
 		}
 		catch(const std::exception& ex)
 		{
-			qDebug("on_inputTable_itemChanged: An Exception has occured: %s", ex.what());
+			qDebug("on_inputTable_itemChanged: An Exception has occurred: %s", ex.what());
 		}
 	}
 }

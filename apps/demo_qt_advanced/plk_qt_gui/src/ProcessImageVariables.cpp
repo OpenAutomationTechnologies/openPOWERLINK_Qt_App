@@ -3,7 +3,7 @@
 \file   ProcessImageVariables.cpp
 
 \brief  Implements the variables view of the input and output processimage data
-from the oplk stack.
+from the OPlk stack.
 
 \todo  This can also be done with QTableWidget to prepare the input and output tables.
 
@@ -71,7 +71,7 @@ void ProcessImageVariables::ResetView()
 										 this->metaObject()->method(this->processImageInputSlotIndex));
 	Q_ASSERT(ret != false);
 
-	//Unregister for ProcessImage variables output datas.
+	//Unregister for ProcessImage variables output data's.
 	ret = OplkQtApi::UnregisterSyncEventHandler(Direction::PI_OUT,
 										 *(this),
 										 this->metaObject()->method(this->processImageOutputSlotIndex));
@@ -136,7 +136,7 @@ void ProcessImageVariables::SetProcessImage(ProcessImageIn *inPi, const ProcessI
 	{
 		this->PrepareInputRows();
 
-		//Register for ProcessImage variables input datas.
+		//Register for ProcessImage variables input data's.
 		bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_IN,
 											 *(this),
 											 this->metaObject()->method(this->processImageInputSlotIndex));
@@ -147,7 +147,7 @@ void ProcessImageVariables::SetProcessImage(ProcessImageIn *inPi, const ProcessI
 	if (outPi)
 	{
 		this->PrepareOutputRows();
-		//Register for ProcessImage variables output datas.
+		//Register for ProcessImage variables output data's.
 		bool ret = OplkQtApi::RegisterSyncEventHandler(Direction::PI_OUT,
 											 *(this),
 											 this->metaObject()->method(this->processImageOutputSlotIndex));

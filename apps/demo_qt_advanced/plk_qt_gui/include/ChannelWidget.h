@@ -99,7 +99,7 @@ public:
 private slots:
 	/**
 	 * \brief Updates the value to the processimage whenever the
-	 * return key presesed inside the LineEditWidget.
+	 * return key pressed inside the LineEditWidget.
 	 */
 	void ValueReturnPressed();
 

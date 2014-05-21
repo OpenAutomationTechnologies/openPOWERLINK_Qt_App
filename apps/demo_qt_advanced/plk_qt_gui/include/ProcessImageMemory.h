@@ -139,7 +139,7 @@ private:
 	 * \param[in] col Id of the column.
 	 * \param[in] direction Direction of the processimage table.
 	 * \retval true  If the cell is valid.
-	 * \retval false If the cell is not valied.
+	 * \retval false If the cell is not valid.
 	 */
 	bool IsValidCell(UINT row, UINT col, Direction::Direction direction);
 };
