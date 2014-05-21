@@ -332,8 +332,7 @@ bool ProcessImageMemory::IsValidCell(UINT row, UINT col, Direction::Direction di
 			valid = false;
 
 		if ((row == (this->ui.inputTable->rowCount() - 1))
-			&& (col >= (this->ui.inputTable->columnCount()
-				- (this->inPi->GetSize() % this->ui.inputTable->columnCount()))))
+			&& (col >= ((this->inPi->GetSize() % this->ui.inputTable->columnCount()))))
 			valid = false;
 	}
 	else if (direction == Direction::PI_OUT)
@@ -342,8 +341,7 @@ bool ProcessImageMemory::IsValidCell(UINT row, UINT col, Direction::Direction di
 			valid = false;
 
 		if ((row == (this->ui.outTable->rowCount() - 1))
-			&& (col >= (this->ui.outTable->columnCount()
-				- (this->outPi->GetSize() % this->ui.outTable->columnCount()))))
+			&& (col >= ((this->outPi->GetSize() % this->ui.outTable->columnCount()))))
 			valid = false;
 	}
 	else
