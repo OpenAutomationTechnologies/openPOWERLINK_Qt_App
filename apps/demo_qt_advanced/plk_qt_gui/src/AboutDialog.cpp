@@ -4,9 +4,6 @@
 
 \brief Implements the about window
 
-\todo
-		- Version number for the application
-
 \author Ramakrishnan Periyakaruppan
 
 \copyright (c) 2014, Kalycito Infotech Private Limited
