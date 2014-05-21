@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include "NmtCommandsDock.h"
 
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include "api/OplkQtApi.h"
 #include "oplk/debugstr.h"
 

@@ -40,8 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 #include <fstream>
 
-#include <QMessageBox>
-#include "QDesktopServices"
+#include <QtWidgets/QMessageBox>
+#include <QtGui/QDesktopServices>
 
 #include <oplk/debugstr.h>
 
@@ -50,6 +50,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "MainWindow.h"
 #include "AboutDialog.h"
+#include "SdoTransfer.h"
+#include "LoggerWindow.h"
+#include "ProcessImageVariables.h"
+#include "ProcessImageMemory.h"
+#include "ImportConfigurationDialog.h"
+#include "NetworkInterfaceDialog.h"
+#include "NmtCommandsDock.h"
+#include "NodeStatusDock.h"
+#include "StatusBar.h"
 
 /*******************************************************************************
 * Module global variables
@@ -210,8 +219,6 @@ bool MainWindow::on_actionSelect_Interface_triggered()
 
 void MainWindow::on_actionStart_triggered()
 {
-	// No need to save the return value of the addTab
-
 	if ((this->cdcDialog->GetCdcFileName().isEmpty())
 		|| (this->cdcDialog->GetXapFileName().isEmpty()))
 	{

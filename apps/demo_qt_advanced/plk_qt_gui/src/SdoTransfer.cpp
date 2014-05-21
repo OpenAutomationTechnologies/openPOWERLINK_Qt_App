@@ -38,10 +38,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <QMessageBox>
-#include <QDateTime>
+#include <QtWidgets/QMessageBox>
+#include <QtCore/QDateTime>
 
 #include <limits.h>
+
+#include "user/SdoTransferJob.h"
 
 #include "SdoTransfer.h"
 #include "api/OplkQtApi.h"
@@ -146,7 +148,6 @@ void SdoTransfer::on_executeTransfer_clicked()
 
 	const UINT index = this->ui.index->value(); // -ve values are not emitted
 	const UINT subIndex = this->ui.subIndex->value(); // -ve values are not emitted
-	// QString dataTypeStr = this->ui.dataType->currentText();
 
 	//SDO transfer protocol from selection
 	tSdoType sdoProtocol = kSdoTypeAuto;

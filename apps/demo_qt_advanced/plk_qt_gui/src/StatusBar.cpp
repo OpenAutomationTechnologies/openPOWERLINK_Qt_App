@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "StatusBar.h"
+#include <QtWidgets/QLabel>
 #include "QtCore/QLocale"
 
 #include "api/OplkQtApi.h"

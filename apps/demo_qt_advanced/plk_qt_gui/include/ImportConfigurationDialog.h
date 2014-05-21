@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 #include "ui_ImportConfigurationDialog.h"
-#include <QString>
+#include <QtCore/QString>
 
 /**
  * \brief The ImportConfigurationDialog class inherits the QDialog to read the CDC and

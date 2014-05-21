@@ -41,11 +41,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
 #include "ui_ChannelWidget.h"
-#include "LineEditWidget.h"
+class LineEditWidget;
 
 #include "user/processimage/Channel.h"
-#include "user/processimage/ProcessImageIn.h"
-#include "user/processimage/ProcessImageOut.h"
+class ProcessImageIn;
+class ProcessImageOut;
 
 /**
  * \brief The ChannelWidget class constructs the single frame for the each channels

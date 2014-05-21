@@ -39,9 +39,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "NodeWidget.h"
-#include <QPainter>
-#include <QPen>
-#include <QBrush>
+#include <QtGui/QPainter>
+#include <QtGui/QPen>
+#include <QtGui/QBrush>
 
 #include <oplk/debugstr.h>
 

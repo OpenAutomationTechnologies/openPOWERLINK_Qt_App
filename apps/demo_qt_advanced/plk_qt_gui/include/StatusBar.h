@@ -37,8 +37,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <QStatusBar>
-#include <QLabel>
+#include <QtWidgets/QStatusBar>
+class QLabel;
 
 #include <oplk/nmt.h>
 
