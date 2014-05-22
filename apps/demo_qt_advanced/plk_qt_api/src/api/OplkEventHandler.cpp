@@ -61,14 +61,6 @@ tOplkApiCbEvent OplkEventHandler::GetAppEventCbFunc(void)
 	return AppCbEvent;
 }
 
-void OplkEventHandler::run()
-{
-	// start process function
-	tOplkError oplkRet = oplk_process();
-	//TODO Handle reurn values.
-	Q_ASSERT(oplkRet == kErrorOk);
-}
-
 /*******************************************************************************
 * PRIVATE Functions
 *******************************************************************************/
