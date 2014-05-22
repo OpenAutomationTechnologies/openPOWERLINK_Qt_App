@@ -144,21 +144,22 @@ void StatusBar::HandleSyncWaitTimeChanged(ulong sleepTime)
 void StatusBar::SetCdcFilePath(QString& cdc)
 {
 	this->cdcFile->setToolTip(cdc);
-	this->cdcFile->setText(QString(" CDC file: %1")
+	this->cdcFile->setText(QString(" CDC: %1")
 							.arg(this->GetShortPath(cdc)));
 }
 
 void StatusBar::SetXapFilePath(QString& xap)
 {
 	this->xapFile->setToolTip(xap);
-	this->xapFile->setText(this->GetShortPath(xap));
+	this->xapFile->setText(QString(" XAP: %1")
+						   .arg(this->GetShortPath(xap)));
 }
 
 void StatusBar::SetNetworkInterfaceName(const QString& name)
 {
 	const QString devName = name.simplified();
 	this->networkInterface->setToolTip(devName);
-	this->networkInterface->setText(QString(" Network interface: %1")
+	this->networkInterface->setText(QString(" Interface: %1")
 									.arg(devName.left(30)));
 }
 
