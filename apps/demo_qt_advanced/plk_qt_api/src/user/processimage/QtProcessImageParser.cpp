@@ -78,6 +78,7 @@ void QtProcessImageParser::ParseInternal(const char* xmlDescription)
 			}
 		}
 	}
+
 	if (this->xml.hasError())
 	{
 		throw XmlParserException(this->xml.errorString().toStdString(),
@@ -105,6 +106,7 @@ void QtProcessImageParser::ParseProcessImage()
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
+
 			throw XmlParserException(XmlParserError::GetXmlParserErrorString(
 										XmlParserError::UNEXPECTED_ELEMENT),
 										XmlParserError::UNEXPECTED_ELEMENT,
@@ -130,6 +132,7 @@ void QtProcessImageParser::ParseProcessImage()
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
+
 			throw XmlParserException(XmlParserError::GetXmlParserErrorString(
 										XmlParserError::UNEXPECTED_ELEMENT),
 										XmlParserError::UNEXPECTED_ELEMENT,
@@ -164,6 +167,7 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
+
 			throw XmlParserException(XmlParserError::GetXmlParserErrorString(
 										XmlParserError::UNEXPECTED_ELEMENT),
 										XmlParserError::UNEXPECTED_ELEMENT,
@@ -190,6 +194,7 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 											this->xml.lineNumber(),
 											this->xml.columnNumber());
 					}
+
 					throw XmlParserException(XmlParserError::GetXmlParserErrorString(
 											XmlParserError::UNEXPECTED_ELEMENT),
 											XmlParserError::UNEXPECTED_ELEMENT,
@@ -215,6 +220,7 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
+
 			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UNEXPECTED_ELEMENT),
 								XmlParserError::UNEXPECTED_ELEMENT,
 								this->xml.lineNumber(),
@@ -239,6 +245,7 @@ void QtProcessImageParser::ParseChannels(Direction::Direction direction)
 									this->xml.lineNumber(),
 									this->xml.columnNumber());
 			}
+
 			throw XmlParserException(GetXmlParserErrorString(XmlParserError::UNEXPECTED_ELEMENT),
 								XmlParserError::UNEXPECTED_ELEMENT,
 								this->xml.lineNumber(),

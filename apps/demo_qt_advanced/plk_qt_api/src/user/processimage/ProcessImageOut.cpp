@@ -63,6 +63,7 @@ bool ProcessImageOut::AddChannelInternal(const Channel& channel)
 				std::pair<std::string, Channel>(channel.GetName(), channel));
 		return true;
 	}
+
 	return false;
 }
 
