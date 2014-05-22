@@ -44,11 +44,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 StatusBar::StatusBar(QWidget *parent) :
 	QStatusBar(parent),
-	networkInterface(new QLabel()),
-	cdcFile(new QLabel()),
-	xapFile(new QLabel()),
-	nmtStatus(new QLabel()),
-	cycleTime(new QLabel()),
+	networkInterface(new QLabel("Network interface: ")),
+	cdcFile(new QLabel("CDC file: ")),
+	xapFile(new QLabel("XAP file: ")),
+	nmtStatus(new QLabel("NMT status: ")),
+	cycleTime(new QLabel("Cycle time: ")),
 	refreshRate(new QLabel())
 {
 	this->networkInterface->setMinimumWidth(175);
@@ -111,7 +111,8 @@ void StatusBar::UpdateNmtStatus(tNmtState nmtState)
 	}
 
 	qDebug("%s", qPrintable(state));
-	this->nmtStatus->setText(state);
+	this->nmtStatus->setText(QString(" NMT status: %1")
+				.arg(state));
 
 	if (nmtState == kNmtMsPreOperational1)
 		this->UpdateCycleTime();
@@ -143,7 +144,8 @@ void StatusBar::HandleSyncWaitTimeChanged(ulong sleepTime)
 void StatusBar::SetCdcFilePath(QString& cdc)
 {
 	this->cdcFile->setToolTip(cdc);
-	this->cdcFile->setText(this->GetShortPath(cdc));
+	this->cdcFile->setText(QString(" CDC file: %1")
+							.arg(this->GetShortPath(cdc)));
 }
 
 void StatusBar::SetXapFilePath(QString& xap)
@@ -156,7 +158,8 @@ void StatusBar::SetNetworkInterfaceName(const QString& name)
 {
 	const QString devName = name.simplified();
 	this->networkInterface->setToolTip(devName);
-	this->networkInterface->setText(devName.left(30));
+	this->networkInterface->setText(QString(" Network interface: %1")
+									.arg(devName.left(30)));
 }
 
 //can be moved to Utility
