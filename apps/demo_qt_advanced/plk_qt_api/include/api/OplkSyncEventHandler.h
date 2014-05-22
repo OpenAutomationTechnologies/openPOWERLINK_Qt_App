@@ -59,9 +59,6 @@ class OplkSyncEventHandler : public QThread
 {
 	Q_OBJECT
 
-public:
-	virtual ~OplkSyncEventHandler();
-
 signals:
 
 	/**
