@@ -42,16 +42,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "api/OplkSyncEventHandler.h"
 #include <oplk/oplk.h>
 
-
-
-/*******************************************************************************
-* Public functions
-*******************************************************************************/
-OplkSyncEventHandler::~OplkSyncEventHandler()
-{
-
-}
-
 /*******************************************************************************
 * Protected functions
 *******************************************************************************/
