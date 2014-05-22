@@ -96,15 +96,11 @@ BYTE* ProcessImage::GetProcessImageDataPtr() const
 
 std::map<std::string, Channel>::const_iterator ProcessImage::cbegin() const
 {
-	// C++11
-	//TODO Fails in Linux
 	return this->channels.begin();
 }
 
 std::map<std::string, Channel>::const_iterator ProcessImage::cend() const
 {
-	// C++11
-	//TODO Fails in Linux
 	return this->channels.end();
 }
 

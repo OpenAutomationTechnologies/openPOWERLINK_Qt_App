@@ -70,6 +70,7 @@ std::string GetXmlParserErrorString(XmlParserError errorCode)
 		default:
 			errorString = "Undefined error";
 	}
+
 	return errorString;
 }
 

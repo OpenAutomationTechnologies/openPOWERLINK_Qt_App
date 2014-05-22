@@ -43,7 +43,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "user/processimage/ProcessImageParser.h"
 #include "user/processimage/Direction.h"
-#include "common/XmlParserException.h"
 
 /**
  * \brief  Inherits ProcessImageParser and implemets using Qt 5.2

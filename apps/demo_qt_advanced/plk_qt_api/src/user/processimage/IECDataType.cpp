@@ -139,7 +139,6 @@ IECDataType GetIECDatatype(const std::string& iecDataTypeStr)
 	}
 
 	return iecDataType;
-
 } // GetIecDataType
 
 } // namespace IECDataType

@@ -38,9 +38,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-
 class QObject;
 class QMetaMethod;
+
 /**
  * \brief A container class to pack the receiver and receiver function for
  * handling Async call back events
