@@ -62,9 +62,6 @@ class OplkEventHandler : public QThread
 {
 	Q_OBJECT
 
-protected:
-	virtual void run();
-
 private:
 
 	friend class OplkQtApi;
