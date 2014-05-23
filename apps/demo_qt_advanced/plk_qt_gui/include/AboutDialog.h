@@ -2,7 +2,8 @@
 ********************************************************************************
 \file   AboutDialog.h
 
-\brief  Describes the About dialog using the Qt 5.2 QDialog widgets.
+\brief  Describes the About dialog and its actions which uses Qt 5.2 QDialog 
+		widgets.
 
 \author Ramakrishnan Periyakaruppan
 

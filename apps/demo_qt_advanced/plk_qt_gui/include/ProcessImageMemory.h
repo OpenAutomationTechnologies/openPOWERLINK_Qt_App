@@ -40,7 +40,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ui_ProcessImageMemory.h"
-
 #include "user/processimage/ProcessImageIn.h"
 #include "user/processimage/ProcessImageOut.h"
 

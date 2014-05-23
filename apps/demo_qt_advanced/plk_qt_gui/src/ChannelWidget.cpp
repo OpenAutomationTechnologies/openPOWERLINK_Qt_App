@@ -57,7 +57,6 @@ ChannelWidget::ChannelWidget(const Channel &channel, QWidget *parent) :
 
 	this->ui.channelName->setText(QString::fromStdString(this->channel.GetName()));
 
-	//Create current value textbox
 	this->value->setMinimumSize(QSize(95, 0));
 	this->value->setMaximumSize(QSize(100, 16777215));
 	this->value->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
@@ -81,7 +80,6 @@ ChannelWidget::ChannelWidget(const Channel &channel, QWidget *parent) :
 						   SLOT(ValueReturnPressed()));
 	Q_ASSERT(ret != false);
 
-	// Hide force check box and forcevalue text box for output PI
 	if (this->channel.GetDirection() == Direction::PI_OUT)
 	{
 		this->value->setEnabled(false);

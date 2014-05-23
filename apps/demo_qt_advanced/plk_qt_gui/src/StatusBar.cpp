@@ -126,7 +126,7 @@ void StatusBar::UpdateCycleTime()
 											  0x00,
 											  (void*)(&cycleTime),
 											  &size);
-	//TODO Assert if err
+	// TODO Assert if err
 	if (oplkRet != kErrorOk)
 		qDebug("Cycle time read error: %s", debugstr_getRetValStr(oplkRet));
 
@@ -163,7 +163,7 @@ void StatusBar::SetNetworkInterfaceName(const QString& name)
 									.arg(devName.left(30)));
 }
 
-//can be moved to Utility
+// TODO: can be moved to Utility
 const QString StatusBar::GetShortPath(const QString& path) const
 {
 	QString shortPath;

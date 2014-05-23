@@ -38,7 +38,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-
 #include "ui_ImportConfigurationDialog.h"
 #include <QtCore/QString>
 
@@ -114,8 +113,8 @@ private:
 
 	/**
 	 * \brief Sets the error message with color based on the given exists status.
-	 * \param[in] cfg    Specifies the configuration file type.
-	 * \param[in] exists Specifies the existence status.
+	 * \param[in] cfg    Configuration file type.
+	 * \param[in] exists Existence status.
 	 */
 	void SetErrorMessage(Configuration cfg, bool exists);
 };

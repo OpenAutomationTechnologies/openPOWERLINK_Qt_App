@@ -99,9 +99,9 @@ signals:
 	void SignalNetworkInterfaceChanged(const QString& devDescription);
 
 private:
-	Ui::NetworkInterfaceDialog ui; /// Select Network interface ui instance
-	QString devName;                /// network device name
-	QString devDescription;         /// network device description
+	Ui::NetworkInterfaceDialog ui;  ///< Network interface ui instance
+	QString devName;                ///< network device name
+	QString devDescription;         ///< network device description
 
 	void SetDevDescritpion(const QString& name);
 };

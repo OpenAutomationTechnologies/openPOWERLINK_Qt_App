@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   NodeWidget.cpp
 
-\brief  Implements the NodeWidget frame.
+\brief  Implements the NodeWidget.
 
 \todo
 		- It can have a progressbar to display the CFM download status.

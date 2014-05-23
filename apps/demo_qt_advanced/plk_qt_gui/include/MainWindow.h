@@ -39,10 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-
-#include "user/processimage/ProcessImageParser.h"
-
 #include "ui_MainWindow.h"
+#include "user/processimage/ProcessImageParser.h"
 
 class SdoTransfer;
 class LoggerWindow;
