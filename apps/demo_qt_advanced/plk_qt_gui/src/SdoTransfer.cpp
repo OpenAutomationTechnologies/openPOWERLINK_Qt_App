@@ -368,7 +368,7 @@ void SdoTransfer::SetMaskForValue()
 
 	this->sdoTransferData = QVariant(this->metaDataTypeIndex, NULL);
 
-	// SEtting to FFFFF...
+	// Setting to FFFFF...
 	quint64 maxUnsignedDataVal = (~((quint64)0x0));
 	maxUnsignedDataVal = (~((quint64)(maxUnsignedDataVal << (sdoDataSize * 8))));
 

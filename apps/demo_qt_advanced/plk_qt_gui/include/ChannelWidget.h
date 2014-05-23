@@ -39,11 +39,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-
 #include "ui_ChannelWidget.h"
-class LineEditWidget;
-
 #include "user/processimage/Channel.h"
+
+class LineEditWidget;
 class ProcessImageIn;
 class ProcessImageOut;
 
@@ -60,7 +59,7 @@ public:
 	 * \brief Constructs the ChannelWidget instance and holds the properties of
 	 * the channel in it.
 	 *
-	 * \param[in] channel  The Channel instance for which the UI frame is generated.
+	 * \param[in] channel  The instance for which the UI frame is generated.
 	 * \param[in] parent
 	 */
 	explicit ChannelWidget(const Channel &channel, QWidget *parent = 0);
@@ -68,9 +67,9 @@ public:
 	~ChannelWidget();
 
 	/**
-	 * \brief Sets the state of the 'select check box' to the given state.
+	 * \brief Sets the state of the 'select check box'.
 	 *
-	 * \param[in] state The check box state.
+	 * \param[in] state The state of the check box.
 	 */
 	void UpdateSelectCheckBox(Qt::CheckState state);
 
@@ -114,12 +113,12 @@ private slots:
 	void UnlockCurrentValue();
 
 private:
-	Ui::ChannelWidget ui;   ///< ChannelFrame ui instance.
-	LineEditWidget *value;     ///< Current value textbox.
+	Ui::ChannelWidget ui;    ///< Channel ui instance.
+	LineEditWidget *value;   ///< Current value textbox.
 	// TODO change to ptr. TODO ptr in channelMap in api-lib
-	const Channel channel; ///< Processimage channel properties.
+	const Channel channel;   ///< ProcessImage channel properties.
 
-	bool lockValueTexbox;  ///< Property to lock the textbox while forcing the value.
+	bool lockValueTexbox;    ///< Property to lock the textbox while forcing the value.
 	QString valueBeforeLock;
 
 	ProcessImageIn *input; ///< Input ProcessImage properties.

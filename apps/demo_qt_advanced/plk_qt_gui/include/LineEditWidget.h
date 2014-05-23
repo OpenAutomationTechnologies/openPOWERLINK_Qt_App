@@ -38,11 +38,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-
 #include <QtWidgets/QLineEdit>
 
 /**
- * \brief Re-Implemented from QLineEdit to provide some additional functionalities.
+ * \brief Re-implemented from QLineEdit to handle the focus events.
  */
 class LineEditWidget : public QLineEdit
 {

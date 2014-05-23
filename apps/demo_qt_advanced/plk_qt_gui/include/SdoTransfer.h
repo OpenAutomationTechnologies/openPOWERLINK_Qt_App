@@ -40,11 +40,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "ui_SdoTransfer.h"
-
 #include <QtCore/QMap>
 #include <QtCore/QMetaMethod>
 
 #include "user/SdoTransferResult.h"
+
 class SdoTransferJob;
 
 /**

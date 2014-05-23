@@ -38,7 +38,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-
 #include "ui_LoggerWindow.h"
 
 /**
@@ -63,7 +62,8 @@ public:
 
 private slots:
 	/**
-	 * \brief Copies the contents of the log window.
+	 * \brief Copies the selected contents of the log.
+	 *  If none is slected, copies the entire log.
 	 */
 	void on_copyStack_clicked();
 

@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   NodeWidget.h
 
-\brief  Inherits the QFrame and handles the status of the individual node.
+\brief  Inherits the QWidget and handles the status of the individual node.
 
 \author Ramakrishnan Periyakaruppan
 

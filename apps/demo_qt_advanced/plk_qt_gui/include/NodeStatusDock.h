@@ -81,7 +81,7 @@ public:
 private:
 	Ui::NodeStatusDock ui;  ///< Node status dock ui instance.
 
-	QList<NodeWidget*> nodelists; ///< List for maintaining the Node frames.
+	QList<NodeWidget*> nodelists; ///< List for maintaining the Node.
 	// May be we can use QMap
 	// QMap<const UINT, NodeWidget*> nodelist;
 
