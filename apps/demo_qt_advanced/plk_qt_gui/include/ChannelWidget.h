@@ -71,7 +71,7 @@ public:
 	 *
 	 * \param[in] state The state of the check box.
 	 */
-	void UpdateSelectCheckBox(Qt::CheckState state);
+	void SetSelectCheckBox(Qt::CheckState state);
 
 	/**
 	 * \return the state of the select check box.

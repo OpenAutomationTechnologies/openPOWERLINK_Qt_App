@@ -222,7 +222,7 @@ void ProcessImageVariables::on_inputCheckAll_stateChanged(int checkedState)
 		{
 			if (*channel)
 			{
-				(*channel)->UpdateSelectCheckBox((Qt::CheckState) checkedState);
+				(*channel)->SetSelectCheckBox((Qt::CheckState) checkedState);
 			}
 		}
 	}
@@ -237,7 +237,7 @@ void ProcessImageVariables::on_outputCheckAll_stateChanged(int checkedState)
 		{
 			if (*channel)
 			{
-				(*channel)->UpdateSelectCheckBox((Qt::CheckState) checkedState);
+				(*channel)->SetSelectCheckBox((Qt::CheckState) checkedState);
 			}
 		}
 	}
