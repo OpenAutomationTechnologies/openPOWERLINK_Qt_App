@@ -97,7 +97,7 @@ ChannelWidget::~ChannelWidget()
 	delete this->value;
 }
 
-void ChannelWidget::UpdateSelectCheckBox(Qt::CheckState state)
+void ChannelWidget::SetSelectCheckBox(Qt::CheckState state)
 {
 	this->ui.check->setChecked(state);
 }
