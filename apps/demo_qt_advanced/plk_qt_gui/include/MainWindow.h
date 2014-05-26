@@ -135,6 +135,9 @@ private:
 	NodeStatusDock *nodeStatus;                ///< CN status list
 	ProcessImageParser *parser;                ///< ProcessImage xml Parser instance
 	StatusBar *status;                         ///< Status bar
+
+	std::string cdc;                           ///< Cdc file. Set after it is
+											   /// selected from the ImportConfigurationDialog.
 };
 
 #endif // _MAIN_WINDOW_H_

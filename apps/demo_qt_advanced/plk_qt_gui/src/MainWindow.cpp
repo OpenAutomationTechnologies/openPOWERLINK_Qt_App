@@ -81,7 +81,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	piVar(new ProcessImageVariables()),
 	piMemory(new ProcessImageMemory()),
 	parser(NULL),
-	status(new StatusBar())
+	status(new StatusBar()),
+	cdc("")
 {
 	this->ui.setupUi(this);
 	this->setStatusBar(this->status);
@@ -282,8 +283,8 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
-	std::string cdc = this->cdcDialog->GetCdcFileName().toStdString();
-	oplkRet = OplkQtApi::SetCdc(cdc);
+	this->cdc = this->cdcDialog->GetCdcFileName().toStdString();
+	oplkRet = OplkQtApi::SetCdc(this->cdc);
 	if (oplkRet != kErrorOk)
 	{
 		QMessageBox::critical(this, "SetCDC failed",
