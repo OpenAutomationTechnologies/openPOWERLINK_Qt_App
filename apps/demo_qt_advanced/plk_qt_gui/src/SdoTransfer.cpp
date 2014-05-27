@@ -133,11 +133,9 @@ void SdoTransfer::on_read_toggled(bool selected)
 
 void SdoTransfer::on_executeTransfer_clicked()
 {
-
 	/* Get the user inputs from the UI */
 	bool conversionSuccess = false;
-	// Using C language conversion
-	const UINT nodeId = this->ui.nodeId->currentText().toUInt(&conversionSuccess, 0);
+	const UINT nodeId = this->ui.nodeId->currentText().toUInt(&conversionSuccess);
 	if (!conversionSuccess)
 	{
 		QMessageBox::warning(this, "SDO Transfer - Failed",
