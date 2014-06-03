@@ -39,9 +39,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <Qtcore/QDateTime>
-#include <Qtcore/QString>
-#include <Qtcore/QMetaMethod>
+#include <QtCore/QDateTime>
+#include <QtCore/QString>
+#include <QtCore/QMetaMethod>
 #include <oplk/debugstr.h>
 
 #include "api/OplkEventHandler.h"
