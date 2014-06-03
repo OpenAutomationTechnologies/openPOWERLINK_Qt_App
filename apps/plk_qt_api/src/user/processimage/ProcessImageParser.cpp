@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include <sstream>
+#include <stdexcept>
 
 #include "user/processimage/ProcessImageParser.h"
 #include "user/processimage/QtProcessImageParser.h"

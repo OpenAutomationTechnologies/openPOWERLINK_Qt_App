@@ -35,8 +35,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <Qtcore/QMetaType>
-#include <Qtcore/QtDebug>
+#include <QtCore/QMetaType>
+#include <QtCore/QtDebug>
 
 #include "api/OplkQtApi.h"
 #include "api/OplkEventHandler.h"

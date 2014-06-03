@@ -39,9 +39,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*******************************************************************************
 * INCLUDES
 *******************************************************************************/
-#include <Qtcore/QThread>
-#include <Qtcore/QWaitCondition>
-#include <Qtcore/QMutex>
+#include <QtCore/QThread>
+#include <QtCore/QWaitCondition>
+#include <QtCore/QMutex>
 
 #include <oplk/oplk.h>
 #include <oplk/nmt.h>
