@@ -108,6 +108,12 @@ void OplkQtApi::SetInitParam()
 		// If needed Throw std err or return kErrorInvalidInstanceParam
 	}
 
+#if defined(CONFIG_KERNELSTACK_DIRECTLINK)
+	OplkQtApi::initParam.pfnCbSync = OplkSyncEventHandler::GetInstance().GetCbSync();
+#else
+	OplkQtApi::initParam.pfnCbSync = NULL;
+#endif
+
 	OplkQtApi::initParam.pEventUserArg = NULL;
 //	OplkQtApi::initParam.hwParam.devNum = 0;
 //	OplkQtApi::initParam.syncResLatency = 0;
@@ -462,12 +468,6 @@ tOplkError OplkQtApi::AllocateProcessImage(ProcessImageIn& in,
 		qDebug("allocProcessImage retCode %x", oplkRet);
 		return oplkRet;
 	}
-
-#if defined(CONFIG_KERNELSTACK_DIRECTLINK)
-	OplkQtApi::initParam.pfnCbSync = OplkSyncEventHandler::GetInstance().GetSyncCbFunc();
-#else
-	OplkQtApi::initParam.pfnCbSync = NULL;
-#endif
 
 	/* sets the ProcessImage pointer from the allocated memory to the ProcessImage::data */
 	in.SetProcessImageDataPtr((const BYTE*)oplk_getProcessImageIn());
