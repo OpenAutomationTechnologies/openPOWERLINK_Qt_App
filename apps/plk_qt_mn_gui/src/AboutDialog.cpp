@@ -36,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "AboutDialog.h"
-#include <Qtcore/QDateTime>
+#include <QtCore/QDateTime>
 
 //Todo add the below include in <oplk/version.h>
 #include <oplk/oplkdefs.h>

@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * INCLUDES
 *******************************************************************************/
 #include "LoggerWindow.h"
-#include <Qtcore/QDateTime>
+#include <QtCore/QDateTime>
 
 #include "api/OplkQtApi.h"
 

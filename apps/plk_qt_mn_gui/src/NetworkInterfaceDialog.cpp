@@ -63,7 +63,7 @@ int NetworkInterfaceDialog::FillList(void)
 	this->ui.listWidget->clear();
 	this->ui.ok->setEnabled(false);
 
-	INT numberOfInterfaces = 0;
+	int numberOfInterfaces = 0;
 
 #ifdef CONFIG_USE_PCAP
 	char        sErr_Msg[PCAP_ERRBUF_SIZE];
