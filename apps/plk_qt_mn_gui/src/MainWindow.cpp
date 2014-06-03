@@ -182,7 +182,8 @@ MainWindow::~MainWindow()
 	delete this->networkInterface;
 	delete this->nmtCmd;
 	delete this->nodeStatus;
-	delete this->parser;
+    if (this->parser)
+        delete this->parser;
 	delete this->status;
 }
 
