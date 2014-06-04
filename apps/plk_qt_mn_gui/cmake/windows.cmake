@@ -10,8 +10,7 @@ ENDIF()
 
 INCLUDE_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Include)
 SET(PCAP_LIBRARIES wpcap iphlpapi)
-ADD_DEFINITIONS(-DWPCAP)
-
+ADD_DEFINITIONS(-DWPCAP -DCONFIG_USE_PCAP)
 
 ################################################################################
 # Set architecture specific installation files
