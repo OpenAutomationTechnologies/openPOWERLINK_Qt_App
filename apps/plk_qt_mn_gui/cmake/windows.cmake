@@ -29,40 +29,36 @@
 ################################################################################
 
 ################################################################################
-# WinPCAP specific configurations
-IF(CMAKE_CL_64)
-    LINK_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib/x64)
-ELSE ()
-    MESSAGE(STATUS "Searching for LIBRARY wpcap in ${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib")
-    LINK_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib)
-ENDIF()
-
-INCLUDE_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Include)
-SET(PCAP_LIBRARIES wpcap iphlpapi)
-ADD_DEFINITIONS(-DWPCAP -DCONFIG_USE_PCAP)
-
-################################################################################
 # Set architecture specific installation files
 IF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
-INSTALL(FILES ${OPLKDLL_RELEASE}
-        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-        CONFIGURATIONS "Release"
-       )
+    IF(NOT (${OPLKDLL_RELEASE} STREQUAL "OPLKDLL_RELEASE-NOTFOUND"))
+        INSTALL(FILES ${OPLKDLL_RELEASE}
+                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+                CONFIGURATIONS "Release"
+               )
+    ENDIF()
 
-INSTALL(FILES ${OPLKDLL_DEBUG}
-        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-        CONFIGURATIONS "Debug"
-       )
+    IF(NOT (${OPLKDLL_DEBUG} STREQUAL "OPLKDLL_DEBUG-NOTFOUND"))
+        INSTALL(FILES ${OPLKDLL_DEBUG}
+                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+                CONFIGURATIONS "Debug"
+               )
+    ENDIF()
 
-INSTALL(FILES ${OPLK_QT_WRAP_DLL_RELEASE}
-        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-        CONFIGURATIONS "Release"
-       )
+    IF(NOT (${OPLK_QT_WRAP_DLL_RELEASE} STREQUAL "OPLK_QT_WRAP_DLL_RELEASE-NOTFOUND"))
+        INSTALL(FILES ${OPLK_QT_WRAP_DLL_RELEASE}
+                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+                CONFIGURATIONS "Release"
+               )
+    ENDIF()
 
-INSTALL(FILES ${OPLK_QT_WRAP_DLL_DEBUG}
-        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-        CONFIGURATIONS "Debug"
-       )
+    IF(NOT (${OPLK_QT_WRAP_DLL_DEBUG} STREQUAL "OPLK_QT_WRAP_DLL_DEBUG-NOTFOUND"))
+        INSTALL(FILES ${OPLK_QT_WRAP_DLL_DEBUG}
+                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+                CONFIGURATIONS "Debug"
+               )
+    ENDIF()
+
 ENDIF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
 
 
