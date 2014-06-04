@@ -3,20 +3,21 @@ PROJECT (${OPLK_QT_WRAP} CXX)
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8.11)
 
+SET(OPLK_QT_WRAP_SOURCE_DIR ${OPLK_QT_WRAP_DIR}/src)
+
 MESSAGE(STATUS "Configuring ${OPLK_QT_WRAP}")
-#SET(CMAKE_BUILD_TYPE "Release")
 
 OPTION(CONFIG_OPLK_QT_WRAP_LIB           "Compile openPOWERLINK QT API static library" ON)
-
 IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    OPTION(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL   "Build openPOWERLINK Qt API library as DLL" OFF)
-ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+OPTION(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL   "Build openPOWERLINK Qt API library as DLL" OFF)
+ENDIF()
 
 IF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
     SET(LIBRARY_TYPE SHARED)
 ELSE()
     SET(LIBRARY_TYPE STATIC)
 ENDIF()
+
 
 FIND_OPLK_LIBRARY("mn")
 
@@ -28,28 +29,29 @@ INCLUDE_DIRECTORIES(${OPLK_QT_WRAP_INCLUDE_DIR})
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
-
-get_target_property(QtCore_location_Release Qt5::Core LOCATION_Release)
-#get_target_property(QtCore_location_Debug Qt5::Core LOCATION_Debug)
-#INCLUDE_DIRECTORIES(${QtCore_location})
-#message(STATUS "${QtCore_location_Release}  ${QtCore_location_Debug}")
-
-get_filename_component(QT_DLL_DIR ${QtCore_location_Release} PATH)
-
-#get_target_property(QtXml_location_Release Qt5::Xml LOCATION_Release)
-#get_target_property(QtXml_location_Debug Qt5::Xml LOCATION_Debug)
-#INCLUDE_DIRECTORIES(${QtXml_location})
-#message(STATUS "${QtXml_location_Release}  ${QtXml_location_Debug}")
-
+#??? if QT_BINARY_DIR is empty uncomment 
+#get_target_property(QtCore_location_Release Qt5::Core LOCATION_Release)
+#get_filename_component(QT_DLL_DIR ${QtCore_location_Release} PATH)
 
 ADD_DEFINITIONS(${QT_DEFINITIONS}
                 -DUNICODE
-                -DPLKQTAPI_LIB) 
+                -DPLKQTAPI_LIB)
 # This causes the export macro. from QtApiGlobal.h _PLKQTAPI_GLOBAL_H_
-
 #This is not needed                 -DCONFIG_MN
 #                -DQT_XML_LIB
 #                -DQT_CORE_LIB
+
+################################################################################
+# Setup the architecture specific definitions
+################################################################################
+IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    include(cmake/linux.cmake)
+ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    include (cmake/windows.cmake)
+ELSE()
+    MESSAGE(FATAL_ERROR "System ${CMAKE_SYSTEM_NAME} is not supported!")
+ENDIF()
+
 
 # Setup compile definitions depending on configuration
 IF (CFG_KERNEL_STACK_DIRECTLINK)
@@ -80,100 +82,10 @@ SET(OPLK_APPS_LIB_INSTALL_PREFIX
     ${OPLK_APPS_ROOT_DIR}/lib/${OPLK_QT_WRAP} CACHE PATH "openPOWERLINK wrapper library install prefix" FORCE
     )
 
-SET(CMAKE_INSTALL_PREFIX ${OPLK_APPS_LIB_INSTALL_PREFIX})
+#SET(CMAKE_INSTALL_PREFIX ${OPLK_APPS_LIB_INSTALL_PREFIX})
 
 INSTALL(TARGETS ${OPLK_QT_WRAP} 
-        RUNTIME DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
-        ARCHIVE DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
-        )
-
-IF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
-
-	INSTALL(FILES ${OPLKDLL_RELEASE}
-		DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
-		CONFIGURATIONS "Release"
-	       )
-
-	INSTALL(FILES ${OPLKDLL_DEBUG}
-		DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
-		CONFIGURATIONS "Debug"
-	       )
-
-	#IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	INSTALL(FILES 
-		${QT_DLL_DIR}/Qt5Xml.dll
-		${QT_DLL_DIR}/Qt5Core.dll
-		${QT_DLL_DIR}/icuin51.dll
-		${QT_DLL_DIR}/icuuc51.dll
-		DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
-		CONFIGURATIONS "Release"
-	       )
-	INSTALL(FILES 
-		${QT_DLL_DIR}/Qt5Xmld.dll
-		${QT_DLL_DIR}/Qt5Cored.dll
-		${QT_DLL_DIR}/icuin51.dll
-		${QT_DLL_DIR}/icuuc51.dll
-		DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
-		CONFIGURATIONS "Debug"
+		RUNTIME DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
+		ARCHIVE DESTINATION ${OPLK_APPS_LIB_INSTALL_PREFIX}
 		)
-	#ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-ENDIF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
-
-
-#### ---------- DOCUMENTATION
-
-#SET(OPLK_QT_WRAP_DOC_DIR ${OPLK_ROOT_DIR}/doc/examples/demo_qt_advanced)
-#FIND_PACKAGE(Doxygen)
-#IF(DOXYGEN_FOUND)
-#CONFIGURE_FILE(${OPLK_QT_WRAP_DOC_DIR}/doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-#ADD_CUSTOM_TARGET(DOCUMENTATION ALL
-#${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-#WORKING_DIRECTORY ${OPLK_QT_WRAP_DOC_DIR}
-#COMMENT "Generating API documentation with Doxygen" VERBATIM
-#)
-#ENDIF(DOXYGEN_FOUND)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#--------------------------------------------
-
-#SET(PLK_QT_BINARY_DIR "${CMAKE_SOURCE_DIR}/bin")
-
-
-#IF(${OPLK_QT_MN_GUI})
-       # ADD_SUBDIRECTORY(plk_qt_gui)
-#ENDIF(${OPLK_QT_MN_GUI})
-
-
-##### ??? TODO Add oplkmn find configuration.
-#SET(OBJDICT CiA302-4_MN)            # Set object dictionary to use
-#FIND_OPLK_LIBRARY("mn")             # Find suitable openPOWERLINK library
-
-################################################################################
-# Setup the architecture specific definitions
-#TODO add after separating files.
-#IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-#    include(linux.cmake)
-#ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-#    include (windows.cmake)
-#ELSE()
-#    MESSAGE(FATAL_ERROR "System ${CMAKE_SYSTEM_NAME} is not supported!")
-#ENDIF()
