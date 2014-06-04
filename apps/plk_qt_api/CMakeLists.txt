@@ -37,6 +37,7 @@ PROJECT (${OPLK_QT_WRAP} CXX)
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8.11)
 
 INCLUDE(${CMAKE_SOURCE_DIR}/../common/cmake/options.cmake)
+INCLUDE(${CMAKE_SOURCE_DIR}/../common/cmake/pcap.cmake)
 
 SET(OPLK_QT_WRAP_SOURCE_DIR ${OPLK_QT_WRAP_DIR}/src)
 
@@ -44,7 +45,7 @@ MESSAGE(STATUS "Configuring ${OPLK_QT_WRAP}")
 
 OPTION(CONFIG_OPLK_QT_WRAP_LIB           "Compile openPOWERLINK QT API static library" ON)
 IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-OPTION(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL   "Build openPOWERLINK Qt API library as DLL" OFF)
+OPTION(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL   "Build openPOWERLINK Qt API library as DLL" ON)
 ENDIF()
 
 ################################################################################
@@ -148,7 +149,8 @@ SET_PROPERTY(TARGET ${OPLK_QT_WRAP_LIB_NAME} PROPERTY DEBUG_POSTFIX "_d")
 ################################################################################
 # Libraries to link
 TARGET_LINK_LIBRARIES(${OPLK_QT_WRAP_LIB_NAME} optimized ${OPLKLIB_RELEASE} debug ${OPLKLIB_DEBUG})
-TARGET_LINK_LIBRARIES(${OPLK_QT_WRAP_LIB_NAME} Qt5::Core Qt5::Xml ${ADD_ADDITIONAL_DEPENDENCIES})
+TARGET_LINK_LIBRARIES(${OPLK_QT_WRAP_LIB_NAME} Qt5::Core Qt5::Xml)
+TARGET_LINK_LIBRARIES(${OPLK_QT_WRAP_LIB_NAME} ${PCAP_LIBRARIES} ${OTHER_DEPENDENT_LIBS})
 
 ################################################################################
 # Installation rules

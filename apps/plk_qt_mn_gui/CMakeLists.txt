@@ -36,6 +36,7 @@ PROJECT (${OPLK_QT_MN_APP} CXX)
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8.11)
 
 INCLUDE(${CMAKE_SOURCE_DIR}/../common/cmake/options.cmake)
+INCLUDE(${CMAKE_SOURCE_DIR}/../common/cmake/pcap.cmake)
 
 FIND_OPLK_LIBRARY("mn")
 FIND_OPLK_QT_WRAP_LIBRARY("oplkqtwrap" "mn")

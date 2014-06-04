@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Windows definitions for openPOWERLINK API QT wrapper library
+# Script for finding the PCAP library
 #
 # Copyright (c) 2014, Kalycito Infotech Pvt. Ltd.,
 # All rights reserved.
@@ -29,41 +29,35 @@
 ################################################################################
 
 ################################################################################
-# Set architecture specific installation files
-IF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
+# PCAP specific configurations
 
-    IF(NOT (${OPLKDLL_RELEASE} STREQUAL "OPLKDLL_RELEASE-NOTFOUND"))
-        INSTALL(FILES ${OPLKDLL_RELEASE}
-                DESTINATION ${CMAKE_PROJECT_NAME}
-                CONFIGURATIONS "Release"
-               )
+UNSET(OTHER_DEPENDENT_LIBS)
+UNSET(PCAP_LIBRARIES)
+
+IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
+    IF (CFG_KERNEL_STACK_DIRECTLINK OR CFG_KERNEL_STACK_USERSPACE_DAEMON)
+        SET(PCAP_LIBRARIES pcap)
+        ADD_DEFINITIONS (-DCONFIG_USE_PCAP)
+    ENDIF (CFG_KERNEL_STACK_DIRECTLINK OR CFG_KERNEL_STACK_USERSPACE_DAEMON)
+
+    ################################################################################
+    # Add other dependent libs
+    SET(OTHER_DEPENDENT_LIBS pthread rt)
+
+ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    IF(CMAKE_CL_64)
+        LINK_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib/x64)
+    ELSE ()
+        MESSAGE(STATUS "Searching for LIBRARY wpcap in ${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib")
+        LINK_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib)
     ENDIF()
 
-    IF(NOT (${OPLKDLL_DEBUG} STREQUAL "OPLKDLL_DEBUG-NOTFOUND"))
-        INSTALL(FILES ${OPLKDLL_DEBUG}
-                DESTINATION ${CMAKE_PROJECT_NAME}
-                CONFIGURATIONS "Debug"
-               )
-    ENDIF()
+    INCLUDE_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Include)
 
-    get_target_property(QtCore_location_Release Qt5::Core LOCATION_Release)
-    get_filename_component(QT_DLL_DIR ${QtCore_location_Release} PATH)
+    SET(PCAP_LIBRARIES wpcap iphlpapi)
 
-    INSTALL(FILES
-            ${QT_DLL_DIR}/Qt5Xml.dll
-            ${QT_DLL_DIR}/Qt5Core.dll
-            ${QT_DLL_DIR}/icuin51.dll
-            ${QT_DLL_DIR}/icuuc51.dll
-            DESTINATION ${CMAKE_PROJECT_NAME}
-            CONFIGURATIONS "Release"
-           )
-    INSTALL(FILES
-            ${QT_DLL_DIR}/Qt5Xmld.dll
-            ${QT_DLL_DIR}/Qt5Cored.dll
-            ${QT_DLL_DIR}/icuin51.dll
-            ${QT_DLL_DIR}/icuuc51.dll
-            DESTINATION ${CMAKE_PROJECT_NAME}
-            CONFIGURATIONS "Debug"
-        )
+    ADD_DEFINITIONS(-DWPCAP -DCONFIG_USE_PCAP)
 
-ENDIF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
+ENDIF()
