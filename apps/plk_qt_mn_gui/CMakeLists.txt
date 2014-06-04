@@ -3,8 +3,6 @@ PROJECT (${OPLK_QT_MN_APP} CXX)
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8.11)
 
-#INCLUDE(findPlkQtApi)
-#FIND_OPLK_QT_API_LIBRARY(PlkQtApi)
 FIND_OPLK_LIBRARY("mn")
 FIND_OPLK_QT_WRAP_LIBRARY("oplkqtwrap")
 
@@ -33,10 +31,6 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_AUTOMOC ON)
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} )
 
-#TODO Add in install
-SET(CFG_DEMO_PROJECT "Demo_3CN" CACHE STRING
-        "Valid projects are Demo_3CN, Demo_3CN_BC0083")
-SET_PROPERTY(CACHE CFG_DEMO_PROJECT PROPERTY STRINGS Demo_3CN Demo_3CN_BC0083)
 
 qt5_wrap_ui(GUI_UI_HEADERS ${GUI_UI_FILES})
 source_group("Generated UI Headers" FILES ${GUI_UI_HEADERS})
@@ -51,29 +45,21 @@ IF (CFG_KERNEL_STACK_DIRECTLINK OR CFG_KERNEL_STACK_USERSPACE_DAEMON)
 ENDIF (CFG_KERNEL_STACK_DIRECTLINK OR CFG_KERNEL_STACK_USERSPACE_DAEMON)
 
 
-IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    IF(CMAKE_CL_64)
-        LINK_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib/x64)
-    ELSE ()
-		MESSAGE(STATUS "Searching for LIBRARY wpcap in ${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib")
-        LINK_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Lib)
-    ENDIF()
-    INCLUDE_DIRECTORIES(${OPLK_ROOT_DIR}/contrib/pcap/windows/WpdPack/Include)
-    SET(PCAP_LIBRARIES wpcap iphlpapi)
-    ADD_DEFINITIONS(-DWPCAP)
-ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    IF(CFG_KERNEL_STACK_DIRECTLINK OR CFG_KERNEL_STACK_USERSPACE_DAEMON)
-	    SET(PCAP_LIBRARIES pcap)
-    ENDIF()
-    
-    SET(OTHER_DEPENDENT_LIBS pthread rt)
-ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+SET(OPLK_APPS_BIN_DIR
+    ${OPLK_APPS_ROOT_DIR}/bin/${OPLK_QT_MN_APP} CACHE PATH "openPOWERLINK wrapper library install prefix" FORCE
+    )
 
-#ENDIF(CFG_KERNEL_STACK_DIRECTLINK OR CFG_KERNEL_STACK_USERSPACE_DAEMON)
+################################################################################
+# Setup the architecture specific definitions
+################################################################################
+IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    include(cmake/linux.cmake)
+ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    include (cmake/windows.cmake)
+ELSE()
+    MESSAGE(FATAL_ERROR "System ${CMAKE_SYSTEM_NAME} is not supported!")
+ENDIF()
 
-#IF(UNIX)
-#SET_TARGET_PROPERTIES(${OPLK_QT_MN_APP} PROPERTIES PREFIX "")
-#ENDIF()
 
 add_executable (${OPLK_QT_MN_APP} ${GUI_UI_HEADERS} ${GUI_SOURCES} ${GUI_HEADERS} ${GUI_RESOURCES})
 qt5_use_modules(${OPLK_QT_MN_APP} Core Gui Widgets)
@@ -82,70 +68,8 @@ TARGET_LINK_LIBRARIES(${OPLK_QT_MN_APP} optimized ${OPLK_QT_WRAP_LIB_RELEASE} de
 TARGET_LINK_LIBRARIES(${OPLK_QT_MN_APP} optimized ${OPLKLIB_RELEASE} debug ${OPLKLIB_DEBUG})
 TARGET_LINK_LIBRARIES(${OPLK_QT_MN_APP} ${PCAP_LIBRARIES} ${OTHER_DEPENDENT_LIBS})
 
-SET(OPLK_APPS_BIN_DIR
-    ${OPLK_APPS_ROOT_DIR}/bin/${OPLK_QT_MN_APP} CACHE PATH "openPOWERLINK wrapper library install prefix" FORCE
-    )
-
 INSTALL(TARGETS ${OPLK_QT_MN_APP} 
 RUNTIME DESTINATION ${OPLK_APPS_BIN_DIR}/
 ARCHIVE DESTINATION ${OPLK_APPS_BIN_DIR}/
 )
 
-IF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
-INSTALL(FILES ${OPLKDLL_RELEASE}
-        DESTINATION ${OPLK_APPS_BIN_DIR}
-        CONFIGURATIONS "Release"
-       )
-
-INSTALL(FILES ${OPLKDLL_DEBUG}
-        DESTINATION ${OPLK_APPS_BIN_DIR}
-        CONFIGURATIONS "Debug"
-       )
-
-INSTALL(FILES ${OPLK_QT_WRAP_DLL_RELEASE}
-        DESTINATION ${OPLK_APPS_BIN_DIR}
-        CONFIGURATIONS "Release"
-       )
-
-INSTALL(FILES ${OPLK_QT_WRAP_DLL_DEBUG}
-        DESTINATION ${OPLK_APPS_BIN_DIR}
-        CONFIGURATIONS "Debug"
-       )
-ENDIF()
-
-IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-INSTALL(FILES
-		${QT_DLL_DIR}/Qt5Gui.dll
-		${QT_DLL_DIR}/Qt5Widgets.dll
-        ${QT_DLL_DIR}/Qt5Xml.dll
-        ${QT_DLL_DIR}/Qt5Core.dll
-        ${QT_DLL_DIR}/icuin51.dll
-        ${QT_DLL_DIR}/icuuc51.dll
-		${QT_DLL_DIR}/icudt51.dll
-		${QT_DLL_DIR}/libEGL.dll
-		${QT_DLL_DIR}/libGLESv2.dll
-        DESTINATION ${OPLK_APPS_BIN_DIR}
-        CONFIGURATIONS "Release"
-       )
-		#<li>wpcap.dll</li>
-		#<li>platforms/qwindows.dll present in QT_DIR/platforms/</li>
-
-INSTALL(FILES 
-		${QT_DLL_DIR}/Qt5Guid.dll
-		${QT_DLL_DIR}/Qt5Widgetsd.dll
-        ${QT_DLL_DIR}/Qt5Xmld.dll
-        ${QT_DLL_DIR}/Qt5Cored.dll
-		${QT_DLL_DIR}/libEGLd.dll
-		${QT_DLL_DIR}/libGLESv2d.dll
-        ${QT_DLL_DIR}/icuin51.dll
-        ${QT_DLL_DIR}/icuuc51.dll
-		${QT_DLL_DIR}/icudt51.dll
-        DESTINATION ${OPLK_APPS_BIN_DIR}
-        CONFIGURATIONS "Debug"
-        )
-ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-
-
-#----------------------------------------------------------
-#SET(CMAKE_MODULE_PATH {CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
