@@ -48,9 +48,9 @@ to build the stack libraries.
  - Click configure
 	- The configuration will fail for the first time. 
 	- Set the openPOWERLINK stack root path to `CONFIG_openPOWERLINK_ROOT_DIR` of CMake configuration.
-		- eg: `CONFIG_openPOWERLINK_ROOT_DIR` = D:\openPOWERLINK_V2\
+		- eg: `CONFIG_openPOWERLINK_ROOT_DIR` = D:/openPOWERLINK_V2/
 	- If QT installation path is not found; set the QT install path `CONFIG_QT_INSTALL_PATH` of CMake configuration.
-		- eg: `CONFIG_QT_INSTALL_PATH` = C:\Qt\Qt5.2.1\5.2.1\msvc2010
+		- eg: `CONFIG_QT_INSTALL_PATH` = C:/Qt/Qt5.2.1/5.2.1/msvc2010
 	- Click configure to activate the changes.
 - Choose the type of stack libraries from `CONFIG_openPOWERLINK_BUILD_TYPE`
 	- windows

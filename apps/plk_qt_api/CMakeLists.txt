@@ -71,6 +71,23 @@ INCLUDE_DIRECTORIES(${OPLK_QT_WRAP_INCLUDE_DIR})
 
 ADD_DEFINITIONS(${QT_DEFINITIONS} -DUNICODE -DPLKQTAPI_LIB)
 
+###############################################################################
+# Add a target to generate API documentation with Doxygen
+###############################################################################
+OPTION (CONFIG_OPLK_QT_WRAP_API_DOCUMENTATION "Build source code documentation." OFF)
+IF(CONFIG_OPLK_QT_WRAP_API_DOCUMENTATION)
+	FIND_PACKAGE(Doxygen REQUIRED)
+	IF(DOXYGEN_FOUND)
+		CONFIGURE_FILE(${OPLK_QT_WRAP_LIB_DOC_DIR}/doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+		ADD_CUSTOM_TARGET(
+			DOCUMENTATION ALL ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+			WORKING_DIRECTORY ${OPLK_QT_WRAP_LIB_DOC_DIR}
+			COMMENT "Generating API documentation with Doxygen" VERBATIM
+		)
+	ENDIF(DOXYGEN_FOUND)
+ENDIF(CONFIG_OPLK_QT_WRAP_API_DOCUMENTATION)
+
+
 ################################################################################
 # Setup the architecture specific definitions
 IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
