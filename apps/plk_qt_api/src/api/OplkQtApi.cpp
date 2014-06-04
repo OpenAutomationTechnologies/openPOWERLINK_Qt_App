@@ -41,6 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "api/OplkQtApi.h"
 #include "api/OplkEventHandler.h"
 #include "api/OplkSyncEventHandler.h"
+#include "api/OplkMonitorStack.h"
 
 /*******************************************************************************
 * Module global variables
@@ -551,7 +552,7 @@ bool OplkQtApi::RegisterCriticalErrorEventHandler(const QObject &receiver,
 bool OplkQtApi::UnregisterCriticalErrorEventHandler(const QObject &receiver,
 										const QMetaMethod &receiverFunction)
 {
-	return QObject::disconnect(&OplkEventHandler::GetInstance(),
+	bool connection = QObject::disconnect(&OplkEventHandler::GetInstance(),
 			QMetaMethod::fromSignal(&OplkEventHandler::SignalCriticalError),
 			&receiver,
 			receiverFunction);
@@ -559,4 +560,5 @@ bool OplkQtApi::UnregisterCriticalErrorEventHandler(const QObject &receiver,
 				QMetaMethod::fromSignal(&OplkMonitorStack::SignalCriticalError),
 				&receiver,
 				receiverFunction);
+	return connection;
 }

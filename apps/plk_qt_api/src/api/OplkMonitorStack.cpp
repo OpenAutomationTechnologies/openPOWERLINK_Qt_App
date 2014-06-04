@@ -41,6 +41,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <oplk/oplk.h>
 
+/*******************************************************************************
+* PRIVATE Functions
+*******************************************************************************/
+OplkMonitorStack::OplkMonitorStack()
+{
+}
 
 void OplkMonitorStack::run()
 {

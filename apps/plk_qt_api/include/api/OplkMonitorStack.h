@@ -64,7 +64,6 @@ private:
 	static OplkMonitorStack& GetInstance();
 
 protected:
-	virtual ~OplkMonitorStack();
 	virtual void run();
 
 signals:
