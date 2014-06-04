@@ -171,6 +171,7 @@ tOplkError OplkQtApi::StartStack()
 		return oplkRet;
 	}
 
+	OplkMonitorStack::GetInstance().start();
 	// Starting process thread
 	OplkEventHandler::GetInstance().start();
 
@@ -534,11 +535,17 @@ bool OplkQtApi::UnregisterSyncWaitTimeChangedEventHandler(const QObject &receive
 bool OplkQtApi::RegisterCriticalErrorEventHandler(const QObject &receiver,
 										const QMetaMethod &receiverFunction)
 {
-	return QObject::connect(&OplkEventHandler::GetInstance(),
+	bool connection = QObject::connect(&OplkEventHandler::GetInstance(),
 			QMetaMethod::fromSignal(&OplkEventHandler::SignalCriticalError),
 			&receiver,
 			receiverFunction,
 			(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
+	connection = QObject::connect(&OplkMonitorStack::GetInstance(),
+				QMetaMethod::fromSignal(&OplkMonitorStack::SignalCriticalError),
+				&receiver,
+				receiverFunction,
+				(Qt::ConnectionType) (Qt::QueuedConnection | Qt::UniqueConnection));
+	return connection;
 }
 
 bool OplkQtApi::UnregisterCriticalErrorEventHandler(const QObject &receiver,
@@ -548,4 +555,8 @@ bool OplkQtApi::UnregisterCriticalErrorEventHandler(const QObject &receiver,
 			QMetaMethod::fromSignal(&OplkEventHandler::SignalCriticalError),
 			&receiver,
 			receiverFunction);
+	connection = QObject::connect(&OplkMonitorStack::GetInstance(),
+				QMetaMethod::fromSignal(&OplkMonitorStack::SignalCriticalError),
+				&receiver,
+				receiverFunction);
 }
