@@ -131,14 +131,6 @@ MainWindow::MainWindow(QWidget *parent) :
 							this->status->metaObject()->method(index));
 	Q_ASSERT(ret != false);
 
-	index = this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
-						"HandleCriticalError(const QString&)").constData());
-	Q_ASSERT(index != -1);
-
-	ret = OplkQtApi::RegisterCriticalErrorEventHandler(*(this),
-							this->metaObject()->method(index));
-	Q_ASSERT(ret != false);
-
 	ret = connect(this->nodeStatus,
 				  SIGNAL(SignalNodeAvailable(unsigned int)),
 				  this->sdo,
@@ -321,6 +313,14 @@ void MainWindow::on_actionStart_triggered()
 		return;
 	}
 
+	int index = this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
+						"HandleCriticalError(const QString&)").constData());
+	Q_ASSERT(index != -1);
+
+	bool ret = OplkQtApi::RegisterCriticalErrorEventHandler(*(this),
+							this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
+
 	this->ui.actionOpen_CDC->setEnabled(false);
 	this->ui.actionSelect_Interface->setEnabled(false);
 	this->ui.actionStop->setEnabled(true);
@@ -335,6 +335,15 @@ void MainWindow::on_actionStart_triggered()
 void MainWindow::on_actionStop_triggered()
 {
 	emit SignalStackStopped();
+
+	int index = this->metaObject()->indexOfMethod(QMetaObject::normalizedSignature(
+						"HandleCriticalError(const QString&)").constData());
+	Q_ASSERT(index != -1);
+
+	bool ret = OplkQtApi::UnregisterCriticalErrorEventHandler(*(this),
+							this->metaObject()->method(index));
+	Q_ASSERT(ret != false);
+
 	tOplkError oplkRet = OplkQtApi::StopStack();
 	if (oplkRet != kErrorOk)
 	{
