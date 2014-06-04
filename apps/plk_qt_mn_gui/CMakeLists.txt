@@ -1,5 +1,5 @@
 SET(OPLK_QT_MN_APP "oplkmn_qt_gui")
-PROJECT (${OPLK_QT_MN_APP} CXX) 
+PROJECT (${OPLK_QT_MN_APP} CXX)
 
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8.11)
 
@@ -23,8 +23,8 @@ FILE ( GLOB_RECURSE GUI_RESOURCE_FILES "${OPLK_QT_MN_APP_RESOURCE_DIR}/*.qrc" )
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Gui REQUIRED)
-get_target_property(QtCore_location_Release Qt5::Core LOCATION_Release)
-get_filename_component(QT_DLL_DIR ${QtCore_location_Release} PATH)
+#get_target_property(QtCore_location_Release Qt5::Core LOCATION_Release)
+#get_filename_component(QT_DLL_DIR ${QtCore_location_Release} PATH)
 #add_definitions(${Qt5Widgets_DEFINITIONS})
 
 # Find includes in corresponding build directories
@@ -75,7 +75,7 @@ ENDIF()
 ################################################################################
 INCLUDE("${OPLK_APPS_COMMON_DIR}/cmake/configure-compiler.cmake")
 IF (MSVC)
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w34100 /w34189 /Zm200 ")     # from Qt-Creator build :: needed?
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /w34100 /w34189 /Zm200 ")     # from Qt-Creator build :: needed?
 ENDIF (MSVC)
 
 MESSAGE( STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS} )
@@ -89,7 +89,7 @@ TARGET_LINK_LIBRARIES(${OPLK_QT_MN_APP} optimized ${OPLK_QT_WRAP_LIB_RELEASE} de
 TARGET_LINK_LIBRARIES(${OPLK_QT_MN_APP} optimized ${OPLKLIB_RELEASE} debug ${OPLKLIB_DEBUG})
 TARGET_LINK_LIBRARIES(${OPLK_QT_MN_APP} ${PCAP_LIBRARIES} ${OTHER_DEPENDENT_LIBS})
 
-INSTALL(TARGETS ${OPLK_QT_MN_APP} 
+INSTALL(TARGETS ${OPLK_QT_MN_APP}
 RUNTIME DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}/
 ARCHIVE DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}/
 )
