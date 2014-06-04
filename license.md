@@ -1,8 +1,9 @@
 Licenses {#page_licenses}
 ========
 
-The main source code of the openPOWERLINK Protocol Stack is licensed under BSD
-license by Kalycito Infotech Pvt Ltd.,
+All the sources present in this repo is licensed under BSD license.
+ 
+Copyright Kalycito Infotech Pvt Ltd.,
 
 It is not allowed to remove any copyright information.
 
