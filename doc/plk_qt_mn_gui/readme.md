@@ -1,12 +1,12 @@
-## openPOWERLINK QT MN GUI 
-
-An QT based advanced application which implements an MN.
-======================================
+openPOWERLINK QT MN GUI
+===================
 
 [TOC]
 
--------
-### Features
+An QT based advanced application which implements an openPOWERLINK MN using the 
+Oplk_QT_wrapper library.
+
+# Features {#sect_features}
  - Monitor the status of the nodes available in the network.
  - Send NMT commands to local and remote nodes.
  - Visualize the processimage data as variables and memory views.
@@ -15,26 +15,26 @@ An QT based advanced application which implements an MN.
  - Uses QT 5 libraries which creates stunning UIs and powerful native applications.
  - Uses CMake build system, an powerful cross-platform build system.
 
-### Package dependencies to compile
-#### openPOWERLINK stack v2.x
+# Package dependencies to compile {#sect_dependencies}
+## openPOWERLINK stack v2.x {#sect_dependencies_oplk}
 An open-source [POWERLINK][2] protocol stack.
 
 * Get the openPOWERLINK stack from [github][7].
 
 
-#### CMake
+## CMake {#sect_dependencies_cmake}
  * For building the library [CMake][5] is used. 
  * A CMake version 2.8.11 or higher is required!
 
-	##### Out-of-Source Builds
+	### Out-of-Source Builds {#sect_dependencies_cmake_build}
 	 * CMake supports out-of-source builds. Therefore, all generated files are 
 	   located in a seperate build directory. This keeps your sources clean.
 
-#### Compiler
+## Compiler {#sect_dependencies_compiler}
  * Windows: Microsoft visual C++ 2010 or higher
  * Linux: G++ v4.6.3 or higher
 
-#### Qt 5 framework
+## Qt 5 framework {#sect_dependencies_qt}
 [Qt][3] is a cross-platform application and UI framework for developers using C++.
 The Qt framework can be downloaded from [here][4]. Download the installer 
 specific to your platform.
@@ -42,19 +42,18 @@ specific to your platform.
  * Windows: Download and install Qt 5.2.x for Windows
  * Linux: Download and install Qt 5.2.x for Linux
 
--------
 
-### Build the GUI
+# Build the GUI {#sect_build}
 
-#### Build the openPOWERLINK stack
+## Build the openPOWERLINK stack {#sect_build_oplk}
 Please refer to "Building openPOWERLINK" section from [openPOWERLINK doc site][6]
 to build the stack libraries.
 
-#### Build the openPOWERLINK QT API wrapper library
+## Build the openPOWERLINK QT API wrapper library {#sect_build_oplkqtwrap}
 
 Please refer to `doc/plk_qt_api/Readme.md` to build the wrapper library. 
 
-#### Compilation (any platform) using `cmake-gui`
+### Compilation (any platform) using `cmake-gui` {#sect_build_oplkqtwrap_cmake}
  - Set the source path to apps/plk_qt_mn_gui
  - Set the build path to apps/plk_qt_mn_gui/build/<platform-specific>
  - Click configure
@@ -75,7 +74,7 @@ Please refer to `doc/plk_qt_api/Readme.md` to build the wrapper library.
 - The CMake scripts will find the openPOWERLINK and wrapper libraries.
 - Follow platform specific documentation below.
 
-##### Linux
+#### Linux {#sect_build_oplkqtwrap_cmake_linux}
 - Finally click generate button to generate the Makefiles. 
   (On Linux, CMake generates Makefiles by default).
 - Go the choosen build path from the command prompt.
@@ -90,7 +89,7 @@ Please refer to `doc/plk_qt_api/Readme.md` to build the wrapper library.
   `CMAKE_BUILD_TYPE[TODO check]` to "Debug".
 - The debug version of the applications are are built with "_d" at the end of the names.
 
-##### Windows
+#### Windows {#sect_build_oplkqtwrap_win}
 - Finally click generate to generate the Visual C++ project files.
 - Go the chosen build path.
 - Open the `oplkmn_qt_gui.sln` with Visual C++
@@ -103,13 +102,12 @@ Please refer to `doc/plk_qt_api/Readme.md` to build the wrapper library.
   solution configurations.
 - The debug libraries are built with "_d" at the end of the library name.
 
--------
 
-#### Runtime dependencies
+# Runtime dependencies {#sect_runtimedep}
 The library is dependent on the openPOWERLINK 2.x and QT 5.2.x libraries. 
 Here are the list of dependent libraries.
 
-##### Windows
+## Windows {#sect_runtimedep_win}
  - oplkmn-*(depends on choosen stack configuration choosen)* present in stack/libs/*
  - oplkqtwrap-*(depends on choosen stack configuration choosen)* present in stack/libs/*
  - wpcap.dll - PCAP library
@@ -124,7 +122,7 @@ Here are the list of dependent libraries.
  - libGLESv2.dll
  - qwindows.dll - should be present in platforms/
 
-##### Linux
+## Linux {#sect_runtimedep_linux}
  - libpcap - PCAP library (only for selected configurations of openPOWERLINK stack)
  - Qt5Core.so
  - Qt5Xml.so
@@ -135,18 +133,16 @@ Here are the list of dependent libraries.
  - icuuc51.so
 
 
--------
+# How to run {#sect_run}
 
-#### How to run
-
-##### What all you need run the application?
-###### Hardware
+## What all you need run the application? {#sect_run_needs}
+### Hardware {#sect_run_needs_hardware}
  - An openPOWERLINK supported network interface cards
  - An openPOWERLINK supported Controlled Node
-###### Software
- - CDC and Xap.xml generated by openCONFIGURATOR[1] 
+### Software {#sect_run_needs_software}
+ - CDC and Xap.xml generated by [openCONFIGURATOR](1) 
 
-##### Execute
+## Execute {#sect_run_needs_execute}
  - Go to `bin/plk_qt_mn_gui/<platform>/<OPLK_STACK_CFG>`
  - Run the plk_qt_mn_gui (use sudo in Linux)
  - Choose the CDC and Xap.xml files by clicking on the Choose CDC menu
@@ -154,7 +150,6 @@ Here are the list of dependent libraries.
  - Click on the Run menu to start the openPOWERLINK stack.
 
 
--------
 [1]: http://sourceforge.net/projects/openconf/
 [2]: http://sourceforge.net/projects/openpowerlink/
 [3]: http://qt-project.org
