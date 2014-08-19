@@ -22,7 +22,7 @@ An open-source [POWERLINK][2] protocol stack.
 
 	## Out-of-Source Builds {#sect_dependencies_cmake_build}
 	 * CMake supports out-of-source builds. Therefore, all generated files are 
-	   located in a seperate build directory. This keeps your sources clean.
+	   located in a separate build directory. This keeps your sources clean.
 
 ## Compiler {#sect_dependencies_compiler}
  * Windows: Microsoft visual C++ 2010 or higher
@@ -48,9 +48,9 @@ to build the stack libraries.
  - Click configure
 	- The configuration will fail for the first time. 
 	- Set the openPOWERLINK stack root path to `CONFIG_openPOWERLINK_ROOT_DIR` of CMake configuration.
-		- eg: `CONFIG_openPOWERLINK_ROOT_DIR` = D:/openPOWERLINK_V2/
+		- Eg: `CONFIG_openPOWERLINK_ROOT_DIR` = D:/openPOWERLINK_V2/
 	- If QT installation path is not found; set the QT install path `CONFIG_QT_INSTALL_PATH` of CMake configuration.
-		- eg: `CONFIG_QT_INSTALL_PATH` = C:/Qt/Qt5.2.1/5.2.1/msvc2010
+		- Eg: `CONFIG_QT_INSTALL_PATH` = C:/Qt/Qt5.2.1/5.2.1/msvc2010
 	- Click configure to activate the changes.
  - Choose the type of stack libraries from `CONFIG_openPOWERLINK_BUILD_TYPE`
 	- windows
@@ -81,7 +81,7 @@ to build the stack libraries.
 ### Windows {#sect_build_wrapper_win}
  - Choose `CONFIG_OPLK_QT_WRAP_WINDOWS_DLL` to build the library as dll.
  - Finally click generate to generate the Visual C++ project files.
- - Go the choosen build path.
+ - Go the chosen build path.
  - Open the `oplkqtwrap.sln` with Visual C++
  - Build the INSTALL project to generate the library.
  - The libraries will be available in `lib/oplkqtwrap/<platform>/
@@ -97,7 +97,7 @@ The library is dependent on the openPOWERLINK 2.x and QT 5.2.x libraries.
 Here are the list of dependent libraries.
 
 ### Windows {#sect_build_runtimedep_win}
- - oplkmn-*(depends on choosen stack configuration choosen)* present in stack/libs/*
+ - oplkmn-*(depends on chosen stack configuration chosen)* present in stack/libs/*
  - wpcap/libpcap - PCAP library
  - Qt5Core.dll
  - Qt5Xml.dll
@@ -105,7 +105,7 @@ Here are the list of dependent libraries.
  - icuuc51.dll
 
 ### Linux {#sect_build_runtimedep_linux}
- - oplkmn-*(depends on choosen stack configuration choosen)* present in stack/libs/*
+ - oplkmn-*(depends on chosen stack configuration chosen)* present in stack/libs/*
  - wpcap/libpcap - PCAP library
  - Qt5Core.so
  - Qt5Xml.so

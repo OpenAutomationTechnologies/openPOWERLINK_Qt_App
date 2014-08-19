@@ -9,7 +9,7 @@ Oplk_QT_wrapper library.
 # Features {#sect_features}
  - Monitor the status of the nodes available in the network.
  - Send NMT commands to local and remote nodes.
- - Visualize the processimage data as variables and memory views.
+ - Visualize the process-image data as variables and memory views.
  - Avoids the possibility of recompiling the application by using the xap.xml
  - Written with modular cross-platform C++ techniques.
  - Uses QT 5 libraries which creates stunning UIs and powerful native applications.
@@ -28,7 +28,7 @@ An open-source [POWERLINK][2] protocol stack.
 
 	### Out-of-Source Builds {#sect_dependencies_cmake_build}
 	 * CMake supports out-of-source builds. Therefore, all generated files are 
-	   located in a seperate build directory. This keeps your sources clean.
+	   located in a separate build directory. This keeps your sources clean.
 
 ## Compiler {#sect_dependencies_compiler}
  * Windows: Microsoft visual C++ 2010 or higher
@@ -59,9 +59,9 @@ Please refer to `doc/plk_qt_api/Readme.md` to build the wrapper library.
  - Click configure
 	- The configuration will fail for the first time. 
 	- Set the openPOWERLINK stack root path to `CONFIG_openPOWERLINK_ROOT_DIR` of CMake configuration.
-		- eg: `CONFIG_openPOWERLINK_ROOT_DIR` = D:/openPOWERLINK_V2/
+		- Eg: `CONFIG_openPOWERLINK_ROOT_DIR` = D:/openPOWERLINK_V2/
 	- If QT installation path is not found; set the QT install path `CONFIG_QT_INSTALL_PATH` of CMake configuration.
-		- eg: `CONFIG_QT_INSTALL_PATH` = C:/Qt/Qt5.2.1/5.2.1/msvc2010
+		- Eg: `CONFIG_QT_INSTALL_PATH` = C:/Qt/Qt5.2.1/5.2.1/msvc2010
 	- Click configure to activate the changes.
 - Choose the type of stack libraries from `CONFIG_openPOWERLINK_BUILD_TYPE`
 	- windows
@@ -77,7 +77,7 @@ Please refer to `doc/plk_qt_api/Readme.md` to build the wrapper library.
 #### Linux {#sect_build_oplkqtwrap_cmake_linux}
 - Finally click generate button to generate the Makefiles. 
   (On Linux, CMake generates Makefiles by default).
-- Go the choosen build path from the command prompt.
+- Go the chosen build path from the command prompt.
 
 		` cd apps/plk_qt_mn_gui/build/<platform-specific> `
 - Create the application using the command.
@@ -108,8 +108,8 @@ The library is dependent on the openPOWERLINK 2.x and QT 5.2.x libraries.
 Here are the list of dependent libraries.
 
 ## Windows {#sect_runtimedep_win}
- - oplkmn-*(depends on choosen stack configuration choosen)* present in stack/libs/*
- - oplkqtwrap-*(depends on choosen stack configuration choosen)* present in stack/libs/*
+ - oplkmn-*(depends on chosen stack configuration chosen)* present in stack/libs/*
+ - oplkqtwrap-*(depends on chosen stack configuration chosen)* present in stack/libs/*
  - wpcap.dll - PCAP library
  - Qt5Core.dll
  - Qt5Xml.dll

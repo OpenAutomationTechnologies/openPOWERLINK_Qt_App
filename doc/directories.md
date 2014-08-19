@@ -31,7 +31,7 @@ plk_qt_mn_gui          | QT based advanced application which implements an MN.
 
 ### Oplk_QT_wrapper {#sect_directories_apps_oplkqtwrapper}
 A wrapper built for openPOWERLINK stack using the QT 5 framework, which provides
-the possiblity to develop applications rapid for openPOWERLINK.
+the possibility to develop applications rapid for openPOWERLINK.
 
 Directory              | Description
 -----------------------| -----------------------------------------------
