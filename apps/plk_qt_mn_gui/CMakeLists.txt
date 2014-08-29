@@ -50,12 +50,22 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_AUTOMOC ON)
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} )
 
+IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   OPTION(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY "The openPOWERLINK stack is built with shared libraries" OFF)
+ENDIF()
+
 ################################################################################
 # Setup project files and definitions
 SET(OPLK_QT_MN_APP_INCLUDE_DIR ${OPLK_QT_MN_APP_DIR}/include)
 SET(OPLK_QT_MN_APP_SOURCE_DIR ${OPLK_QT_MN_APP_DIR}/src)
 SET(OPLK_QT_MN_APP_UI_DIR ${OPLK_QT_MN_APP_DIR}/ui)
 SET(OPLK_QT_MN_APP_RESOURCE_DIR ${OPLK_QT_MN_APP_UI_DIR}/resources)
+
+################################################################################
+# Set Linux Shared Library
+IF(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY)
+   SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+ENDIF()
 
 ################################################################################
 # Find application includes and source files

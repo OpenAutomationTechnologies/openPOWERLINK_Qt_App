@@ -66,7 +66,7 @@ void OplkSyncEventHandler::run()
 * Private functions
 *******************************************************************************/
 OplkSyncEventHandler::OplkSyncEventHandler() :
-	sleepTime(400)
+	sleepTime(4)
 {
 }
 

@@ -61,6 +61,17 @@ IF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
 
 ENDIF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
 
+INSTALL(FILES
+		${CMAKE_SOURCE_DIR}/../plk_qt_api/build/windows/Debug/oplkqtwrap-mn_d.dll
+        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+        CONFIGURATIONS "Debug"
+        )
+
+INSTALL(FILES
+		${CMAKE_SOURCE_DIR}/../plk_qt_api/build/windows/Release/oplkqtwrap-mn.dll
+        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+        CONFIGURATIONS "Release"
+        )
 
 get_target_property(QtCore_location_Release Qt5::Core LOCATION_Release)
 get_filename_component(QT_DLL_DIR ${QtCore_location_Release} PATH)

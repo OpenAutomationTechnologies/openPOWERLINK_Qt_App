@@ -98,7 +98,7 @@ void ProcessImageIn::SetRawValue(const std::string& channelName, const void* con
 		piDataPtr += channel.GetByteOffset();
 		if ((channel.GetBitSize() % 8) == 0)
 		{
-			OPLK_MEMCPY(piDataPtr, value, (dataLenBits / 8));
+			memcpy(piDataPtr, value, (dataLenBits / 8));
 		}
 		else if (channel.GetBitSize() < 8)
 		{

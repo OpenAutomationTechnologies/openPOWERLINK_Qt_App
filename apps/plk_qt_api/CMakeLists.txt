@@ -44,6 +44,9 @@ SET(OPLK_QT_WRAP_SOURCE_DIR ${OPLK_QT_WRAP_DIR}/src)
 MESSAGE(STATUS "Configuring ${OPLK_QT_WRAP}")
 
 OPTION(CONFIG_OPLK_QT_WRAP_LIB           "Compile openPOWERLINK QT API static library" ON)
+IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+OPTION(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY "The openPOWERLINK stack is built with shared libraries" OFF)
+ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 OPTION(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL   "Build openPOWERLINK Qt API library as DLL" ON)
 ENDIF()
@@ -139,6 +142,12 @@ ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     SET(OPLK_QT_WRAP_LIB_NAME ${OPLK_QT_WRAP}-${CONFIG_NODE})
 ELSE()
     MESSAGE(FATAL_ERROR "Unsupported CMAKE_SYSTEM_NAME ${CMAKE_SYSTEM_NAME} or CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR}")
+ENDIF()
+
+################################################################################
+# Set Linux Shared Library
+IF(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY)
+   SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ENDIF()
 
 ################################################################################

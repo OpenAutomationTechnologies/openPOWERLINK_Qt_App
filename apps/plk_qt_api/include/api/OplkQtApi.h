@@ -45,6 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <oplk/oplk.h>
 #include <oplk/nmt.h>
+#include <user/nmtu.h>
 
 #include "user/SdoTransferResult.h"
 #include "user/SdoTransferJob.h"
@@ -92,7 +93,7 @@ public:
 	 * \param[in] nodeId      Node id to send the NMT command.
 	 * \param[in] nmtCommand  The command to be sent.
 	 */
-	static tOplkError ExecuteNmtCommand(const UINT nodeId,
+	static tOplkError ExecuteNmtCommand(UINT nodeId,
 										tNmtCommand nmtCommand);
 
 	/**
