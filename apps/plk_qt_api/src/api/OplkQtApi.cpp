@@ -357,7 +357,7 @@ tOplkError OplkQtApi::ExecuteNmtCommand(UINT nodeId,
         return kErrorApiInvalidParam;
 
     // Local node shall use oplk_execNmtCommand(tNmtEvent);
-    if (nodeId == 0 || nodeId == obd_getNodeId())
+    if (nodeId == 0 || nodeId == OplkQtApi::initParam.nodeId)
     {
         tNmtEvent nmtEvent;
         // Convert tNmtCommand to tNmtEvent.
@@ -396,21 +396,21 @@ tOplkError OplkQtApi::ExecuteNmtCommand(UINT nodeId,
         ret = oplk_writeLocalObject(0x1F9F, 0x03, &nodeId, 0x01);
         if (ret != kErrorOk)
         {
-            TRACE("%s() Error: 1F9F/03 : %x\n", __func__, ret);
+            qDebug("%s() Error: 1F9F/03 : %x\n", __func__, ret);
             return ret;
         }
 
         ret = oplk_writeLocalObject(0x1F9F, 0x02, &nmtCommand, 0x01);
         if (ret != kErrorOk)
         {
-            TRACE("%s() Error: 1F9F/02 : %x\n", __func__, ret);
+            qDebug("%s() Error: 1F9F/02 : %x\n", __func__, ret);
             return ret;
         }
 
         // ret = oplk_writeLocalObject(0x1F9F, 0x04, &value, sizeof(value));
         //if (ret != kErrorOk)
         //{
-        //  TRACE("%s() Error: 1F9F/04 : %x\n", __func__, ret);
+        //  qDebug("%s() Error: 1F9F/04 : %x\n", __func__, ret);
         //   return ret;
         //}
 

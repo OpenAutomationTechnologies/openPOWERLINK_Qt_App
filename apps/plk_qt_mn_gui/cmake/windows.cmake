@@ -30,48 +30,33 @@
 
 ################################################################################
 # Set architecture specific installation files
-IF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
-    IF(NOT (${OPLKDLL_RELEASE} STREQUAL "OPLKDLL_RELEASE-NOTFOUND"))
-        INSTALL(FILES ${OPLKDLL_RELEASE}
-                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-                CONFIGURATIONS "Release"
-               )
-    ENDIF()
+IF(NOT (${OPLKDLL_RELEASE} STREQUAL "OPLKDLL_RELEASE-NOTFOUND"))
+	INSTALL(FILES ${OPLKDLL_RELEASE}
+			DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+			CONFIGURATIONS "Release"
+		   )
+ENDIF()
 
-    IF(NOT (${OPLKDLL_DEBUG} STREQUAL "OPLKDLL_DEBUG-NOTFOUND"))
-        INSTALL(FILES ${OPLKDLL_DEBUG}
-                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-                CONFIGURATIONS "Debug"
-               )
-    ENDIF()
+IF(NOT (${OPLKDLL_DEBUG} STREQUAL "OPLKDLL_DEBUG-NOTFOUND"))
+	INSTALL(FILES ${OPLKDLL_DEBUG}
+			DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+			CONFIGURATIONS "Debug"
+		   )
+ENDIF()
 
-    IF(NOT (${OPLK_QT_WRAP_DLL_RELEASE} STREQUAL "OPLK_QT_WRAP_DLL_RELEASE-NOTFOUND"))
-        INSTALL(FILES ${OPLK_QT_WRAP_DLL_RELEASE}
-                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-                CONFIGURATIONS "Release"
-               )
-    ENDIF()
+IF(NOT (${OPLK_QT_WRAP_DLL_RELEASE} STREQUAL "OPLK_QT_WRAP_DLL_RELEASE-NOTFOUND"))
+	INSTALL(FILES ${OPLK_QT_WRAP_DLL_RELEASE}
+			DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+			CONFIGURATIONS "Release"
+		   )
+ENDIF()
 
-    IF(NOT (${OPLK_QT_WRAP_DLL_DEBUG} STREQUAL "OPLK_QT_WRAP_DLL_DEBUG-NOTFOUND"))
-        INSTALL(FILES ${OPLK_QT_WRAP_DLL_DEBUG}
-                DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-                CONFIGURATIONS "Debug"
-               )
-    ENDIF()
-
-ENDIF(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL)
-
-INSTALL(FILES
-		${CMAKE_SOURCE_DIR}/../plk_qt_api/build/windows/Debug/oplkqtwrap-mn_d.dll
-        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-        CONFIGURATIONS "Debug"
-        )
-
-INSTALL(FILES
-		${CMAKE_SOURCE_DIR}/../plk_qt_api/build/windows/Release/oplkqtwrap-mn.dll
-        DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
-        CONFIGURATIONS "Release"
-        )
+IF(NOT (${OPLK_QT_WRAP_DLL_DEBUG} STREQUAL "OPLK_QT_WRAP_DLL_DEBUG-NOTFOUND"))
+	INSTALL(FILES ${OPLK_QT_WRAP_DLL_DEBUG}
+			DESTINATION ${OPLK_QT_MN_APP_BIN_DIR}
+			CONFIGURATIONS "Debug"
+		   )
+ENDIF()
 
 get_target_property(QtCore_location_Release Qt5::Core LOCATION_Release)
 get_filename_component(QT_DLL_DIR ${QtCore_location_Release} PATH)
