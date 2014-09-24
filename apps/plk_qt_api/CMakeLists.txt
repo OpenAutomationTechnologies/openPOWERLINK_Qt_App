@@ -45,7 +45,7 @@ MESSAGE(STATUS "Configuring ${OPLK_QT_WRAP}")
 
 OPTION(CONFIG_OPLK_QT_WRAP_LIB           "Compile openPOWERLINK QT API static library" ON)
 IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-OPTION(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY "The openPOWERLINK stack is built with shared libraries" OFF)
+OPTION(OPLK_STACK_BUILT_AS_SHARED_LIBRARY "The openPOWERLINK stack is built with shared libraries" OFF)
 ENDIF()
 IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 OPTION(CONFIG_OPLK_QT_WRAP_WINDOWS_DLL   "Build openPOWERLINK Qt API library as DLL" ON)
@@ -146,7 +146,9 @@ ENDIF()
 
 ################################################################################
 # Set Linux Shared Library
-IF(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY)
+IF(OPLK_STACK_BUILT_AS_SHARED_LIBRARY)
+   MESSAGE("When Shared library is enabled, then the executable works with the real path of the shared libraries.
+Means the executable only works on this machine!")
    SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ENDIF()
 

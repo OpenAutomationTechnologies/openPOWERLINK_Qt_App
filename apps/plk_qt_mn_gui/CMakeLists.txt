@@ -51,7 +51,7 @@ SET(CMAKE_AUTOMOC ON)
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} )
 
 IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   OPTION(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY "The openPOWERLINK stack is built with shared libraries" OFF)
+   OPTION(OPLK_STACK_BUILT_AS_SHARED_LIBRARY "The openPOWERLINK stack is built with shared libraries" OFF)
 ENDIF()
 
 ################################################################################
@@ -63,7 +63,9 @@ SET(OPLK_QT_MN_APP_RESOURCE_DIR ${OPLK_QT_MN_APP_UI_DIR}/resources)
 
 ################################################################################
 # Set Linux Shared Library
-IF(CONFIG_OPLK_QT_WRAP_SHARED_LIBRARY)
+IF(OPLK_STACK_BUILT_AS_SHARED_LIBRARY)
+   MESSAGE("When Shared library is enabled, then the executable works with the real path of the shared libraries.
+Means the executable only works on this machine!")
    SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ENDIF()
 
