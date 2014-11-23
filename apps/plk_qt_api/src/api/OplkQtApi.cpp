@@ -2,7 +2,7 @@
 ********************************************************************************
 \file   OplkQtApi.cpp
 
-\brief  Contains the implementions to wrap the openPOWERLINK APIs.
+\brief  Contains the implementations to wrap the openPOWERLINK APIs.
 
 \author Ramakrishnan Periyakaruppan
 
@@ -354,67 +354,67 @@ tOplkError OplkQtApi::ExecuteNmtCommand(UINT nodeId,
 						tNmtCommand nmtCommand)
 {
    if (nodeId > 255)
-        return kErrorApiInvalidParam;
+		return kErrorApiInvalidParam;
 
-    // Local node shall use oplk_execNmtCommand(tNmtEvent);
-    if (nodeId == 0 || nodeId == obd_getNodeId())
-    {
-        tNmtEvent nmtEvent;
-        // Convert tNmtCommand to tNmtEvent.
-        switch (nmtCommand)
-        {
-            case kNmtCmdStopNode:
-                nmtEvent = kNmtEventSwitchOff;
-                break;
+	// Local node shall use oplk_execNmtCommand(tNmtEvent);
+	if (nodeId == 0 || nodeId == OplkQtApi::initParam.nodeId)
+	{
+		tNmtEvent nmtEvent;
+		// Convert tNmtCommand to tNmtEvent.
+		switch (nmtCommand)
+		{
+			case kNmtCmdStopNode:
+				nmtEvent = kNmtEventSwitchOff;
+				break;
 
-            case kNmtCmdResetNode:
-                nmtEvent = kNmtEventResetNode;
-                break;
+			case kNmtCmdResetNode:
+				nmtEvent = kNmtEventResetNode;
+				break;
 
-            case kNmtCmdResetCommunication:
-                nmtEvent = kNmtEventResetCom;
-                break;
+			case kNmtCmdResetCommunication:
+				nmtEvent = kNmtEventResetCom;
+				break;
 
-            case kNmtCmdResetConfiguration:
-                nmtEvent = kNmtEventResetConfig;
-                break;
+			case kNmtCmdResetConfiguration:
+				nmtEvent = kNmtEventResetConfig;
+				break;
 
-            case kNmtCmdSwReset:
-                nmtEvent = kNmtEventSwReset;
-                break;
+			case kNmtCmdSwReset:
+				nmtEvent = kNmtEventSwReset;
+				break;
 
-            default:
-                return kErrorNmtInvalidParam;
-        }
-        return oplk_execNmtCommand(nmtEvent);
-    }
-    else
-    {
-        tOplkError ret = kErrorOk;
-        BOOL releaseCmd = TRUE;
+			default:
+				return kErrorNmtInvalidParam;
+		}
+		return oplk_execNmtCommand(nmtEvent);
+	}
+	else
+	{
+		tOplkError ret = kErrorOk;
+		BOOL releaseCmd = TRUE;
 
-        ret = oplk_writeLocalObject(0x1F9F, 0x03, &nodeId, 0x01);
-        if (ret != kErrorOk)
-        {
-            TRACE("%s() Error: 1F9F/03 : %x\n", __func__, ret);
-            return ret;
-        }
+		ret = oplk_writeLocalObject(0x1F9F, 0x03, &nodeId, 0x01);
+		if (ret != kErrorOk)
+		{
+			qDebug("%s() Error: 1F9F/03 : %x\n", __func__, ret);
+			return ret;
+		}
 
-        ret = oplk_writeLocalObject(0x1F9F, 0x02, &nmtCommand, 0x01);
-        if (ret != kErrorOk)
-        {
-            TRACE("%s() Error: 1F9F/02 : %x\n", __func__, ret);
-            return ret;
-        }
+		ret = oplk_writeLocalObject(0x1F9F, 0x02, &nmtCommand, 0x01);
+		if (ret != kErrorOk)
+		{
+			qDebug("%s() Error: 1F9F/02 : %x\n", __func__, ret);
+			return ret;
+		}
 
-        // ret = oplk_writeLocalObject(0x1F9F, 0x04, &value, sizeof(value));
-        //if (ret != kErrorOk)
-        //{
-        //  TRACE("%s() Error: 1F9F/04 : %x\n", __func__, ret);
-        //   return ret;
-        //}
+		// ret = oplk_writeLocalObject(0x1F9F, 0x04, &value, sizeof(value));
+		//if (ret != kErrorOk)
+		//{
+		//  qDebug("%s() Error: 1F9F/04 : %x\n", __func__, ret);
+		//   return ret;
+		//}
 
-        return oplk_writeLocalObject(0x1F9F, 0x01, &releaseCmd, 0x01);
+		return oplk_writeLocalObject(0x1F9F, 0x01, &releaseCmd, 0x01);
 	}
 }
 
